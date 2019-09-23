@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+    <link rel="stylesheet" href="/styles/styles.css">
+
+    <title>Nettportal søkeside</title>  
+    </head>
+  
+
+    <body>
+        {{>header}}
+        <h1> Søk i samlingene</h1>
+            <label for="collection-select">Velg en samling:</label>
+            <select id="collection-select">
+                <option value="">--Vennligst gjør et valg--</option>
+                <option value="karplanter">Karplanter</option>
+                <option value="sopp">Sopp</option>
+                <option value="moser">Moser</option>
+                <option value="lav">Lav</option>
+            </select>
+        <br>
+        <br>
+        <form>
+        <input id="search-text" type="text" class="input" placeholder="Søk">
+        <button id="sok">Søk</button>
+        </form>
+        <br>
+        <table> 
+            <tr>
+                <td> <h2>Resultat</h2> </td>
+                <td>antall treff:</td>
+                <td  id="antall-treff" >  {{ antallTreff }} </td>
+            </tr>
+        </table>
+        
+
+        <table id="myTable">
+            <tr style="font-weight:bold" >
+                <td>MUSIT nummer</td>
+                <td>Takson</td>
+                <td>Land</td>
+                <td>Innsamler</td>
+            </tr>
+        </table>
+        {{!-- <p id="resulst-list"> {{results}} </p> --}}
+        {{!-- <p id="resulst-list">Her kommer guttemusikken</p>        --}}
+     {{>footer}}
+    <script src="/scripts/utils/search.js"></script>   
+    </body>
+</html>
