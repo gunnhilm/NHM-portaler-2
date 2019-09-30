@@ -99,3 +99,59 @@ document.getElementById("photo_anchor").href = objekt.associatedMedia
 let smallImage = objekt.associatedMedia
 smallImage = smallImage.replace('jpeg', 'small')
 document.getElementById("photo_box").src = smallImage
+
+//map
+
+const coordinatesView = [Number(objekt.decimalLongitude), Number(objekt.decimalLatitude)]
+
+let map
+
+function initialize_map() {
+    map = new ol.Map({
+    target: 'map',
+    layers: [
+      new ol.layer.Tile({
+        source: new ol.source.OSM()
+      })
+    ],
+    view: new ol.View({
+      center: ol.proj.fromLonLat(coordinatesView),
+      zoom: 9
+    })
+  })
+}
+
+initialize_map()
+
+// rød prikk på kart:
+
+// feature object
+const marker = new ol.Feature({
+    geometry: new ol.geom.Point(ol.proj.fromLonLat([Number(objekt.decimalLongitude), Number(objekt.decimalLatitude)]))
+    })
+
+
+// icon...
+var iconStyle = new ol.style.Style({
+    image: new ol.style.Icon({
+        anchor: [0.5, 0.5],
+        anchorXUnits: 'fraction',
+        anchorYUnits: 'fraction',
+        src: "https://upload.wikimedia.org/wikipedia/commons/e/ec/RedDot.svg"
+    })
+})
+
+marker.setStyle(iconStyle)
+
+// source object for this feature
+const vectorSource = new ol.source.Vector({
+    features: [marker]
+})
+
+// add this object to a new layer
+const vectorLayer = new ol.layer.Vector({
+    source: vectorSource
+})
+
+// add this new layer over the map
+map.addLayer(vectorLayer)

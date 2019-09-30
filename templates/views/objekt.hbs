@@ -4,7 +4,8 @@
     <head>
         <title>Nettportal objektvisning</title>
         <link rel="stylesheet" href="/styles/styles.css">
-        <link rel="stylesheet" href="/scripts/utils/ol/ol.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.0.0/css/ol.css" type="text/css">
+        <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.0.0/build/ol.js"></script>
     </head>
     
     <body>
@@ -25,10 +26,6 @@
         </div>
         
         <div id="map" class="map"></div>
-            {{!-- <script src="/scripts/utils/ol/ol.js.map"></script>     --}}
-            <script src="/scripts/utils/ol/ol.js"></script>    
-            <script src="/scripts/utils/objekt.js"></script>
-            {{!-- <script src="/scripts/utils/object-map.js"></script>    --}}
-
+            <script type="module" src="/scripts/utils/objekt.js"></script>
     </body>
 </html>

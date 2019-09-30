@@ -92,8 +92,14 @@ app.get('/object', (req, res) => {
 //     })
 // })
 
+app.get('/about', (req, res) => {
+   res.render('about', {
+    })
+})
 
-
+app.get('/help', (req, res) => {
+    res.render('help', {})
+})
 
 app.listen(port, () => {
     console.log('Server is up on port ' + port)
