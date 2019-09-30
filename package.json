@@ -14,10 +14,12 @@
     "express": "^4.17.1",
     "handlebars": "^4.1.2",
     "hbs": "^4.0.4",
+    "leaflet-map-server-component": "^0.2.0",
     "ol": "^5.3.3",
     "papaparse": "^5.0.2",
     "path": "^0.12.7",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "requirejs": "^2.3.6"
   },
   "devDependencies": {
     "nodemon": "^1.19.1"
