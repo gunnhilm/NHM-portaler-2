@@ -32,8 +32,8 @@ const resultTable = (data) => {
         const cell4 = row.insertCell(3)
         if (i === -1) {
             // header row
-            cell1.innerHTML = 'MUSIT nummer    '.bold()
-            cell2.innerHTML = '    Takson'.bold()
+            cell1.innerHTML = 'MUSIT nummer'.bold()
+            cell2.innerHTML = 'Takson'.bold()
             cell3.innerHTML = 'Land'.bold()
             cell4.innerHTML = 'Innsamler'.bold()
         } else {
@@ -52,8 +52,11 @@ searchForm.addEventListener('submit', (e) => {
         console.log(searchTerm);
     const valgtSamling = samling.value
         console.log(valgtSamling);
-        
-    const url = 'http://localhost:3000/search/?search=' + searchTerm +'&samling=' + valgtSamling
+    
+    if (!valgtSamling) {
+        resultHeader.innerHTML = "Du må velge samling før du kan søke"
+    } else {
+        const url = 'http://localhost:3000/search/?search=' + searchTerm +'&samling=' + valgtSamling
         fetch(url).then((response) => {
             response.text().then((data) => {
                 if(data.error) {
@@ -62,6 +65,9 @@ searchForm.addEventListener('submit', (e) => {
                     resultTable(data)
                 }
             })
-        })
+        })    
+    }
+        
+    
 })
 
