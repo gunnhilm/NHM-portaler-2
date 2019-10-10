@@ -1,33 +1,40 @@
-/* div {
-    
-    
-} */
-
-/* #species_box {
-    background-color:#99cc00;
-    padding:10px;
-    border: black solid;
-} */
-
-p {
-    background-color: #d2e98f;
-    padding:10px;
-    border: black solid;
+/* to get a sticky footer */
+.content {
+    min-height:  calc(100vh - 170px);
+    margin-left: 100px;
 }
 
-img {
-    background-color:#d2e98f;
+header {
+    height: 50px;
+    background-color: #d2e98f;
+    /* dette er en underlig måte å sentrere bilde og lenker vertikalt på */
+    line-height: 45px;
+}
+
+.footer {
+    height: 50px;
+    background-color: #d2e98f;
     padding:10px;
-    border: black ;
-    width: 150px;
+}
+
+#logo {
+    vertical-align: middle; 
+    max-height: 40px;
+    /*margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%); */
+}
+
+.headerLink {
+    padding: 20px;
 }
 
 .column {
     float: left;
     width: 47%;
     padding:10px;
-  
-
 }
 
 .box {
@@ -41,10 +48,11 @@ img {
     font-weight: bold
 }
 
-#div_photo_box {
-    background-color: #99cc00;
+#photo_box {
+    background-color: #d2e98f;
     padding:10px;
     border: black solid;
+    width: 150px;
 }
 
 #name_colon {
@@ -63,11 +71,11 @@ img {
 /* Set the size of the div element that contains the map  */
 .map {
     height: 400px;  /* The height is 400 pixels */
-    width: 100%;  /* The width is the width of the web page  */
+    width: 400px;  /* The width is the width of the web page  */
     }
 
 .neutral {
     background-color: white;
-    padding:10px;
     border: white;
 }
+

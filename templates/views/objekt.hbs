@@ -9,23 +9,26 @@
     </head>
     
     <body>
-           {{>header}}
-        <h1>Objektvisning</h1>
-        <h2 id="musit_regno"></h2>
-       
-       
-        <div id="data_box" class="column">
-            <div id="species_box" class="box"></div>
-            <div id="collectionEvent_box" class="box"></div>
-        </div>
+        <div class="content">
+            {{>header}}
+            <h1>Objektvisning</h1>
+            <h2 id="musit_regno"></h2>
         
-        <div class="column">
-            <a id="photo_anchor">   
-                <img id="photo_box" alt="Bilde kan ikke vises">
-            </a>
-        </div>
         
-        <div id="map" class="map"></div>
+            <div id="data_box" class="column">
+                <div id="species_box" class="box"></div>
+                <div id="collectionEvent_box" class="box"></div>
+            </div>
+            
+            <div class="column">
+                <a id="photo_anchor">   
+                    <img id="photo_box" alt="Bilde kan ikke vises">
+                </a>
+            </div>
+            
+            <div id="map" class="map"></div>
             <script type="module" src="/scripts/utils/objekt.js"></script>
+            {{>footer}}
+        </div>
     </body>
 </html>

@@ -15,6 +15,12 @@ const resultTable = (data) => {
     const antallTreff = data.results.length
     antall.textContent = antallTreff
     
+    const resultHeader = document.getElementById("resultHeader")
+    resultHeader.innerHTML = "Resultat"
+    const nbHits = document.getElementById("nbHits")
+    nbHits.innerHTML = "Antall treff: "
+
+
     const table = document.getElementById("myTable")
     table.innerHTML = "";
     for (i = -1; i < antallTreff; i++) {
@@ -26,10 +32,10 @@ const resultTable = (data) => {
         const cell4 = row.insertCell(3)
         if (i === -1) {
             // header row
-            cell1.innerHTML =  'MUSIT nummer'
-            cell2.innerHTML = 'Takson'
-            cell3.innerHTML = 'Land'
-            cell4.innerHTML = 'Innsamler'
+            cell1.innerHTML = 'MUSIT nummer    '.bold()
+            cell2.innerHTML = '    Takson'.bold()
+            cell3.innerHTML = 'Land'.bold()
+            cell4.innerHTML = 'Innsamler'.bold()
         } else {
             cell1.innerHTML =  `<a id="objekt-link" href="http://localhost:3000/object/?id=${i}"> ${data.results[i].catalogNumber} </a>`
             cell2.innerHTML = data.results[i].scientificName
