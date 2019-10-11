@@ -77,7 +77,7 @@ const coordinates = (obj) => {
 
 // text-elements for view
 const regnoEl = `<span>${objekt.institutionCode}-${objekt.collectionCode}-${objekt.catalogNumber}` 
-const nameEl = '<span class="bold">Vitenskapelig navn: </span>' + `<span>${objekt.scientificName}</span>`
+const nameEl = '<span class="bold">Vitenskapelig navn: </span>' + `<span class="italic">${objekt.scientificName}</span>`
 // to get name properly formatted with itallic, and not-itallic for authors, should use a checklist with  names
 const detEl = '<span class="bold">Bestemt av: </span>' + `<span>${objekt.identifiedBy}</span>`
 const detDateEl = '<span class="bold">Dato for bestemming: </span>' + `<span>${objekt.dateIdentified}`

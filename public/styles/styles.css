@@ -33,7 +33,7 @@ header {
 
 .column {
     float: left;
-    width: 47%;
+    width: 400px;
     padding:10px;
 }
 
@@ -45,13 +45,17 @@ header {
 
 
 .bold {
-    font-weight: bold
+    font-weight: bold;
+}
+
+.italic {
+    font-style: italic;
 }
 
 #photo_box {
     background-color: #d2e98f;
     padding:10px;
-    border: black solid;
+/*     border: black solid; */
     width: 150px;
 }
 
@@ -71,7 +75,8 @@ header {
 /* Set the size of the div element that contains the map  */
 .map {
     height: 400px;  /* The height is 400 pixels */
-    width: 400px;  /* The width is the width of the web page  */
+    width: 400px;  
+    padding: 10px;
     }
 
 .neutral {
