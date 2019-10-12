@@ -13,6 +13,10 @@ const search = (samling, searchTerm, callback) => {
         musitFile = './src/data/moss_o.txt'
     } else if (samling === 'lav') {
         musitFile = './src/data/lichens_o.txt'
+    } else if (samling === 'alger') {
+        musitFile = './src/data/algae_o.txt'
+    } else if (samling === 'entomologi') {
+        musitFile = './src/data/entomology_nhmo.txt'
     }
 
     // cleaning the searchterm before making the search so that we get a more precise
