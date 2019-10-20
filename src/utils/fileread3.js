@@ -21,9 +21,6 @@ const search = (samling, searchTerm, callback) => {
 
     // cleaning the searchterm before making the search so that we get a more precise
     // remove whiteSpace
-    // searchTerm = searchTerm.trim().replace(/\s/g, '|')
-    // searchTerm = '/\\b' + searchTerm + '\\b/g'
-    // let pattern = new RegExp(searchTerm, 'ig');
     searchTerm = searchTerm.trim()
     terms = searchTerm.split(' ')
         

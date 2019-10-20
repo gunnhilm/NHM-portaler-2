@@ -68,29 +68,12 @@ app.get('/object', (req, res) => {
             error: 'du må oppgi et objekt'
         }) 
     } else {
-        // fileRead.getObject(req.query.id, (error, myObject) => {
-        //     const parsedObject = papa.parse(myObject, {
-        //         delimiter: "\t",
-        //         newline: "\n",
-        //         quoteChar: '',
-        //         header: true,
-        //     })
-        //     JSON.stringify(parsedObject.data)          
             res.render('objekt', {
                 myObject: req.query.id
              })
-            // res.send({
-            //     myObject: parsedObject.data
-            // })
-        // })
     }
 })
-// app.get('*', (req, res) => {
-//     res.render('404', {
-//         title: '404',
-//         errorMessage: 'Page not found.'
-//     })
-// })
+
 
 app.get('/about', (req, res) => {
    res.render('about', {
@@ -99,6 +82,10 @@ app.get('/about', (req, res) => {
 
 app.get('/help', (req, res) => {
     res.render('help', {})
+})
+
+app.get('*', (req, res) => {
+    res.render('404', {})
 })
 
 app.listen(port, () => {
