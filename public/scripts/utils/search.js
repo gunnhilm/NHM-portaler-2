@@ -52,6 +52,8 @@ searchForm.addEventListener('submit', (e) => {
         console.log(searchTerm);
     const valgtSamling = samling.value
         console.log(valgtSamling);
+    // Show please wait
+    document.getElementById("pleaseWait").style.display = "block"
     
     if (!valgtSamling) {
         resultHeader.innerHTML = "Du må velge samling før du kan søke"
@@ -65,9 +67,8 @@ searchForm.addEventListener('submit', (e) => {
                     resultTable(data)
                 }
             })
+            document.getElementById("pleaseWait").style.display = "none"
         })    
     }
-        
-    
 })
 

@@ -21,12 +21,15 @@ const search = (samling, searchTerm, callback) => {
 
     // cleaning the searchterm before making the search so that we get a more precise
     // remove whiteSpace
+    // searchTerm = searchTerm.trim().replace(/\s/g, '|')
+    // searchTerm = '/\\b' + searchTerm + '\\b/g'
+    // let pattern = new RegExp(searchTerm, 'ig');
     searchTerm = searchTerm.trim()
+    terms = searchTerm.split(' ')
+        
     let results = ''
     const readInterface = readline.createInterface({
-        // input: fs.createReadStream('./src/data/vascular_o.txt'),
         input: fs.createReadStream(musitFile),
-        // output: process.stdout,
         console: false
     })
 
@@ -36,35 +39,15 @@ const search = (samling, searchTerm, callback) => {
             if (count === 1) {
                 // header row og legg til et feldt for linje nummer
                 results =  line + '\n'
-
-            } else if (line.includes(searchTerm)) {
+            } else if ((terms.length === 1) && (line.indexOf(terms[0]) !== -1)) {
+                 // søk for en match i linja  (line.indexOf(searchTerm) !== -1)
+                    results =  results +  line + '\n'
+            } else if (line.indexOf(terms[0]) !== -1 && line.indexOf(terms[1]) !== -1 ) {
                 results =  results +  line + '\n'
             } 
         }).on('close', function () {
             callback(undefined, results )
-            }) 
-
+            })
 }
-
-// const getObject = (lineNumber, callback) => {
-//     let myObject = ''
-//     const readInterface = readline.createInterface({
-//         input: fs.createReadStream('./src/data/vascular_o.txt'),
-//         // output: process.stdout,
-//         console: false
-//     })
-//     let count = 0  // iterates over each line of the current file
-//         readInterface.on('line', function(line) {
-//             count++
-//             if (count === 1) {
-//                 // header row og legg til et feldt for linje nummer
-//                 header =  line + '\n'
-//             } else if (Number(count) === Number(lineNumber)) {
-//                 return myObject =  header + line
-//             } 
-//         }).on('close', function () {
-//             callback(undefined, myObject )
-//             }) 
-// }
 
 module.exports = { search } 
