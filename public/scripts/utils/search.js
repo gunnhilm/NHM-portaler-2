@@ -11,7 +11,8 @@ const resultTable = (data) => {
     localStorage.clear() 
     localStorage.setItem('string', data)    // Save searchresult to local storage
     data = JSON.parse(data)
-    console.log(data)
+    // console.log(data)
+    // console.log(data.unparsed)
 
     const antallTreff = data.results.length
     antall.textContent = antallTreff
@@ -80,16 +81,14 @@ searchForm.addEventListener('submit', (e) => {
 // når noe velger en samling vil det sendes en forespørsel til server om dato på MUSIT-dump fila
 samling.addEventListener('change', (e) => {
     e.preventDefault()
-    console.log(`e.target.value = ${ e.target.value }`)
     const url = 'http://localhost:3000/footer-date/?&samling=' + e.target.value
         fetch(url).then((response) => {
             response.text().then((data) => {
                 if(data.error) {
                     return console.log(data.error)
                 } else {
-                    console.log(data)
                     data = JSON.parse(data)
-                    StistOppdatert = 'Dataene ble sitst oppdatert: ' + data.date
+                    StistOppdatert = 'Dataene ble sist oppdatert: ' + data.date
                     oppdatert.textContent = StistOppdatert
                     
                 }

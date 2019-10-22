@@ -52,7 +52,8 @@ app.get('/search', (req, res) => {
             })
             JSON.stringify(parsedResults.data)
             res.send({
-                results: parsedResults.data
+                results: parsedResults.data //,
+                // unparsed: results
             })
         })
     }
