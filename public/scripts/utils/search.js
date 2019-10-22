@@ -5,6 +5,7 @@ const searchForm = document.querySelector('form')
 const search = document.querySelector('input')
 const antall = document.querySelector('#antall-treff')
 const samling = document.querySelector('#collection-select')
+const oppdatert = document.querySelector('#sist-oppdatert')
 
 const resultTable = (data) => {
     localStorage.clear() 
@@ -49,14 +50,18 @@ const resultTable = (data) => {
 searchForm.addEventListener('submit', (e) => {
     e.preventDefault()
     const searchTerm = search.value
-        console.log(searchTerm);
     const valgtSamling = samling.value
-        console.log(valgtSamling);
+    // empty table
+    document.getElementById("myTable").innerHTML = ""
+    resultHeader.innerHTML = ""
+    antall.textContent = ""
+    document.getElementById("nbHits").innerHTML = ""
     // Show please wait
     document.getElementById("pleaseWait").style.display = "block"
     
     if (!valgtSamling) {
         resultHeader.innerHTML = "Du må velge samling før du kan søke"
+        document.getElementById("pleaseWait").style.display = "none"
     } else {
         const url = 'http://localhost:3000/search/?search=' + searchTerm +'&samling=' + valgtSamling
         fetch(url).then((response) => {
@@ -72,3 +77,22 @@ searchForm.addEventListener('submit', (e) => {
     }
 })
 
+// når noe velger en samling vil det sendes en forespørsel til server om dato på MUSIT-dump fila
+samling.addEventListener('change', (e) => {
+    e.preventDefault()
+    console.log(`e.target.value = ${ e.target.value }`)
+    const url = 'http://localhost:3000/footer-date/?&samling=' + e.target.value
+        fetch(url).then((response) => {
+            response.text().then((data) => {
+                if(data.error) {
+                    return console.log(data.error)
+                } else {
+                    console.log(data)
+                    data = JSON.parse(data)
+                    StistOppdatert = 'Dataene ble sitst oppdatert: ' + data.date
+                    oppdatert.textContent = StistOppdatert
+                    
+                }
+            })
+        })
+})

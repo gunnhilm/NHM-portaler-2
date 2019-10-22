@@ -1,6 +1,7 @@
 const path = require('path')
 const express = require('express')
-const fileRead = require('./utils/fileread3')
+const fileRead = require('./utils/fileread')
+const footerDate = require('./utils/footerDate')
 const hbs = require('hbs')
 const papa = require('papaparse/papaparse')
 
@@ -26,7 +27,6 @@ app.get('', (req, res) => {
         return res.render('index')
     } else {
         fileRead.search(req.query.search, (error, results) => {
-            // console.log( results);
             res.render('index', {
                 results: results
              })
@@ -35,8 +35,7 @@ app.get('', (req, res) => {
     }
 })
 
-
-
+// Søk er treff i MUSIT-dump fila
 app.get('/search', (req, res) => {
     if (!req.query.search) {
         return res.send({
@@ -56,12 +55,26 @@ app.get('/search', (req, res) => {
                 results: parsedResults.data
             })
         })
-
     }
 })
 
-// objektvisningen
+// footer date get
+app.get('/footer-date', (req, res) => {
+    if (req) {
+        footerDate.getFileUpdatedDate(req.query.samling, (error, date) => {
+            if (error) {
+                return
+            } else {
+                res.send({
+                    date: date
+                }) 
+            }
+        })
+    }
+ })
 
+
+// objektvisningen
 app.get('/object', (req, res) => {
     if (!req.query.id) {
         return res.send({
