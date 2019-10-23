@@ -1,3 +1,4 @@
+
 // read string and get the object from localStorage
 const loadString = () => {
     const objektJSON = localStorage.getItem('string')
@@ -13,11 +14,13 @@ const loadString = () => {
 
 //få tak i objektet fra local  storage
 const allObjekt = loadString()
+
 // få tak i id'en i url'en
 const urlParams = new URLSearchParams(window.location.search)
 const id = urlParams.get('id')
 
 const objekt = allObjekt.results[id]
+console.log(objekt)
 
 // to print nice locality-string:
 const country = (obj) => {
@@ -86,10 +89,22 @@ const collectorEl = '<span class="bold">Innsamlet av: </span>' + `<span>${objekt
 const localityEl = '<span class="bold">Lokalitet: </span>' + `<span>${concatLocality}</span>`
 const coordinateEl = '<span class="bold">Koordinater: </span>' + `<span>${coordinates(objekt)}</span>`
 
+// new things added 23.oct
+let ArtObsIdEl = ''
+if( objekt.ArtObsID ) {
+    ArtObsIdEl = '<span class="bold">Artsobservasjons ID: </span>' + `<span>${objekt.ArtObsID}</span>`
+} 
+
+let habitatEl = ''
+if (objekt.habitat ) {
+    habitatEl = '<span class="bold">Habitat: </span>' + `<span>${objekt.habitat}</span>`
+}
+
 // put content in html-boxes
 document.querySelector("#musit_regno").innerHTML = regnoEl
 document.querySelector("#species_box").innerHTML = nameEl  + '<br/>' + detEl + '<br/>' + detDateEl + '<br/>'
-document.querySelector('#collectionEvent_box').innerHTML = dateEl + '<br/>' + collectorEl  + '<br/>' + localityEl + '<br/>' + coordinateEl
+document.querySelector('#collectionEvent_box').innerHTML = dateEl + '<br/>' + collectorEl  + '<br/>' + localityEl + '<br/>' + coordinateEl + '<br/> <br/>' + ArtObsIdEl
++ '<br/>' + habitatEl
 
 // photo:
 //for å få thumbnail settes width til 150px i styles for img
@@ -131,6 +146,7 @@ const marker = new ol.Feature({
     })
 
 
+
 // icon...
 var iconStyle = new ol.style.Style({
     image: new ol.style.Icon({
@@ -142,6 +158,7 @@ var iconStyle = new ol.style.Style({
 })
 
 marker.setStyle(iconStyle)
+
 
 // source object for this feature
 const vectorSource = new ol.source.Vector({
