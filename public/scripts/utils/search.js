@@ -31,17 +31,46 @@ const resultTable = (data) => {
         const cell2 = row.insertCell(1)
         const cell3 = row.insertCell(2)
         const cell4 = row.insertCell(3)
+        const cell5 = row.insertCell(4)
+        const cell6 = row.insertCell(5)
+        const cell7 = row.insertCell(6)
         if (i === -1) {
             // header row
-            cell1.innerHTML = 'MUSIT nummer'.bold()
+            cell1.innerHTML = 'MUSIT-ID'.bold()
             cell2.innerHTML = 'Takson'.bold()
-            cell3.innerHTML = 'Land'.bold()
-            cell4.innerHTML = 'Innsamler'.bold()
+            cell3.innerHTML = 'Innsamler'.bold()
+            cell4.innerHTML = 'Dato'.bold()
+            cell5.innerHTML = 'Land'.bold()
+            cell6.innerHTML = 'Kommune'.bold()
+            cell7.innerHTML = 'Sted'.bold()
+
+            // gir de klassen resultTable så de kan styles
+            cell1.className = 'row-1 row-ID';
+            cell2.className = 'row-2 row-name';
+            cell3.className = 'row-3 row-innsamler';
+            cell4.className = 'row-4 row-dato';
+            cell5.className = 'row-5 row-land';
+            cell6.className = 'row-6 row-kommune';
+            cell7.className = 'row-7 row-sted';
         } else {
             cell1.innerHTML =  `<a id="objekt-link" href="http://localhost:3000/object/?id=${i}"> ${data.results[i].catalogNumber} </a>`
             cell2.innerHTML = data.results[i].scientificName
-            cell3.innerHTML = data.results[i].country
-            cell4.innerHTML = data.results[i].recordedBy
+            cell3.innerHTML = data.results[i].recordedBy
+            cell4.innerHTML = data.results[i].eventDate
+            cell5.innerHTML = data.results[i].country
+            cell6.innerHTML = data.results[i].county
+            cell7.innerHTML = data.results[i].locality
+
+            // gir de klassen resultTable så de kan styles
+            cell1.className = 'row-1 row-ID';
+            cell2.className = 'row-2 row-name';
+            cell3.className = 'row-3 row-innsamler';
+            cell4.className = 'row-4 row-dato';
+            cell5.className = 'row-5 row-land';
+            cell6.className = 'row-6 row-kommune';
+            cell7.className = 'row-7 row-sted';
+
+
         }
     }    
 }

@@ -63,6 +63,48 @@ header {
     font-weight: bold;
 }
 
+/* Her kommer stylingen til resulta av søk tabellen */
+
+    .resultTable  {
+        /* Prøver å skap litt luft mellom svarene */
+        /* table-layout: fixed; */
+        /* width: 100%; */
+        white-space: nowrap;
+
+    }
+
+    .row-ID {
+        width: 80px;
+        text-align: right;
+        padding: 5px;
+    }
+    .row-name {
+        font-style: italic;
+        width: 230px;
+        padding: 10px;
+    }
+    .row-innsamler {
+        width: 130px;
+  
+    }
+    .row-dato {
+        width: 100px;
+        padding: 3px;
+    }
+    .row-land {
+        width: 100px;
+    }
+    .row-kommune {
+        width: 150px;
+        padding: 3px;
+    }
+    .row-sted {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        }
+    
+
+
 .italic {
     font-style: italic;
 }
@@ -83,6 +125,7 @@ header {
     background-color: white;
     border: white;
 }
+
 
 .ol-popup {
     position: absolute;
@@ -113,6 +156,8 @@ header {
     left: 48px;
     margin-left: -10px;
   } 
+
+
   /* vet ikke hva denne gjør */
   /* .ol-popup:before {
     border-top-color: #cccccc;
