@@ -6,6 +6,7 @@ const search = document.querySelector('input')
 const antall = document.querySelector('#antall-treff')
 const samling = document.querySelector('#collection-select')
 const oppdatert = document.querySelector('#sist-oppdatert')
+const lastNed = document.querySelector('#last-ned-link')
 
 const resultTable = (data) => {
     
@@ -79,6 +80,7 @@ const resultTable = (data) => {
 let map
 let coordinateArray = []
 
+// når noen trykker på søk knappen 
 searchForm.addEventListener('submit', (e) => {
     e.preventDefault()
     const searchTerm = search.value
@@ -130,6 +132,30 @@ searchForm.addEventListener('submit', (e) => {
             })
             document.getElementById("pleaseWait").style.display = "none"
         })    
+    }
+})
+
+// Når noe trykker på last ned (download)
+lastNed.addEventListener('click', (e) => {
+    e.preventDefault()
+    const searchTerm = search.value
+    const valgtSamling = samling.value
+    if (!valgtSamling) {
+        resultHeader.innerHTML = "Gjennomføre et søk før du kan laste ned resultatene"
+        document.getElementById("pleaseWait").style.display = "none"
+    } else {
+        const url = 'http://localhost:3000/download/?search=' + searchTerm +'&samling=' + valgtSamling
+        fetch(url).then((response) => {
+            response.text().then((data) => {
+                if(data.error) {
+                    return console.log(data.error)
+                } else {
+                    const downloadData = data
+                    console.log(downloadData);
+                    
+                }
+            })
+        })
     }
 })
 
@@ -265,5 +291,4 @@ samling.addEventListener('change', (e) => {
     })
    
 } 
-
 

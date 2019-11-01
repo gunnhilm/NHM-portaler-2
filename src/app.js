@@ -59,6 +59,28 @@ app.get('/search', (req, res) => {
     }
 })
 
+// for å laste ned søkeresultatene
+app.get('/download', (req, res) => {
+    if (!req.query.search) {
+        return res.send({
+            error: 'ingen data å laste ned'
+        })
+    } else {
+
+        fileRead.search(req.query.samling, req.query.search, (error, results) => {
+            if (results){
+                res.send({
+                    unparsed: results
+                })
+            } else {
+                console.log('Error: no results came back from seach')
+            }
+        })
+    }
+})
+
+
+
 // footer date get
 app.get('/footer-date', (req, res) => {
     if (req) {
