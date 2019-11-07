@@ -4,15 +4,17 @@
     <head>
         <title>Nettportal objektvisning</title>
         <link rel="stylesheet" href="/styles/styles.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.0.0/css/ol.css" type="text/css">
-        <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.0.0/build/ol.js"></script>
+        {{!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.0.0/css/ol.css" type="text/css"> --}}
+        {{!-- <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.0.0/build/ol.js"></script> --}}`
+        {{!-- <script src="/scripts/utils/ol/ol.js"></script> --}}
+        <script src="/scripts/utils/ol/ol.js"></script>
     </head>
     
     <body>
          {{>header}}
          <div class="content">
            
-            <h1>Objektvisning</h1>
+            <h1 id="object_page_header"></h1>
             <h2 id="musit_regno"></h2>
         
         
@@ -23,12 +25,13 @@
             
             <div class="column">
                 <a id="photo_anchor">   
-                    <img id="photo_box" alt="Det finnes ikke noe bilde for dette objektet, eller det kan ikke vises">
+                    <img id="photo_box">
                 </a>
             </div>
             
             <div id="map" class="map"></div>
             <script src="/scripts/utils/objekt.js"></script>
+            <script src="/scripts/utils/renderLanguageObject.js"></script>
 {{!--             {{>footer}} --}}
         </div>
     </body>

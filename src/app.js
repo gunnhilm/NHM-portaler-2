@@ -4,6 +4,7 @@ const fileRead = require('./utils/fileread')
 const footerDate = require('./utils/footerDate')
 const hbs = require('hbs')
 const papa = require('papaparse/papaparse')
+//const language = require('./utils/languageFile')
 
 const app = express()
 const port = process.env.PORT || 3000
@@ -22,9 +23,15 @@ hbs.registerPartials(partialsPath)
 // set up static directory to serve
 app.use(express.static(publicDirectoryPath))
 
+/* const textItems = {
+    placeholder: ["Søk", "Search"],
+} */
+
 app.get('', (req, res) => {
     if (!req.query.search) {
-        return res.render('index')
+        return res.render('index', {
+//            placeholder: textItems.placeholder[1]
+        })
     } else {
         fileRead.search(req.query.search, (error, results) => {
             res.render('index', {
@@ -106,6 +113,7 @@ app.get('/object', (req, res) => {
     } else {
             res.render('objekt', {
                 myObject: req.query.id
+                //language: document.querySelector('#language').value
              })
     }
 })

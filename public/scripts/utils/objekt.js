@@ -20,7 +20,6 @@ const urlParams = new URLSearchParams(window.location.search)
 const id = urlParams.get('id')
 
 const objekt = allObjekt.results[id]
-console.log(objekt)
 
 // to print nice locality-string:
 const country = (obj) => {
@@ -60,7 +59,11 @@ const concatLocality = country(objekt) + stateProvince(objekt) + county(objekt) 
 // to print nice coordinates:
 const coordinates = (obj) => {
     if (obj.decimalLongitude === '' | obj.decimalLatitude === '') {
-        return 'Ingen koordinater'
+        if (document.querySelector('#language').value = "Norwegain") {
+            return 'Ingen koordinater'
+        } else {
+            return 'No coordinates'
+        }
     } else {
         let longLetter
         let latLetter
@@ -78,26 +81,33 @@ const coordinates = (obj) => {
     }
 }
 
+lang = "Norwegian"
+if (lang === "Norwegian") {
+    index = 0
+} else if (lang === "English") {
+    index = 1
+}
+//console.log(textItemsObject.name[index])
 // text-elements for view
 const regnoEl = `<span>${objekt.institutionCode}-${objekt.collectionCode}-${objekt.catalogNumber}` 
-const nameEl = '<span class="bold">Vitenskapelig navn: </span>' + `<span class="italic">${objekt.scientificName}</span>`
+const nameEl = `<span class="bold" id="name"></span>` + `<span class="italic">${objekt.scientificName}</span>`
 // to get name properly formatted with itallic, and not-itallic for authors, should use a checklist with  names
-const detEl = '<span class="bold">Bestemt av: </span>' + `<span>${objekt.identifiedBy}</span>`
-const detDateEl = '<span class="bold">Dato for bestemming: </span>' + `<span>${objekt.dateIdentified}`
-const dateEl = '<span class="bold">Innsamlingsdato: </span>' + `<span>${objekt.eventDate}</span>`
-const collectorEl = '<span class="bold">Innsamlet av: </span>' + `<span>${objekt.recordedBy}</span>`
-const localityEl = '<span class="bold">Lokalitet: </span>' + `<span>${concatLocality}</span>`
-const coordinateEl = '<span class="bold">Koordinater: </span>' + `<span>${coordinates(objekt)}</span>`
+const detEl = '<span class="bold" id="det"></span>' + `<span>${objekt.identifiedBy}</span>`
+const detDateEl = '<span class="bold" id="detDate"></span>' + `<span>${objekt.dateIdentified}`
+const dateEl = '<span class="bold" id="collDate"></span>' + `<span>${objekt.eventDate}</span>`
+const collectorEl = '<span class="bold" id="coll"></span>' + `<span>${objekt.recordedBy}</span>`
+const localityEl = '<span class="bold" id="locality"></span>' + `<span>${concatLocality}</span>`
+const coordinateEl = '<span class="bold" id="coordinates"></span>' + `<span>${coordinates(objekt)}</span>`
 
 // new things added 23.oct
 let ArtObsIdEl = ''
 if( objekt.ArtObsID ) {
-    ArtObsIdEl = '<span class="bold">Artsobservasjons ID: </span>' + `<span>${objekt.ArtObsID}</span>`
+    ArtObsIdEl = '<span class="bold" id="artsobs"></span>' + `<span>${objekt.ArtObsID}</span>`
 } 
 
 let habitatEl = ''
 if (objekt.habitat ) {
-    habitatEl = '<span class="bold">Habitat: </span>' + `<span>${objekt.habitat}</span>`
+    habitatEl = '<span class="bold" id="habitat">Habitat: </span>' + `<span>${objekt.habitat}</span>`
 }
 
 // put content in html-boxes
@@ -136,39 +146,42 @@ function initialize_map() {
   })
 }
 
-initialize_map()
+if(objekt.decimalLatitude & objekt.decimalLongitude) {
+    
+    initialize_map()
 
-// rød prikk på kart:
+    // rød prikk på kart:
 
-// feature object
-const marker = new ol.Feature({
-    geometry: new ol.geom.Point(ol.proj.fromLonLat([Number(objekt.decimalLongitude), Number(objekt.decimalLatitude)]))
+    // feature object
+    const marker = new ol.Feature({
+        geometry: new ol.geom.Point(ol.proj.fromLonLat([Number(objekt.decimalLongitude), Number(objekt.decimalLatitude)]))
+        })
+
+
+
+    // icon...
+    var iconStyle = new ol.style.Style({
+        image: new ol.style.Icon({
+            anchor: [0.5, 0.5],
+            anchorXUnits: 'fraction',
+            anchorYUnits: 'fraction',
+            src: "https://upload.wikimedia.org/wikipedia/commons/e/ec/RedDot.svg"
+        })
     })
 
+    marker.setStyle(iconStyle)
 
 
-// icon...
-var iconStyle = new ol.style.Style({
-    image: new ol.style.Icon({
-        anchor: [0.5, 0.5],
-        anchorXUnits: 'fraction',
-        anchorYUnits: 'fraction',
-        src: "https://upload.wikimedia.org/wikipedia/commons/e/ec/RedDot.svg"
+    // source object for this feature
+    const vectorSource = new ol.source.Vector({
+        features: [marker]
     })
-})
 
-marker.setStyle(iconStyle)
+    // add this object to a new layer
+    const vectorLayer = new ol.layer.Vector({
+        source: vectorSource
+    })
 
-
-// source object for this feature
-const vectorSource = new ol.source.Vector({
-    features: [marker]
-})
-
-// add this object to a new layer
-const vectorLayer = new ol.layer.Vector({
-    source: vectorSource
-})
-
-// add this new layer over the map
-map.addLayer(vectorLayer)
+    // add this new layer over the map
+    map.addLayer(vectorLayer)
+}

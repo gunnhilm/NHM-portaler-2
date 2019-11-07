@@ -2,9 +2,17 @@
     <h1>{{title}}</h1>
     <div class="header">
 
-        <img id="logo" src="/images/uio_nhm_segl_a.png" alt="UiO Naturhistorisk museum">
-        <a class="headerLink" href="/">Søk</a>
-        <a class="headerLink" href="/about">About</a>
-        <a class="headerLink" href="/help">Help</a>
+        {{!-- <img id="logo" src="/images/uio_nhm_segl_a.png" alt="UiO Naturhistorisk museum"> --}}
+        <img id="logo">
+        <a class="headerLink" href="/" id="searchButtonHeader"></a>
+        <a class="headerLink" href="/about" id="aboutButton"></a>
+        <a class="headerLink" href="/help" id="helpButton"></a>
+        <select id="language" >
+            <option value="Norwegian">Norsk</option>
+            <option value="English">English</option>
+        </select>
+
+        
     </div>
+    <script src="/scripts/utils/renderLanguage.js"></script> 
 </header>

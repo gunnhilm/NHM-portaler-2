@@ -1,4 +1,8 @@
-console.log('client side javascript is loaded');
+//const testFunksjon = require('./language_file/testFunksjon')
+
+console.log('client side javascript is loaded')
+
+
 
 // når noen trykker på søk
 const searchForm = document.querySelector('form')
@@ -6,10 +10,27 @@ const search = document.querySelector('input')
 const antall = document.querySelector('#antall-treff')
 const samling = document.querySelector('#collection-select')
 const oppdatert = document.querySelector('#sist-oppdatert')
-const lastNed = document.querySelector('#last-ned-link')
+const lastNed = document.querySelector('#downloadLink')
+
+let language = document.querySelector('#language').value
+
+/* const renderResultsHeaders = function() {
+    cell1.innerHTML = 'MUSIT-ID'.bold()
+    cell2.innerHTML = textItems.headerTaxon[index].bold()
+    cell3.innerHTML = textItems.headerCollector[index].bold()
+    cell4.innerHTML = textItems.headerDate[index].bold()
+    cell5.innerHTML = textItems.headerCountry[index].bold()
+    cell6.innerHTML = textItems.headerMunicipality[index].bold()
+    cell7.innerHTML = textItems.headerLocality[index].bold()
+
+} */
 
 const resultTable = (data) => {
-    
+    if (language === "Norwegian") {
+        index = 0
+    } else if (language === "English") {
+        index = 1
+    }
     localStorage.clear() 
     localStorage.setItem('string', data)    // Save searchresult to local storage
     data = JSON.parse(data)
@@ -18,9 +39,9 @@ const resultTable = (data) => {
     antall.textContent = antallTreff
     
     const resultHeader = document.getElementById("resultHeader")
-    resultHeader.innerHTML = "Resultat"
+    resultHeader.innerHTML = textItems.searchResultHeadline[index]
     const nbHits = document.getElementById("nbHits")
-    nbHits.innerHTML = "Antall treff: "
+    nbHits.innerHTML = textItems.nbHitsText[index]
 
 
     const table = document.getElementById("myTable")
@@ -38,21 +59,22 @@ const resultTable = (data) => {
         if (i === -1) {
             // header row
             cell1.innerHTML = 'MUSIT-ID'.bold()
-            cell2.innerHTML = 'Takson'.bold()
-            cell3.innerHTML = 'Innsamler'.bold()
-            cell4.innerHTML = 'Dato'.bold()
-            cell5.innerHTML = 'Land'.bold()
-            cell6.innerHTML = 'Kommune'.bold()
-            cell7.innerHTML = 'Sted'.bold()
+            cell2.innerHTML = textItems.headerTaxon[index].bold()
+            cell3.innerHTML = textItems.headerCollector[index].bold()
+            cell4.innerHTML = textItems.headerDate[index].bold()
+            cell5.innerHTML = textItems.headerCountry[index].bold()
+            cell6.innerHTML = textItems.headerMunicipality[index].bold()
+            cell7.innerHTML = textItems.headerLocality[index].bold()
+
 
             // gir de klassen resultTable så de kan styles
-            cell1.className = 'row-1 row-ID';
+           /*  cell1.className = 'row-1 row-ID';
             cell2.className = 'row-2 row-name';
             cell3.className = 'row-3 row-innsamler';
             cell4.className = 'row-4 row-dato';
             cell5.className = 'row-5 row-land';
             cell6.className = 'row-6 row-kommune';
-            cell7.className = 'row-7 row-sted';
+            cell7.className = 'row-7 row-sted'; */
         } else {
             cell1.innerHTML =  `<a id="objekt-link" href="http://localhost:3000/object/?id=${i}"> ${data.results[i].catalogNumber} </a>`
             cell2.innerHTML = data.results[i].scientificName
@@ -92,9 +114,16 @@ searchForm.addEventListener('submit', (e) => {
     document.getElementById("nbHits").innerHTML = ""
     // Show please wait
     document.getElementById("pleaseWait").style.display = "block"
+    //mustChoose///////////////////////
+    if (language === "Norwegian") {
+        index = 0
+    } else if (language === "English") {
+        index = 1
+    }
     
     if (!valgtSamling) {
-        resultHeader.innerHTML = "Du må velge samling før du kan søke"
+        //// er dette rett?
+        resultHeader.innerHTML = textItems.searchResultHeadline[index]
         document.getElementById("pleaseWait").style.display = "none"
     } else {
         const url = 'http://localhost:3000/search/?search=' + searchTerm +'&samling=' + valgtSamling
@@ -106,7 +135,7 @@ searchForm.addEventListener('submit', (e) => {
                                         
                     // remove old map if any and empty array
                     document.getElementById("map").innerHTML = ""
-                    
+                    //document.getElementById("language").value = data.language
                     const JSONdata = JSON.parse(data)
                     
                     //check if there are any hits from the search
@@ -118,15 +147,23 @@ searchForm.addEventListener('submit', (e) => {
                         // fyll en array med koordinater for kartet
                         coordinateArray.length = 0
                         JSONdata.results.forEach(function(item, index) {
-                            const object = { decimalLatitude: Number(item.decimalLatitude),
-                                         decimalLongitude: Number(item.decimalLongitude),
-                                         catalogNumber: item.catalogNumber,
-                                         index: index }
-                            coordinateArray.push(object) 
+                            if (item.decimalLatitude & item.decimalLongitude) {
+                                const object = { decimalLatitude: Number(item.decimalLatitude),
+                                    decimalLongitude: Number(item.decimalLongitude),
+                                    catalogNumber: item.catalogNumber,
+                                    index: index }
+                                coordinateArray.push(object) 
+                            } 
+                            
                         })
 
-                        // call map-function to draw map
+                        if (coordinateArray.length === 0) {
+                            document.querySelector("#map").innerHTML = 'Objektet/-ene har ikke koordinater registrert og kart kan derfor ikke vises'
+                        } else {
+                            // call map-function to draw map
                         mapWithAllHits(coordinateArray)  
+                        }
+                        
                     }
                 }
             })
@@ -134,6 +171,8 @@ searchForm.addEventListener('submit', (e) => {
         })    
     }
 })
+
+
 
 // Når noe trykker på last ned (download)
 lastNed.addEventListener('click', (e) => {

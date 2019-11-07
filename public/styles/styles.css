@@ -11,6 +11,7 @@ header {
     line-height: 45px;
 }
 
+
 .footer {
     height: 50px;
     background-color: #d2e98f;
@@ -29,6 +30,11 @@ header {
 
 .headerLink {
     padding: 20px;
+}
+
+.languageLink {
+    padding: 20px;
+    color: black;    
 }
 
 .column {
@@ -119,6 +125,8 @@ header {
     height: 400px;  /* The height is 400 pixels */
     width: 400px;  
     padding: 10px;
+    margin-left: 100px;
+    color: grey;
     }
 
 .neutral {
@@ -157,15 +165,3 @@ header {
     margin-left: -10px;
   } 
 
-
-  /* vet ikke hva denne gjør */
-  /* .ol-popup:before {
-    border-top-color: #cccccc;
-    border-width: 11px;
-    left: 48px;
-    margin-left: -11px;
-  } */
- 
-  .popup-link {
-
-  }
