@@ -1,6 +1,7 @@
 const path = require('path')
 const express = require('express')
 const fileRead = require('./utils/fileread')
+const fs = require('fs')
 const footerDate = require('./utils/footerDate')
 const hbs = require('hbs')
 const papa = require('papaparse/papaparse')
@@ -76,9 +77,24 @@ app.get('/download', (req, res) => {
 
         fileRead.search(req.query.samling, req.query.search, (error, results) => {
             if (results){
-                res.send({
+                 res.send({
                     unparsed: results
-                })
+                }) 
+                //write results to a file. then use response.download()
+                /* fs.writeFile('searchResult.txt', results, function (err) {
+                    if (err) throw err
+                    console.log('Saved!')
+                }) */
+                //res.download('./','searchResult.txt') //, (err) => {
+                    /* if (err) {
+                        console.log('there is an error')
+                        return
+                    } else {
+                        //give file to user
+                        console.log("file is downloaded")
+                    } */
+               // })
+                
             } else {
                 console.log('Error: no results came back from seach')
             }

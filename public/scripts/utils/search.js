@@ -1,30 +1,25 @@
-//const testFunksjon = require('./language_file/testFunksjon')
-
 console.log('client side javascript is loaded')
 
+// names for DOM elements (?) for search
 
-
-// når noen trykker på søk
-const searchForm = document.querySelector('form')
+// on page initially
+const samling = document.querySelector('#collection-select') //engelsk
+const searchForm = document.querySelector('form') //// bruk konsekvent querySelector eller get elementbyid?
 const search = document.querySelector('input')
-const antall = document.querySelector('#antall-treff')
-const samling = document.querySelector('#collection-select')
-const oppdatert = document.querySelector('#sist-oppdatert')
-const lastNed = document.querySelector('#downloadLink')
 
-let language = document.querySelector('#language').value
+// rendered with result table (used in function resultTable())
+const resultHeader = document.getElementById("resultHeader")
+const antall = document.querySelector('#antall-treff') //engelsk
+const nbHits = document.getElementById("nbHits")
+const table = document.getElementById("myTable")
 
-/* const renderResultsHeaders = function() {
-    cell1.innerHTML = 'MUSIT-ID'.bold()
-    cell2.innerHTML = textItems.headerTaxon[index].bold()
-    cell3.innerHTML = textItems.headerCollector[index].bold()
-    cell4.innerHTML = textItems.headerDate[index].bold()
-    cell5.innerHTML = textItems.headerCountry[index].bold()
-    cell6.innerHTML = textItems.headerMunicipality[index].bold()
-    cell7.innerHTML = textItems.headerLocality[index].bold()
+// rendered with result table, in footer
+const oppdatert = document.querySelector('#sist-oppdatert') //engelsk
 
-} */
+// decides which language is rendered
+language = document.querySelector('#language').value
 
+// render result table
 const resultTable = (data) => {
     if (language === "Norwegian") {
         index = 0
@@ -38,13 +33,9 @@ const resultTable = (data) => {
     const antallTreff = data.results.length
     antall.textContent = antallTreff
     
-    const resultHeader = document.getElementById("resultHeader")
     resultHeader.innerHTML = textItems.searchResultHeadline[index]
-    const nbHits = document.getElementById("nbHits")
     nbHits.innerHTML = textItems.nbHitsText[index]
 
-
-    const table = document.getElementById("myTable")
     table.innerHTML = "";
     for (i = -1; i < antallTreff; i++) {
         const row = table.insertRow(-1)
@@ -66,15 +57,6 @@ const resultTable = (data) => {
             cell6.innerHTML = textItems.headerMunicipality[index].bold()
             cell7.innerHTML = textItems.headerLocality[index].bold()
 
-
-            // gir de klassen resultTable så de kan styles
-           /*  cell1.className = 'row-1 row-ID';
-            cell2.className = 'row-2 row-name';
-            cell3.className = 'row-3 row-innsamler';
-            cell4.className = 'row-4 row-dato';
-            cell5.className = 'row-5 row-land';
-            cell6.className = 'row-6 row-kommune';
-            cell7.className = 'row-7 row-sted'; */
         } else {
             cell1.innerHTML =  `<a id="objekt-link" href="http://localhost:3000/object/?id=${i}"> ${data.results[i].catalogNumber} </a>`
             cell2.innerHTML = data.results[i].scientificName
@@ -98,6 +80,159 @@ const resultTable = (data) => {
     }    
 }
 
+// download search-result to file
+function download(filename, text) {
+    const element = document.createElement('a')
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
+    element.setAttribute('download', filename)
+    
+    element.style.display = 'none'
+    document.body.appendChild(element)
+   
+    element.click()
+    
+    document.body.removeChild(element)
+}
+
+// render download button and functionality for this
+const downloadFunction = () => {
+  
+    // make button
+    const lastNed = document.createElement("BUTTON");
+    lastNed.setAttribute("id", "downloadButtonId")
+    lastNed.innerHTML = textItems.downloadLink[index]
+    document.getElementById('downloadButton').appendChild(lastNed)
+
+    // when download-button is clicked
+    lastNed.addEventListener('click', (e) => {
+        e.preventDefault()
+        const searchTerm = search.value
+        const valgtSamling = samling.value
+        
+        const url = 'http://localhost:3000/download/?search=' + searchTerm +'&samling=' + valgtSamling
+        fetch(url).then((response) => {
+                
+            response.text().then((data) => {
+                if(data.error) {
+                    return console.log(data.error)
+                } else {
+                    const downloadData = JSON.parse(data).unparsed
+                    // Start file download.
+                    download("download.txt", downloadData)
+                }
+            })
+        })
+    })
+}
+
+// render map
+const drawMap = (JSONdata) => {
+    // remove old map if any and empty array
+    document.getElementById("map").innerHTML = "" 
+    coordinateArray.length = 0
+    
+    // fyll en array med koordinater for kartet
+    JSONdata.results.forEach(function(item, index) {
+        if (item.decimalLatitude & item.decimalLongitude) {
+            const object = { decimalLatitude: Number(item.decimalLatitude),
+                decimalLongitude: Number(item.decimalLongitude),
+                catalogNumber: item.catalogNumber,
+                index: index }
+            coordinateArray.push(object) 
+        } 
+    })
+
+    if (coordinateArray.length === 0) {
+         document.querySelector("#map").innerHTML = 'Objektet/-ene har ikke koordinater registrert og kart kan derfor ikke vises'
+    } else {
+        // call map-function to draw map
+        //mapWithAllHits(coordinateArray)
+        const newArray = []
+        let latitudeSum
+        let longitudeSum
+        coordinateArray.forEach(function(item) {
+            if(item.decimalLongitude) {
+                const marker = new ol.Feature({
+                    geometry: new ol.geom.Point(ol.proj.fromLonLat([Number(item.decimalLongitude), Number(item.decimalLatitude)])),
+                    catalogNumber: item.catalogNumber,
+                    index: item.index
+                })
+                newArray.push(marker)
+                latitudeSum = latitudeSum + Number(item.decimalLatitude) // tror ikke dissse har funksjon, noe her virker uansett ikke
+                longitudeSum = longitudeSum + Number(item.decimalLongitude) // tror ikke dissse har funksjon, noe her virker uansett ikke
+            }
+        })
+
+                    
+        // icon
+        const iconStyle = new ol.style.Style({
+            image: new ol.style.Icon({
+                anchor: [0.5, 0.5],
+                anchorXUnits: 'fraction',
+                anchorYUnits: 'fraction',
+                src: "https://upload.wikimedia.org/wikipedia/commons/e/ec/RedDot.svg"
+            })
+        })
+            
+
+        newArray.forEach(function(item) {
+            item.setStyle(iconStyle)
+        })
+    
+        // source object for this feature
+        const vectorSource = new ol.source.Vector({
+            features: newArray
+        })
+ 
+        // add this object to a new layer
+        const vectorLayer = new ol.layer.Vector({
+            source: vectorSource
+        })
+
+        map = new ol.Map({
+            target: 'map',
+            layers: [
+            new ol.layer.Tile({
+                source: new ol.source.OSM()
+            }),
+            vectorLayer
+            ]       
+        })
+    
+        const extent = vectorSource.getExtent()
+
+        // to make extent of map larger than exactly where  the points are
+        map.getView().fit(extent, {padding: [50, 50, 50, 50]})
+        
+        // popups
+        const element = document.getElementById('popup')
+        const content = document.getElementById('popup-content')
+
+        const popup = new ol.Overlay({
+            element: element,
+            positioning: 'bottom-center',
+            stopEvent: true, // true here enables clickable link in popup
+            offset: [0,0]
+        })
+    
+        map.addOverlay(popup)
+
+        //display popup on a click
+        map.on('singleclick', function(evt) {
+            const feature = map.forEachFeatureAtPixel(evt.pixel,
+                function(feature) {
+                    return feature
+                })
+            if (feature) {
+                const coordinates = feature.getGeometry().getCoordinates()
+                popup.setPosition(coordinates)
+                content.innerHTML =  `<a id="objekt-link" href="http://localhost:3000/object/?id=${feature.get('index')}"> ${feature.get('catalogNumber')} </a>`
+            } 
+        })  
+    }
+}
+
+
 
 let map
 let coordinateArray = []
@@ -108,10 +243,10 @@ searchForm.addEventListener('submit', (e) => {
     const searchTerm = search.value
     const valgtSamling = samling.value
     // empty table
-    document.getElementById("myTable").innerHTML = ""
+    table.innerHTML = ""
     resultHeader.innerHTML = ""
     antall.textContent = ""
-    document.getElementById("nbHits").innerHTML = ""
+    nbHits.innerHTML = ""
     // Show please wait
     document.getElementById("pleaseWait").style.display = "block"
     //mustChoose///////////////////////
@@ -122,8 +257,7 @@ searchForm.addEventListener('submit', (e) => {
     }
     
     if (!valgtSamling) {
-        //// er dette rett?
-        resultHeader.innerHTML = textItems.searchResultHeadline[index]
+        resultHeader.innerHTML = textItems.mustChoose[index]
         document.getElementById("pleaseWait").style.display = "none"
     } else {
         const url = 'http://localhost:3000/search/?search=' + searchTerm +'&samling=' + valgtSamling
@@ -133,70 +267,23 @@ searchForm.addEventListener('submit', (e) => {
                     return console.log(data.error)
                 } else {
                                         
-                    // remove old map if any and empty array
-                    document.getElementById("map").innerHTML = ""
-                    //document.getElementById("language").value = data.language
-                    const JSONdata = JSON.parse(data)
+                    const JSONdata = JSON.parse(data) //// her også?
                     
                     //check if there are any hits from the search
                     if ( JSONdata.results === undefined || JSONdata.results.length === 0 ) {
                         resultHeader.innerHTML = "Ingen treff, prøv nytt søk"
                     } else {
                         resultTable(data)
-                        
-                        // fyll en array med koordinater for kartet
-                        coordinateArray.length = 0
-                        JSONdata.results.forEach(function(item, index) {
-                            if (item.decimalLatitude & item.decimalLongitude) {
-                                const object = { decimalLatitude: Number(item.decimalLatitude),
-                                    decimalLongitude: Number(item.decimalLongitude),
-                                    catalogNumber: item.catalogNumber,
-                                    index: index }
-                                coordinateArray.push(object) 
-                            } 
-                            
-                        })
-
-                        if (coordinateArray.length === 0) {
-                            document.querySelector("#map").innerHTML = 'Objektet/-ene har ikke koordinater registrert og kart kan derfor ikke vises'
-                        } else {
-                            // call map-function to draw map
-                        mapWithAllHits(coordinateArray)  
-                        }
-                        
+                        drawMap(JSONdata)
+                        downloadFunction() // render download button and functionality for this
                     }
                 }
             })
             document.getElementById("pleaseWait").style.display = "none"
         })    
     }
-})
+  })
 
-
-
-// Når noe trykker på last ned (download)
-lastNed.addEventListener('click', (e) => {
-    e.preventDefault()
-    const searchTerm = search.value
-    const valgtSamling = samling.value
-    if (!valgtSamling) {
-        resultHeader.innerHTML = "Gjennomføre et søk før du kan laste ned resultatene"
-        document.getElementById("pleaseWait").style.display = "none"
-    } else {
-        const url = 'http://localhost:3000/download/?search=' + searchTerm +'&samling=' + valgtSamling
-        fetch(url).then((response) => {
-            response.text().then((data) => {
-                if(data.error) {
-                    return console.log(data.error)
-                } else {
-                    const downloadData = data
-                    console.log(downloadData);
-                    
-                }
-            })
-        })
-    }
-})
 
 // når noe velger en samling vil det sendes en forespørsel til server om dato på MUSIT-dump fila
 samling.addEventListener('change', (e) => {
@@ -215,119 +302,3 @@ samling.addEventListener('change', (e) => {
             })
         })
 })
-  
-
-// initializeMap and  red dots for each item in searchlist on map, on one function:
- const mapWithAllHits = function(array) {
-    const newArray = []
-    let latitudeSum
-    let longitudeSum
-    array.forEach(function(item) {
-            if(item.decimalLongitude) {
-            const marker = new ol.Feature({
-                geometry: new ol.geom.Point(ol.proj.fromLonLat([Number(item.decimalLongitude), Number(item.decimalLatitude)])),
-                catalogNumber: item.catalogNumber,
-                index: item.index
-            })
-            newArray.push(marker)
-            latitudeSum = latitudeSum + Number(item.decimalLatitude) // tror ikke dissse har funksjon, noe her virker uansett ikke
-            longitudeSum = longitudeSum + Number(item.decimalLongitude) // tror ikke dissse har funksjon, noe her virker uansett ikke
-        }
-    })
-
-    // calculate center and find extreme points
-
-    // tror ikke denne har noen funksjon, noe her virker uansett ikke
-    const center = {
-        longitude: longitudeSum / array.length,
-        latitude: latitudeSum / array.length,
-        maxLongitude: Math.max(...array)
-    }
-    
-                    
-    // icon
-    var iconStyle = new ol.style.Style({
-        image: new ol.style.Icon({
-            anchor: [0.5, 0.5],
-            anchorXUnits: 'fraction',
-            anchorYUnits: 'fraction',
-            src: "https://upload.wikimedia.org/wikipedia/commons/e/ec/RedDot.svg"
-        })
-    })
-            
-
-    newArray.forEach(function(item) {
-        item.setStyle(iconStyle)
-    })
-    
-    // dummy-array to get map-view larger than to exact cover the points/markers
-   /*  const dummyNewArray =  */
-
-    // source object for this feature
-    const vectorSource = new ol.source.Vector({
-        features: newArray
-    })
- 
-    // add this object to a new layer
-    const vectorLayer = new ol.layer.Vector({
-        source: vectorSource
-    })
-
-    map = new ol.Map({
-        target: 'map',
-        layers: [
-        new ol.layer.Tile({
-            source: new ol.source.OSM()
-        }),
-        vectorLayer
-        ]/* ,        
-        view: new ol.View({
-            center: center
-        }) */
-    })
-    
-    const extent = vectorSource.getExtent()
-
-    // // to make extent of map larger than exactly where  the points are
-    map.getView().fit(extent, {padding: [50, 50, 50, 50]})
-    
-    const element = document.getElementById('popup')
-    const content = document.getElementById('popup-content')
-
-    const popup = new ol.Overlay({
-        element: element,
-        positioning: 'bottom-center',
-        stopEvent: true, // true here enables clickable link in popup
-        offset: [0,0]
-    })
-    
-    map.addOverlay(popup)
-
-    //display popup on a click
-    // code copied from different examples, doing things differently. I think one could use either jquery (as in $(element))
-    // OR innerhtml...
-    
-    map.on('singleclick', function(evt) {
-        
-        const feature = map.forEachFeatureAtPixel(evt.pixel,
-            function(feature) {
-                return feature
-            })
-        if (feature) {
-            const coordinates = feature.getGeometry().getCoordinates()
-            popup.setPosition(coordinates);
-           /*  $(element).popover({
-                placement: 'top',
-                html:  true,
-                content:  feature.get('catalogNumber')
-            }) */
-           /*  content.innerHTML = feature.get('catalogNumber') */
-            content.innerHTML =  `<a id="objekt-link" href="http://localhost:3000/object/?id=${feature.get('index')}"> ${feature.get('catalogNumber')} </a>`
-            $(element).popover('show')
-        } else {
-            $(element).popover('destroy')
-        }
-    })
-   
-} 
-

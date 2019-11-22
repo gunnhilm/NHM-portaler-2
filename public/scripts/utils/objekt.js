@@ -81,13 +81,7 @@ const coordinates = (obj) => {
     }
 }
 
-lang = "Norwegian"
-if (lang === "Norwegian") {
-    index = 0
-} else if (lang === "English") {
-    index = 1
-}
-//console.log(textItemsObject.name[index])
+
 // text-elements for view
 const regnoEl = `<span>${objekt.institutionCode}-${objekt.collectionCode}-${objekt.catalogNumber}` 
 const nameEl = `<span class="bold" id="name"></span>` + `<span class="italic">${objekt.scientificName}</span>`
