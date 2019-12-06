@@ -4,8 +4,7 @@ const fileRead = require('./utils/fileread')
 const fs = require('fs')
 const footerDate = require('./utils/footerDate')
 const hbs = require('hbs')
-const papa = require('papaparse/papaparse')
-//const language = require('./utils/languageFile')
+
 
 const app = express()
 const port = process.env.PORT || 3000
@@ -24,21 +23,16 @@ hbs.registerPartials(partialsPath)
 // set up static directory to serve
 app.use(express.static(publicDirectoryPath))
 
-/* const textItems = {
-    placeholder: ["Søk", "Search"],
-} */
 
 app.get('', (req, res) => {
     if (!req.query.search) {
         return res.render('index', {
-//            placeholder: textItems.placeholder[1]
         })
     } else {
         fileRead.search(req.query.search, (error, results) => {
             res.render('index', {
                 results: results
              })
-        
          })
     }
 })
@@ -52,16 +46,8 @@ app.get('/search', (req, res) => {
     } else {
 
         fileRead.search(req.query.samling, req.query.search, (error, results) => {
-            const parsedResults = papa.parse(results, {
-                delimiter: "\t",
-                newline: "\n",
-                quoteChar: '',
-                header: true,
-            })
-            JSON.stringify(parsedResults.data)
             res.send({
-                results: parsedResults.data //,
-                // unparsed: results
+                unparsed: results
             })
         })
     }
@@ -80,21 +66,7 @@ app.get('/download', (req, res) => {
                  res.send({
                     unparsed: results
                 }) 
-                //write results to a file. then use response.download()
-                /* fs.writeFile('searchResult.txt', results, function (err) {
-                    if (err) throw err
-                    console.log('Saved!')
-                }) */
-                //res.download('./','searchResult.txt') //, (err) => {
-                    /* if (err) {
-                        console.log('there is an error')
-                        return
-                    } else {
-                        //give file to user
-                        console.log("file is downloaded")
-                    } */
-               // })
-                
+              
             } else {
                 console.log('Error: no results came back from seach')
             }

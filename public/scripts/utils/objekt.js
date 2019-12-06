@@ -1,7 +1,7 @@
 
-// read string and get the object from localStorage
+// read string and get the object from sessionStorage
 const loadString = () => {
-    const objektJSON = localStorage.getItem('string')
+    const objektJSON = sessionStorage.getItem('string')
 
     try {
         return objektJSON ? JSON.parse(objektJSON) : []
@@ -12,14 +12,13 @@ const loadString = () => {
 
 
 
-//få tak i objektet fra local  storage
+//få tak i objektet fra session  storage
 const allObjekt = loadString()
-
 // få tak i id'en i url'en
 const urlParams = new URLSearchParams(window.location.search)
 const id = urlParams.get('id')
 
-const objekt = allObjekt.results[id]
+const objekt = allObjekt[id]
 
 // to print nice locality-string:
 const country = (obj) => {

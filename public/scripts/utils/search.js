@@ -1,5 +1,6 @@
 console.log('client side javascript is loaded')
 
+
 // names for DOM elements (?) for search
 
 // on page initially
@@ -26,11 +27,11 @@ const resultTable = (data) => {
     } else if (language === "English") {
         index = 1
     }
-    localStorage.clear() 
-    localStorage.setItem('string', data)    // Save searchresult to local storage
-    data = JSON.parse(data)
+    sessionStorage.clear() 
+    stringData = JSON.stringify(data)
+    sessionStorage.setItem('string', stringData)    // Save searchresult to local storage
     
-    const antallTreff = data.results.length
+    const antallTreff = data.length
     antall.textContent = antallTreff
     
     resultHeader.innerHTML = textItems.searchResultHeadline[index]
@@ -58,13 +59,13 @@ const resultTable = (data) => {
             cell7.innerHTML = textItems.headerLocality[index].bold()
 
         } else {
-            cell1.innerHTML =  `<a id="objekt-link" href="http://localhost:3000/object/?id=${i}"> ${data.results[i].catalogNumber} </a>`
-            cell2.innerHTML = data.results[i].scientificName
-            cell3.innerHTML = data.results[i].recordedBy
-            cell4.innerHTML = data.results[i].eventDate
-            cell5.innerHTML = data.results[i].country
-            cell6.innerHTML = data.results[i].county
-            cell7.innerHTML = data.results[i].locality
+            cell1.innerHTML =  `<a id="objekt-link" href="http://localhost:3000/object/?id=${i}"> ${data[i].catalogNumber} </a>`
+            cell2.innerHTML = data[i].scientificName
+            cell3.innerHTML = data[i].recordedBy
+            cell4.innerHTML = data[i].eventDate
+            cell5.innerHTML = data[i].country
+            cell6.innerHTML = data[i].county
+            cell7.innerHTML = data[i].locality
 
             // gir de klassen resultTable så de kan styles
             cell1.className = 'row-1 row-ID';
@@ -126,13 +127,13 @@ const downloadFunction = () => {
 }
 
 // render map
-const drawMap = (JSONdata) => {
+const drawMap = (parsedData) => {
     // remove old map if any and empty array
     document.getElementById("map").innerHTML = "" 
     coordinateArray.length = 0
-    
+      
     // fyll en array med koordinater for kartet
-    JSONdata.results.forEach(function(item, index) {
+    parsedData.forEach(function(item, index) {
         if (item.decimalLatitude & item.decimalLongitude) {
             const object = { decimalLatitude: Number(item.decimalLatitude),
                 decimalLongitude: Number(item.decimalLongitude),
@@ -249,7 +250,7 @@ searchForm.addEventListener('submit', (e) => {
     nbHits.innerHTML = ""
     // Show please wait
     document.getElementById("pleaseWait").style.display = "block"
-    //mustChoose///////////////////////
+    // mustChoose
     if (language === "Norwegian") {
         index = 0
     } else if (language === "English") {
@@ -265,16 +266,22 @@ searchForm.addEventListener('submit', (e) => {
             response.text().then((data) => {
                 if(data.error) {
                     return console.log(data.error)
+                    resultHeader.innerHTML = "Server Feil, prøv nytt søk"
                 } else {
-                                        
-                    const JSONdata = JSON.parse(data) //// her også?
+                    const JSONdata = JSON.parse(data) 
                     
+                        const parsedResults = Papa.parse(JSONdata.unparsed, {
+                        delimiter: "\t",
+                        newline: "\n",
+                        quoteChar: '',
+                        header: true,
+                        }) 
                     //check if there are any hits from the search
-                    if ( JSONdata.results === undefined || JSONdata.results.length === 0 ) {
+                    if ( parsedResults.data === undefined || parsedResults.data.length === 0 ) {
                         resultHeader.innerHTML = "Ingen treff, prøv nytt søk"
                     } else {
-                        resultTable(data)
-                        drawMap(JSONdata)
+                        resultTable(parsedResults.data)
+                        drawMap(parsedResults.data)
                         downloadFunction() // render download button and functionality for this
                     }
                 }
