@@ -3,17 +3,21 @@
 <html>
     <head>
     <link rel="stylesheet" href="/styles/styles.css">
-   <script src="/scripts/utils/ol/ol.js"></script>
+    <script src="/scripts/utils/ol/ol.js"></script>
+    <script src="/scripts/utils/map.js"></script>
  
     <title>Nettportal søkeside</title>  
     </head>
   
 
     <body>
-        {{>header}}
-        <div class="content">
-            <h3 id="sok_i_samlingene"></h3>
-                <br>
+    {{>header}}
+
+    <div class="content">
+        <h3 id="sok_i_samlingene"></h3>
+        <table>
+            <tr>
+                <td valign="top">
                 <label for="collection-select" id="velg_en_samling"></label>
                 <select id="collection-select">
                     <option value="" id="vennligst"></option>
@@ -24,41 +28,53 @@
                     <option value="alger" id="alger"></option>
                     <option value="entomologi" id="insekter"></option>
                 </select>
-            <br>
-
-            <br>
+                <br>
+                <br>
             <form>
             <input id="search-text" type="text" class="input" placeholder="Søk">
             <button id="sok"></button>
             </form>
             <br>
-            
-            <table> 
-                <tr>
-                    <td> <h3 id="resultHeader"></h3> </td>
-                </tr>
-                <tr>    
-                    <td id="nbHits"></td>
-                    <td  id="antall-treff" ></td>
-                    <td width=500px align="right"> <div id="downloadButton"></div> </td>
-                </tr>
-            </table>
-            
-            <br>
-            <img id="pleaseWait" src="/images/ajax-loader.gif" alt="Please Wait"  style="display:none">
+        <img id="pleaseWait" src="/images/ajax-loader.gif" alt="Please Wait"  style="display:none" valign="top">
 
+        <table> 
+            <tr>
+                <td> <h3 id="resultHeader"></h3> </td>
+            </tr>
+            <tr>    
+                <td id="nbHits"></td>
+                <td  id="antall-treff" ></td>
+            </tr>
+            <tr>
+            <td> <button id="downloadButton"  style="display:none"></button> </td>
+            </tr>
+        </table>
+                </td>
+                <td>
+                    <div id="map" class="map"></div>
+
+                    <div id="popup" class="ol-popup">
+                        <a href="#" id="popup-link" class="popup-link"></a>
+                        <div id="popup-content"></div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        
+            
+            
+       
 
             <table id="myTable">
             </table>
 
              
-        </div>
-                    <div id="map" class="map"></div>
-                     <div id="popup" class="ol-popup">
-                         <a href="#" id="popup-link" class="popup-link"></a>
-                        <div id="popup-content"></div>
-                     </div>
-     {{>footer}}
+    </div>
+
+       
+
+        {{>footer}}
+
     <script src="/scripts/utils/papaparse/papaparse.min.js"></script>
     <script src="/scripts/utils/search.js"></script>   
     <script src="/scripts/utils/renderLang.js"></script>

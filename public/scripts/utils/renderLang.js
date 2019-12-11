@@ -16,7 +16,7 @@ const textItems = {
     lav: ["Lav", "Lichens"],
     alger: ["Alger", "Algae"],
     insekter: ["Insekter", "Insects"],
-    downloadLink: ["Last ned", "Download"],
+    downloadLink: ["Last ned resultater", "Download"],
     searchResultHeadline: ["Resultat", "Search result"],
     nbHitsText: ["Antall treff: ", "Number of hits: "],
     headerTaxon: ["Takson", "Taxon"],
@@ -75,6 +75,7 @@ const renderText = function(lang) {
         document.querySelector('#lav').innerHTML = textItems.lav[index]
         document.querySelector('#alger').innerHTML = textItems.alger[index]
         document.querySelector('#insekter').innerHTML = textItems.insekter[index]
+        document.querySelector('#downloadButton').innerHTML = textItems.downloadLink[index]
 
         document.querySelector('#search-text').placeholder = textItems.placeholder[index]
     }

@@ -1,6 +1,5 @@
 console.log('client side javascript is loaded')
 
-
 // names for DOM elements (?) for search
 
 // on page initially
@@ -14,22 +13,23 @@ const antall = document.querySelector('#antall-treff') //engelsk
 const nbHits = document.getElementById("nbHits")
 const table = document.getElementById("myTable")
 
+// for the download button
+const lastNed = document.getElementById('downloadButton')
+
 // rendered with result table, in footer
 const oppdatert = document.querySelector('#sist-oppdatert') //engelsk
 
 // decides which language is rendered
 language = document.querySelector('#language').value
 
+
+
+
 // render result table
 const resultTable = (data) => {
-    if (language === "Norwegian") {
-        index = 0
-    } else if (language === "English") {
-        index = 1
-    }
-    sessionStorage.clear() 
-    stringData = JSON.stringify(data)
-    sessionStorage.setItem('string', stringData)    // Save searchresult to local storage
+
+           stringData = JSON.stringify(data)
+        sessionStorage.setItem('string', stringData)    // Save searchresult to local storage
     
     const antallTreff = data.length
     antall.textContent = antallTreff
@@ -81,6 +81,22 @@ const resultTable = (data) => {
     }    
 }
 
+// vise tidligere søk
+// const oldSearch = () => {
+//     if (localStorage.getItem('string') === null) {
+//     // henter søkeresultatet fra minne
+//     stringData = sessionStorage.getItem('string')
+//     // parser søkresultatet
+//     data = JSON.parse(stringData)
+//     // sender det til funksjonen som viser reultatene
+//     resultTable(data)
+//     }
+// }
+
+// //kjør funksjonen
+// oldSearch() 
+
+
 // download search-result to file
 function download(filename, text) {
     const element = document.createElement('a')
@@ -95,169 +111,49 @@ function download(filename, text) {
     document.body.removeChild(element)
 }
 
-// render download button and functionality for this
-const downloadFunction = () => {
-  
-    // make button
-    const lastNed = document.createElement("BUTTON");
-    lastNed.setAttribute("id", "downloadButtonId")
-    lastNed.innerHTML = textItems.downloadLink[index]
-    document.getElementById('downloadButton').appendChild(lastNed)
 
-    // when download-button is clicked
-    lastNed.addEventListener('click', (e) => {
-        e.preventDefault()
-        const searchTerm = search.value
-        const valgtSamling = samling.value
-        
-        const url = 'http://localhost:3000/download/?search=' + searchTerm +'&samling=' + valgtSamling
-        fetch(url).then((response) => {
-                
-            response.text().then((data) => {
-                if(data.error) {
-                    return console.log(data.error)
-                } else {
-                    const downloadData = JSON.parse(data).unparsed
-                    // Start file download.
-                    download("download.txt", downloadData)
-                }
-            })
-        })
-    })
-}
-
-// render map
-const drawMap = (parsedData) => {
-    // remove old map if any and empty array
-    document.getElementById("map").innerHTML = "" 
-    coordinateArray.length = 0
-      
-    // fyll en array med koordinater for kartet
-    parsedData.forEach(function(item, index) {
-        if (item.decimalLatitude & item.decimalLongitude) {
-            const object = { decimalLatitude: Number(item.decimalLatitude),
-                decimalLongitude: Number(item.decimalLongitude),
-                catalogNumber: item.catalogNumber,
-                index: index }
-            coordinateArray.push(object) 
-        } 
-    })
-
-    if (coordinateArray.length === 0) {
-         document.querySelector("#map").innerHTML = 'Objektet/-ene har ikke koordinater registrert og kart kan derfor ikke vises'
-    } else {
-        // call map-function to draw map
-        //mapWithAllHits(coordinateArray)
-        const newArray = []
-        let latitudeSum
-        let longitudeSum
-        coordinateArray.forEach(function(item) {
-            if(item.decimalLongitude) {
-                const marker = new ol.Feature({
-                    geometry: new ol.geom.Point(ol.proj.fromLonLat([Number(item.decimalLongitude), Number(item.decimalLatitude)])),
-                    catalogNumber: item.catalogNumber,
-                    index: item.index
-                })
-                newArray.push(marker)
-                latitudeSum = latitudeSum + Number(item.decimalLatitude) // tror ikke dissse har funksjon, noe her virker uansett ikke
-                longitudeSum = longitudeSum + Number(item.decimalLongitude) // tror ikke dissse har funksjon, noe her virker uansett ikke
+// when download-button is clicked
+lastNed.addEventListener('click', (e) => {
+    e.preventDefault()
+    const searchTerm = search.value
+    const valgtSamling = samling.value
+    
+    const url = 'http://localhost:3000/download/?search=' + searchTerm +'&samling=' + valgtSamling
+    fetch(url).then((response) => {
+            
+        response.text().then((data) => {
+            if(data.error) {
+                return console.log(data.error)
+            } else {
+                const downloadData = JSON.parse(data).unparsed
+                // Start file download.
+                download("download.txt", downloadData)
             }
         })
-
-                    
-        // icon
-        const iconStyle = new ol.style.Style({
-            image: new ol.style.Icon({
-                anchor: [0.5, 0.5],
-                anchorXUnits: 'fraction',
-                anchorYUnits: 'fraction',
-                src: "https://upload.wikimedia.org/wikipedia/commons/e/ec/RedDot.svg"
-            })
-        })
-            
-
-        newArray.forEach(function(item) {
-            item.setStyle(iconStyle)
-        })
-    
-        // source object for this feature
-        const vectorSource = new ol.source.Vector({
-            features: newArray
-        })
- 
-        // add this object to a new layer
-        const vectorLayer = new ol.layer.Vector({
-            source: vectorSource
-        })
-
-        map = new ol.Map({
-            target: 'map',
-            layers: [
-            new ol.layer.Tile({
-                source: new ol.source.OSM()
-            }),
-            vectorLayer
-            ]       
-        })
-    
-        const extent = vectorSource.getExtent()
-
-        // to make extent of map larger than exactly where  the points are
-        map.getView().fit(extent, {padding: [50, 50, 50, 50]})
-        
-        // popups
-        const element = document.getElementById('popup')
-        const content = document.getElementById('popup-content')
-
-        const popup = new ol.Overlay({
-            element: element,
-            positioning: 'bottom-center',
-            stopEvent: true, // true here enables clickable link in popup
-            offset: [0,0]
-        })
-    
-        map.addOverlay(popup)
-
-        //display popup on a click
-        map.on('singleclick', function(evt) {
-            const feature = map.forEachFeatureAtPixel(evt.pixel,
-                function(feature) {
-                    return feature
-                })
-            if (feature) {
-                const coordinates = feature.getGeometry().getCoordinates()
-                popup.setPosition(coordinates)
-                content.innerHTML =  `<a id="objekt-link" href="http://localhost:3000/object/?id=${feature.get('index')}"> ${feature.get('catalogNumber')} </a>`
-            } 
-        })  
-    }
-}
-
-
-
-let map
-let coordinateArray = []
+    })
+})
 
 // når noen trykker på søk knappen 
 searchForm.addEventListener('submit', (e) => {
     e.preventDefault()
+    // slett de forrige søkeresultatene
+    sessionStorage.clear() 
     const searchTerm = search.value
     const valgtSamling = samling.value
+
     // empty table
     table.innerHTML = ""
     resultHeader.innerHTML = ""
     antall.textContent = ""
     nbHits.innerHTML = ""
+
     // Show please wait
     document.getElementById("pleaseWait").style.display = "block"
+    // hide download button
+    document.getElementById("downloadButton").style.display = "none"
+
     // mustChoose
-    if (language === "Norwegian") {
-        index = 0
-    } else if (language === "English") {
-        index = 1
-    }
-    
-    if (!valgtSamling) {
+      if (!valgtSamling) {
         resultHeader.innerHTML = textItems.mustChoose[index]
         document.getElementById("pleaseWait").style.display = "none"
     } else {
@@ -282,7 +178,8 @@ searchForm.addEventListener('submit', (e) => {
                     } else {
                         resultTable(parsedResults.data)
                         drawMap(parsedResults.data)
-                        downloadFunction() // render download button and functionality for this
+                        // Show download button
+                        document.getElementById("downloadButton").style.display = "block"
                     }
                 }
             })

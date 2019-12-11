@@ -1,31 +1,31 @@
 /* to get a sticky footer */
 .content {
-    min-height:  calc(100vh - 170px);
+    
+    /* min-height:  calc(100vh - 170px); */
+    min-height:  calc(100vh - 600px);
     margin-left: 100px;
 }
 
 header {
     height: 50px;
-    background-color: #d2e98f;
+    background-color: #57AD3E;
     /* dette er en underlig måte å sentrere bilde og lenker vertikalt på */
     line-height: 45px;
 }
 
 
 .footer {
+   /* position: fixed; */
+   grid-row-start: 2;
+   grid-row-end: 3;
     height: 50px;
-    background-color: #d2e98f;
+    background-color: #57AD3E;
     padding:10px;
 }
 
 #logo {
     vertical-align: middle; 
     max-height: 40px;
-    /*margin: 0;
-    position: absolute;
-    top: 50%;
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%); */
 }
 
 .headerLink {
@@ -122,8 +122,8 @@ header {
 
 /* Set the size of the div element that contains the map  */
 .map {
-    height: 400px;  /* The height is 400 pixels */
-    width: 400px;  
+    height: 250px;  /* The height is 400 pixels */
+    width: 600px;  
     padding: 10px;
     margin-left: 100px;
     color: grey;
