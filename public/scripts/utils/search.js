@@ -28,7 +28,7 @@ language = document.querySelector('#language').value
 // render result table
 const resultTable = (data) => {
 
-           stringData = JSON.stringify(data)
+        stringData = JSON.stringify(data)
         sessionStorage.setItem('string', stringData)    // Save searchresult to local storage
     
     const antallTreff = data.length
@@ -81,22 +81,6 @@ const resultTable = (data) => {
     }    
 }
 
-// vise tidligere søk
-// const oldSearch = () => {
-//     if (localStorage.getItem('string') === null) {
-//     // henter søkeresultatet fra minne
-//     stringData = sessionStorage.getItem('string')
-//     // parser søkresultatet
-//     data = JSON.parse(stringData)
-//     // sender det til funksjonen som viser reultatene
-//     resultTable(data)
-//     }
-// }
-
-// //kjør funksjonen
-// oldSearch() 
-
-
 // download search-result to file
 function download(filename, text) {
     const element = document.createElement('a')
@@ -137,7 +121,7 @@ lastNed.addEventListener('click', (e) => {
 searchForm.addEventListener('submit', (e) => {
     e.preventDefault()
     // slett de forrige søkeresultatene
-    sessionStorage.clear() 
+    sessionStorage.removeItem('string') 
     const searchTerm = search.value
     const valgtSamling = samling.value
 
@@ -192,7 +176,17 @@ searchForm.addEventListener('submit', (e) => {
 // når noe velger en samling vil det sendes en forespørsel til server om dato på MUSIT-dump fila
 samling.addEventListener('change', (e) => {
     e.preventDefault()
-    const url = 'http://localhost:3000/footer-date/?&samling=' + e.target.value
+   updatFooter()
+})
+
+const updatFooter = () => {
+    const valgtSamling = samling.value
+    if (valgtSamling) {
+        console.log(valgtSamling);
+        
+        sessionStorage.setItem('samling', valgtSamling)
+        const url = 'http://localhost:3000/footer-date/?&samling=' + valgtSamling
+        
         fetch(url).then((response) => {
             response.text().then((data) => {
                 if(data.error) {
@@ -205,4 +199,34 @@ samling.addEventListener('change', (e) => {
                 }
             })
         })
-})
+    }
+}
+
+// vise tidligere søk
+const oldSearch = () => {
+    if (sessionStorage.getItem('samling') !== "null") 
+        {
+            if (sessionStorage.getItem('string') !== "null") {
+                // henter søkeresultatet fra minne
+                stringData = sessionStorage.getItem('string')
+                // parser søkresultatet
+                data = JSON.parse(stringData)
+                // vise riktig språk
+                if (sessionStorage.getItem('language') === "null") {
+                    language = 'Norwegian'
+                } else {
+                    language = sessionStorage.getItem('language')
+                }
+                renderText(language)
+                updatFooter()
+                
+                // sender det til funksjonen som viser reultatene
+                resultTable(data)
+                drawMap(data)
+
+            }
+        } 
+}
+
+//kjør funksjonen
+oldSearch() 

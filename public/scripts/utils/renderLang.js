@@ -120,6 +120,7 @@ renderText(language)
 document.querySelector('#language').addEventListener('change', (e) => {
     language = e.target.value
     renderText(language)
+    sessionStorage.setItem('language', language)
    
     if (!location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help')) {
         if (document.getElementById("resultHeader").innerHTML) {
