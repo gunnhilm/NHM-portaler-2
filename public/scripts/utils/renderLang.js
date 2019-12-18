@@ -3,7 +3,7 @@ const textItems = {
     searchButtonHeader: ["Søk", "Search"],
     aboutButton: ["Om sidene", "About"],
     helpButton: ["Hjelp", "Help"],
-    logo: ["/images/uio_nhm_segl_a.png", "/images/uio_nhm_seal_a_eng.png"],
+    logo: ["/images/uio_nhm_segl_a.png", "/images/uio_nhm_seal_a_eng_cmyk.eps"],
     
     // index page
     sok_i_samlingene: ["Søk i samlingene", "Search the collections"],

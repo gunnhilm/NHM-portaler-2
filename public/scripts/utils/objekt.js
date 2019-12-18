@@ -80,34 +80,63 @@ const coordinates = (obj) => {
     }
 }
 
+// putt i tabell i stedet
+//const preName = `<span class="bold" id="name"></span>`
+//const name1 = `<span class="italic">${objekt.scientificName}</span>`
+
+//const detLine = '<span class="bold" id="det"></span>'
+//const det1 = `<span>${objekt.identifiedBy}</span>`
 
 // text-elements for view
 const regnoEl = `<span>${objekt.institutionCode}-${objekt.collectionCode}-${objekt.catalogNumber}` 
-const nameEl = `<span class="bold" id="name"></span>` + `<span class="italic">${objekt.scientificName}</span>`
+//const nameEl = `<span class="bold" id="name"></span>` + `<span class="italic">${objekt.scientificName}</span>`
 // to get name properly formatted with itallic, and not-itallic for authors, should use a checklist with  names
-const detEl = '<span class="bold" id="det"></span>' + `<span>${objekt.identifiedBy}</span>`
-const detDateEl = '<span class="bold" id="detDate"></span>' + `<span>${objekt.dateIdentified}`
-const dateEl = '<span class="bold" id="collDate"></span>' + `<span>${objekt.eventDate}</span>`
-const collectorEl = '<span class="bold" id="coll"></span>' + `<span>${objekt.recordedBy}</span>`
-const localityEl = '<span class="bold" id="locality"></span>' + `<span>${concatLocality}</span>`
-const coordinateEl = '<span class="bold" id="coordinates"></span>' + `<span>${coordinates(objekt)}</span>`
+//const detEl = '<span class="bold" id="det"></span>' + `<span>${objekt.identifiedBy}</span>`
+//const detDateEl = '<span class="bold" id="detDate"></span>' + `<span>${objekt.dateIdentified}`
+//const dateEl = '<span class="bold" id="collDate"></span>' + `<span>${objekt.eventDate}</span>`
+//const collectorEl = '<span class="bold" id="coll"></span>' + `<span>${objekt.recordedBy}</span>`
+//const localityEl = '<span class="bold" id="locality"></span>' + `<span>${concatLocality}</span>`
+//const coordinateEl = '<span class="bold" id="coordinates"></span>' + `<span>${coordinates(objekt)}</span>`
 
 // new things added 23.oct
-let ArtObsIdEl = ''
+let artsobsName = ''
+let artsobs1 = ''
 if( objekt.ArtObsID ) {
-    ArtObsIdEl = '<span class="bold" id="artsobs"></span>' + `<span>${objekt.ArtObsID}</span>`
+    artsobsName = '<span class="bold" id="artsobs"></span>' 
+    artsobs1 = `<span>${objekt.ArtObsID}</span>`
 } 
 
-let habitatEl = ''
+let habitatName = ''
+let habitat1 = ''
 if (objekt.habitat ) {
-    habitatEl = '<span class="bold" id="habitat">Habitat: </span>' + `<span>${objekt.habitat}</span>`
+    habitatName = '<span class="bold" id="habitat">Habitat: </span>' 
+    habitat1 = `<span>${objekt.habitat}</span>`
 }
 
 // put content in html-boxes
 document.querySelector("#musit_regno").innerHTML = regnoEl
-document.querySelector("#species_box").innerHTML = nameEl  + '<br/>' + detEl + '<br/>' + detDateEl + '<br/>'
-document.querySelector('#collectionEvent_box').innerHTML = dateEl + '<br/>' + collectorEl  + '<br/>' + localityEl + '<br/>' + coordinateEl + '<br/> <br/>' + ArtObsIdEl
-+ '<br/>' + habitatEl
+document.querySelector("#preName").innerHTML = `<span class="bold" id="name"></span>`
+document.querySelector("#name1").innerHTML = `<span class="italic">${objekt.scientificName}</span>`
+document.querySelector("#detLine").innerHTML = '<span class="bold" id="det"></span>'
+document.querySelector("#det1").innerHTML =  `<span>${objekt.identifiedBy}</span>`
+document.querySelector("#detDateLine").innerHTML = '<span class="bold" id="detDate"></span>'
+document.querySelector("#detDate").innerHTML = `<span>${objekt.dateIdentified}</span>`
+
+document.querySelector("#dateName").innerHTML = '<span class="bold" id="collDate"></span>'
+document.querySelector("#date1").innerHTML = `<span>${objekt.eventDate}</span>`
+document.querySelector("#collectorName").innerHTML = '<span class="bold" id="coll"></span>'
+document.querySelector("#collector1").innerHTML = `<span>${objekt.recordedBy}</span>`
+document.querySelector("#localityName").innerHTML = '<span class="bold" id="locality"></span>'
+document.querySelector("#locality1").innerHTML = `<span>${concatLocality}</span>`
+document.querySelector("#coordinatesName").innerHTML = '<span class="bold" id="coordinates"></span>'
+document.querySelector("#coordinates1").innerHTML = `<span>${coordinates(objekt)}</span>`
+document.querySelector("#habitatName").innerHTML = habitatName
+document.querySelector("#habitat1").innerHTML = habitat1
+document.querySelector("#artsobsName").innerHTML = artsobsName
+document.querySelector("#artsobs1").innerHTML = artsobs1
+//document.querySelector("#species_box").innerHTML = nameEl  + '<br/>' + detEl + '<br/>' + detDateEl + '<br/>'
+
+//document.querySelector('#collectionEvent_box').innerHTML = dateEl + '<br/>' + collectorEl  + '<br/>' + localityEl + '<br/>' + coordinateEl + '<br/> <br/>' + ArtObsIdEl + '<br/>' + habitatEl
 
 // photo:
 //for å få thumbnail settes width til 150px i styles for img
