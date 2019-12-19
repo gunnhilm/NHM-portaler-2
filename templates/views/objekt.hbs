@@ -4,9 +4,6 @@
     <head>
         <title>Nettportal objektvisning</title>
         <link rel="stylesheet" href="/styles/styles.css">
-        {{!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.0.0/css/ol.css" type="text/css"> --}}
-        {{!-- <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.0.0/build/ol.js"></script> --}}`
-        {{!-- <script src="/scripts/utils/ol/ol.js"></script> --}}
         <script src="/scripts/utils/ol/ol.js"></script>
     </head>
     
@@ -14,23 +11,23 @@
          {{>header}}
          <div class="content">
            
-            <h1 id="object_page_header"></h1>
+            <!--<h1 id="object_page_header"></h1>-->
             <h2 id="musit_regno"></h2>
         
-            <table style="width:100%">
+            <table width = "1000px" >
                 <tr>
                     <td>
                         <table>
                             <tr>
-                                <td id = "preName"></td>
+                                <td id = "preName" class= "bold"></td>
                                 <td id = "name1"></td>
                             </tr>
                             <tr>
-                                <td id = "detLine"></td>
+                                <td id = "detLine" class= "bold"></td>
                                 <td id = "det1"></td>
                             </tr>
                             <tr>
-                                <td id = "detDateLine"></td>
+                                <td id = "detDateLine" class= "bold"></td>
                                 <td id = "detDate"></td>
                             </tr>
                             
@@ -39,27 +36,27 @@
                     <td>
                         <table>
                             <tr>
-                                <td id = "dateName"></td>
+                                <td id = "dateName" class= "bold"></td>
                                 <td id = "date1"></td>
                             </tr>
                             <tr>
-                                <td id = "collectorName"></td>
+                                <td id = "collectorName" class= "bold"></td>
                                 <td id = "collector1"></td>
                             </tr>
                             <tr>
-                                <td id = "localityName"></td>
+                                <td id = "localityName" class= "bold"></td>
                                 <td id = "locality1"></td>
                             </tr>
                             <tr>
-                                <td id = "coordinatesName"></td>
+                                <td id = "coordinatesName" class= "bold"></td>
                                 <td id = "coordinates1"></td>
                             </tr>
                             <tr>
-                                <td id = "artsobsName"></td>
+                                <td id = "artsobsName" class= "bold"></td>
                                 <td id = "artsobs1"></td>
                             </tr>
                             <tr>
-                                <td id = "habitatName"></td>
+                                <td id = "habitatName" class= "bold"></td>
                                 <td id = "habitat1"></td>
                             </tr>
                         </table>
@@ -67,16 +64,9 @@
 
                    
                 </tr>
+               
                 <tr>
-                    <td>
-                        <div id= "species_box"></div>
-                    </td>
-                    <td>
-                        <div id="collectionEvent_box"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td><br></td>
+                    <td><br><br></td>
                 </tr>
                 <tr>
                     <td>

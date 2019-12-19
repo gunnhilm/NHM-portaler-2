@@ -60,6 +60,7 @@ const coordinates = (obj) => {
     if (obj.decimalLongitude === '' | obj.decimalLatitude === '') {
         if (document.querySelector('#language').value = "Norwegain") {
             return 'Ingen koordinater'
+           
         } else {
             return 'No coordinates'
         }
@@ -115,20 +116,20 @@ if (objekt.habitat ) {
 
 // put content in html-boxes
 document.querySelector("#musit_regno").innerHTML = regnoEl
-document.querySelector("#preName").innerHTML = `<span class="bold" id="name"></span>`
+document.querySelector("#preName").innerHTML = `<span class="bold" id="preName"></span>`
 document.querySelector("#name1").innerHTML = `<span class="italic">${objekt.scientificName}</span>`
-document.querySelector("#detLine").innerHTML = '<span class="bold" id="det"></span>'
+document.querySelector("#detLine").innerHTML = '<span class="bold" id="detLine"></span>'
 document.querySelector("#det1").innerHTML =  `<span>${objekt.identifiedBy}</span>`
-document.querySelector("#detDateLine").innerHTML = '<span class="bold" id="detDate"></span>'
+document.querySelector("#detDateLine").innerHTML = '<span class="bold" id="detDateLine"></span>'
 document.querySelector("#detDate").innerHTML = `<span>${objekt.dateIdentified}</span>`
 
-document.querySelector("#dateName").innerHTML = '<span class="bold" id="collDate"></span>'
+document.querySelector("#dateName").innerHTML = '<span class="bold" id="dateName"></span>'
 document.querySelector("#date1").innerHTML = `<span>${objekt.eventDate}</span>`
-document.querySelector("#collectorName").innerHTML = '<span class="bold" id="coll"></span>'
+document.querySelector("#collectorName").innerHTML = '<span class="bold" id="collectorName"></span>'
 document.querySelector("#collector1").innerHTML = `<span>${objekt.recordedBy}</span>`
-document.querySelector("#localityName").innerHTML = '<span class="bold" id="locality"></span>'
+document.querySelector("#localityName").innerHTML = '<span class="bold" id="localityName"></span>'
 document.querySelector("#locality1").innerHTML = `<span>${concatLocality}</span>`
-document.querySelector("#coordinatesName").innerHTML = '<span class="bold" id="coordinates"></span>'
+document.querySelector("#coordinatesName").innerHTML = '<span class="bold" id="coordinatesName"></span>'
 document.querySelector("#coordinates1").innerHTML = `<span>${coordinates(objekt)}</span>`
 document.querySelector("#habitatName").innerHTML = habitatName
 document.querySelector("#habitat1").innerHTML = habitat1
@@ -206,4 +207,6 @@ if(objekt.decimalLatitude & objekt.decimalLongitude) {
 
     // add this new layer over the map
     map.addLayer(vectorLayer)
+} else {
+    document.querySelector("#map").innerHTML = "no map"
 }

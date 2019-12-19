@@ -3,7 +3,7 @@ const textItems = {
     searchButtonHeader: ["Søk", "Search"],
     aboutButton: ["Om sidene", "About"],
     helpButton: ["Hjelp", "Help"],
-    logo: ["/images/uio_nhm_segl_a.png", "/images/uio_nhm_seal_a_eng_cmyk.eps"],
+    logo: ["/images/uio_nhm_a_cmyk.png", "/images/uio_nhm_a_eng_cmyk.png"],
     
     // index page
     sok_i_samlingene: ["Søk i samlingene", "Search the collections"],
@@ -30,15 +30,16 @@ const textItems = {
 
     // object page
     objectPageHeader: ['Objektvisning', 'Object view'],
-    name: ['Vitenskapelig navn: ', 'Scientific name: '],
-    det: ['Bestemt av: ', 'Determined by: '],
-    detDate: ['Dato for bestemming: ', 'Date of determination: '],
-    collDate: ['Innsamlingsdato: ', 'Collection date: '],
-    collector: ['Innsamler: ', 'Collector: '],
-    locality: ['Lokalitet: ', 'Locality: '],
-    coordinates: ['Koordinater: ', 'Coordinates: '],
-    artsobs: ['Artsobservasjon ID: ', 'Species Observation ID: '],
-    photoAlt: ['Det finnes ikke noe bilde for dette objektet, eller det kan ikke vises', 'There is no photo for this object, or it cannot be shown.'],
+    preName: ['Vitenskapelig navn: ', 'Scientific name: '],
+    detLine: ['Bestemt av: ', 'Determined by: '],
+    detDateLine: ['Dato for bestemming: ', 'Date of determination: '],
+    dateName: ['Innsamlingsdato: ', 'Collection date: '],
+    collectorName: ['Innsamler: ', 'Collector: '],
+    localityName: ['Lokalitet: ', 'Locality: '],
+    coordinatesName: ['Koordinater: ', 'Coordinates: '],
+    artsobsName: ['Artsobservasjon ID: ', 'Species Observation ID: '],
+    photoAlt: ['Bilde ikke tilgjengelig', 'Photo not available'],
+    mapAlt: ['Kart ikke tilgjengelig', 'Map not available'],
 
     // about page
     aboutHeader: ["Om NHMs samlingsportal", "About NHM's collection portal"],
@@ -55,6 +56,8 @@ const renderText = function(lang) {
         index = 0
     } else if (lang === "English") {
         index = 1
+    } else {
+        index = 0
     }
     
     //header
@@ -83,16 +86,17 @@ const renderText = function(lang) {
     if (location.href.includes('object')) {
     // object page
     
-        document.getElementById("object_page_header").innerHTML = textItems.objectPageHeader[index]
-        document.getElementById("name").innerHTML = textItems.name[index]
-        document.getElementById("det").innerHTML = textItems.det[index]
-        document.getElementById("detDate").innerHTML = textItems.detDate[index]
-        document.getElementById("collDate").innerHTML = textItems.collDate[index]
-        document.getElementById("coll").innerHTML = textItems.collector[index]
-        document.getElementById("locality").innerHTML = textItems.locality[index]
-        document.getElementById("coordinates").innerHTML = textItems.coordinates[index]
+        //document.getElementById("object_page_header").innerHTML = textItems.objectPageHeader[index]
+        document.getElementById("preName").innerHTML = textItems.preName[index]
+        document.getElementById("detLine").innerHTML = textItems.detLine[index]
+        document.getElementById("detDateLine").innerHTML = textItems.detDateLine[index]
+        document.getElementById("dateName").innerHTML = textItems.dateName[index]
+        document.getElementById("collectorName").innerHTML = textItems.collectorName[index]
+        document.getElementById("localityName").innerHTML = textItems.localityName[index]
+        document.getElementById("coordinatesName").innerHTML = textItems.coordinatesName[index]
 
         document.getElementById("photo_box").alt = textItems.photoAlt[index]
+        document.getElementById("map").alt = textItems.mapAlt[index]
 
         if (objekt.ArtObsID) {
             document.getElementById("artsobs").innerHTML = textItems.artsobs[index]
