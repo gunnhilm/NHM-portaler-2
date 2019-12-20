@@ -218,10 +218,13 @@ const oldSearch = () => {
                     language = sessionStorage.getItem('language')
                 }
                 renderText(language)
+                document.getElementById("downloadButton").style.display = "inline"
+                console.log('renderText')
                 updatFooter()
                 
                 // sender det til funksjonen som viser reultatene
                 resultTable(data)
+                console.log('resultTable')
                 drawMap(data)
 
             }

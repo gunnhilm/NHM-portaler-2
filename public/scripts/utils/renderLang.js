@@ -16,7 +16,7 @@ const textItems = {
     lav: ["Lav", "Lichens"],
     alger: ["Alger", "Algae"],
     insekter: ["Insekter", "Insects"],
-    downloadLink: ["Last ned resultater", "Download"],
+    downloadLink: ["Last ned tab-separert resultatfil", "Download tab-delimited result file"],
     searchResultHeadline: ["Resultat", "Search result"],
     nbHitsText: ["Antall treff: ", "Number of hits: "],
     headerTaxon: ["Takson", "Taxon"],
@@ -96,7 +96,10 @@ const renderText = function(lang) {
         document.getElementById("coordinatesName").innerHTML = textItems.coordinatesName[index]
 
         document.getElementById("photo_box").alt = textItems.photoAlt[index]
-        document.getElementById("map").alt = textItems.mapAlt[index]
+        
+        if(!objekt.decimalLatitude | !objekt.decimalLongitude) {
+            document.getElementById("map").innerHTML = textItems.mapAlt[index]
+        }
 
         if (objekt.ArtObsID) {
             document.getElementById("artsobs").innerHTML = textItems.artsobs[index]
@@ -138,7 +141,7 @@ document.querySelector('#language').addEventListener('change', (e) => {
             document.getElementById("resultHeader").innerHTML = textItems.searchResultHeadline[index]
             document.getElementById('nbHits').innerHTML = textItems.nbHitsText[index]
 
-            document.getElementById('downloadButtonId').innerHTML = textItems.downloadLink[index]
+            document.getElementById('downloadButton').innerHTML = textItems.downloadLink[index]
 
             const headerRow = document.getElementById("myTable").rows[0]
 

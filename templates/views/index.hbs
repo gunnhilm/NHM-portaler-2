@@ -14,41 +14,46 @@
     {{>header}}
 
     <div class="content">
-        <h3 id="sok_i_samlingene"></h3>
+        
         <table>
             <tr>
-                <td valign="top">
-                <label for="collection-select" id="velg_en_samling"></label>
-                <select id="collection-select">
-                    <option value="" id="vennligst"></option>
-                    <option value="karplanter" id="karplanter"></option>
-                    <option value="sopp" id="sopp"></option>
-                    <option value="moser" id="moser"></option>
-                    <option value="lav" id="lav"></option>
-                    <option value="alger" id="alger"></option>
-                    <option value="entomologi" id="insekter"></option>
-                </select>
-                <br>
-                <br>
-            <form>
-            <input id="search-text" type="text" class="input" placeholder="Søk">
-            <button id="sok"></button>
-            </form>
-            <br>
-        <img id="pleaseWait" src="/images/ajax-loader.gif" alt="Please Wait"  style="display:none" valign="top">
+                <br><br>
+            </tr>
+            <tr>
+                <td valign="top" width="500px">
+                    <h3 id="sok_i_samlingene"></h3>
+                    <label for="collection-select" id="velg_en_samling"></label>
+                    <select id="collection-select">
+                        <option value="" id="vennligst"></option>
+                        <option value="karplanter" id="karplanter"></option>
+                        <option value="sopp" id="sopp"></option>
+                        <option value="moser" id="moser"></option>
+                        <option value="lav" id="lav"></option>
+                        <option value="alger" id="alger"></option>
+                        <option value="entomologi" id="insekter"></option>
+                    </select>
+                    <br>
+                    <br>
+                    <form>
+                        <input id="search-text" type="text" class="input" placeholder="Søk">
+                        <button id="sok"></button>
+                    </form>
+                    <br>
+                    <img id="pleaseWait" src="/images/ajax-loader.gif" alt="Please Wait"  style="display:none" valign="top">
 
-        <table> 
-            <tr>
-                <td> <h3 id="resultHeader"></h3> </td>
-            </tr>
-            <tr>    
-                <td id="nbHits"></td>
-                <td  id="antall-treff" ></td>
-            </tr>
-            <tr>
-            <td> <button id="downloadButton"  style="display:none"></button> </td>
-            </tr>
-        </table>
+                        <table> 
+                            <tr>
+                                <br>
+                                <td> <h3 id="resultHeader"></h3> </td>
+                            </tr>
+                            <tr>    
+                                <td id="nbHits"></td>
+                                <td  id="antall-treff" ></td>
+                            </tr>
+                            <tr>
+                                <td> <br><button id="downloadButton"  style="display:none"></button> </td>
+                            </tr>
+                        </table>
                 </td>
                 <td>
                     <div id="map" class="map"></div>
@@ -57,6 +62,8 @@
                         <a href="#" id="popup-link" class="popup-link"></a>
                         <div id="popup-content"></div>
                     </div>
+                    <br>
+                    <br>
                 </td>
             </tr>
         </table>

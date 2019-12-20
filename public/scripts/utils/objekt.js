@@ -208,5 +208,10 @@ if(objekt.decimalLatitude & objekt.decimalLongitude) {
     // add this new layer over the map
     map.addLayer(vectorLayer)
 } else {
-    document.querySelector("#map").innerHTML = "no map"
+    if (document.querySelector('#language').value = "Norwegain") {
+        document.querySelector("#map").innerHTML = "Kart ikke tilgjengelig"
+       
+    } else {
+        document.querySelector("#map").innerHTML = "Map not available"
+    }
 }
