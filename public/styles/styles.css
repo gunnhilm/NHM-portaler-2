@@ -28,13 +28,25 @@ header {
     padding:10px;
 }
 
-#logo {
-    vertical-align: middle; 
-    max-height: 40px;
+#searchButtonHeader {
+    background-color: blue;
+    color: white;
+    text-decoration: none;
 }
 
 .headerLink {
-    padding: 20px;
+    text-decoration: none;
+    float: right;
+    padding: 10px;
+}
+
+#language {
+    float: right;
+}
+
+#logo {
+    vertical-align: middle; 
+    max-height: 40px;
 }
 
 .languageLink {

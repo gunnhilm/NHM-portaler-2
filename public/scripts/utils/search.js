@@ -60,6 +60,8 @@ const resultTable = (data) => {
 
         } else {
             cell1.innerHTML =  `<a id="objekt-link" href="http://localhost:3000/object/?id=${i}"> ${data[i].catalogNumber} </a>`
+            cell1.setAttribute('style','text-align:left')
+            //a.setAttribute('style', 'font-size: 20px; cursor: pointer; text-align: center; display:block;');
             cell2.innerHTML = data[i].scientificName
             cell3.innerHTML = data[i].recordedBy
             cell4.innerHTML = data[i].eventDate
@@ -219,12 +221,10 @@ const oldSearch = () => {
                 }
                 renderText(language)
                 document.getElementById("downloadButton").style.display = "inline"
-                console.log('renderText')
                 updatFooter()
                 
                 // sender det til funksjonen som viser reultatene
                 resultTable(data)
-                console.log('resultTable')
                 drawMap(data)
 
             }

@@ -1,6 +1,6 @@
 const textItems = {
     // header
-    searchButtonHeader: ["Søk", "Search"],
+    searchButtonHeader: ["Tilbake til søkeresultat", "Back to search result"],
     aboutButton: ["Om sidene", "About"],
     helpButton: ["Hjelp", "Help"],
     logo: ["/images/uio_nhm_a_cmyk.png", "/images/uio_nhm_a_eng_cmyk.png"],
@@ -26,28 +26,29 @@ const textItems = {
     headerMunicipality: ["Kommune", "Municipality"],
     headerLocality: ["Sted", "Locality"],
     mustChoose: ["Du må velge en samling", "You must choose a collection"],
-    placeholder: ["søk", "Search"],
+    placeholder: ["søketekst", "Search term"],
 
     // object page
     objectPageHeader: ['Objektvisning', 'Object view'],
-    preName: ['Vitenskapelig navn: ', 'Scientific name: '],
-    detLine: ['Bestemt av: ', 'Determined by: '],
-    detDateLine: ['Dato for bestemming: ', 'Date of determination: '],
-    dateName: ['Innsamlingsdato: ', 'Collection date: '],
-    collectorName: ['Innsamler: ', 'Collector: '],
-    localityName: ['Lokalitet: ', 'Locality: '],
-    coordinatesName: ['Koordinater: ', 'Coordinates: '],
-    artsobsName: ['Artsobservasjon ID: ', 'Species Observation ID: '],
+    headSpeciesName: ['Vitenskapelig navn: ', 'Scientific name: '],
+    headDet: ['Bestemt av: ', 'Determined by: '],
+    headDetDate: ['Dato for bestemming: ', 'Date of determination: '],
+    headCollDate: ['Innsamlingsdato: ', 'Collection date: '],
+    headColl: ['Innsamler: ', 'Collector: '],
+    headLocality: ['Lokalitet: ', 'Locality: '],
+    headCoordinates: ['Koordinater: ', 'Coordinates: '],
+    headArtsobs: ['Artsobservasjon ID: ', 'Species Observation ID: '],
     photoAlt: ['Bilde ikke tilgjengelig', 'Photo not available'],
     mapAlt: ['Kart ikke tilgjengelig', 'Map not available'],
 
     // about page
     aboutHeader: ["Om NHMs samlingsportal", "About NHM's collection portal"],
-    aboutText: ["Nettportalen er laget av Eirik Rindal og Gunnhild Marthinsen ", "The web portal is made by Eirik Rindal and Gunnhild Marthinsen"],
+    aboutText: ["Kontaktinformasjon: eirik.rindal@nhm.uio.no", "Contact information: eirik.rindal@nhm.uio.no"],
 
     // help page
-    helpHeader: ["Hjelpeside", "Help page"],
-    helpText: ["Her kommer en hjelpetekst", "Help-text to come"]
+    helpHeader: ["Hvordan søke", "How to search the collections"],
+    helpText: ["Velg samling først, og skriv søketerm i søkefeltet. Du kan søke på latinsk artsnavn, lokalitet, musit-nummer, geografi osv.", 
+    "Choose collection first, and enter search term in the search field. You can search for latin species name, locality, musit-number, geography etc. "]
 }
 
 
@@ -61,7 +62,7 @@ const renderText = function(lang) {
     }
     
     //header
-    document.querySelector('#searchButtonHeader').innerHTML = textItems.searchButtonHeader[index]
+    //document.querySelector('#searchButtonHeader').innerHTML = textItems.searchButtonHeader[index]
     document.querySelector('#aboutButton').innerHTML = textItems.aboutButton[index]
     document.querySelector('#helpButton').innerHTML = textItems.helpButton[index]
     document.querySelector('#logo').src = textItems.logo[index]
@@ -87,13 +88,14 @@ const renderText = function(lang) {
     // object page
     
         //document.getElementById("object_page_header").innerHTML = textItems.objectPageHeader[index]
-        document.getElementById("preName").innerHTML = textItems.preName[index]
-        document.getElementById("detLine").innerHTML = textItems.detLine[index]
-        document.getElementById("detDateLine").innerHTML = textItems.detDateLine[index]
-        document.getElementById("dateName").innerHTML = textItems.dateName[index]
-        document.getElementById("collectorName").innerHTML = textItems.collectorName[index]
-        document.getElementById("localityName").innerHTML = textItems.localityName[index]
-        document.getElementById("coordinatesName").innerHTML = textItems.coordinatesName[index]
+        document.querySelector('#searchButtonHeader').innerHTML = textItems.searchButtonHeader[index]
+        document.getElementById("head-species-name").innerHTML = textItems.headSpeciesName[index]
+        document.getElementById("head-det").innerHTML = textItems.headDet[index]
+        document.getElementById("head-det-date").innerHTML = textItems.headDetDate[index]
+        document.getElementById("head-coll-date").innerHTML = textItems.headCollDate[index]
+        document.getElementById("head-coll").innerHTML = textItems.headColl[index]
+        document.getElementById("head-locality").innerHTML = textItems.headLocality[index]
+        document.getElementById("head-coordinates").innerHTML = textItems.headCoordinates[index]
 
         document.getElementById("photo_box").alt = textItems.photoAlt[index]
         
@@ -102,8 +104,12 @@ const renderText = function(lang) {
         }
 
         if (objekt.ArtObsID) {
-            document.getElementById("artsobs").innerHTML = textItems.artsobs[index]
+            document.getElementById("head-artsobs").innerHTML = textItems.headArtsobs[index]
         }
+        if (objekt.habitat ) {
+            document.getElementById("head-habitat").innerHTML = "Habitat: "
+            
+         }
     }
     
     // about page

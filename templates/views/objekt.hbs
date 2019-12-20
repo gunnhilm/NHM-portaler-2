@@ -8,27 +8,34 @@
     </head>
     
     <body>
-         {{>header}}
-         <div class="content">
+        {{>header}}
+        <br>
+        <br>
+        <div align="right">
+            <a class="headerLink" href="/" id="searchButtonHeader"></a>
+        </div>    
+        <div class="content">
            
             <!--<h1 id="object_page_header"></h1>-->
-            <h2 id="musit_regno"></h2>
+            
+            <br>
+            <h2 id="musit-regno"></h2>
         
             <table width = "1000px" >
                 <tr>
                     <td>
                         <table>
                             <tr>
-                                <td id = "preName" class= "bold"></td>
-                                <td id = "name1"></td>
+                                <td id = "head-species-name" class= "bold" style= "white-space:pre"></td>
+                                <td id = "species-name" style = "border-spacing: 10px 0"></td>
                             </tr>
                             <tr>
-                                <td id = "detLine" class= "bold"></td>
-                                <td id = "det1"></td>
+                                <td id = "head-det" class= "bold" style= "white-space:pre"></td>
+                                <td id = "det" style = "border-spacing: 10px 0"></td>
                             </tr>
                             <tr>
-                                <td id = "detDateLine" class= "bold"></td>
-                                <td id = "detDate"></td>
+                                <td id = "head-det-date" class= "bold" style= "white-space:pre"></td>
+                                <td id = "det-date" style = "border-spacing: 10px 0"></td>
                             </tr>
                             
                         </table>
@@ -36,28 +43,28 @@
                     <td>
                         <table>
                             <tr>
-                                <td id = "dateName" class= "bold"></td>
-                                <td id = "date1"></td>
+                                <td id = "head-coll-date" class= "bold" style= "white-space:pre"></td>
+                                <td id = "coll-date" style = "border-spacing: 10px 0"></td>
                             </tr>
                             <tr>
-                                <td id = "collectorName" class= "bold"></td>
-                                <td id = "collector1"></td>
+                                <td id = "head-coll" class= "bold" ></td>
+                                <td id = "coll" style = "border-spacing: 10px 0"></td>
                             </tr>
                             <tr>
-                                <td id = "localityName" class= "bold"></td>
-                                <td id = "locality1"></td>
+                                <td id = "head-locality" class= "bold"></td>
+                                <td id = "locality" style = "border-spacing: 10px 0"></td>
                             </tr>
                             <tr>
-                                <td id = "coordinatesName" class= "bold"></td>
-                                <td id = "coordinates1"></td>
+                                <td id = "head-coordinates" class= "bold"></td>
+                                <td id = "coordinates" style = "border-spacing: 10px 0"></td>
                             </tr>
                             <tr>
-                                <td id = "artsobsName" class= "bold"></td>
-                                <td id = "artsobs1"></td>
+                                <td id = "head-artsobs" class= "bold" style= "white-space:pre"></td>
+                                <td id = "artsobsID" style = "border-spacing: 10px 0"></td>
                             </tr>
                             <tr>
-                                <td id = "habitatName" class= "bold"></td>
-                                <td id = "habitat1"></td>
+                                <td id = "head-habitat" class= "bold"></td>
+                                <td id = "habitat" style = "border-spacing: 10px 0"></td>
                             </tr>
                         </table>
                     </td>
