@@ -3,18 +3,18 @@ console.log('client side javascript is loaded')
 // names for DOM elements (?) for search
 
 // on page initially
-const samling = document.querySelector('#collection-select') //engelsk
+const samling = document.querySelector('#collection-select') 
 const searchForm = document.querySelector('form') //// bruk konsekvent querySelector eller get elementbyid?
 const search = document.querySelector('input')
 
 // rendered with result table (used in function resultTable())
-const resultHeader = document.getElementById("resultHeader")
-const antall = document.querySelector('#antall-treff') //engelsk
-const nbHits = document.getElementById("nbHits")
+const resultHeader = document.getElementById("result-header")
+const antall = document.querySelector('#nb-hits') //engelsk
+const nbHits = document.getElementById("head-nb-hits")
 const table = document.getElementById("myTable")
 
 // for the download button
-const lastNed = document.getElementById('downloadButton')
+const lastNed = document.getElementById('download-button')
 
 // rendered with result table, in footer
 const oppdatert = document.querySelector('#sist-oppdatert') //engelsk
@@ -134,9 +134,9 @@ searchForm.addEventListener('submit', (e) => {
     nbHits.innerHTML = ""
 
     // Show please wait
-    document.getElementById("pleaseWait").style.display = "block"
+    document.getElementById("please-wait").style.display = "block"
     // hide download button
-    document.getElementById("downloadButton").style.display = "none"
+    document.getElementById("download-button").style.display = "none"
 
     // mustChoose
       if (!valgtSamling) {
@@ -165,11 +165,11 @@ searchForm.addEventListener('submit', (e) => {
                         resultTable(parsedResults.data)
                         drawMap(parsedResults.data)
                         // Show download button
-                        document.getElementById("downloadButton").style.display = "block"
+                        document.getElementById("download-button").style.display = "block"
                     }
                 }
             })
-            document.getElementById("pleaseWait").style.display = "none"
+            document.getElementById("please-wait").style.display = "none"
         })    
     }
   })
@@ -220,7 +220,7 @@ const oldSearch = () => {
                     language = sessionStorage.getItem('language')
                 }
                 renderText(language)
-                document.getElementById("downloadButton").style.display = "inline"
+                document.getElementById("download-button").style.display = "inline"
                 updatFooter()
                 
                 // sender det til funksjonen som viser reultatene

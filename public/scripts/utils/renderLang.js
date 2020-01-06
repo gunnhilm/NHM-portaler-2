@@ -6,10 +6,10 @@ const textItems = {
     logo: ["/images/uio_nhm_a_cmyk.png", "/images/uio_nhm_a_eng_cmyk.png"],
     
     // index page
-    sok_i_samlingene: ["Søk i samlingene", "Search the collections"],
+    headerSearchPage: ["Søk i samlingene", "Search the collections"],
     velg_samling: ["Velg en samling", "Choose a collection" ],
     vennligst: ["--Vennligst gjør et valg--", "--Please make a choice--"],
-    sok_knapp: ["Søk", "Search"],
+    searchButton: ["Søk", "Search"],
     karplanter: ["Karplanter", "Vascular plants"],
     sopp: ["Sopp", "Fungi"],
     moser: ["Moser", "Mosses"],
@@ -26,7 +26,7 @@ const textItems = {
     headerMunicipality: ["Kommune", "Municipality"],
     headerLocality: ["Sted", "Locality"],
     mustChoose: ["Du må velge en samling", "You must choose a collection"],
-    placeholder: ["søketekst", "Search term"],
+    placeholder: ["Søk", "Search term"],
 
     // object page
     objectPageHeader: ['Objektvisning', 'Object view'],
@@ -63,23 +63,31 @@ const renderText = function(lang) {
     
     //header
     //document.querySelector('#searchButtonHeader').innerHTML = textItems.searchButtonHeader[index]
-    document.querySelector('#aboutButton').innerHTML = textItems.aboutButton[index]
-    document.querySelector('#helpButton').innerHTML = textItems.helpButton[index]
-    document.querySelector('#logo').src = textItems.logo[index]
+    document.querySelector('#about-button').innerHTML = textItems.aboutButton[index]
+    document.querySelector('#help-button').innerHTML = textItems.helpButton[index]
+    
+    let logo = document.querySelector('#logo')
+    logo.src = textItems.logo[index]
+    if (language === "Norwegian") {
+        logo.setAttribute("style", "height:15px")
+    } else if (language === "English") {
+        logo.setAttribute("style", "height:30px")
+    }
+    
 
     //index page
     if (!location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help')) {
-        document.querySelector('#sok_i_samlingene').innerHTML = textItems.sok_i_samlingene[index]
-        document.querySelector('#velg_en_samling').innerHTML = textItems.velg_samling[index]
+        document.querySelector('#header-search-page').innerHTML = textItems.headerSearchPage[index]
+        document.querySelector('#select-collection-label').innerHTML = textItems.velg_samling[index]
         document.querySelector('#vennligst').innerHTML = textItems.vennligst[index]
-        document.querySelector('#sok').innerHTML = textItems.sok_knapp[index]
+        document.querySelector('#search-button').innerHTML = textItems.searchButton[index]
         document.querySelector('#karplanter').innerHTML = textItems.karplanter[index]
         document.querySelector('#sopp').innerHTML = textItems.sopp[index]
         document.querySelector('#moser').innerHTML = textItems.moser[index]
         document.querySelector('#lav').innerHTML = textItems.lav[index]
         document.querySelector('#alger').innerHTML = textItems.alger[index]
         document.querySelector('#insekter').innerHTML = textItems.insekter[index]
-        document.querySelector('#downloadButton').innerHTML = textItems.downloadLink[index]
+        document.querySelector('#download-button').innerHTML = textItems.downloadLink[index]
 
         document.querySelector('#search-text').placeholder = textItems.placeholder[index]
     }
@@ -87,27 +95,27 @@ const renderText = function(lang) {
     if (location.href.includes('object')) {
     // object page
     
-        //document.getElementById("object_page_header").innerHTML = textItems.objectPageHeader[index]
+        //document.querySelector("object_page_header").innerHTML = textItems.objectPageHeader[index]
         document.querySelector('#searchButtonHeader').innerHTML = textItems.searchButtonHeader[index]
-        document.getElementById("head-species-name").innerHTML = textItems.headSpeciesName[index]
-        document.getElementById("head-det").innerHTML = textItems.headDet[index]
-        document.getElementById("head-det-date").innerHTML = textItems.headDetDate[index]
-        document.getElementById("head-coll-date").innerHTML = textItems.headCollDate[index]
-        document.getElementById("head-coll").innerHTML = textItems.headColl[index]
-        document.getElementById("head-locality").innerHTML = textItems.headLocality[index]
-        document.getElementById("head-coordinates").innerHTML = textItems.headCoordinates[index]
+        document.querySelector("#head-species-name").innerHTML = textItems.headSpeciesName[index]
+        document.querySelector("#head-det").innerHTML = textItems.headDet[index]
+        document.querySelector("#head-det-date").innerHTML = textItems.headDetDate[index]
+        document.querySelector("#head-coll-date").innerHTML = textItems.headCollDate[index]
+        document.querySelector("#head-coll").innerHTML = textItems.headColl[index]
+        document.querySelector("#head-locality").innerHTML = textItems.headLocality[index]
+        document.querySelector("#head-coordinates").innerHTML = textItems.headCoordinates[index]
 
-        document.getElementById("photo_box").alt = textItems.photoAlt[index]
+        document.querySelector("#photo-box").alt = textItems.photoAlt[index]
         
         if(!objekt.decimalLatitude | !objekt.decimalLongitude) {
-            document.getElementById("map").innerHTML = textItems.mapAlt[index]
+            document.querySelector("#map").innerHTML = textItems.mapAlt[index]
         }
 
         if (objekt.ArtObsID) {
-            document.getElementById("head-artsobs").innerHTML = textItems.headArtsobs[index]
+            document.querySelector("#head-artsobs").innerHTML = textItems.headArtsobs[index]
         }
         if (objekt.habitat ) {
-            document.getElementById("head-habitat").innerHTML = "Habitat: "
+            document.querySelector("#head-habitat").innerHTML = "Habitat: "
             
          }
     }
@@ -136,7 +144,7 @@ document.querySelector('#language').addEventListener('change', (e) => {
     sessionStorage.setItem('language', language)
    
     if (!location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help')) {
-        if (document.getElementById("resultHeader").innerHTML) {
+        if (document.querySelector("#result-header").innerHTML) {
 
             if (language === "Norwegian") {
                 index = 0
@@ -144,12 +152,12 @@ document.querySelector('#language').addEventListener('change', (e) => {
                 index = 1
             }
 
-            document.getElementById("resultHeader").innerHTML = textItems.searchResultHeadline[index]
-            document.getElementById('nbHits').innerHTML = textItems.nbHitsText[index]
+            document.querySelector("#result-header").innerHTML = textItems.searchResultHeadline[index]
+            document.querySelector('#head-nb-hits').innerHTML = textItems.nbHitsText[index]
 
-            document.getElementById('downloadButton').innerHTML = textItems.downloadLink[index]
+            document.querySelector('#download-button').innerHTML = textItems.downloadLink[index]
 
-            const headerRow = document.getElementById("myTable").rows[0]
+            const headerRow = document.querySelector("#myTable").rows[0]
 
             headerRow.cells[1].innerHTML = textItems.headerTaxon[index].bold()
             headerRow.cells[2].innerHTML = textItems.headerCollector[index].bold()

@@ -114,11 +114,11 @@ document.querySelector("#artsobsID").innerHTML = artsobsID
 // photo:
 //for å få thumbnail settes width til 150px i styles for img
 // og for å kunne klikke opp hele bildet, wrappes img i en <a>
-document.getElementById("photo_anchor").href = objekt.associatedMedia
+document.getElementById("photo-anchor").href = objekt.associatedMedia
  // change the image type to small from jpeg
 let smallImage = objekt.associatedMedia
 smallImage = smallImage.replace('jpeg', 'small')
-document.getElementById("photo_box").src = smallImage
+document.getElementById("photo-box").src = smallImage
 
 //map
 

@@ -41,7 +41,7 @@ header {
 }
 
 #language {
-    float: right;
+    float: inline-end;
 }
 
 #logo {

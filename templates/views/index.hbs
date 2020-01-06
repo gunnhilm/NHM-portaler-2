@@ -21,8 +21,8 @@
             </tr>
             <tr>
                 <td valign="top" width="500px">
-                    <h3 id="sok_i_samlingene"></h3>
-                    <label for="collection-select" id="velg_en_samling"></label>
+                    <h2 id="header-search-page"></h2>
+                    <label for="collection-select" id="select-collection-label"></label>
                     <select id="collection-select">
                         <option value="" id="vennligst"></option>
                         <option value="karplanter" id="karplanter"></option>
@@ -35,23 +35,23 @@
                     <br>
                     <br>
                     <form>
-                        <input id="search-text" type="text" class="input" placeholder="Søk">
-                        <button id="sok"></button>
+                        <input id="search-text" type="text" class="input">
+                        <button id="search-button"></button>
                     </form>
                     <br>
-                    <img id="pleaseWait" src="/images/ajax-loader.gif" alt="Please Wait"  style="display:none" valign="top">
+                    <img id="please-wait" src="/images/ajax-loader.gif" alt="Please Wait"  style="display:none" valign="top">
 
                         <table> 
                             <tr>
                                 <br>
-                                <td> <h3 id="resultHeader"></h3> </td>
+                                <td> <h3 id="result-header"></h3> </td>
                             </tr>
                             <tr>    
-                                <td id="nbHits"></td>
-                                <td  id="antall-treff" ></td>
+                                <td id="head-nb-hits"></td>
+                                <td  id="nb-hits" ></td>
                             </tr>
                             <tr>
-                                <td> <br><button id="downloadButton"  style="display:none"></button> </td>
+                                <td> <br><button id="download-button"  style="display:none"></button> </td>
                             </tr>
                         </table>
                 </td>
