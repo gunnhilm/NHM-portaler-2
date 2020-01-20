@@ -83,7 +83,7 @@ td {
     font-style: italic;
 }
 
-#photo_box {
+#photo-box {
     width: 150px;
 }
 
@@ -142,12 +142,14 @@ td {
     right: 100px;
 }
 
-/* Set the size of the div element that contains the map  */
 .map {
-    height: 300px;  /* The height is 400 pixels */
+    height: 300px;  
     width: 300px;  
     color: grey;
-    }
+}
+.map .ol-zoom .ol.zoom-out {
+    margin-top: 204px;
+}
 
 .neutral {
     background-color: white;
@@ -184,4 +186,4 @@ td {
     left: 48px;
     margin-left: -10px;
   } 
-
+ 

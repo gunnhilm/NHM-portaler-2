@@ -96,10 +96,10 @@ app.get('/footer-date', (req, res) => {
 app.get('/object', (req, res) => {
     if (!req.query.id) {
         return res.send({
-            error: 'du må oppgi et objekt'
+            error: 'Du må oppgi et objekt'
         }) 
     } else {
-            res.render('objekt', {
+            res.render('object', {
                 myObject: req.query.id
                 //language: document.querySelector('#language').value
              })

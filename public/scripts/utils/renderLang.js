@@ -6,6 +6,7 @@ const textItems = {
     logo: ["/images/uio_nhm_a_cmyk.png", "/images/uio_nhm_a_eng_cmyk.png"],
     
     // index page
+    emptySearch: ["Tøm søk", "Empty search"],
     headerSearchPage: ["Søk i samlingene", "Search the collections"],
     velg_samling: ["Velg en samling", "Choose a collection" ],
     vennligst: ["--Vennligst gjør et valg--", "--Please make a choice--"],
@@ -27,6 +28,8 @@ const textItems = {
     headerLocality: ["Sted", "Locality"],
     mustChoose: ["Du må velge en samling", "You must choose a collection"],
     placeholder: ["Søk", "Search term"],
+    serverError: ["Serverfeil, prøv nytt søk", "Server error, try new search"],
+    noHits: ["Ingen treff, prøv nytt søk", "No hits, try new search"],
 
     // object page
     objectPageHeader: ['Objektvisning', 'Object view'],
@@ -62,10 +65,9 @@ const renderText = function(lang) {
     }
     
     //header
-    //document.querySelector('#searchButtonHeader').innerHTML = textItems.searchButtonHeader[index]
     document.querySelector('#about-button').innerHTML = textItems.aboutButton[index]
     document.querySelector('#help-button').innerHTML = textItems.helpButton[index]
-    
+        
     let logo = document.querySelector('#logo')
     logo.src = textItems.logo[index]
     if (language === "Norwegian") {
@@ -77,6 +79,7 @@ const renderText = function(lang) {
 
     //index page
     if (!location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help')) {
+        document.querySelector('#empty-search').innerHTML = textItems.emptySearch[index]
         document.querySelector('#header-search-page').innerHTML = textItems.headerSearchPage[index]
         document.querySelector('#select-collection-label').innerHTML = textItems.velg_samling[index]
         document.querySelector('#vennligst').innerHTML = textItems.vennligst[index]
@@ -92,10 +95,27 @@ const renderText = function(lang) {
         document.querySelector('#search-text').placeholder = textItems.placeholder[index]
     }
 
-    if (location.href.includes('object')) {
     // object page
+    if (location.href.includes('object')) {
+        // read string and get the object from sessionStorage (for the object-page)
+        const loadString = () => {
+            const objektJSON = sessionStorage.getItem('string')
+            
+            try {//objekt
+                return objektJSON ? JSON.parse(objektJSON) : []
+            } catch (e) {
+                return []
+            }
+        }
+        //get the object from session storage
+        const allObjekt = loadString()
+        
+        // get the id from the url
+        const urlParams = new URLSearchParams(window.location.search)
+        const id = urlParams.get('id')
+
+        const objekt = allObjekt[id]
     
-        //document.querySelector("object_page_header").innerHTML = textItems.objectPageHeader[index]
         document.querySelector('#searchButtonHeader').innerHTML = textItems.searchButtonHeader[index]
         document.querySelector("#head-species-name").innerHTML = textItems.headSpeciesName[index]
         document.querySelector("#head-det").innerHTML = textItems.headDet[index]
@@ -134,7 +154,15 @@ const renderText = function(lang) {
 
 }
 
-let language = document.querySelector('#language').value
+let language
+if (sessionStorage.language) {
+    language = sessionStorage.getItem('language')
+    document.querySelector('#language').value = language
+} else {
+    language = document.querySelector('#language').value
+    sessionStorage.setItem('language', language)
+}
+
 renderText(language)
 
 

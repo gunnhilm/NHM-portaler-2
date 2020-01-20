@@ -1,44 +1,45 @@
 console.log('client side javascript is loaded')
 
-// names for DOM elements (?) for search
-
 // on page initially
-const samling = document.querySelector('#collection-select') 
+const collection = document.querySelector('#collection-select') 
 const searchForm = document.querySelector('form') //// bruk konsekvent querySelector eller get elementbyid?
 const search = document.querySelector('input')
 
 // rendered with result table (used in function resultTable())
 const resultHeader = document.getElementById("result-header")
-const antall = document.querySelector('#nb-hits') //engelsk
-const nbHits = document.getElementById("head-nb-hits")
+const nbHitsElement = document.getElementById('nb-hits') 
+const nbHitsHeader = document.getElementById("head-nb-hits")
 const table = document.getElementById("myTable")
 
 // for the download button
 const lastNed = document.getElementById('download-button')
 
 // rendered with result table, in footer
-const oppdatert = document.querySelector('#sist-oppdatert') //engelsk
+const updated = document.querySelector('#last-updated') 
 
 // decides which language is rendered
-language = document.querySelector('#language').value
 
-
-
+if (sessionStorage.language) {
+    language = sessionStorage.getItem('language')
+} else {
+    language = document.querySelector('#language').value
+    sessionStorage.setItem('language', language)
+}
 
 // render result table
 const resultTable = (data) => {
 
-        stringData = JSON.stringify(data)
-        sessionStorage.setItem('string', stringData)    // Save searchresult to local storage
+    stringData = JSON.stringify(data)
+    sessionStorage.setItem('string', stringData)    // Save searchresult to local storage
     
-    const antallTreff = data.length
-    antall.textContent = antallTreff
+    const nbHits = data.length
+    nbHitsElement.textContent = nbHits
     
     resultHeader.innerHTML = textItems.searchResultHeadline[index]
-    nbHits.innerHTML = textItems.nbHitsText[index]
+    nbHitsHeader.innerHTML = textItems.nbHitsText[index]
 
     table.innerHTML = "";
-    for (i = -1; i < antallTreff; i++) {
+    for (i = -1; i < nbHits; i++) {
         const row = table.insertRow(-1)
 
         const cell1 = row.insertCell(0)
@@ -61,7 +62,6 @@ const resultTable = (data) => {
         } else {
             cell1.innerHTML =  `<a id="objekt-link" href="http://localhost:3000/object/?id=${i}"> ${data[i].catalogNumber} </a>`
             cell1.setAttribute('style','text-align:left')
-            //a.setAttribute('style', 'font-size: 20px; cursor: pointer; text-align: center; display:block;');
             cell2.innerHTML = data[i].scientificName
             cell3.innerHTML = data[i].recordedBy
             cell4.innerHTML = data[i].eventDate
@@ -69,7 +69,6 @@ const resultTable = (data) => {
             cell6.innerHTML = data[i].county
             cell7.innerHTML = data[i].locality
 
-            // gir de klassen resultTable så de kan styles
             cell1.className = 'row-1 row-ID';
             cell2.className = 'row-2 row-name';
             cell3.className = 'row-3 row-innsamler';
@@ -102,9 +101,9 @@ function download(filename, text) {
 lastNed.addEventListener('click', (e) => {
     e.preventDefault()
     const searchTerm = search.value
-    const valgtSamling = samling.value
+    const chosenCollection = collection.value
     
-    const url = 'http://localhost:3000/download/?search=' + searchTerm +'&samling=' + valgtSamling
+    const url = 'http://localhost:3000/download/?search=' + searchTerm +'&samling=' + chosenCollection
     fetch(url).then((response) => {
             
         response.text().then((data) => {
@@ -119,19 +118,19 @@ lastNed.addEventListener('click', (e) => {
     })
 })
 
-// når noen trykker på søk knappen 
+// when somebody clicks search-button
 searchForm.addEventListener('submit', (e) => {
     e.preventDefault()
-    // slett de forrige søkeresultatene
+    // delete the previous search results
     sessionStorage.removeItem('string') 
     const searchTerm = search.value
-    const valgtSamling = samling.value
-
+    const chosenCollection = collection.value
+    
     // empty table
     table.innerHTML = ""
     resultHeader.innerHTML = ""
-    antall.textContent = ""
-    nbHits.innerHTML = ""
+    nbHitsElement.textContent = ""
+    nbHitsHeader.innerHTML = ""
 
     // Show please wait
     document.getElementById("please-wait").style.display = "block"
@@ -139,20 +138,20 @@ searchForm.addEventListener('submit', (e) => {
     document.getElementById("download-button").style.display = "none"
 
     // mustChoose
-      if (!valgtSamling) {
+      if (!chosenCollection) {
         resultHeader.innerHTML = textItems.mustChoose[index]
         document.getElementById("pleaseWait").style.display = "none"
     } else {
-        const url = 'http://localhost:3000/search/?search=' + searchTerm +'&samling=' + valgtSamling
+        const url = 'http://localhost:3000/search/?search=' + searchTerm +'&samling=' + chosenCollection
         fetch(url).then((response) => {
             response.text().then((data) => {
                 if(data.error) {
+                    resultHeader.innerHTML = textItems.serverError[index]
                     return console.log(data.error)
-                    resultHeader.innerHTML = "Server Feil, prøv nytt søk"
                 } else {
                     const JSONdata = JSON.parse(data) 
                     
-                        const parsedResults = Papa.parse(JSONdata.unparsed, {
+                    const parsedResults = Papa.parse(JSONdata.unparsed, {
                         delimiter: "\t",
                         newline: "\n",
                         quoteChar: '',
@@ -160,10 +159,12 @@ searchForm.addEventListener('submit', (e) => {
                         }) 
                     //check if there are any hits from the search
                     if ( parsedResults.data === undefined || parsedResults.data.length === 0 ) {
-                        resultHeader.innerHTML = "Ingen treff, prøv nytt søk"
+                        resultHeader.innerHTML = textItems.noHits[index]
                     } else {
+                        
                         resultTable(parsedResults.data)
                         drawMap(parsedResults.data)
+                        
                         // Show download button
                         document.getElementById("download-button").style.display = "block"
                     }
@@ -175,19 +176,18 @@ searchForm.addEventListener('submit', (e) => {
   })
 
 
-// når noe velger en samling vil det sendes en forespørsel til server om dato på MUSIT-dump fila
-samling.addEventListener('change', (e) => {
+// when a collection is chosen a request is sent to the server about date of last change of the MUSIT-dump file
+collection.addEventListener('change', (e) => {
     e.preventDefault()
    updatFooter()
 })
 
 const updatFooter = () => {
-    const valgtSamling = samling.value
-    if (valgtSamling) {
-        console.log(valgtSamling);
+    const chosenCollection = collection.value
+    if (chosenCollection) {
         
-        sessionStorage.setItem('samling', valgtSamling)
-        const url = 'http://localhost:3000/footer-date/?&samling=' + valgtSamling
+        sessionStorage.setItem('collection', chosenCollection)
+        const url = 'http://localhost:3000/footer-date/?&samling=' + chosenCollection
         
         fetch(url).then((response) => {
             response.text().then((data) => {
@@ -195,8 +195,8 @@ const updatFooter = () => {
                     return console.log(data.error)
                 } else {
                     data = JSON.parse(data)
-                    StistOppdatert = 'Dataene ble sist oppdatert: ' + data.date
-                    oppdatert.textContent = StistOppdatert
+                    lastUpdated = 'Dataene ble sist oppdatert: ' + data.date
+                    updated.textContent = lastUpdated
                     
                 }
             })
@@ -204,16 +204,16 @@ const updatFooter = () => {
     }
 }
 
-// vise tidligere søk
+// show previous search-result
 const oldSearch = () => {
-    if (sessionStorage.getItem('samling') !== "null") 
+    if (sessionStorage.getItem('collection') !== "null") 
         {
             if (sessionStorage.getItem('string') !== "null") {
-                // henter søkeresultatet fra minne
+                // gets search result from storage
                 stringData = sessionStorage.getItem('string')
-                // parser søkresultatet
+                // parsing search result
                 data = JSON.parse(stringData)
-                // vise riktig språk
+                // render correct language
                 if (sessionStorage.getItem('language') === "null") {
                     language = 'Norwegian'
                 } else {
@@ -223,13 +223,31 @@ const oldSearch = () => {
                 document.getElementById("download-button").style.display = "inline"
                 updatFooter()
                 
-                // sender det til funksjonen som viser reultatene
+                // sends the data to the functions that show the results
                 resultTable(data)
                 drawMap(data)
-
+                
             }
         } 
 }
 
-//kjør funksjonen
+//run the function
 oldSearch() 
+
+//empty-search button (made to test things when fixing bug)
+const emptySearchButton = document.querySelector('#empty-search')
+emptySearchButton.addEventListener('click', (e) => {
+    e.preventDefault()
+    // erase the last search result
+    sessionStorage.removeItem('string') 
+    
+    // empty table
+    table.innerHTML = ""
+    resultHeader.innerHTML = ""
+    nbHitsElement.textContent = ""
+    nbHitsHeader.innerHTML = ""
+
+    // remove old map if any and empty array
+    document.getElementById("map").innerHTML = "" 
+    // empty search-phrase and collection (but these should be kept in oldsearch)
+})
