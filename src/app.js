@@ -23,7 +23,6 @@ hbs.registerPartials(partialsPath)
 // set up static directory to serve
 app.use(express.static(publicDirectoryPath))
 
-
 app.get('', (req, res) => {
     if (!req.query.search) {
         return res.render('index', {
@@ -39,17 +38,19 @@ app.get('', (req, res) => {
 
 // Søk er treff i MUSIT-dump fila
 app.get('/search', (req, res) => {
-    if (!req.query.search) {
-        return res.send({
-            error: 'du må søke'
-        })
+    if (!req.query.search | !req.query.samling) {
+        throw new Error ('Search term missing or collection not chosen') // denne fanges ikke i front-end
     } else {
-
-        fileRead.search(req.query.samling, req.query.search, (error, results) => {
-            res.send({
-                unparsed: results
+        try {
+            fileRead.search(req.query.samling, req.query.search, (error, results) => {
+                res.send({
+                    unparsed: results
+                })
             })
-        })
+        }
+        catch(error) {
+            throw new Error ('error in app.js')
+        }
     }
 })
 
@@ -99,10 +100,9 @@ app.get('/object', (req, res) => {
             error: 'Du må oppgi et objekt'
         }) 
     } else {
-            res.render('object', {
-                myObject: req.query.id
-                //language: document.querySelector('#language').value
-             })
+        res.render('object', {
+            myObject: req.query.id
+        })
     }
 })
 

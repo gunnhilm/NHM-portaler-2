@@ -97,7 +97,7 @@ const drawMap = (parsedData) => {
             if (feature) {
                 const coordinates = feature.getGeometry().getCoordinates()
                 popup.setPosition(coordinates)
-                content.innerHTML =  `<a id="objekt-link" href="http://localhost:3000/object/?id=${feature.get('index')}"> ${feature.get('catalogNumber')} </a>`
+                content.innerHTML =  `<a id="object-link" href="http://localhost:3000/object/?id=${feature.get('index')}"> ${feature.get('catalogNumber')} </a>`
             } 
         })  
     }

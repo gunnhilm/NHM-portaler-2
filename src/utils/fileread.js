@@ -25,33 +25,36 @@ const search = (samling, searchTerm, callback) => {
     // velg riktig MUSIT dump fil å lese
     
     musitFile = setCollection(samling)
-
-    // cleaning the searchterm before making the search so that we get a more precise
-    // remove whiteSpace
-    searchTerm = searchTerm.trim()
-    terms = searchTerm.split(' ')
+    if (fs.existsSync(musitFile)) {
+        // cleaning the searchterm before making the search so that we get a more precise
+        // remove whiteSpace
+        searchTerm = searchTerm.trim()
+        terms = searchTerm.split(' ')
         
-    let results = ''
-    const readInterface = readline.createInterface({
-        input: fs.createReadStream(musitFile),
-        console: false
-    })
+        let results = ''
+        const readInterface = readline.createInterface({
+            input: fs.createReadStream(musitFile),
+            console: false
+        })
 
-    let count = 0  // iterates over each line of the current file
+        let count = 0  // iterates over each line of the current file
         readInterface.on('line', function(line) {
             count++
             if (count === 1) {
                 // header row og legg til et feldt for linje nummer
                 results =  line
             } else if ((terms.length === 1) && (line.indexOf(terms[0]) !== -1)) {
-                 // søk for en match i linja  (line.indexOf(searchTerm) !== -1)
-                    results =  results +  '\n' + line
+                // søk for en match i linja  (line.indexOf(searchTerm) !== -1)
+                results =  results +  '\n' + line
             } else if (line.indexOf(terms[0]) !== -1 && line.indexOf(terms[1]) !== -1 ) {
                 results =  results +  '\n' + line
             } 
         }).on('close', function () {
             callback(undefined, results )
-            })
+        })
+    } else {
+        throw new Error ('throwing error in fileread')
+    }
 }
 
 module.exports = { 

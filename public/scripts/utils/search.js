@@ -12,10 +12,13 @@ const nbHitsHeader = document.getElementById("head-nb-hits")
 const table = document.getElementById("myTable")
 
 // for the download button
-const lastNed = document.getElementById('download-button')
+const downloadButton = document.getElementById('download-button')
 
 // rendered with result table, in footer
 const updated = document.querySelector('#last-updated') 
+
+// to decide wether map is to be drawn
+let searchFailed = false
 
 // decides which language is rendered
 
@@ -30,56 +33,60 @@ if (sessionStorage.language) {
 const resultTable = (data) => {
 
     stringData = JSON.stringify(data)
-    sessionStorage.setItem('string', stringData)    // Save searchresult to local storage
     
-    const nbHits = data.length
-    nbHitsElement.textContent = nbHits
+    try {
+        sessionStorage.setItem('string', stringData)    // Save searchresult to local storage
+        const nbHits = data.length
+        nbHitsElement.textContent = nbHits
+        
+        resultHeader.innerHTML = textItems.searchResultHeadline[index]
+        nbHitsHeader.innerHTML = textItems.nbHitsText[index]
     
-    resultHeader.innerHTML = textItems.searchResultHeadline[index]
-    nbHitsHeader.innerHTML = textItems.nbHitsText[index]
-
-    table.innerHTML = "";
-    for (i = -1; i < nbHits; i++) {
-        const row = table.insertRow(-1)
-
-        const cell1 = row.insertCell(0)
-        const cell2 = row.insertCell(1)
-        const cell3 = row.insertCell(2)
-        const cell4 = row.insertCell(3)
-        const cell5 = row.insertCell(4)
-        const cell6 = row.insertCell(5)
-        const cell7 = row.insertCell(6)
-        if (i === -1) {
-            // header row
-            cell1.innerHTML = 'MUSIT-ID'.bold()
-            cell2.innerHTML = textItems.headerTaxon[index].bold()
-            cell3.innerHTML = textItems.headerCollector[index].bold()
-            cell4.innerHTML = textItems.headerDate[index].bold()
-            cell5.innerHTML = textItems.headerCountry[index].bold()
-            cell6.innerHTML = textItems.headerMunicipality[index].bold()
-            cell7.innerHTML = textItems.headerLocality[index].bold()
-
-        } else {
-            cell1.innerHTML =  `<a id="objekt-link" href="http://localhost:3000/object/?id=${i}"> ${data[i].catalogNumber} </a>`
-            cell1.setAttribute('style','text-align:left')
-            cell2.innerHTML = data[i].scientificName
-            cell3.innerHTML = data[i].recordedBy
-            cell4.innerHTML = data[i].eventDate
-            cell5.innerHTML = data[i].country
-            cell6.innerHTML = data[i].county
-            cell7.innerHTML = data[i].locality
-
-            cell1.className = 'row-1 row-ID';
-            cell2.className = 'row-2 row-name';
-            cell3.className = 'row-3 row-innsamler';
-            cell4.className = 'row-4 row-dato';
-            cell5.className = 'row-5 row-land';
-            cell6.className = 'row-6 row-kommune';
-            cell7.className = 'row-7 row-sted';
-
-
+        table.innerHTML = "";
+        for (i = -1; i < nbHits; i++) {
+            const row = table.insertRow(-1)
+    
+            const cell1 = row.insertCell(0)
+            const cell2 = row.insertCell(1)
+            const cell3 = row.insertCell(2)
+            const cell4 = row.insertCell(3)
+            const cell5 = row.insertCell(4)
+            const cell6 = row.insertCell(5)
+            const cell7 = row.insertCell(6)
+            if (i === -1) {
+                // header row
+                cell1.innerHTML = 'MUSIT-ID'.bold()
+                cell2.innerHTML = textItems.headerTaxon[index].bold()
+                cell3.innerHTML = textItems.headerCollector[index].bold()
+                cell4.innerHTML = textItems.headerDate[index].bold()
+                cell5.innerHTML = textItems.headerCountry[index].bold()
+                cell6.innerHTML = textItems.headerMunicipality[index].bold()
+                cell7.innerHTML = textItems.headerLocality[index].bold()
+    
+            } else {
+                cell1.innerHTML =  `<a id="object-link" href="http://localhost:3000/object/?id=${i}"> ${data[i].catalogNumber} </a>`
+                cell1.setAttribute('style','text-align:left')
+                cell2.innerHTML = data[i].scientificName
+                cell3.innerHTML = data[i].recordedBy
+                cell4.innerHTML = data[i].eventDate
+                cell5.innerHTML = data[i].country
+                cell6.innerHTML = data[i].county
+                cell7.innerHTML = data[i].locality
+    
+                cell1.className = 'row-1 row-ID';
+                cell2.className = 'row-2 row-name';
+                cell3.className = 'row-3 row-innsamler';
+                cell4.className = 'row-4 row-dato';
+                cell5.className = 'row-5 row-land';
+                cell6.className = 'row-6 row-kommune';
+                cell7.className = 'row-7 row-sted';
+            }
         }
-    }    
+    }  
+    catch(error) {
+        resultHeader.innerHTML = textItems.errorToMuchData[index]
+        searchFailed = true // is checked when map is drawn 
+    }
 }
 
 // download search-result to file
@@ -98,7 +105,7 @@ function download(filename, text) {
 
 
 // when download-button is clicked
-lastNed.addEventListener('click', (e) => {
+downloadButton.addEventListener('click', (e) => {
     e.preventDefault()
     const searchTerm = search.value
     const chosenCollection = collection.value
@@ -111,7 +118,7 @@ lastNed.addEventListener('click', (e) => {
                 return console.log(data.error)
             } else {
                 const downloadData = JSON.parse(data).unparsed
-                // Start file download.
+                // Start file download
                 download("download.txt", downloadData)
             }
         })
@@ -123,6 +130,8 @@ searchForm.addEventListener('submit', (e) => {
     e.preventDefault()
     // delete the previous search results
     sessionStorage.removeItem('string') 
+    // reset searchFailed value
+    searchFailed = false
     const searchTerm = search.value
     const chosenCollection = collection.value
     
@@ -144,62 +153,77 @@ searchForm.addEventListener('submit', (e) => {
     } else {
         const url = 'http://localhost:3000/search/?search=' + searchTerm +'&samling=' + chosenCollection
         fetch(url).then((response) => {
-            response.text().then((data) => {
-                if(data.error) {
-                    resultHeader.innerHTML = textItems.serverError[index]
-                    return console.log(data.error)
-                } else {
-                    const JSONdata = JSON.parse(data) 
-                    
-                    const parsedResults = Papa.parse(JSONdata.unparsed, {
-                        delimiter: "\t",
-                        newline: "\n",
-                        quoteChar: '',
-                        header: true,
-                        }) 
-                    //check if there are any hits from the search
-                    if ( parsedResults.data === undefined || parsedResults.data.length === 0 ) {
-                        resultHeader.innerHTML = textItems.noHits[index]
-                    } else {
+            if (!response.ok) {
+                throw 'noe går galt med søk, respons ikke ok'
+            } else {
+                try {
+                    response.text().then((data) => {
+                        if(data.error) {
+                            resultHeader.innerHTML = textItems.serverError[index]
+                            return console.log(data.error)
+                        } else {
+                            const JSONdata = JSON.parse(data) 
                         
-                        resultTable(parsedResults.data)
-                        drawMap(parsedResults.data)
-                        
-                        // Show download button
-                        document.getElementById("download-button").style.display = "block"
-                    }
+                            const parsedResults = Papa.parse(JSONdata.unparsed, {
+                                delimiter: "\t",
+                                newline: "\n",
+                                quoteChar: '',
+                                header: true,
+                            }) 
+                            //check if there are any hits from the search
+                            if ( parsedResults.data === undefined || parsedResults.data.length === 0 ) {
+                                resultHeader.innerHTML = textItems.noHits[index]
+                            } else {
+                            
+                                resultTable(parsedResults.data)
+                                if (!searchFailed) {
+                                    drawMap(parsedResults.data)
+                                } 
+                            
+                                // Show download button
+                                if (!searchFailed) {
+                                    document.getElementById("download-button").style.display = "block"
+                                }
+    
+                            }
+                        }
+                    })
                 }
-            })
+                catch(error) {
+                    console.error(error)
+                }
+            }
             document.getElementById("please-wait").style.display = "none"
         })    
     }
-  })
+})
 
 
 // when a collection is chosen a request is sent to the server about date of last change of the MUSIT-dump file
 collection.addEventListener('change', (e) => {
     e.preventDefault()
-   updatFooter()
+   updateFooter()
 })
 
-const updatFooter = () => {
+const updateFooter = () => {
     const chosenCollection = collection.value
     if (chosenCollection) {
-        
         sessionStorage.setItem('collection', chosenCollection)
         const url = 'http://localhost:3000/footer-date/?&samling=' + chosenCollection
-        
         fetch(url).then((response) => {
-            response.text().then((data) => {
-                if(data.error) {
-                    return console.log(data.error)
-                } else {
-                    data = JSON.parse(data)
-                    lastUpdated = 'Dataene ble sist oppdatert: ' + data.date
-                    updated.textContent = lastUpdated
-                    
-                }
-            })
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            } else {
+                return response.text()
+            }
+        }).then ((data) => {
+            data=JSON.parse(data)
+            lastUpdated = 'Dataene ble sist oppdatert: ' + data.date
+            updated.textcontent = lastUpdated
+        }) .catch((error) => {
+            console.error('There is a problem, probably file for collections does not exist', error)
+            emptySearch()
+            resultHeader.innerHTML = textItems.errorFileNotExisting[index]
         })
     }
 }
@@ -221,7 +245,7 @@ const oldSearch = () => {
                 }
                 renderText(language)
                 document.getElementById("download-button").style.display = "inline"
-                updatFooter()
+                updateFooter()
                 
                 // sends the data to the functions that show the results
                 resultTable(data)
@@ -234,11 +258,7 @@ const oldSearch = () => {
 //run the function
 oldSearch() 
 
-//empty-search button (made to test things when fixing bug)
-const emptySearchButton = document.querySelector('#empty-search')
-emptySearchButton.addEventListener('click', (e) => {
-    e.preventDefault()
-    // erase the last search result
+const emptySearch = () => {
     sessionStorage.removeItem('string') 
     
     // empty table
@@ -249,5 +269,15 @@ emptySearchButton.addEventListener('click', (e) => {
 
     // remove old map if any and empty array
     document.getElementById("map").innerHTML = "" 
+    // hide download-button
+    document.getElementById("download-button").style.display = "none"
     // empty search-phrase and collection (but these should be kept in oldsearch)
+}
+
+//empty-search button (made to test things when fixing bug)
+const emptySearchButton = document.querySelector('#empty-search')
+emptySearchButton.addEventListener('click', (e) => {
+    e.preventDefault()
+    // erase the last search result
+    emptySearch()
 })

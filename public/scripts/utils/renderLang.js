@@ -30,7 +30,9 @@ const textItems = {
     placeholder: ["Søk", "Search term"],
     serverError: ["Serverfeil, prøv nytt søk", "Server error, try new search"],
     noHits: ["Ingen treff, prøv nytt søk", "No hits, try new search"],
-
+    errorToMuchData: ["For mange treff til å vises, begrens søket med f.eks. flere søkeord", "Too many hits to show, limit the seach by e.g. more search terms"],
+    errorFileNotExisting: ["Beklager, noe er feil med valgte samling. Velg en annen samling, kom tilbake senere, eller kontakt oss (se hjelpesiden)",
+     "Sorry, something is wrong with the chosen collection. Choose another collection, come back later, or contact us (see help page)"],
     // object page
     objectPageHeader: ['Objektvisning', 'Object view'],
     headSpeciesName: ['Vitenskapelig navn: ', 'Scientific name: '],
@@ -46,12 +48,12 @@ const textItems = {
 
     // about page
     aboutHeader: ["Om NHMs samlingsportal", "About NHM's collection portal"],
-    aboutText: ["Kontaktinformasjon: eirik.rindal@nhm.uio.no", "Contact information: eirik.rindal@nhm.uio.no"],
+    aboutText: ["Kontaktinformasjon: \<br><br> eirik.rindal@nhm.uio.no \<br> gunnhilm@nhm.uio.no \<br><br>", "Contact information: \<br><br> eirik.rindal@nhm.uio.no \<br> gunnhilm@nhm.uio.no \<br><br>"],
 
     // help page
     helpHeader: ["Hvordan søke", "How to search the collections"],
-    helpText: ["Velg samling først, og skriv søketerm i søkefeltet. Du kan søke på latinsk artsnavn, lokalitet, musit-nummer, geografi osv.", 
-    "Choose collection first, and enter search term in the search field. You can search for latin species name, locality, musit-number, geography etc. "]
+    helpText: ["Velg samling først, og skriv søketerm i søkefeltet. Du kan søke på latinsk artsnavn, lokalitet, musit-nummer, geografi osv. \<br><br> Meld fra om feil: gunnhilm@nhm.uio.no", 
+    "Choose collection first, and enter search term in the search field. You can search for latin species name, locality, musit-number, geography etc. \<br><br> Tell us about errors: gunnhilm@nhm.uio.no "]
 }
 
 
@@ -99,22 +101,22 @@ const renderText = function(lang) {
     if (location.href.includes('object')) {
         // read string and get the object from sessionStorage (for the object-page)
         const loadString = () => {
-            const objektJSON = sessionStorage.getItem('string')
+            const objectJSON = sessionStorage.getItem('string')
             
-            try {//objekt
-                return objektJSON ? JSON.parse(objektJSON) : []
+            try {//object
+                return objectJSON ? JSON.parse(objectJSON) : []
             } catch (e) {
                 return []
             }
         }
         //get the object from session storage
-        const allObjekt = loadString()
+        const allObject = loadString()
         
         // get the id from the url
         const urlParams = new URLSearchParams(window.location.search)
         const id = urlParams.get('id')
 
-        const objekt = allObjekt[id]
+        const object = allObject[id]
     
         document.querySelector('#searchButtonHeader').innerHTML = textItems.searchButtonHeader[index]
         document.querySelector("#head-species-name").innerHTML = textItems.headSpeciesName[index]
@@ -127,14 +129,14 @@ const renderText = function(lang) {
 
         document.querySelector("#photo-box").alt = textItems.photoAlt[index]
         
-        if(!objekt.decimalLatitude | !objekt.decimalLongitude) {
+        if(!object.decimalLatitude | !object.decimalLongitude) {
             document.querySelector("#map").innerHTML = textItems.mapAlt[index]
         }
 
-        if (objekt.ArtObsID) {
+        if (object.ArtObsID) {
             document.querySelector("#head-artsobs").innerHTML = textItems.headArtsobs[index]
         }
-        if (objekt.habitat ) {
+        if (object.habitat ) {
             document.querySelector("#head-habitat").innerHTML = "Habitat: "
             
          }
