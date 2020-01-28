@@ -1,6 +1,5 @@
 const textItems = {
     // header
-    searchButtonHeader: ["Tilbake til søkeresultat", "Back to search result"],
     aboutButton: ["Om sidene", "About"],
     helpButton: ["Hjelp", "Help"],
     logo: ["/images/uio_nhm_a_cmyk.png", "/images/uio_nhm_a_eng_cmyk.png"],
@@ -34,6 +33,7 @@ const textItems = {
     errorFileNotExisting: ["Beklager, noe er feil med valgte samling. Velg en annen samling, kom tilbake senere, eller kontakt oss (se hjelpesiden)",
      "Sorry, something is wrong with the chosen collection. Choose another collection, come back later, or contact us (see help page)"],
     // object page
+    searchButtonHeader: ["Tilbake til søkeresultat", "Back to search result"],
     objectPageHeader: ['Objektvisning', 'Object view'],
     headSpeciesName: ['Vitenskapelig navn: ', 'Scientific name: '],
     headDet: ['Bestemt av: ', 'Determined by: '],
@@ -47,13 +47,18 @@ const textItems = {
     mapAlt: ['Kart ikke tilgjengelig', 'Map not available'],
 
     // about page
-    aboutHeader: ["Om NHMs samlingsportal", "About NHM's collection portal"],
-    aboutText: ["Kontaktinformasjon: \<br><br> eirik.rindal@nhm.uio.no \<br> gunnhilm@nhm.uio.no \<br><br>", "Contact information: \<br><br> eirik.rindal@nhm.uio.no \<br> gunnhilm@nhm.uio.no \<br><br>"],
+    // aboutHeader: ["Om NHMs samlingsportal", "About NHM's collection portal"],
+    // aboutText: ["Kontaktinformasjon: \<br><br> eirik.rindal@nhm.uio.no \<br> gunnhilm@nhm.uio.no \<br><br>", "Contact information: <br><br> eirik.rindal@nhm.uio.no <br> gunnhilm@nhm.uio.no <br><br>"],
 
     // help page
+    backToSearchFromHelp: ['Tilbake til søkeside', 'Back to search-page'],
     helpHeader: ["Hvordan søke", "How to search the collections"],
-    helpText: ["Velg samling først, og skriv søketerm i søkefeltet. Du kan søke på latinsk artsnavn, lokalitet, musit-nummer, geografi osv. \<br><br> Meld fra om feil: gunnhilm@nhm.uio.no", 
-    "Choose collection first, and enter search term in the search field. You can search for latin species name, locality, musit-number, geography etc. \<br><br> Tell us about errors: gunnhilm@nhm.uio.no "]
+    helpText: [`Velg samling først, og skriv ett eller flere søkeord i søkefeltet. 
+    Du kan søke på latinsk artsnavn, lokalitet, musit-nummer, geografi osv. Stor/liten bokstav må være rett. Land må skrives på engelsk, andre felt kan inneholde engelsk eller norsk.<br><br><br>
+    <span class="bold" style="font-size: 16pt">Kontaktinformasjon:</span> <br><br> gunnhilm@nhm.uio.no <br> eirik.rindal@nhm.uio.no`, 
+    `Choose collection first, and enter one or more search terms in the search field. 
+    You can search for latin species name, locality, musit-number, geography etc. Big cap/small cap must be correct. Country is written in english, other fields can be either norwegian or english. <br><br><br>
+    <span class="bold" style="font-size: 16pt">Contact information:</span> <br><br> gunnhilm@nhm.uio.no  <br> eirik.rindal@nhm.uio.no`]
 }
 
 
@@ -67,7 +72,7 @@ const renderText = function(lang) {
     }
     
     //header
-    document.querySelector('#about-button').innerHTML = textItems.aboutButton[index]
+    //document.querySelector('#about-button').innerHTML = textItems.aboutButton[index]
     document.querySelector('#help-button').innerHTML = textItems.helpButton[index]
         
     let logo = document.querySelector('#logo')
@@ -152,6 +157,11 @@ const renderText = function(lang) {
     if (location.href.includes('help')) {
         document.querySelector('#helpHeader').innerHTML = textItems.helpHeader[index]
         document.querySelector('#helpText').innerHTML = textItems.helpText[index]
+        document.querySelector('#backToSearchFromHelp').innerHTML = textItems.backToSearchFromHelp[index]
+    //     document.querySelector('#backToSearch').addEventListener('click', (e) => {
+    //     e.preventDefault()
+    //    // erase the last search result
+    //     })
     }
 
 }

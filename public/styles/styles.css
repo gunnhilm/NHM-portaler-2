@@ -28,26 +28,31 @@ header {
     padding:10px;
 }
 
-#searchButtonHeader {
+.backLink {
     background-color: blue;
     color: white;
     text-decoration: none;
+    padding: 10px;
 }
 
 .headerLink {
     text-decoration: none;
     float: right;
-    padding: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    
 }
 
 #language {
-    float: inline-end;
-}
+    margin-left: 50%;
+} 
 
 #logo {
     vertical-align: middle; 
     max-height: 40px;
 }
+
+
 
 .languageLink {
     padding: 20px;

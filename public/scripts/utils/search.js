@@ -198,11 +198,21 @@ searchForm.addEventListener('submit', (e) => {
     }
 })
 
+// .catch((error) => {
+//     console.error('There is a problem, probably file for collections does not exist', error)
+//     emptySearch()
+//     resultHeader.innerHTML = textItems.errorFileNotExisting[index]
+// })
 
 // when a collection is chosen a request is sent to the server about date of last change of the MUSIT-dump file
 collection.addEventListener('change', (e) => {
     e.preventDefault()
-   updateFooter()
+    updateFooter()
+    if (document.getElementById("search-text").style.display === "none" || document.getElementById("search-button").style.display === "none") {
+        document.getElementById("search-text").style.display = "inline" 
+        document.getElementById("search-button").style.display = "inline"
+        resultHeader.innerHTML = ""
+    }
 })
 
 const updateFooter = () => {
@@ -224,6 +234,11 @@ const updateFooter = () => {
             console.error('There is a problem, probably file for collections does not exist', error)
             emptySearch()
             resultHeader.innerHTML = textItems.errorFileNotExisting[index]
+            // disable search...
+            // <input id="search-text" type="text" class="input">
+                        //             <button id="search-button"></button>
+            document.getElementById("search-text").style.display = "none"
+            document.getElementById("search-button").style.display = "none"
         })
     }
 }
@@ -281,3 +296,6 @@ emptySearchButton.addEventListener('click', (e) => {
     // erase the last search result
     emptySearch()
 })
+
+// document.getElementById("download-button").style.display = "inline"
+//få fram igjen søkemuligheter
