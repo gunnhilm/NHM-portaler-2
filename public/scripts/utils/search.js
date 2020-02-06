@@ -174,7 +174,6 @@ searchForm.addEventListener('submit', (e) => {
                             if ( parsedResults.data === undefined || parsedResults.data.length === 0 ) {
                                 resultHeader.innerHTML = textItems.noHits[index]
                             } else {
-                            
                                 resultTable(parsedResults.data)
                                 if (!searchFailed) {
                                     drawMap(parsedResults.data)
@@ -229,7 +228,7 @@ const updateFooter = () => {
         }).then ((data) => {
             data=JSON.parse(data)
             lastUpdated = 'Dataene ble sist oppdatert: ' + data.date
-            updated.textcontent = lastUpdated
+            updated.textContent = lastUpdated
         }) .catch((error) => {
             console.error('There is a problem, probably file for collections does not exist', error)
             emptySearch()
@@ -291,6 +290,7 @@ const emptySearch = () => {
 
 //empty-search button (made to test things when fixing bug)
 const emptySearchButton = document.querySelector('#empty-search')
+
 emptySearchButton.addEventListener('click', (e) => {
     e.preventDefault()
     // erase the last search result
