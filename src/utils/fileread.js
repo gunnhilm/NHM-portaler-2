@@ -29,8 +29,11 @@ const search = (samling, searchTerm, callback) => {
         // cleaning the searchterm before making the search so that we get a more precise
         // remove whiteSpace
         searchTerm = searchTerm.trim()
-        terms = searchTerm.split(' ')
+        // Case insensitve search
+        searchTerm = searchTerm.toLowerCase()
+        console.log(searchTerm);
         
+        terms = searchTerm.split(' ')
         let results = ''
         const readInterface = readline.createInterface({
             input: fs.createReadStream(musitFile),
@@ -43,12 +46,26 @@ const search = (samling, searchTerm, callback) => {
             if (count === 1) {
                 // header row og legg til et feldt for linje nummer
                 results =  line
-            } else if ((terms.length === 1) && (line.indexOf(terms[0]) !== -1)) {
-                // søk for en match i linja  (line.indexOf(searchTerm) !== -1)
+            } else if (terms.length === 1){
+                if (line.toLowerCase().indexOf(terms[0]) !== -1) {
+                    // søk for en match i linja  (line.indexOf(searchTerm) !== -1)
+                    results =  results +  '\n' + line
+                } 
+            }
+            // Loope igjennom alle søkeordene og sjekke om de fins i linja
+            else if (line.toLowerCase().indexOf(terms[0]) !== -1) {
+                // Hvis linja inneholder det først søkeordet, sjekk om det også inneholder de andre
+                for(let i = 1; i < terms.length; i++){
+                    if(line.toLowerCase().indexOf(terms[i]) === -1){
+                    // hvis vi ikke får treff så bryter vi loopen (-1 = fant ikke)
+                        break;
+                    }
+                    // hvis alle runden med søk har gått bra så lagrer vi resultatet (må trekke fra 1 da arryet er null basert)
+                    if (i === (terms.length -1) ) {
                 results =  results +  '\n' + line
-            } else if (line.indexOf(terms[0]) !== -1 && line.indexOf(terms[1]) !== -1 ) {
-                results =  results +  '\n' + line
-            } 
+                    }
+                }
+            }
         }).on('close', function () {
             callback(undefined, results )
         })
