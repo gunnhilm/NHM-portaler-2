@@ -89,7 +89,8 @@ const coordinates = (obj) => {
 }
 
 // to print nice musit regno
-const regnoEl = `<span>${object.institutionCode}-${object.collectionCode}-${object.catalogNumber}` 
+const regno = `${object.institutionCode}-${object.collectionCode}-${object.catalogNumber}`
+const regnoEl = `<span>${regno}` 
 
 // data only displayed if existing
 let headArtsobs = ''
@@ -103,6 +104,20 @@ let habitat = ''
 if (object.habitat ) {
     habitat = `<span>${object.habitat}</span>`
 }
+
+// wait until musit has dump from analysis-model, or possibly corema-dump incl bold-data
+// (because it does not work at the moment to serach for data in bold with regno, must have processID, and that  is
+// the only way I can think of that will enable me to check whether that info exist in bold... publicly, that is)
+// //create API-url for sequence data from bold
+//const APIurlSequence = `http://www.boldsystems.org/index.php/API_Public/sequence?ids=` + regno
+//const APIurlSpecimen = `http://www.boldsystems.org/index.php/API_Public/specimen?ids=` + regno
+    
+//// const processID = "NOBAS5446-18"
+//// const BOLDurl = `http://www.boldsystems.org/index.php/Public_RecordView?processid=` + processID
+//const APIurlSequenceEl = `<a href="${APIurlSequence}">${regno}</a>`
+//const APIurlSpecimenEl = `<a href="${APIurlSpecimen}">${regno}</a>`
+//// const BOLDurlEl = `<a href="${BOLDurl}">${processID}</a>`
+
 
 // put content in html-boxes
 renderText(language)
@@ -118,6 +133,7 @@ document.querySelector("#coordinates").innerHTML = `<span>${coordinates(object)}
 document.querySelector("#habitat").innerHTML = habitat
 document.querySelector("#artsobsID").innerHTML = artsobsID
 
+//document.querySelector("#bold-link").innerHTML = `<span>${APIurlSpecimenEl}</span>`
 
 // photo:
 //to get a thumbnail width is set to 150px in styles for img
@@ -197,4 +213,32 @@ if(object.decimalLatitude & object.decimalLongitude) {
     }
 }
 
+
+// modal (pop-up) with explanation for zoom in map
+  // Get the modal
+  var zoomModal = document.getElementById("zoom-modal");
+
+  // Get the button that opens the modal
+  var zoomButton = document.getElementById("zoom-button");
+  
+  // Get the <span> element that closes the modal
+  var span = document.getElementsByClassName("close")[0];
+  
+  // When the user clicks on the button, open the modal
+  zoomButton.onclick = function() {
+    zoomModal.style.display = "block";
+  }
+  
+  // When the user clicks on <span> (x), close the modal
+  span.onclick = function() {
+  zoomModal.style.display = "none";
+  }
+  
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function(event) {
+    if (event.target == zoomModal) {
+      zoomModal.style.display = "none";
+    }
+  }
+    
 

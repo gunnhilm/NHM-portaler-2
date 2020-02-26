@@ -68,6 +68,22 @@
                             </tr>
                         </table>
                     </td>
+                    <td>
+                        <table>
+                            <tr>
+                                <td id = "head-bold-link" class= "bold" style= "white-space:pre"></td>
+                                <td id = "bold-link" style = "border-spacing: 10px 0"></td>
+                            </tr>
+                            {{!-- <tr>
+                                <td id = "head-x" class= "bold" ></td>
+                                <td id = "x" style = "border-spacing: 10px 0"></td>
+                            </tr>
+                            <tr>
+                                <td id = "head-y" class= "bold"></td>
+                                <td id = "y" style = "border-spacing: 10px 0"></td>
+                            </tr> --}}
+                        </table>
+                    </td>
 
                    
                 </tr>
@@ -78,6 +94,14 @@
                 <tr>
                     <td>
                         <div id="map" class="map"></div>
+                        <br>
+                        <button id="zoom-button">Zoom</button>
+                        <div id="zoom-modal" class="modal">
+                            <div class="modal-content">
+                                <span class="close">&times;</span>
+                                <span class="popuptext" id="zoom-expl-popup"></span>
+                            </div>    
+                        </div>
                     </td>
                     <td>
                         <div>
@@ -86,7 +110,9 @@
                             </a>
                         </div>
                     </td>
+
                 </tr>
+                
             </table>
         
             <script src="/scripts/utils/renderLang.js"></script>

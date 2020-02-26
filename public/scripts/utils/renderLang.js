@@ -32,6 +32,8 @@ const textItems = {
     errorToMuchData: ["For mange treff til å vises, begrens søket med f.eks. flere søkeord", "Too many hits to show, limit the seach by e.g. more search terms"],
     errorFileNotExisting: ["Beklager, noe er feil med valgte samling. Velg en annen samling, kom tilbake senere, eller kontakt oss (se hjelpesiden)",
      "Sorry, something is wrong with the chosen collection. Choose another collection, come back later, or contact us (see help page)"],
+    mapHelpContent: ["Dobbelklikk for å zoome inn, Shift + dobbelklikk  for å zoome ut. Klikk og dra for å flytte kartutsnitt", "Double click to zoom in, Shift + double click to zoom out. Click and drag to move map."],
+    //helpPopupLink: ["Hjelp - hvordan zoome", "Help - how to zoom"],
     // object page
     searchButtonHeader: ["Tilbake til søkeresultat", "Back to search result"],
     objectPageHeader: ['Objektvisning', 'Object view'],
@@ -100,6 +102,9 @@ const renderText = function(lang) {
         document.querySelector('#download-button').innerHTML = textItems.downloadLink[index]
 
         document.querySelector('#search-text').placeholder = textItems.placeholder[index]
+
+        //document.getElementById('help-popup').innerHTML = textItems.helpPopupLink[index]
+        document.getElementById('zoom-expl-popup').innerHTML = textItems.mapHelpContent[index]
     }
 
     // object page
@@ -144,7 +149,8 @@ const renderText = function(lang) {
         if (object.habitat ) {
             document.querySelector("#head-habitat").innerHTML = "Habitat: "
             
-         }
+        }
+        document.getElementById('zoom-expl-popup').innerHTML = textItems.mapHelpContent[index]
     }
     
     // about page

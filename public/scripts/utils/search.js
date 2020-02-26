@@ -2,7 +2,7 @@ console.log('client side javascript is loaded')
 
 // on page initially
 const collection = document.querySelector('#collection-select') 
-const searchForm = document.querySelector('form') //// bruk konsekvent querySelector eller get elementbyid?
+const searchForm = document.querySelector('form') 
 const search = document.querySelector('input')
 
 // rendered with result table (used in function resultTable())
@@ -145,6 +145,7 @@ searchForm.addEventListener('submit', (e) => {
     document.getElementById("please-wait").style.display = "block"
     // hide download button
     document.getElementById("download-button").style.display = "none"
+    document.getElementById("zoom-button").style.display = "none"
 
     // mustChoose
       if (!chosenCollection) {
@@ -197,11 +198,7 @@ searchForm.addEventListener('submit', (e) => {
     }
 })
 
-// .catch((error) => {
-//     console.error('There is a problem, probably file for collections does not exist', error)
-//     emptySearch()
-//     resultHeader.innerHTML = textItems.errorFileNotExisting[index]
-// })
+
 
 // when a collection is chosen a request is sent to the server about date of last change of the MUSIT-dump file
 collection.addEventListener('change', (e) => {
@@ -285,9 +282,14 @@ const emptySearch = () => {
     document.getElementById("map").innerHTML = "" 
     // hide download-button
     document.getElementById("download-button").style.display = "none"
+    // hide zoom-expl-button
+    document.getElementById("zoom-button").style.display = "none"
     // empty search-phrase and collection (but these should be kept in oldsearch)
+    
 }
 
+  
+  
 //empty-search button (made to test things when fixing bug)
 const emptySearchButton = document.querySelector('#empty-search')
 

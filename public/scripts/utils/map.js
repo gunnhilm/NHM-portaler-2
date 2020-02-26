@@ -101,5 +101,34 @@ const drawMap = (parsedData) => {
             } 
         })  
     }
+
+    // button with modal (pop-up) with explanation for zoom in map
+    // Get the modal
+    var zoomModal = document.getElementById("zoom-modal")
+
+    // Get the button that opens the modal and show it
+    var zoomButton = document.getElementById("zoom-button")
+    zoomButton.style.display = "block"
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0]
+
+    // When the user clicks on the button, open the modal
+    zoomButton.onclick = function() {
+        zoomModal.style.display = "block"
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        zoomModal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == zoomModal) {
+            zoomModal.style.display = "none";
+        }
+    }
+
 }
 
