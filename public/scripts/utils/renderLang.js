@@ -10,12 +10,22 @@ const textItems = {
     velg_samling: ["Velg en samling", "Choose a collection" ],
     vennligst: ["--Vennligst gjør et valg--", "--Please make a choice--"],
     searchButton: ["Søk", "Search"],
+    //----Specimens
     karplanter: ["Karplanter", "Vascular plants"],
     sopp: ["Sopp", "Fungi"],
     moser: ["Moser", "Mosses"],
     lav: ["Lav", "Lichens"],
     alger: ["Alger", "Algae"],
     insekter: ["Insekter", "Insects"],
+    fugler: ["Fugler", "Birds"],
+    pattedyr: ["Pattedyr", "Mammals"],
+    // ---------DNA
+    dna_karplanter: ["Karplanter (DNA)", "Vascular plants (DNA)"],
+    dna_insekter: ["Insekter (DNA)", "Insects (DNA)"],
+    dna_fish_herptiles: ["Fisk & Herpentiler (DNA)", "Fish & Herptiles (DNA)"],
+    dna_fungi_lichens: ["Sopp & Lav (DNA)", "Fungus & Lichens (DNA)"],
+    dna_other: ["Andre grupper (DNA)", "Other groups (DNA)"],
+
     downloadLink: ["Last ned tab-separert resultatfil", "Download tab-delimited result file"],
     searchResultHeadline: ["Resultat", "Search result"],
     nbHitsText: ["Antall treff: ", "Number of hits: "],
@@ -88,6 +98,7 @@ const renderText = function(lang) {
 
     //index page
     if (!location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help')) {
+        //----------------- objekter / Specimens
         document.querySelector('#empty-search').innerHTML = textItems.emptySearch[index]
         document.querySelector('#header-search-page').innerHTML = textItems.headerSearchPage[index]
         document.querySelector('#select-collection-label').innerHTML = textItems.velg_samling[index]
@@ -99,6 +110,15 @@ const renderText = function(lang) {
         document.querySelector('#lav').innerHTML = textItems.lav[index]
         document.querySelector('#alger').innerHTML = textItems.alger[index]
         document.querySelector('#insekter').innerHTML = textItems.insekter[index]
+        document.querySelector('#fugler').innerHTML = textItems.fugler[index]
+        document.querySelector('#pattedyr').innerHTML = textItems.pattedyr[index]
+        //-------------------------- DNA
+        document.querySelector('#dna_karplanter').innerHTML = textItems.dna_karplanter[index]
+        document.querySelector('#dna_insekter').innerHTML = textItems.dna_insekter[index]
+        document.querySelector('#dna_fish_herptiles').innerHTML = textItems.dna_fish_herptiles[index]
+        document.querySelector('#dna_fungi_lichens').innerHTML = textItems.dna_fungi_lichens[index]
+        document.querySelector('#dna_other').innerHTML = textItems.dna_other[index]
+
         document.querySelector('#download-button').innerHTML = textItems.downloadLink[index]
 
         document.querySelector('#search-text').placeholder = textItems.placeholder[index]

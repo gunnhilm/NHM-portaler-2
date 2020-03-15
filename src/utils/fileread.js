@@ -16,6 +16,22 @@ const setCollection = (samling) => {
         musitFile = './src/data/algae_o.txt'
     } else if (samling === 'entomologi') {
         musitFile = './src/data/entomology_nhmo.txt'
+    } else if (samling === 'birds') {
+        musitFile = './src/data/birds_occurrence.txt' 
+    } else if (samling === 'mammals') {
+        musitFile = './src/data/mammals_occurrence.txt'
+    } 
+    // ------DNA 
+    else if (samling === 'dna_karplanter') {
+        musitFile = './src/data/DNA_vascular_occurrence.txt'
+    } else if (samling === 'dna_entomologi') {
+        musitFile = './src/data/DNA_entomology_occurrence.txt'
+    } else if (samling === 'dna_fish_herptiles') {
+        musitFile = './src/data/DNA_fish_herptiles_occurrence.txt'
+    } else if (samling === 'dna_fungi_lichens') {
+        musitFile = './src/data/DNA_fungi_lichens_occurrence.txt'
+    } else if (samling === 'dna_other') {
+        musitFile = './src/data/DNA_other_occurrence.txt'
     }
     return musitFile
 }
