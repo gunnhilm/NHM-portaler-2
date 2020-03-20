@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+     
+    <title>MapObject</title>
+    <link rel="stylesheet" href="/styles/styles.css">  
+
+        <body>
+        {{>header}}
+        <br>
+        <br>
+            {{!-- <div>
+                <button id="zoom-button" style="display:none">Zoom</button>
+                <div id="zoom-modal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <span class="popuptext" id="zoom-expl-popup"></span>
+                    </div>    
+                </div>
+            </div> --}}
+            
+            <div id="map" class="large-map"></div>
+                            
+        
+        <script src="/scripts/utils/papaparse/papaparse.min.js"></script>
+        <script src="/scripts/utils/renderLang.js"></script>
+        <script src="/scripts/utils/ol/ol.js"></script>
+        <script src="/scripts/utils/map.js"></script>
+        <script src="/scripts/utils/largeMapObject.js"></script>
+        </body>
+    </head>
+</html>

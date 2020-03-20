@@ -35,6 +35,8 @@ const textItems = {
     headerCountry: ["Land", "Country"],
     headerMunicipality: ["Kommune", "Municipality"],
     headerLocality: ["Sted", "Locality"],
+    headerCoremaAccno: ["DNA-bank nr.", "DNA-bank nb."],
+    headerSequence: ["Sekvens ID", "Sequence ID"],
     mustChoose: ["Du må velge en samling", "You must choose a collection"],
     placeholder: ["Søk", "Search term"],
     serverError: ["Serverfeil, prøv nytt søk", "Server error, try new search"],
@@ -43,7 +45,8 @@ const textItems = {
     errorFileNotExisting: ["Beklager, noe er feil med valgte samling. Velg en annen samling, kom tilbake senere, eller kontakt oss (se hjelpesiden)",
      "Sorry, something is wrong with the chosen collection. Choose another collection, come back later, or contact us (see help page)"],
     mapHelpContent: ["Dobbelklikk for å zoome inn, Shift + dobbelklikk  for å zoome ut. Klikk og dra for å flytte kartutsnitt", "Double click to zoom in, Shift + double click to zoom out. Click and drag to move map."],
-    //helpPopupLink: ["Hjelp - hvordan zoome", "Help - how to zoom"],
+    largeMapButton: ["Større kart", "Larger map"],
+    
     // object page
     searchButtonHeader: ["Tilbake til søkeresultat", "Back to search result"],
     objectPageHeader: ['Objektvisning', 'Object view'],
@@ -56,8 +59,13 @@ const textItems = {
     headCoordinates: ['Koordinater: ', 'Coordinates: '],
     headArtsobs: ['Artsobservasjon ID: ', 'Species Observation ID: '],
     photoAlt: ['Bilde ikke tilgjengelig', 'Photo not available'],
+    nextPhoto: ['Neste bilde', 'Next photo'],
     mapAlt: ['Kart ikke tilgjengelig', 'Map not available'],
 
+    // corema data page
+    coremaHeader: ["DNA-bank data", "DNA-bank data"],
+    coremaDummyText: ["her kommer corema tekst", "here comes corema text"],
+    
     // about page
     // aboutHeader: ["Om NHMs samlingsportal", "About NHM's collection portal"],
     // aboutText: ["Kontaktinformasjon: \<br><br> eirik.rindal@nhm.uio.no \<br> gunnhilm@nhm.uio.no \<br><br>", "Contact information: <br><br> eirik.rindal@nhm.uio.no <br> gunnhilm@nhm.uio.no <br><br>"],
@@ -97,8 +105,7 @@ const renderText = function(lang) {
     
 
     //index page
-    if (!location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help')) {
-        //----------------- objekter / Specimens
+    if (!location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map')) {
         document.querySelector('#empty-search').innerHTML = textItems.emptySearch[index]
         document.querySelector('#header-search-page').innerHTML = textItems.headerSearchPage[index]
         document.querySelector('#select-collection-label').innerHTML = textItems.velg_samling[index]
@@ -120,11 +127,9 @@ const renderText = function(lang) {
         document.querySelector('#dna_other').innerHTML = textItems.dna_other[index]
 
         document.querySelector('#download-button').innerHTML = textItems.downloadLink[index]
-
         document.querySelector('#search-text').placeholder = textItems.placeholder[index]
-
-        //document.getElementById('help-popup').innerHTML = textItems.helpPopupLink[index]
         document.getElementById('zoom-expl-popup').innerHTML = textItems.mapHelpContent[index]
+        document.querySelector('#large-map-button').innerHTML = textItems.largeMapButton[index]
     }
 
     // object page
@@ -158,6 +163,7 @@ const renderText = function(lang) {
         document.querySelector("#head-coordinates").innerHTML = textItems.headCoordinates[index]
 
         document.querySelector("#photo-box").alt = textItems.photoAlt[index]
+        document.querySelector("#next-photo").innerHTML = textItems.nextPhoto[index]
         
         if(!object.decimalLatitude | !object.decimalLongitude) {
             document.querySelector("#map").innerHTML = textItems.mapAlt[index]
@@ -171,8 +177,15 @@ const renderText = function(lang) {
             
         }
         document.getElementById('zoom-expl-popup').innerHTML = textItems.mapHelpContent[index]
+        document.getElementById('large-map-object-button').innerHTML = textItems.largeMapButton[index]
     }
     
+    // corema page
+    if (location.href.includes('corema')) {
+        document.querySelector('#coremaHeader').innerHTML = textItems.coremaHeader[index]
+        document.querySelector('#coremaDummyText').innerHTML = textItems.coremaDummyText[index]
+    }
+
     // about page
     if (location.href.includes('about')) {
         document.querySelector('#aboutHeader').innerHTML = textItems.aboutHeader[index]
@@ -209,7 +222,7 @@ document.querySelector('#language').addEventListener('change', (e) => {
     renderText(language)
     sessionStorage.setItem('language', language)
    
-    if (!location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help')) {
+    if (!location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema')) {
         if (document.querySelector("#result-header").innerHTML) {
 
             if (language === "Norwegian") {
@@ -220,8 +233,8 @@ document.querySelector('#language').addEventListener('change', (e) => {
 
             document.querySelector("#result-header").innerHTML = textItems.searchResultHeadline[index]
             document.querySelector('#head-nb-hits').innerHTML = textItems.nbHitsText[index]
-
             document.querySelector('#download-button').innerHTML = textItems.downloadLink[index]
+            document.querySelector('#large-map-button').innerHTML = textItems.largeMapButton[index]
 
             const headerRow = document.querySelector("#myTable").rows[0]
 

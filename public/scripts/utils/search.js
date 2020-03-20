@@ -11,7 +11,7 @@ const nbHitsElement = document.getElementById('nb-hits')
 const nbHitsHeader = document.getElementById("head-nb-hits")
 const table = document.getElementById("myTable")
 
-// for the download button
+// for the download button 
 const downloadButton = document.getElementById('download-button')
 
 // rendered with result table, in footer
@@ -30,13 +30,12 @@ if (sessionStorage.language) {
 }
 
 // render result table
-const resultTable = (data) => {
-
-    stringData = JSON.stringify(data)
+const resultTable = (musitData) => { 
+    stringData = JSON.stringify(musitData)
     
     try {
         sessionStorage.setItem('string', stringData)    // Save searchresult to local storage
-        const nbHits = data.length
+        const nbHits = musitData.length
         nbHitsElement.textContent = nbHits
         
         resultHeader.innerHTML = textItems.searchResultHeadline[index]
@@ -53,26 +52,43 @@ const resultTable = (data) => {
             const cell5 = row.insertCell(4)
             const cell6 = row.insertCell(5)
             const cell7 = row.insertCell(6)
+            
+
             if (i === -1) {
                 // header row
-                cell1.innerHTML = 'MUSIT-ID'.bold()
-                cell2.innerHTML = textItems.headerTaxon[index].bold()
-                cell3.innerHTML = textItems.headerCollector[index].bold()
-                cell4.innerHTML = textItems.headerDate[index].bold()
-                cell5.innerHTML = textItems.headerCountry[index].bold()
-                cell6.innerHTML = textItems.headerMunicipality[index].bold()
-                cell7.innerHTML = textItems.headerLocality[index].bold()
+                cell1.innerHTML = `<button class='sort'>${'MUSIT-ID'.bold()} <i class="arrow down"></i></button>`
+                cell1.setAttribute('onclick', "sortTable(0)")
+                cell2.innerHTML = `<button class='sort'>${textItems.headerTaxon[index].bold()} <i class="arrow down"></i></button>`
+                cell2.setAttribute('onclick', "sortTable(1)") 
+                cell3.innerHTML = `<button class='sort'>${textItems.headerCollector[index].bold()} <i class="arrow down"></i></button>`
+                cell3.setAttribute('onclick', "sortTable(2)") 
+                cell4.innerHTML = `<button class='sort'>${textItems.headerDate[index].bold()} <i class="arrow down"></i></button>`
+                cell4.setAttribute('onclick', "sortTable(3)") 
+                cell5.innerHTML = `<button class='sort'>${textItems.headerCountry[index].bold()} <i class="arrow down"></i></button>`
+                cell5.setAttribute('onclick', "sortTable(4)") 
+                cell6.innerHTML = `<button class='sort'>${textItems.headerMunicipality[index].bold()} <i class="arrow down"></i></button>`
+                cell6.setAttribute('onclick', "sortTable(5)") 
+                cell7.innerHTML = `<button class='sort'>${textItems.headerLocality[index].bold()} <i class="arrow down"></i></button>`
+                cell7.setAttribute('onclick', "sortTable(6)") 
+                
     
             } else {
-                cell1.innerHTML =  `<a id="object-link" href="http://localhost:3000/object/?id=${i}"> ${data[i].catalogNumber} </a>`
-                cell1.setAttribute('style','text-align:left')
-                cell2.innerHTML = data[i].scientificName
-                cell3.innerHTML = data[i].recordedBy
-                cell4.innerHTML = data[i].eventDate
-                cell5.innerHTML = data[i].country
-                cell6.innerHTML = data[i].county
-                cell7.innerHTML = data[i].locality
-    
+                cell1.innerHTML =  `<a id="object-link" href="http://localhost:3000/object/?id=${i}"> ${musitData[i].catalogNumber} </a>`
+                cell1.setAttribute('style','text-align:left; vertical-align: middle') // flytt celle-styling til css
+                cell2.innerHTML = musitData[i].scientificName
+                cell2.setAttribute('style','vertical-align:middle')
+                cell3.innerHTML = musitData[i].recordedBy
+                cell3.setAttribute('style','vertical-align:middle')
+                cell4.innerHTML = musitData[i].eventDate
+                cell4.setAttribute('style','vertical-align:middle')
+                cell5.innerHTML = musitData[i].country
+                cell5.setAttribute('style','vertical-align:middle')
+                cell6.innerHTML = musitData[i].county
+                cell6.setAttribute('style','vertical-align:middle')
+                cell7.innerHTML = musitData[i].locality
+                cell7.setAttribute('style','vertical-align:middle')
+               
+
                 cell1.className = 'row-1 row-ID';
                 cell2.className = 'row-2 row-name';
                 cell3.className = 'row-3 row-innsamler';
@@ -80,6 +96,7 @@ const resultTable = (data) => {
                 cell5.className = 'row-5 row-land';
                 cell6.className = 'row-6 row-kommune';
                 cell7.className = 'row-7 row-sted';
+                
             }
         }
     }  
@@ -126,6 +143,8 @@ downloadButton.addEventListener('click', (e) => {
 })
 
 // when somebody clicks search-button
+
+
 searchForm.addEventListener('submit', (e) => {
     e.preventDefault()
     // delete the previous search results
@@ -134,6 +153,7 @@ searchForm.addEventListener('submit', (e) => {
     searchFailed = false
     const searchTerm = search.value
     const chosenCollection = collection.value
+    
     
     // empty table
     table.innerHTML = ""
@@ -146,13 +166,14 @@ searchForm.addEventListener('submit', (e) => {
     // hide download button
     document.getElementById("download-button").style.display = "none"
     document.getElementById("zoom-button").style.display = "none"
+    document.getElementById("large-map-button").style.display = "none"
 
     // mustChoose
-      if (!chosenCollection) {
+    if (!chosenCollection) {
         resultHeader.innerHTML = textItems.mustChoose[index]
-        document.getElementById("pleaseWait").style.display = "none"
+        document.getElementById("please-wait").style.display = "none"
     } else {
-        const url = 'http://localhost:3000/search/?search=' + searchTerm +'&samling=' + chosenCollection
+        const url = 'http://localhost:3000/search/?search=' + searchTerm +'&samling=' + chosenCollection // normal search
         fetch(url).then((response) => {
             if (!response.ok) {
                 throw 'noe går galt med søk, respons ikke ok'
@@ -163,6 +184,7 @@ searchForm.addEventListener('submit', (e) => {
                             resultHeader.innerHTML = textItems.serverError[index]
                             return console.log(data.error)
                         } else {
+                            
                             const JSONdata = JSON.parse(data) 
                         
                             const parsedResults = Papa.parse(JSONdata.unparsed, {
@@ -175,31 +197,31 @@ searchForm.addEventListener('submit', (e) => {
                             if ( parsedResults.data === undefined || parsedResults.data.length === 0 ) {
                                 resultHeader.innerHTML = textItems.noHits[index]
                             } else {
+                                sessionStorage.setItem('string', JSON.stringify(parsedResults.data))   
+                                
                                 resultTable(parsedResults.data)
                                 if (!searchFailed) {
                                     drawMap(parsedResults.data)
                                 } 
-                            
-                                // Show download button
-                                if (!searchFailed) {
-                                    document.getElementById("download-button").style.display = "block"
-                                }
-    
                             }
                         }
                     })
                 }
-                catch(error) {
+                catch (error) {
                     console.error(error)
                 }
             }
             document.getElementById("please-wait").style.display = "none"
-        })    
+        })
+        // Show download button
+        if (!searchFailed) {
+            document.getElementById("download-button").style.display = "block"
+            document.getElementById("large-map-button").style.display = "block"
+        }
     }
-})
-
-
-
+})                    
+    
+  
 // when a collection is chosen a request is sent to the server about date of last change of the MUSIT-dump file
 collection.addEventListener('change', (e) => {
     e.preventDefault()
@@ -256,6 +278,7 @@ const oldSearch = () => {
                 }
                 renderText(language)
                 document.getElementById("download-button").style.display = "inline"
+                document.getElementById("large-map-button").style.display = "inline"
                 updateFooter()
                 
                 // sends the data to the functions that show the results
@@ -280,10 +303,10 @@ const emptySearch = () => {
 
     // remove old map if any and empty array
     document.getElementById("map").innerHTML = "" 
-    // hide download-button
+    // hide buttons rendered with search result
     document.getElementById("download-button").style.display = "none"
-    // hide zoom-expl-button
     document.getElementById("zoom-button").style.display = "none"
+    document.getElementById("large-map-button").style.display = "none"
     // empty search-phrase and collection (but these should be kept in oldsearch)
     
 }
@@ -299,5 +322,71 @@ emptySearchButton.addEventListener('click', (e) => {
     emptySearch()
 })
 
-// document.getElementById("download-button").style.display = "inline"
-//få fram igjen søkemuligheter
+
+function sortTable(n) {
+    console.log("sort is called, can take a while")
+    
+    // får ikke til: // Show please wait
+    //document.getElementById("please-wait").style.display = "block"
+
+    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0
+    table = document.getElementById("myTable")
+    switching = true
+    // Set the sorting direction to ascending:
+    dir = "asc"
+    /* Make a loop that will continue until
+    no switching has been done: */
+    while (switching) {
+      // Start by saying: no switching is done:
+      switching = false
+      rows = table.rows
+      /* Loop through all table rows (except the
+      first, which contains table headers): */
+      for (i = 1; i < (rows.length - 1); i++) {
+        // Start by saying there should be no switching:
+        shouldSwitch = false
+        /* Get the two elements you want to compare,
+        one from current row and one from the next: */
+        x = rows[i].getElementsByTagName("td")[n]
+        
+        y = rows[i + 1].getElementsByTagName("TD")[n];
+        /* Check if the two rows should switch place,
+        based on the direction, asc or desc: */
+        if (dir == "asc") {
+          if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+            // If so, mark as a switch and break the loop:
+            shouldSwitch = true
+            break
+          }
+        } else if (dir == "desc") {
+          if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+            // If so, mark as a switch and break the loop:
+            shouldSwitch = true
+            break
+          }
+        }
+      }
+      if (shouldSwitch) {
+        /* If a switch has been marked, make the switch
+        and mark that a switch has been done: */
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i])
+        switching = true
+        // Each time a switch is done, increase this count by 1:
+        switchcount ++
+      } else {
+        /* If no switching has been done AND the direction is "asc",
+        set the direction to "desc" and run the while loop again. */
+        if (switchcount == 0 && dir == "asc") {
+          dir = "desc"
+          switching = true
+        }
+      }
+    }
+    //document.getElementById("please-wait").style.display = "none"
+}
+
+
+
+document.getElementById('large-map-button').onclick = () => {
+    window.open(href="http://localhost:3000/map")
+}

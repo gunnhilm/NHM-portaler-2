@@ -132,3 +132,101 @@ const drawMap = (parsedData) => {
 
 }
 
+
+
+////// map object page
+
+const drawMapObject = (object) => {
+    const coordinatesView = [Number(object.decimalLongitude), Number(object.decimalLatitude)]
+
+    function initialize_map() {
+        map = new ol.Map({
+            target: 'map',
+            layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM()
+                })
+            ],
+            view: new ol.View({
+                center: ol.proj.fromLonLat(coordinatesView),
+                zoom: 9
+            })
+        })
+    }
+
+
+    if (object.decimalLatitude & object.decimalLongitude) {
+
+        initialize_map()
+
+        // red dot on map:
+
+        // feature object
+        const marker = new ol.Feature({
+            geometry: new ol.geom.Point(ol.proj.fromLonLat([Number(object.decimalLongitude), Number(object.decimalLatitude)]))
+        })
+
+
+
+        // icon...
+        var iconStyle = new ol.style.Style({
+            image: new ol.style.Icon({
+                anchor: [0.5, 0.5],
+                anchorXUnits: 'fraction',
+                anchorYUnits: 'fraction',
+                src: "https://upload.wikimedia.org/wikipedia/commons/e/ec/RedDot.svg"
+            })
+        })
+
+        marker.setStyle(iconStyle)
+
+
+        // source object for this feature
+        const vectorSource = new ol.source.Vector({
+            features: [marker]
+        })
+
+        // add this object to a new layer
+        const vectorLayer = new ol.layer.Vector({
+            source: vectorSource
+        })
+
+        // add this new layer over the map
+        map.addLayer(vectorLayer)
+    } else {
+        if (document.querySelector('#language').value = "Norwegian") {
+            document.querySelector("#map").innerHTML = "Kart ikke tilgjengelig"
+
+        } else {
+            document.querySelector("#map").innerHTML = "Map not available"
+        }
+    }
+
+
+    // modal (pop-up) with explanation for zoom in map
+    // Get the modal
+    var zoomModal = document.getElementById("zoom-modal");
+
+    // Get the button that opens the modal
+    var zoomButton = document.getElementById("zoom-button");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on the button, open the modal
+    zoomButton.onclick = function () {
+        zoomModal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        zoomModal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == zoomModal) {
+            zoomModal.style.display = "none";
+        }
+    }
+}

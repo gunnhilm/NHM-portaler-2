@@ -8,8 +8,12 @@ if (sessionStorage.language) {
 
 // read string and get the object from sessionStorage
 const loadString = () => {
-    const objectJSON = sessionStorage.getItem('string')
-
+    let objectJSON = ''
+    //if( sessionStorage.getItem('databaseSearch') === 'musit' ) {
+        objectJSON = sessionStorage.getItem('string')
+    //} else if (sessionStorage.getItem('databaseSearch') === 'corema') {
+    //    objectJSON = sessionStorage.getItem('coremaString')
+    //}
     try {
         return objectJSON ? JSON.parse(objectJSON) : []
     } catch (e) {
@@ -17,10 +21,12 @@ const loadString = () => {
     }
 }
 
-
+//hide next-photo-button, only in use when more than one photo
+document.getElementById("next-photo").style.display = "none"
 
 //get the object from session storage
 const allObject = loadString()
+
 // get the id from the url
 const urlParams = new URLSearchParams(window.location.search)
 const id = urlParams.get('id')
@@ -111,18 +117,6 @@ if (object.habitat ) {
     habitat = `<span>${object.habitat}</span>`
 }
 
-// wait until musit has dump from analysis-model, or possibly corema-dump incl bold-data
-// (because it does not work at the moment to serach for data in bold with regno, must have processID, and that  is
-// the only way I can think of that will enable me to check whether that info exist in bold... publicly, that is)
-// //create API-url for sequence data from bold
-//const APIurlSequence = `http://www.boldsystems.org/index.php/API_Public/sequence?ids=` + regno
-//const APIurlSpecimen = `http://www.boldsystems.org/index.php/API_Public/specimen?ids=` + regno
-    
-//// const processID = "NOBAS5446-18"
-//// const BOLDurl = `http://www.boldsystems.org/index.php/Public_RecordView?processid=` + processID
-//const APIurlSequenceEl = `<a href="${APIurlSequence}">${regno}</a>`
-//const APIurlSpecimenEl = `<a href="${APIurlSpecimen}">${regno}</a>`
-//// const BOLDurlEl = `<a href="${BOLDurl}">${processID}</a>`
 
 
 // put content in html-boxes
@@ -140,111 +134,53 @@ document.querySelector("#habitat").innerHTML = habitat
 document.querySelector("#artsobsID").innerHTML = artsobsID
 
 //document.querySelector("#bold-link").innerHTML = `<span>${APIurlSpecimenEl}</span>`
+//document.querySelector("#head-coremaAccno").innerHTML = `<span>Corema Accno</span>`
+//document.querySelector("#coremaAccno").innerHTML = `<span>${coremaAccno}</span>`
 
 // photo:
 //to get a thumbnail width is set to 150px in styles for img
 // and to to enable large photo by clicking, img is wrapped in a <a>
-document.getElementById("photo-anchor").href = object.associatedMedia
- // change the image type to small from jpeg
-let smallImage = object.associatedMedia
-smallImage = smallImage.replace('jpeg', 'small')
-document.getElementById("photo-box").src = smallImage
+
+
+// if more than one photo
+if ( object.associatedMedia.includes('|') ) {
+    document.getElementById("next-photo").style.display = "block"
+    let index = 0
+    let imageList = object.associatedMedia.split('|')
+    
+    function reducePhoto(photo) {
+        return photo.replace('jpeg', 'small')
+    }
+
+    let smallImageList = imageList.map(reducePhoto)
+    document.getElementById("photo-anchor").href = imageList[0]
+    document.getElementById("photo-box").src = smallImageList[0]
+    function changeImage() {
+        index = index + 1;
+        if (index == smallImageList.length) {
+            index = 0;
+        }
+        document.getElementById("photo-anchor").href = imageList[index]
+        document.getElementById("photo-box").src = smallImageList[index]
+    }
+    console.log('more pictures')
+    document.getElementById("next-photo").onclick = () => {
+        changeImage()
+    }
+} else {
+    document.getElementById("photo-anchor").href = object.associatedMedia
+    let smallImage = object.associatedMedia
+    smallImage = smallImage.replace('jpeg', 'small')
+    document.getElementById("photo-box").src = smallImage
+}
+
+
+
 
 //map
+drawMapObject(object)
 
-const coordinatesView = [Number(object.decimalLongitude), Number(object.decimalLatitude)]
-
-let map
-
-function initialize_map() {
-    map = new ol.Map({
-    target: 'map',
-    layers: [
-      new ol.layer.Tile({
-        source: new ol.source.OSM()
-      })
-    ],
-    view: new ol.View({
-      center: ol.proj.fromLonLat(coordinatesView),
-      zoom: 9
-    })
-  })
+// large map button
+document.getElementById('large-map-object-button').onclick = () => {
+    window.open(href=`http://localhost:3000/mapObject/?id=${id}`)
 }
-
-
-if(object.decimalLatitude & object.decimalLongitude) {
-    
-    initialize_map()
-    
-    // red dot on map:
-
-    // feature object
-    const marker = new ol.Feature({
-        geometry: new ol.geom.Point(ol.proj.fromLonLat([Number(object.decimalLongitude), Number(object.decimalLatitude)]))
-        })
-
-
-
-    // icon...
-    var iconStyle = new ol.style.Style({
-        image: new ol.style.Icon({
-            anchor: [0.5, 0.5],
-            anchorXUnits: 'fraction',
-            anchorYUnits: 'fraction',
-            src: "https://upload.wikimedia.org/wikipedia/commons/e/ec/RedDot.svg"
-        })
-    })
-
-    marker.setStyle(iconStyle)
-
-
-    // source object for this feature
-    const vectorSource = new ol.source.Vector({
-        features: [marker]
-    })
-
-    // add this object to a new layer
-    const vectorLayer = new ol.layer.Vector({
-        source: vectorSource
-    })
-
-    // add this new layer over the map
-    map.addLayer(vectorLayer)
-} else {
-    if (document.querySelector('#language').value = "Norwegian") {
-        document.querySelector("#map").innerHTML = "Kart ikke tilgjengelig"
-       
-    } else {
-        document.querySelector("#map").innerHTML = "Map not available"
-    }
-}
-
-
-// modal (pop-up) with explanation for zoom in map
-  // Get the modal
-  var zoomModal = document.getElementById("zoom-modal");
-
-  // Get the button that opens the modal
-  var zoomButton = document.getElementById("zoom-button");
-  
-  // Get the <span> element that closes the modal
-  var span = document.getElementsByClassName("close")[0];
-  
-  // When the user clicks on the button, open the modal
-  zoomButton.onclick = function() {
-    zoomModal.style.display = "block";
-  }
-  
-  // When the user clicks on <span> (x), close the modal
-  span.onclick = function() {
-  zoomModal.style.display = "none";
-  }
-  
-  // When the user clicks anywhere outside of the modal, close it
-  window.onclick = function(event) {
-    if (event.target == zoomModal) {
-      zoomModal.style.display = "none";
-    }
-  }
-    
-

@@ -3,4 +3,6 @@ data/
 !data.txt
 *.gz
 coremaFileread.js
+corema_code_for_later.js
+corema_data.hbs
 

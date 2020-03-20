@@ -2,23 +2,23 @@
 
 <html>
     <head>
-        <title>Nettportal objektvisning</title>
+        <title>Nettportal DNA-bank data</title>
         <link rel="stylesheet" href="/styles/styles.css">
-        <script src="/scripts/utils/ol/ol.js"></script>
     </head>
     
     <body>
         {{>header}}
         <br>
         <br>
-        <div align="right">
-            <a class="backLink" href="/" id="searchButtonHeader"></a>
-        </div>    
+        <div class="content">
+            <h1 id="coremaHeader"></h1>
+            <p class="neutral" id="coremaDummyText"></p>
+        </div>   
         <div class="content">
            
             <!--<h1 id="object_page_header"></h1>-->
             
-            <br>
+            <!-- <br>
             <h2 id="musit-regno"></h2>
         
             <table width = "1000px" >
@@ -91,37 +91,14 @@
                 <tr>
                     <td><br><br></td>
                 </tr>
-                <tr>
-                    <td>
-                        <div id="map" class="map"></div>
-                        <br>
-                        <button id="zoom-button">Zoom</button>
-                        <div id="zoom-modal" class="modal">
-                            <div class="modal-content">
-                                <span class="close">&times;</span>
-                                <span class="popuptext" id="zoom-expl-popup"></span>
-                            </div>    
-                        </div>
-                        <button id="large-map-object-button"></button>
-                    </td>
-                    <td>
-                        <div>
-                            <a id="photo-anchor">   
-                                <img id="photo-box">
-                            </a>
-                        </div>
-                        <br>
-                        <button id="next-photo" onclick="changeImage()"></button>
-                    </td>
-
-                </tr>
                 
-            </table>
+                
+            </table> -->
         
             <script src="/scripts/utils/papaparse/papaparse.min.js"></script>
             <script src="/scripts/utils/renderLang.js"></script>
-            <script src="/scripts/utils/map.js"></script>
-            <script src="/scripts/utils/object.js"></script>
+            <script src="/scripts/utils/coremaData.js"></script>
+            
         </div>
     </body>
 </html>

@@ -104,8 +104,13 @@ td {
         /* table-layout: fixed; */
         /* width: 100%; */
         white-space: nowrap;
-
+        
+        
     }
+    
+    /* every second line white and grey */
+    #myTable tr:nth-child(odd)		{ background-color:#eee; }
+    #myTable tr:nth-child(even) 	{ background-color:#fff; }
 
     .row-ID {
         width: 80px;
@@ -155,6 +160,13 @@ td {
 }
 .map .ol-zoom .ol.zoom-out {
     margin-top: 204px;
+}
+
+.large-map {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 99;
 }
 
 .neutral {
@@ -274,3 +286,19 @@ td {
     cursor: pointer;
   }
   
+  i {
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+  }
+
+  .down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+  }
+
+  .sort {
+      width: 100%;
+      text-align: left
+  }
