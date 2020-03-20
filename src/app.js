@@ -1,7 +1,7 @@
 const path = require('path')
 const express = require('express')
 const fileRead = require('./utils/fileread')
-const coremaFileread = require('./utils/coremaFileread')
+//const coremaFileread = require('./utils/coremaFileread')
 const fs = require('fs')
 const footerDate = require('./utils/footerDate')
 const hbs = require('hbs')
@@ -108,49 +108,48 @@ app.get('/object', (req, res) => {
     }
 })
 
-// objektvisningen
-app.get('/corema_data', (req, res) => {
-    res.render('corema_data', {
-    })
+// app.get('/corema_data', (req, res) => {
+//     res.render('corema_data', {
+//     })
     
-})
+// })
 
-app.get('/corema', (req, res) => {
-    if (!req.query.corema) {
-        throw new Error ('Search term missing') // denne fanges ikke i front-end
-    } else {
-        try {
-            coremaFileread.searchCorema(req.query.corema, (error, results) => {
-                //console.log(results)
-                res.send({
-                    unparsed: results
-                })
-            })
-        }
-        catch(error) {
-            throw new Error ('error in corema - app.js')
-        }
-    }
-})
+// app.get('/corema', (req, res) => {
+//     if (!req.query.corema) {
+//         throw new Error ('Search term missing') // denne fanges ikke i front-end
+//     } else {
+//         try {
+//             coremaFileread.searchCorema(req.query.corema, (error, results) => {
+//                 //console.log(results)
+//                 res.send({
+//                     unparsed: results
+//                 })
+//             })
+//         }
+//         catch(error) {
+//             throw new Error ('error in corema - app.js')
+//         }
+//     }
+// })
 
-app.get('/coremaExtensive', (req, res) => {
-    console.log(req.query.coremaExtensive)
-    if (!req.query.coremaExtensive) {
-        throw new Error ('Search term missing') // denne fanges ikke i front-end
-    } else {
-        try {
-            coremaFileread.searchCoremaExtensive(req.query.coremaExtensive, (error, results) => {
-                console.log(results)
-                res.send({
-                    unparsed: results
-                })
-            })
-        }
-        catch(error) {
-            throw new Error ('error in corema - app.js')
-        }
-    }
-})
+// app.get('/coremaExtensive', (req, res) => {
+//     console.log(req.query.coremaExtensive)
+//     if (!req.query.coremaExtensive) {
+//         throw new Error ('Search term missing') // denne fanges ikke i front-end
+//     } else {
+//         try {
+//             coremaFileread.searchCoremaExtensive(req.query.coremaExtensive, (error, results) => {
+//                 console.log(results)
+//                 res.send({
+//                     unparsed: results
+//                 })
+//             })
+//         }
+//         catch(error) {
+//             throw new Error ('error in corema - app.js')
+//         }
+//     }
+// })
 
 app.get('/about', (req, res) => {
    res.render('about', {
