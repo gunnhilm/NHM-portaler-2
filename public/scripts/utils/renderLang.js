@@ -7,8 +7,8 @@ const textItems = {
     // index page
     emptySearch: ["Tøm søk", "Empty search"],
     headerSearchPage: ["Søk i samlingene", "Search the collections"],
-    velg_samling: ["Velg en samling", "Choose a collection" ],
-    vennligst: ["--Vennligst gjør et valg--", "--Please make a choice--"],
+    velg_samling: ["", "" ], //["Velg en samling", "Choose a collection" ],
+    vennligst: ["--Velg en samling--", "--Choose a collection--"],
     searchButton: ["Søk", "Search"],
     //----Specimens
     karplanter: ["Karplanter", "Vascular plants"],
@@ -38,13 +38,13 @@ const textItems = {
     headerCoremaAccno: ["DNA-bank nr.", "DNA-bank nb."],
     headerSequence: ["Sekvens ID", "Sequence ID"],
     mustChoose: ["Du må velge en samling", "You must choose a collection"],
-    placeholder: ["Søk", "Search term"],
+    placeholder: ["Søk etter latinsk artsnavn, musit-nr, person, sted... Flere søkeord i ett søk er mulig.", "Search for latin species name, musit-nb, person, place... Several terms possible."],
     serverError: ["Serverfeil, prøv nytt søk", "Server error, try new search"],
     noHits: ["Ingen treff, prøv nytt søk", "No hits, try new search"],
-    errorToMuchData: ["For mange treff til å vises, begrens søket med f.eks. flere søkeord", "Too many hits to show, limit the seach by e.g. more search terms"],
+    errorRenderResult: ["Noe gikk feil, søk igjen, begrens ev. søket med f.eks. flere søkeord", "Something went wrong, try a new search, possibly limit the seach by e.g. more search terms"],
     errorFileNotExisting: ["Beklager, noe er feil med valgte samling. Velg en annen samling, kom tilbake senere, eller kontakt oss (se hjelpesiden)",
      "Sorry, something is wrong with the chosen collection. Choose another collection, come back later, or contact us (see help page)"],
-    mapHelpContent: ["Dobbelklikk for å zoome inn, Shift + dobbelklikk  for å zoome ut. Klikk og dra for å flytte kartutsnitt", "Double click to zoom in, Shift + double click to zoom out. Click and drag to move map."],
+    mapHelpContent: ["Bruk mushjul, eller dobbelklikk for å zoome inn, Shift + dobbelklikk  for å zoome ut. Klikk og dra for å flytte kartutsnitt", "Use mouse-wheel, or double click to zoom in, Shift + double click to zoom out. Click and drag to move map."],
     largeMapButton: ["Større kart", "Larger map"],
     
     // object page
@@ -63,8 +63,8 @@ const textItems = {
     mapAlt: ['Kart ikke tilgjengelig', 'Map not available'],
 
     // corema data page
-    coremaHeader: ["DNA-bank data", "DNA-bank data"],
-    coremaDummyText: ["her kommer corema tekst", "here comes corema text"],
+    //coremaHeader: ["DNA-bank data", "DNA-bank data"],
+    //coremaDummyText: ["her kommer corema tekst", "here comes corema text"],
     
     // about page
     // aboutHeader: ["Om NHMs samlingsportal", "About NHM's collection portal"],
@@ -166,7 +166,7 @@ const renderText = function(lang) {
         document.querySelector("#next-photo").innerHTML = textItems.nextPhoto[index]
         
         if(!object.decimalLatitude | !object.decimalLongitude) {
-            document.querySelector("#map").innerHTML = textItems.mapAlt[index]
+            document.querySelector("#map-object").innerHTML = textItems.mapAlt[index]
         }
 
         if (object.ArtObsID) {

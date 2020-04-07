@@ -10,108 +10,123 @@
     <body>
     {{>header}}
 
+  
+
     <div class="content">
         
         <table>
             <tr>
                 <div align="right">
                     <br>
-                    <button id="empty-search"></button>
                     
                 </div>
-                <br><br>
+                <br><br><br>
             </tr>
             <tr>
-                <td valign="top" width="500px">
-                    <h2 id="header-search-page"></h2>
-                    <label for="collection-select" id="select-collection-label"></label>
-                    <select id="collection-select">
-                        <option value="" id="vennligst"></option>
-                        <optgroup label="Specimens">
-                            <option value="karplanter" id="karplanter"></option>
-                            <option value="sopp" id="sopp"></option>
-                            <option value="moser" id="moser"></option>
-                            <option value="lav" id="lav"></option>
-                            <option value="alger" id="alger"></option>
-                            <option value="entomologi" id="insekter"></option>
-                            <option value="birds" id="fugler"></option>
-                            <option value="mammals" id="pattedyr"></option>
-                        </optgroup>
-                        <optgroup label="DNA">
-                            <option value="dna_karplanter" id="dna_karplanter"></option>
-                            <option value="dna_entomologi" id="dna_insekter"></option>
-                            <option value="dna_fish_herptiles" id="dna_fish_herptiles"></option>
-                            <option value="dna_fungi_lichens" id="dna_fungi_lichens"></option>
-                            <option value="dna_other" id="dna_other"></option>
-                        </optgroup>
-                    </select>
+                <td valign="top" width="700px">
+                    <p id="header-search-page"></p>
+                    <table>
+                        <tr>
+                            <td>
+                                <label for="collection-select" id="select-collection-label" ></label>
+                                <select id="collection-select" style=" height:30px;" >
+                                    <option value="" id="vennligst" ></option>
+                                    <optgroup label="Specimens">
+                                        <option value="karplanter" id="karplanter"></option>
+                                        <option value="sopp" id="sopp"></option>
+                                        <option value="moser" id="moser"></option>
+                                        <option value="lav" id="lav"></option>
+                                        <option value="alger" id="alger"></option>
+                                        <option value="entomologi" id="insekter"></option>
+                                        <option value="birds" id="fugler"></option>
+                                        <option value="mammals" id="pattedyr"></option>
+                                    </optgroup>
+                                    <optgroup label="DNA">
+                                        <option value="dna_karplanter" id="dna_karplanter"></option>
+                                        <option value="dna_entomologi" id="dna_insekter"></option>
+                                        <option value="dna_fish_herptiles" id="dna_fish_herptiles"></option>
+                                        <option value="dna_fungi_lichens" id="dna_fungi_lichens"></option>
+                                        <option value="dna_other" id="dna_other"></option>
+                                    </optgroup>
+                                </select>
+                    
+                            </td>
+                            <td align="right" style="width:100%">
+                                <button id="empty-search" style="display:none"></button>
+                            </td>
+                        </tr>
+                    </table>
+
+                    
                     <br>
                     <br>
                     <form>
-                        <input id="search-text" type="text" class="input">
-                        <button id="search-button"></button>
+                            <input id="search-text" type="text" class="input" style="height:30px" size="80">
+                            <button id="search-button"></button>
+                        
                     </form>
                     <br>
                     <img id="please-wait" src="/images/ajax-loader.gif" alt="Please Wait"  style="display:none" valign="top">
 
+                    
+                        <br>
+                             <p id="result-header"></p> 
                         <table> 
-                            <tr>
-                                <br>
-                                <td> <h3 id="result-header"></h3> </td>
-                            </tr>
-                            <tr>    
-                                <td id="head-nb-hits"></td>
-                                <td  id="nb-hits" ></td>
-                            </tr>
-                            <tr>
-                                <td> <br><button id="download-button"  style="display:none"></button> </td>
-                                <br>
-                                <br>
-                                <td> <img id="please-wait-sort" src="/images/ajax-loader.gif" alt="Please Wait"  style="display:none" valign="top"> </td>
-                                <td> <br><button id="sort-button"  style="display:none"></button> </td>
-                                {{!-- <td> <br><button id="corema-button"  style="display:none"></button> </td> --}}
-                            </tr>
-                        </table>
+                        <tr>    
+                            <td id="head-nb-hits" style="white-space: nowrap;"></td>
+                            <td id="nb-hits" ></td>
+                            <td  align="right" style="width:100%">
+                                <button id="download-button"  style="display:none"></button>
+                            </td>
+                        </tr>
+                    </table>
+                    <br><br>
+
+                    
+                        
                 </td>
                 <td>
                     <br>
-                    <div id="map" class="map"></div>
+                    <div id="map-search" class="map-search"></div>
 
                     <div id="popup" class="ol-popup">
                         <!--a href="#" id="popup-link"></a-->
                         <div id="popup-content"></div>
                     </div>
-                    <br>
-                </td>
-                <td>
-                    <br>
-                    
-                    <button id="zoom-button" style="display:none">Zoom</button>
-                    <div id="zoom-modal" class="modal">
-                        <div class="modal-content">
-                            <span class="close">&times;</span>
-                            <span class="popuptext" id="zoom-expl-popup"></span>
-                        </div>    
-                    </div>
 
-                    <br>
-                    <button id="large-map-button" style="display:none"></button>
-                                           
-                    
-
+                    <table align="right" >
+                        <tr >
+                            <td >
+                                <button id="zoom-button" style="display:none">Zoom</button>
+                                <div id="zoom-modal" class="modal">
+                                    <div class="modal-content">
+                                        <span class="close">&times;</span>
+                                        <span class="popuptext" id="zoom-expl-popup"></span>
+                                    </div>    
+                                </div>
+                            </td>
+                            <td >
+                                <button id="large-map-button" style="display:none"></button>
+                                <br>
+                            </td>
+                        </tr>
+                    </table>
                 </td>
+              
             </tr>
         </table>
+
+        
         
         <table id="myTable"></table>
-
-             
+     
     </div>
 
-       
-
         {{>footer}}
+    
 
+
+    <script src="https://kit.fontawesome.com/409783eafe.js" crossorigin="anonymous"></script>
     <script src="/scripts/utils/papaparse/papaparse.min.js"></script>
     <script src="/scripts/utils/renderLang.js"></script>
     <link rel="stylesheet" href="/styles/styles.css">

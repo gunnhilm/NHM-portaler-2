@@ -17,3 +17,6 @@ const allObject = loadString()
 console.log(allObject)
 
 drawMap(allObject)
+
+var zoomButton = document.getElementById("zoom-button")
+    zoomButton.style.display = "block"

@@ -52,56 +52,97 @@ const resultTable = (musitData) => {
             const cell5 = row.insertCell(4)
             const cell6 = row.insertCell(5)
             const cell7 = row.insertCell(6)
+            const cell8 = row.insertCell(7)
+            const cell9 = row.insertCell(8)
+            const cell10 = row.insertCell(9)
+            const cell11 = row.insertCell(10)
             
 
             if (i === -1) {
-                // header row
-                cell1.innerHTML = `<button class='sort'>${'MUSIT-ID'.bold()} <i class="arrow down"></i></button>`
-                cell1.setAttribute('onclick', "sortTable(0)")
-                cell2.innerHTML = `<button class='sort'>${textItems.headerTaxon[index].bold()} <i class="arrow down"></i></button>`
-                cell2.setAttribute('onclick', "sortTable(1)") 
-                cell3.innerHTML = `<button class='sort'>${textItems.headerCollector[index].bold()} <i class="arrow down"></i></button>`
-                cell3.setAttribute('onclick', "sortTable(2)") 
-                cell4.innerHTML = `<button class='sort'>${textItems.headerDate[index].bold()} <i class="arrow down"></i></button>`
-                cell4.setAttribute('onclick', "sortTable(3)") 
-                cell5.innerHTML = `<button class='sort'>${textItems.headerCountry[index].bold()} <i class="arrow down"></i></button>`
-                cell5.setAttribute('onclick', "sortTable(4)") 
-                cell6.innerHTML = `<button class='sort'>${textItems.headerMunicipality[index].bold()} <i class="arrow down"></i></button>`
-                cell6.setAttribute('onclick', "sortTable(5)") 
-                cell7.innerHTML = `<button class='sort'>${textItems.headerLocality[index].bold()} <i class="arrow down"></i></button>`
-                cell7.setAttribute('onclick', "sortTable(6)") 
                 
-    
+                // header row
+                function getArrowDown(i) {
+                    let arrowDown =  `<img id='uio-arrow-down${i+1}' src='/images/icon-down.svg' width="10" height="10"></img>`
+                    return (arrowDown)
+                }
+                function getArrowUp(i) {
+                    let arrowUp = `<img id='uio-arrow-up${i+1}' src='/images/icon-up.svg' width="10" height="10"></img>`
+                    return (arrowUp)
+                }
+
+                
+                
+                cell1.innerHTML = `<button class='sort'>${"MUSIT-ID".bold()} ${getArrowDown(0)} ${getArrowUp(0)}</button>` // 
+                
+                cell1.setAttribute('onclick', "sortTable(0)")
+                cell2.innerHTML = `<button class='sort'>${textItems.headerTaxon[index].bold()} ${getArrowDown(1)} ${getArrowUp(1)}</button>`
+                cell2.setAttribute('onclick', "sortTable(1)") 
+                cell3.innerHTML = `<button class='sort'>${textItems.headerCollector[index].bold()} ${getArrowDown(2)} ${getArrowUp(2)}</button>`
+                cell3.setAttribute('onclick', "sortTable(2)") 
+                cell4.innerHTML = `<button class='sort'>${textItems.headerDate[index].bold()} ${getArrowDown(3)} ${getArrowUp(3)}</button>`
+                cell4.setAttribute('onclick', "sortTable(3)") 
+                cell5.innerHTML = `<button class='sort'>${textItems.headerCountry[index].bold()} ${getArrowDown(4)} ${getArrowUp(4)}</button>`
+                cell5.setAttribute('onclick', "sortTable(4)") 
+                cell6.innerHTML = `<button class='sort'>${textItems.headerMunicipality[index].bold()} ${getArrowDown(5)} ${getArrowUp(5)}</button>`
+                cell6.setAttribute('onclick', "sortTable(5)") 
+                cell7.innerHTML = `<button class='sort'>${textItems.headerLocality[index].bold()} ${getArrowDown(6)} ${getArrowUp(6)}</button>`
+                cell7.setAttribute('onclick', "sortTable(6)") 
+                cell8.innerHTML = `<button class='sort'><span class="fas fa-camera"></span>${getArrowDown(7)} ${getArrowUp(7)}</button>`
+                cell8.setAttribute('onclick', "sortTable(7)") 
+                cell9.innerHTML = `<button class='sort'><span class="fas fa-compass"></span>${getArrowDown(8)} ${getArrowUp(8)}</button>`
+                cell9.setAttribute('onclick', "sortTable(8)") 
+                cell10.innerHTML = `<button class='sort'>${textItems.headerCoremaAccno[index].bold()} ${getArrowDown(9)} ${getArrowUp(9)}</button>`
+                cell10.setAttribute('onclick', "sortTable(9)") 
+                cell11.innerHTML = `<button class='sort'>${textItems.headerSequence[index].bold()} ${getArrowDown(10)} ${getArrowUp(10)}</button>`
+                cell11.setAttribute('onclick', "sortTable(10)") 
+                
             } else {
                 cell1.innerHTML =  `<a id="object-link" href="http://localhost:3000/object/?id=${i}"> ${musitData[i].catalogNumber} </a>`
-                cell1.setAttribute('style','text-align:left; vertical-align: middle') // flytt celle-styling til css
                 cell2.innerHTML = musitData[i].scientificName
-                cell2.setAttribute('style','vertical-align:middle')
-                cell3.innerHTML = musitData[i].recordedBy
-                cell3.setAttribute('style','vertical-align:middle')
+                if (musitData[i].recordedBy.includes(",")) {
+                    let x = musitData[i].recordedBy.indexOf(",")
+                    let y = musitData[i].recordedBy.substr(0,x)
+                    cell3.innerHTML = y + " et al."    
+                } else {
+                    cell3.innerHTML = musitData[i].recordedBy
+                }
+                
                 cell4.innerHTML = musitData[i].eventDate
-                cell4.setAttribute('style','vertical-align:middle')
                 cell5.innerHTML = musitData[i].country
-                cell5.setAttribute('style','vertical-align:middle')
                 cell6.innerHTML = musitData[i].county
-                cell6.setAttribute('style','vertical-align:middle')
                 cell7.innerHTML = musitData[i].locality
-                cell7.setAttribute('style','vertical-align:middle')
-               
-
-                cell1.className = 'row-1 row-ID';
-                cell2.className = 'row-2 row-name';
-                cell3.className = 'row-3 row-innsamler';
-                cell4.className = 'row-4 row-dato';
-                cell5.className = 'row-5 row-land';
-                cell6.className = 'row-6 row-kommune';
-                cell7.className = 'row-7 row-sted';
+                if( musitData[i].associatedMedia) {
+                    cell8.innerHTML = `<span class="fas fa-camera"></span>`
+                }
+                if( musitData[i].decimalLongitude) {
+                    cell9.innerHTML = '<span class="fas fa-compass"></span>'
+                }
+                
+                cell1.className = 'row-1 row-ID'
+                cell2.className = 'row-2 row-name'
+                cell3.className = 'row-3 row-innsamler'
+                cell4.className = 'row-4 row-dato'
+                cell5.className = 'row-5 row-land'
+                cell6.className = 'row-6 row-kommune'
+                cell7.className = 'row-7 row-sted'
+                cell8.className = 'row-8 row-photo'
+                cell9.className = 'row-9 row-coordinates'
+                cell10.className = 'row-10 row-accNo'
+                cell11.className = 'row-11 row-processID'
                 
             }
         }
+        // Show download button
+        downloadButton.style.display = "block"
+        document.getElementById("empty-search").style.display = "block"
+        if (!searchFailed) {
+            drawMap(musitData)    
+        }
+        
+         
     }  
     catch(error) {
-        resultHeader.innerHTML = textItems.errorToMuchData[index]
+        resultHeader.innerHTML = textItems.errorRenderResult[index]
         searchFailed = true // is checked when map is drawn 
     }
 }
@@ -148,12 +189,12 @@ downloadButton.addEventListener('click', (e) => {
 searchForm.addEventListener('submit', (e) => {
     e.preventDefault()
     // delete the previous search results
-    sessionStorage.removeItem('string') 
+    sessionStorage.removeItem('string')
+    document.getElementById("map-search").innerHTML = ""  
     // reset searchFailed value
     searchFailed = false
     const searchTerm = search.value
     const chosenCollection = collection.value
-    
     
     // empty table
     table.innerHTML = ""
@@ -164,9 +205,10 @@ searchForm.addEventListener('submit', (e) => {
     // Show please wait
     document.getElementById("please-wait").style.display = "block"
     // hide download button
-    document.getElementById("download-button").style.display = "none"
+    downloadButton.style.display = "none"
     document.getElementById("zoom-button").style.display = "none"
     document.getElementById("large-map-button").style.display = "none"
+    document.getElementById("empty-search").style.display = "none"
 
     // mustChoose
     if (!chosenCollection) {
@@ -197,12 +239,17 @@ searchForm.addEventListener('submit', (e) => {
                             if ( parsedResults.data === undefined || parsedResults.data.length === 0 ) {
                                 resultHeader.innerHTML = textItems.noHits[index]
                             } else {
-                                sessionStorage.setItem('string', JSON.stringify(parsedResults.data))   
+                                try {
+                                    sessionStorage.setItem('string', JSON.stringify(parsedResults.data))   
                                 
-                                resultTable(parsedResults.data)
-                                if (!searchFailed) {
-                                    drawMap(parsedResults.data)
-                                } 
+                                    resultTable(parsedResults.data)
+                                    console.log(parsedResults.data)
+                                    
+                                } catch (error) {
+                                    resultHeader.innerHTML = textItems.errorRenderResult[index]
+                                    searchFailed = true // is checked when map is drawn 
+                                }
+                                 
                             }
                         }
                     })
@@ -213,11 +260,7 @@ searchForm.addEventListener('submit', (e) => {
             }
             document.getElementById("please-wait").style.display = "none"
         })
-        // Show download button
-        if (!searchFailed) {
-            document.getElementById("download-button").style.display = "block"
-            document.getElementById("large-map-button").style.display = "block"
-        }
+        
     }
 })                    
     
@@ -231,6 +274,7 @@ collection.addEventListener('change', (e) => {
         document.getElementById("search-button").style.display = "inline"
         resultHeader.innerHTML = ""
     }
+    sessionStorage.setItem('collection', collection.value)
 })
 
 const updateFooter = () => {
@@ -277,13 +321,13 @@ const oldSearch = () => {
                     language = sessionStorage.getItem('language')
                 }
                 renderText(language)
-                document.getElementById("download-button").style.display = "inline"
-                document.getElementById("large-map-button").style.display = "inline"
+                
+                
+                document.getElementById('collection-select').value = sessionStorage.getItem('collection')
                 updateFooter()
                 
                 // sends the data to the functions that show the results
                 resultTable(data)
-                drawMap(data)
                 
             }
         } 
@@ -293,7 +337,10 @@ const oldSearch = () => {
 oldSearch() 
 
 const emptySearch = () => {
-    sessionStorage.removeItem('string') 
+    sessionStorage.removeItem('string')
+    sessionStorage.removeItem('collection')
+    collection.value = "" 
+    document.getElementById("search-text").value = ""
     
     // empty table
     table.innerHTML = ""
@@ -302,9 +349,10 @@ const emptySearch = () => {
     nbHitsHeader.innerHTML = ""
 
     // remove old map if any and empty array
-    document.getElementById("map").innerHTML = "" 
+    document.getElementById("map-search").innerHTML = "" 
     // hide buttons rendered with search result
     document.getElementById("download-button").style.display = "none"
+    document.getElementById("empty-search").style.display = "none"
     document.getElementById("zoom-button").style.display = "none"
     document.getElementById("large-map-button").style.display = "none"
     // empty search-phrase and collection (but these should be kept in oldsearch)
@@ -323,6 +371,8 @@ emptySearchButton.addEventListener('click', (e) => {
 })
 
 
+
+// feil for musit regno
 function sortTable(n) {
     console.log("sort is called, can take a while")
     
@@ -381,10 +431,27 @@ function sortTable(n) {
           switching = true
         }
       }
+      
     }
+   
+    console.log('sorting is done')
     //document.getElementById("please-wait").style.display = "none"
+    if(dir == "asc") {
+        document.getElementById(`uio-arrow-down${n+1}`).style.display = "inline"
+        document.getElementById(`uio-arrow-up${n+1}`).style.display = "none"
+    } else if (dir == "desc") {
+        document.getElementById(`uio-arrow-up${n+1}`).style.display = "inline"
+        document.getElementById(`uio-arrow-down${n+1}`).style.display = "none"
+    }
+    for (i = 0; i < 10; i++) {
+        if (i === n) {
+            continue
+        }
+        document.getElementById(`uio-arrow-up${i+1}`).style.display = "inline"
+        document.getElementById(`uio-arrow-down${i+1}`).style.display = "inline"
+    }
+    
 }
-
 
 
 document.getElementById('large-map-button').onclick = () => {

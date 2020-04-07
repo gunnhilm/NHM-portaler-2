@@ -3,11 +3,29 @@ html *
    font-family: Arial;
 }
 
-/* to get a sticky footer */
-.content {
-    
-    /* min-height:  calc(100vh - 170px); */
-    min-height:  calc(100vh - 600px);
+#header-search-page {
+    font-size: 30px;
+}
+  
+#search-button {
+     
+    padding: 9px;
+    vertical-align: center;
+    width: 115px;
+}
+
+#empty-search {
+    padding: 9px;
+    margin-right: 12px;
+    width: 115px;
+}
+
+content, footer { 
+    width: 100%; 
+} 
+
+.content { 
+    min-height: calc(100vh - 150px); 
     margin-left: 100px;
 }
 
@@ -16,17 +34,14 @@ header {
     background-color: #57AD3E;
     /* dette er en underlig måte å sentrere bilde og lenker vertikalt på */
     line-height: 45px;
+    
 }
 
 
-.footer {
-   /* position: fixed; */
-   grid-row-start: 2;
-   grid-row-end: 3;
+ footer {
     height: 50px;
     background-color: #57AD3E;
-    padding:10px;
-}
+} 
 
 .backLink {
     background-color: blue;
@@ -43,13 +58,18 @@ header {
     
 }
 
-#language {
+ #language {
     margin-left: 50%;
+    
+    
+    
+    
 } 
 
 #logo {
     vertical-align: middle; 
     max-height: 40px;
+    margin-left: 100px;
 }
 
 
@@ -62,12 +82,15 @@ header {
 .column {
     float: left;
     width: 400px;
-   /* padding:10px;*/
 }
 
 td {
     vertical-align: top;
+  }
+
+#searchButtonHeader {
     
+    padding: 9px;
 }
 
 #object_page_header, #musit_regno {
@@ -99,10 +122,13 @@ td {
 
 /* Her kommer stylingen til resulta av søk tabellen */
 
+    #result-header, #musit-regno {
+        font-size: 24px;
+    }
+
     .resultTable  {
-        /* Prøver å skap litt luft mellom svarene */
-        /* table-layout: fixed; */
-        /* width: 100%; */
+        /* air between text */
+        table-layout: fixed;
         white-space: nowrap;
         
         
@@ -113,36 +139,72 @@ td {
     #myTable tr:nth-child(even) 	{ background-color:#fff; }
 
     .row-ID {
-        width: 80px;
+        width: 100px;
         text-align: right;
         padding: 5px;
+        text-align:left; 
+        vertical-align: middle;
     }
     .row-name {
         font-style: italic;
         width: 230px;
-        padding: 10px;
+        padding: 5px;
+        vertical-align: middle;
     }
     .row-innsamler {
-        width: 130px;
+        width: 140px;
+        padding: 5px;
+        vertical-align: middle;
   
     }
     .row-dato {
         width: 100px;
-        padding: 3px;
+        padding: 5px;
+        vertical-align: middle;
     }
     .row-land {
         width: 100px;
+        padding: 5px;
+        vertical-align: middle;
     }
     .row-kommune {
         width: 150px;
-        padding: 3px;
+        padding: 5px;
+        vertical-align: middle;
     }
     .row-sted {
+        width: 300px;
+        padding: 5px;
+        white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        }
+        display: inline-block;
+        vertical-align: middle;
+    }
+   
+    .row-photo {
+        width: 50px;
+        padding: 5px;
+        text-align: center;
+        vertical-align: middle;
+    }
+    .row-coordinates {
+        width: 50px;
+        padding: 5px;
+        text-align: center;
+        vertical-align: middle;
+    }
+    .row-accNo {
+        width: 120px;
+        padding: 5px;
+        vertical-align: middle;
+    }
+    .row-processID {
+        width: 12e0px;
+        padding: 5px;
+        vertical-align: middle;
+    }
     
-
 
 .italic {
     font-style: italic;
@@ -153,12 +215,31 @@ td {
     right: 100px;
 }
 
-.map {
+.map-search {
+    height: 320px;  
+    width: 810px;  
+    color: grey;
+    margin-left: 50px;
+}
+
+#zoom-button {
+    padding: 2px 12px;
+}
+
+#large-map-button {
+    padding: 2px
+}
+
+.map-object {
     height: 300px;  
     width: 300px;  
     color: grey;
 }
-.map .ol-zoom .ol.zoom-out {
+
+#large-map-object-button {
+    padding: 2px
+}
+.map-object .map-search .ol-zoom .ol.zoom-out {
     margin-top: 204px;
 }
 
@@ -185,7 +266,6 @@ td {
     border: 1px solid #cccccc;
     bottom: 12px; 
     left: -50px; 
-    /* min-width: 280px; */
   }
 
   /* vet ikke hvorfor, men de to bolkene nedenfor må være med for at popup'en på kartet får pil til punktet, som en snakkeboble */
@@ -286,19 +366,16 @@ td {
     cursor: pointer;
   }
   
-  i {
-    border: solid black;
-    border-width: 0 3px 3px 0;
-    display: inline-block;
-    padding: 3px;
-  }
-
   .down {
     transform: rotate(45deg);
     -webkit-transform: rotate(45deg);
-  }
+  } 
 
   .sort {
       width: 100%;
-      text-align: left
-  }
+      text-align: left;
+    }
+
+.uio-arrow-down {
+    background-image: '/images/icon-down.svg';
+} 
