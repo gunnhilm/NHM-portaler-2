@@ -70,32 +70,97 @@ const resultTable = (musitData) => {
                     return (arrowUp)
                 }
 
+                cell1.innerHTML = `<button id='musitIDButton' class='sort'>${"MUSIT-ID".bold()} ${getArrowDown(0)} ${getArrowUp(0)}</button>`  
+                cell2.innerHTML = `<button id='scientificNameButton' class='sort'>${textItems.headerTaxon[index].bold()} ${getArrowDown(1)} ${getArrowUp(1)}</button>`
+                cell3.innerHTML = `<button id='collectorButton' class='sort'>${textItems.headerCollector[index].bold()} ${getArrowDown(2)} ${getArrowUp(2)}</button>`
+                cell4.innerHTML = `<button id='dateButton' class='sort'>${textItems.headerDate[index].bold()} ${getArrowDown(3)} ${getArrowUp(3)}</button>`
+                cell5.innerHTML = `<button id='countryButton' class='sort'>${textItems.headerCountry[index].bold()} ${getArrowDown(4)} ${getArrowUp(4)}</button>`
+                cell6.innerHTML = `<button id='municipalityButton' class='sort'>${textItems.headerMunicipality[index].bold()} ${getArrowDown(5)} ${getArrowUp(5)}</button>`
+                cell7.innerHTML = `<button id='localityButton' class='sort'>${textItems.headerLocality[index].bold()} ${getArrowDown(6)} ${getArrowUp(6)}</button>`
+                cell8.innerHTML = `<button id='photoButton' class='sort'><span class="fas fa-camera"></span>${getArrowDown(7)} ${getArrowUp(7)}</button>`
+                cell9.innerHTML = `<button id='coordinateButton' class='sort'><span class="fas fa-compass"></span>${getArrowDown(8)} ${getArrowUp(8)}</button>`
+                cell10.innerHTML = `<button id='accnoButton' class='sort'>${textItems.headerCoremaAccno[index].bold()} ${getArrowDown(9)} ${getArrowUp(9)}</button>`
+                cell11.innerHTML = `<button id='processIDButton' class='sort'>${textItems.headerSequence[index].bold()} ${getArrowDown(10)} ${getArrowUp(10)}</button>`
                 
+                // add sorting function to buttons in table
                 
-                cell1.innerHTML = `<button class='sort'>${"MUSIT-ID".bold()} ${getArrowDown(0)} ${getArrowUp(0)}</button>` // 
+                function addSortingNumber(id, n, prop) {
+                    document.getElementById(id).addEventListener("click", function() {
+                        let reverse = false
+                        if (document.getElementById(`uio-arrow-up${n}`).style.display == "none" & document.getElementById(`uio-arrow-down${n}`).style.display == "inline") { //uio-arrow-down${i+1}
+                            reverse = true
+                        } 
+                        musitData.sort(sort_by(prop,reverse, parseInt))
+                        resultTable(musitData)
+                        if(!reverse) {
+                            document.getElementById(`uio-arrow-down${n}`).style.display = "inline" //uio-arrow-down${n+1}
+                            document.getElementById(`uio-arrow-up${n}`).style.display = "none"
+                        } else {
+                            document.getElementById(`uio-arrow-up${n}`).style.display = "inline"
+                            document.getElementById(`uio-arrow-down${n}`).style.display = "none"
+                        }
+                        for (i = 1; i < 11; i++) {
+                            if (i === n) {
+                                continue
+                            }
+                            document.getElementById(`uio-arrow-up${i}`).style.display = "inline"
+                            document.getElementById(`uio-arrow-down${i}`).style.display = "inline"
+                        }
+                    })
+                }
                 
-                cell1.setAttribute('onclick', "sortTable(0)")
-                cell2.innerHTML = `<button class='sort'>${textItems.headerTaxon[index].bold()} ${getArrowDown(1)} ${getArrowUp(1)}</button>`
-                cell2.setAttribute('onclick', "sortTable(1)") 
-                cell3.innerHTML = `<button class='sort'>${textItems.headerCollector[index].bold()} ${getArrowDown(2)} ${getArrowUp(2)}</button>`
-                cell3.setAttribute('onclick', "sortTable(2)") 
-                cell4.innerHTML = `<button class='sort'>${textItems.headerDate[index].bold()} ${getArrowDown(3)} ${getArrowUp(3)}</button>`
-                cell4.setAttribute('onclick', "sortTable(3)") 
-                cell5.innerHTML = `<button class='sort'>${textItems.headerCountry[index].bold()} ${getArrowDown(4)} ${getArrowUp(4)}</button>`
-                cell5.setAttribute('onclick', "sortTable(4)") 
-                cell6.innerHTML = `<button class='sort'>${textItems.headerMunicipality[index].bold()} ${getArrowDown(5)} ${getArrowUp(5)}</button>`
-                cell6.setAttribute('onclick', "sortTable(5)") 
-                cell7.innerHTML = `<button class='sort'>${textItems.headerLocality[index].bold()} ${getArrowDown(6)} ${getArrowUp(6)}</button>`
-                cell7.setAttribute('onclick', "sortTable(6)") 
-                cell8.innerHTML = `<button class='sort'><span class="fas fa-camera"></span>${getArrowDown(7)} ${getArrowUp(7)}</button>`
-                cell8.setAttribute('onclick', "sortTable(7)") 
-                cell9.innerHTML = `<button class='sort'><span class="fas fa-compass"></span>${getArrowDown(8)} ${getArrowUp(8)}</button>`
-                cell9.setAttribute('onclick', "sortTable(8)") 
-                cell10.innerHTML = `<button class='sort'>${textItems.headerCoremaAccno[index].bold()} ${getArrowDown(9)} ${getArrowUp(9)}</button>`
-                cell10.setAttribute('onclick', "sortTable(9)") 
-                cell11.innerHTML = `<button class='sort'>${textItems.headerSequence[index].bold()} ${getArrowDown(10)} ${getArrowUp(10)}</button>`
-                cell11.setAttribute('onclick', "sortTable(10)") 
+               function addSortingText(id, n, prop) {
+                    document.getElementById(id).addEventListener("click", function() {
+                        let reverse = false
+                        if (document.getElementById(`uio-arrow-up${n}`).style.display == "none" & document.getElementById(`uio-arrow-down${n}`).style.display == "inline") { //uio-arrow-down${i+1}
+                            reverse = true
+                        } 
+                        musitData.sort(sort_by(prop,reverse, (a) => a.toLowerCase()))
+                        resultTable(musitData)
+                        if(!reverse) {
+                            document.getElementById(`uio-arrow-down${n}`).style.display = "inline" //uio-arrow-down${n+1}
+                            document.getElementById(`uio-arrow-up${n}`).style.display = "none"
+                        } else {
+                            document.getElementById(`uio-arrow-up${n}`).style.display = "inline"
+                            document.getElementById(`uio-arrow-down${n}`).style.display = "none"
+                        }
+                        for (i = 1; i < 11; i++) {
+                            if (i === n) {
+                                continue
+                            }
+                            document.getElementById(`uio-arrow-up${i}`).style.display = "inline"
+                            document.getElementById(`uio-arrow-down${i}`).style.display = "inline"
+                        }
+                    }, false)
+                }
                 
+                const sort_by = (prop, reverse, primer) => {
+                    const key = primer ?
+                    function(x) {
+                        return primer(x[prop])
+                    } :
+                    function(x) {
+                        return x[prop]
+                    }
+                    reverse = !reverse ? 1: -1
+                    
+                    return function(a, b) {
+                        return a = key(a), b = key(b), reverse * ((a > b) - (b > a))
+                    }
+                }
+                
+                addSortingNumber('musitIDButton', 1, 'catalogNumber')
+                addSortingText('scientificNameButton', 2, 'scientificName')
+                addSortingText('collectorButton', 3, 'recordedBy')
+                addSortingText('dateButton', 4, 'eventDate')
+                addSortingText('countryButton', 5, 'country')
+                addSortingText('municipalityButton', 6, 'county')
+                addSortingText('localityButton', 7, 'locality')
+                addSortingText('photoButton', 8, 'associatedMedia')
+                addSortingText('coordinateButton', 9, 'decimalLongitude')
+                // addSortingText('accnoButton', 10, 'accno')
+                // addSortingText('processIDButton', 11, 'processID')
+
             } else {
                 cell1.innerHTML =  `<a id="object-link" href="http://localhost:3000/object/?id=${i}"> ${musitData[i].catalogNumber} </a>`
                 cell2.innerHTML = musitData[i].scientificName
@@ -146,6 +211,8 @@ const resultTable = (musitData) => {
         searchFailed = true // is checked when map is drawn 
     }
 }
+
+
 
 // download search-result to file
 function download(filename, text) {
@@ -243,7 +310,7 @@ searchForm.addEventListener('submit', (e) => {
                                     sessionStorage.setItem('string', JSON.stringify(parsedResults.data))   
                                 
                                     resultTable(parsedResults.data)
-                                    console.log(parsedResults.data)
+                                    
                                     
                                 } catch (error) {
                                     resultHeader.innerHTML = textItems.errorRenderResult[index]
@@ -370,6 +437,32 @@ emptySearchButton.addEventListener('click', (e) => {
     emptySearch()
 })
 
+// function quickSortTable (array, prop) {
+//     // const table = document.getElementById("myTable")
+//     // rows=table.rows
+//     //console.log(array)
+//     if (array.length < 2) {
+//         return array
+//     }
+//     const chosenIndex = array.length -1
+//     const chosen = array[chosenIndex]
+//     const a = []
+//     const b = []
+//     //console.log(array[0]['catalogNumber'])
+//     for (let i = 0; i < chosenIndex; i++) {
+//         const temp = array[i]
+//         console.log(Number(temp[prop]))
+//         //console.log(temp.getElementsByTagName("td")[n].innerHTML)
+//         Number(temp[prop]) < Number(chosen[prop]) ? a.push(temp) : b.push(temp)
+//     }
+//     console.log(chosen)
+//     const output = [...quickSortTable(a,prop), chosen, ...quickSortTable(b,prop)]
+//     console.log(output)
+//     console.log(output.join(' '))
+//     //return output
+
+    
+//}
 
 
 // feil for musit regno
