@@ -2,6 +2,7 @@ const textItems = {
     // header
     aboutButton: ["Om sidene", "About"],
     helpButton: ["Hjelp", "Help"],
+    statistikkButton: ["Statistikk", "Statistics"],
     logo: ["/images/uio_nhm_a_cmyk.png", "/images/uio_nhm_a_eng_cmyk.png"],
     
     // index page
@@ -11,6 +12,7 @@ const textItems = {
     vennligst: ["--Velg en samling--", "--Choose a collection--"],
     searchButton: ["Søk", "Search"],
     //----Specimens
+    total: ["Alle samlingene","All collection"],
     karplanter: ["Karplanter", "Vascular plants"],
     sopp: ["Sopp", "Fungi"],
     moser: ["Moser", "Mosses"],
@@ -66,6 +68,10 @@ const textItems = {
     //coremaHeader: ["DNA-bank data", "DNA-bank data"],
     //coremaDummyText: ["her kommer corema tekst", "here comes corema text"],
     
+    //ShowStat page
+    showStatHeader: ["Statistikk over samlingene", "statistic from the collections"],
+    showStatText: ["Disse tallene reflekterer hva som er registrert i museets databaser. Da kun et fåtall av samlingene har alle objektene registrert i databasene, reflekter ikke disse tallene nødvendigvis samlingens totale bredde.","These number reflext what is recorded in our databases, not necessarily the true number of itms from the collections."],
+    
     // about page
     // aboutHeader: ["Om NHMs samlingsportal", "About NHM's collection portal"],
     // aboutText: ["Kontaktinformasjon: \<br><br> eirik.rindal@nhm.uio.no \<br> gunnhilm@nhm.uio.no \<br><br>", "Contact information: <br><br> eirik.rindal@nhm.uio.no <br> gunnhilm@nhm.uio.no <br><br>"],
@@ -83,9 +89,10 @@ const textItems = {
 
 
 const renderText = function(lang) {
-    if (lang === "Norwegian") {
-        index = 0
-    } else if (lang === "English") {
+    // if (lang === "Norwegian") {
+    //     index = 0
+    // } else 
+    if (lang === "English") {
         index = 1
     } else {
         index = 0
@@ -94,7 +101,8 @@ const renderText = function(lang) {
     //header
     //document.querySelector('#about-button').innerHTML = textItems.aboutButton[index]
     document.querySelector('#help-button').innerHTML = textItems.helpButton[index]
-        
+    document.querySelector('#statistikk-button').innerHTML = textItems.statistikkButton[index]
+
     let logo = document.querySelector('#logo')
     logo.src = textItems.logo[index]
     if (language === "Norwegian") {
@@ -104,13 +112,11 @@ const renderText = function(lang) {
     }
     
 
-    //index page
+    //Doppdown med valg av samlinger, index page og stat page
     if (!location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map')) {
-        document.querySelector('#empty-search').innerHTML = textItems.emptySearch[index]
-        document.querySelector('#header-search-page').innerHTML = textItems.headerSearchPage[index]
-        document.querySelector('#select-collection-label').innerHTML = textItems.velg_samling[index]
-        document.querySelector('#vennligst').innerHTML = textItems.vennligst[index]
-        document.querySelector('#search-button').innerHTML = textItems.searchButton[index]
+        
+       
+        
         document.querySelector('#karplanter').innerHTML = textItems.karplanter[index]
         document.querySelector('#sopp').innerHTML = textItems.sopp[index]
         document.querySelector('#moser').innerHTML = textItems.moser[index]
@@ -125,7 +131,15 @@ const renderText = function(lang) {
         document.querySelector('#dna_fish_herptiles').innerHTML = textItems.dna_fish_herptiles[index]
         document.querySelector('#dna_fungi_lichens').innerHTML = textItems.dna_fungi_lichens[index]
         document.querySelector('#dna_other').innerHTML = textItems.dna_other[index]
-
+    }
+    // index page
+    if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map')) {
+        document.querySelector('#vennligst').innerHTML = textItems.vennligst[index] 
+        
+        document.querySelector('#search-button').innerHTML = textItems.searchButton[index]
+        document.querySelector('#empty-search').innerHTML = textItems.emptySearch[index]
+        document.querySelector('#header-search-page').innerHTML = textItems.headerSearchPage[index]
+        document.querySelector('#select-collection-label').innerHTML = textItems.velg_samling[index]
         document.querySelector('#download-button').innerHTML = textItems.downloadLink[index]
         document.querySelector('#search-text').placeholder = textItems.placeholder[index]
         document.getElementById('zoom-expl-popup').innerHTML = textItems.mapHelpContent[index]
@@ -185,6 +199,12 @@ const renderText = function(lang) {
         document.querySelector('#coremaHeader').innerHTML = textItems.coremaHeader[index]
         document.querySelector('#coremaDummyText').innerHTML = textItems.coremaDummyText[index]
     }
+    // Stat page
+    if (location.href.includes('showStat')) {
+        document.querySelector('#showStatHeader').innerHTML = textItems.showStatHeader[index]
+        document.querySelector('#showStatText').innerHTML = textItems.showStatText[index]
+        document.querySelector('#total').innerHTML = textItems.total[index] // ekstra valg på dropp dawn
+    }
 
     // about page
     if (location.href.includes('about')) {
@@ -222,7 +242,7 @@ document.querySelector('#language').addEventListener('change', (e) => {
     renderText(language)
     sessionStorage.setItem('language', language)
    
-    if (!location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema')) {
+    if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema')) {
         if (document.querySelector("#result-header").innerHTML) {
 
             if (language === "Norwegian") {

@@ -162,7 +162,11 @@ const resultTable = (musitData) => {
                 // addSortingText('processIDButton', 11, 'processID')
 
             } else {
-                cell1.innerHTML =  `<a id="object-link" href="http://localhost:3000/object/?id=${i}"> ${musitData[i].catalogNumber} </a>`
+                cell1.innerHTML =  `<a id="object-link" href="/object/?id=${i}"> ${musitData[i].catalogNumber} </a>`
+                cell1.setAttribute('style','text-align:left; vertical-align: middle') // flytt celle-styling til css
+                cell1.innerHTML =  `<a id="object-link" href="/object/?id=${i}"> ${musitData[i].catalogNumber} </a>`
+                cell1.setAttribute('style','text-align:left; vertical-align: middle') // flytt celle-styling til css
+                cell1.innerHTML =  `<a id="object-link" href="/object/?id=${i}"> ${musitData[i].catalogNumber} </a>`
                 cell2.innerHTML = musitData[i].scientificName
                 if (musitData[i].recordedBy.includes(",")) {
                     let x = musitData[i].recordedBy.indexOf(",")
@@ -235,7 +239,7 @@ downloadButton.addEventListener('click', (e) => {
     const searchTerm = search.value
     const chosenCollection = collection.value
     
-    const url = 'http://localhost:3000/download/?search=' + searchTerm +'&samling=' + chosenCollection
+    const url = '/download/?search=' + searchTerm +'&samling=' + chosenCollection
     fetch(url).then((response) => {
             
         response.text().then((data) => {
@@ -282,7 +286,8 @@ searchForm.addEventListener('submit', (e) => {
         resultHeader.innerHTML = textItems.mustChoose[index]
         document.getElementById("please-wait").style.display = "none"
     } else {
-        const url = 'http://localhost:3000/search/?search=' + searchTerm +'&samling=' + chosenCollection // normal search
+
+        const url = '/search/?search=' + searchTerm +'&samling=' + chosenCollection // normal search
         fetch(url).then((response) => {
             if (!response.ok) {
                 throw 'noe går galt med søk, respons ikke ok'
@@ -348,7 +353,7 @@ const updateFooter = () => {
     const chosenCollection = collection.value
     if (chosenCollection) {
         sessionStorage.setItem('collection', chosenCollection)
-        const url = 'http://localhost:3000/footer-date/?&samling=' + chosenCollection
+        const url = '/footer-date/?&samling=' + chosenCollection
         fetch(url).then((response) => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -548,5 +553,5 @@ function sortTable(n) {
 
 
 document.getElementById('large-map-button').onclick = () => {
-    window.open(href="http://localhost:3000/map")
+    window.open(href="/map")
 }

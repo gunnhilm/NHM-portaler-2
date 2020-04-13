@@ -12,7 +12,6 @@
   "license": "CC-4.0",
   "dependencies": {
     "express": "^4.17.1",
-    "handlebars": "^4.5.3",
     "hbs": "^4.1.0",
     "path": "^0.12.7"
   },

@@ -1,6 +1,7 @@
 const path = require('path')
 const express = require('express')
 const fileRead = require('./utils/fileread')
+const getStatFile = require('./utils/getStatFile')
 //const coremaFileread = require('./utils/coremaFileread')
 const fs = require('fs')
 const footerDate = require('./utils/footerDate')
@@ -150,6 +151,25 @@ app.get('/object', (req, res) => {
 //         }
 //     }
 // })
+
+app.get('/showStat', (req, res) => {
+    if (!req.query.getStat) {
+        return res.render('showStat', {
+        })
+    } else {
+    getStatFile.getStatData('dummy', (error, results) => {
+        if (results){
+            res.send({
+                unparsed: results
+            }) 
+          
+        } else {
+            console.log('Error: cold not read statdata file')
+        }
+    })
+    }
+})
+        
 
 app.get('/about', (req, res) => {
    res.render('about', {
