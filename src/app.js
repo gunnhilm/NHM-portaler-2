@@ -39,20 +39,26 @@ app.get('', (req, res) => {
 })
 
 // Søk er treff i MUSIT-dump fila
+// input:
+//  req.query.samling = samling fra dropdown
+//  req.query.search = søke ordene
+//  req.query.linjeNumber = linja søk vi skal søke videre fra, er = 0 hvis det er et nytt søk
+//   req.query.limit = antallet søkeresultater som skal sendes tilbake
+//  (error, results) callback med resultatene fra søket
+
 app.get('/search', (req, res) => {
-    if (!req.query.search | !req.query.samling) {
-        throw new Error ('Search term missing or collection not chosen') // denne fanges ikke i front-end
+    if (!req.query.samling) {
+        throw new Error ('collection not chosen') 
     } else {
         try {
-            fileRead.search(req.query.samling, req.query.search, (error, results) => {
-                //console.log(results)
+            fileRead.search(req.query.samling, req.query.search, req.query.linjeNumber,req.query.limit , (error, results) => {
                 res.send({
                     unparsed: results
                 })
             })
         }
         catch(error) {
-            throw new Error ('error in app.js')
+            throw new Error ('error in fileread.js ' + error)
         }
     }
 })
@@ -65,7 +71,9 @@ app.get('/download', (req, res) => {
         })
     } else {
 
-        fileRead.search(req.query.samling, req.query.search, (error, results) => {
+        fileRead.search(req.query.samling, req.query.search, req.query.linjeNumber,req.query.limit, (error, results) => {
+
+            
             if (results){
                  res.send({
                     unparsed: results

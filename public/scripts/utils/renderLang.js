@@ -28,7 +28,7 @@ const textItems = {
     dna_fungi_lichens: ["Sopp & Lav (DNA)", "Fungus & Lichens (DNA)"],
     dna_other: ["Andre grupper (DNA)", "Other groups (DNA)"],
 
-    downloadLink: ["Last ned tab-separert resultatfil", "Download tab-delimited result file"],
+    downloadLink: ["Last ned resultat", "Download results"],
     searchResultHeadline: ["Resultat", "Search result"],
     nbHitsText: ["Antall treff: ", "Number of hits: "],
     headerTaxon: ["Takson", "Taxon"],

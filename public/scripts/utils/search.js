@@ -4,15 +4,20 @@ console.log('client side javascript is loaded')
 const collection = document.querySelector('#collection-select') 
 const searchForm = document.querySelector('form') 
 const search = document.querySelector('input')
+let searchLineNumber = 0
 
-// rendered with result table (used in function resultTable())
-const resultHeader = document.getElementById("result-header")
 const nbHitsElement = document.getElementById('nb-hits') 
 const nbHitsHeader = document.getElementById("head-nb-hits")
-const table = document.getElementById("myTable")
+
 
 // for the download button 
 const downloadButton = document.getElementById('download-button')
+//empty-search button 
+const emptySearchButton = document.querySelector('#empty-search')
+//Page navigation
+// const nextPage = document.getElementById('next-page')
+// const previousPage = document.getElementById('previous-page')
+
 
 // rendered with result table, in footer
 const updated = document.querySelector('#last-updated') 
@@ -20,8 +25,8 @@ const updated = document.querySelector('#last-updated')
 // to decide wether map is to be drawn
 let searchFailed = false
 
-// decides which language is rendered
 
+// decides which language is rendered
 if (sessionStorage.language) {
     language = sessionStorage.getItem('language')
 } else {
@@ -29,192 +34,6 @@ if (sessionStorage.language) {
     sessionStorage.setItem('language', language)
 }
 
-// render result table
-const resultTable = (musitData) => { 
-    stringData = JSON.stringify(musitData)
-    
-    try {
-        sessionStorage.setItem('string', stringData)    // Save searchresult to local storage
-        const nbHits = musitData.length
-        nbHitsElement.textContent = nbHits
-        
-        resultHeader.innerHTML = textItems.searchResultHeadline[index]
-        nbHitsHeader.innerHTML = textItems.nbHitsText[index]
-    
-        table.innerHTML = "";
-        for (i = -1; i < nbHits; i++) {
-            const row = table.insertRow(-1)
-    
-            const cell1 = row.insertCell(0)
-            const cell2 = row.insertCell(1)
-            const cell3 = row.insertCell(2)
-            const cell4 = row.insertCell(3)
-            const cell5 = row.insertCell(4)
-            const cell6 = row.insertCell(5)
-            const cell7 = row.insertCell(6)
-            const cell8 = row.insertCell(7)
-            const cell9 = row.insertCell(8)
-            const cell10 = row.insertCell(9)
-            const cell11 = row.insertCell(10)
-            
-
-            if (i === -1) {
-                
-                // header row
-                function getArrowDown(i) {
-                    let arrowDown =  `<img id='uio-arrow-down${i+1}' src='/images/icon-down.svg' width="10" height="10"></img>`
-                    return (arrowDown)
-                }
-                function getArrowUp(i) {
-                    let arrowUp = `<img id='uio-arrow-up${i+1}' src='/images/icon-up.svg' width="10" height="10"></img>`
-                    return (arrowUp)
-                }
-
-                cell1.innerHTML = `<button id='musitIDButton' class='sort'>${"MUSIT-ID".bold()} ${getArrowDown(0)} ${getArrowUp(0)}</button>`  
-                cell2.innerHTML = `<button id='scientificNameButton' class='sort'>${textItems.headerTaxon[index].bold()} ${getArrowDown(1)} ${getArrowUp(1)}</button>`
-                cell3.innerHTML = `<button id='collectorButton' class='sort'>${textItems.headerCollector[index].bold()} ${getArrowDown(2)} ${getArrowUp(2)}</button>`
-                cell4.innerHTML = `<button id='dateButton' class='sort'>${textItems.headerDate[index].bold()} ${getArrowDown(3)} ${getArrowUp(3)}</button>`
-                cell5.innerHTML = `<button id='countryButton' class='sort'>${textItems.headerCountry[index].bold()} ${getArrowDown(4)} ${getArrowUp(4)}</button>`
-                cell6.innerHTML = `<button id='municipalityButton' class='sort'>${textItems.headerMunicipality[index].bold()} ${getArrowDown(5)} ${getArrowUp(5)}</button>`
-                cell7.innerHTML = `<button id='localityButton' class='sort'>${textItems.headerLocality[index].bold()} ${getArrowDown(6)} ${getArrowUp(6)}</button>`
-                cell8.innerHTML = `<button id='photoButton' class='sort'><span class="fas fa-camera"></span>${getArrowDown(7)} ${getArrowUp(7)}</button>`
-                cell9.innerHTML = `<button id='coordinateButton' class='sort'><span class="fas fa-compass"></span>${getArrowDown(8)} ${getArrowUp(8)}</button>`
-                cell10.innerHTML = `<button id='accnoButton' class='sort'>${textItems.headerCoremaAccno[index].bold()} ${getArrowDown(9)} ${getArrowUp(9)}</button>`
-                cell11.innerHTML = `<button id='processIDButton' class='sort'>${textItems.headerSequence[index].bold()} ${getArrowDown(10)} ${getArrowUp(10)}</button>`
-                
-                // add sorting function to buttons in table
-                
-                function addSortingNumber(id, n, prop) {
-                    document.getElementById(id).addEventListener("click", function() {
-                        let reverse = false
-                        if (document.getElementById(`uio-arrow-up${n}`).style.display == "none" & document.getElementById(`uio-arrow-down${n}`).style.display == "inline") { //uio-arrow-down${i+1}
-                            reverse = true
-                        } 
-                        musitData.sort(sort_by(prop,reverse, parseInt))
-                        resultTable(musitData)
-                        if(!reverse) {
-                            document.getElementById(`uio-arrow-down${n}`).style.display = "inline" //uio-arrow-down${n+1}
-                            document.getElementById(`uio-arrow-up${n}`).style.display = "none"
-                        } else {
-                            document.getElementById(`uio-arrow-up${n}`).style.display = "inline"
-                            document.getElementById(`uio-arrow-down${n}`).style.display = "none"
-                        }
-                        for (i = 1; i < 11; i++) {
-                            if (i === n) {
-                                continue
-                            }
-                            document.getElementById(`uio-arrow-up${i}`).style.display = "inline"
-                            document.getElementById(`uio-arrow-down${i}`).style.display = "inline"
-                        }
-                    })
-                }
-                
-               function addSortingText(id, n, prop) {
-                    document.getElementById(id).addEventListener("click", function() {
-                        let reverse = false
-                        if (document.getElementById(`uio-arrow-up${n}`).style.display == "none" & document.getElementById(`uio-arrow-down${n}`).style.display == "inline") { //uio-arrow-down${i+1}
-                            reverse = true
-                        } 
-                        musitData.sort(sort_by(prop,reverse, (a) => a.toLowerCase()))
-                        resultTable(musitData)
-                        if(!reverse) {
-                            document.getElementById(`uio-arrow-down${n}`).style.display = "inline" //uio-arrow-down${n+1}
-                            document.getElementById(`uio-arrow-up${n}`).style.display = "none"
-                        } else {
-                            document.getElementById(`uio-arrow-up${n}`).style.display = "inline"
-                            document.getElementById(`uio-arrow-down${n}`).style.display = "none"
-                        }
-                        for (i = 1; i < 11; i++) {
-                            if (i === n) {
-                                continue
-                            }
-                            document.getElementById(`uio-arrow-up${i}`).style.display = "inline"
-                            document.getElementById(`uio-arrow-down${i}`).style.display = "inline"
-                        }
-                    }, false)
-                }
-                
-                const sort_by = (prop, reverse, primer) => {
-                    const key = primer ?
-                    function(x) {
-                        return primer(x[prop])
-                    } :
-                    function(x) {
-                        return x[prop]
-                    }
-                    reverse = !reverse ? 1: -1
-                    
-                    return function(a, b) {
-                        return a = key(a), b = key(b), reverse * ((a > b) - (b > a))
-                    }
-                }
-                
-                addSortingNumber('musitIDButton', 1, 'catalogNumber')
-                addSortingText('scientificNameButton', 2, 'scientificName')
-                addSortingText('collectorButton', 3, 'recordedBy')
-                addSortingText('dateButton', 4, 'eventDate')
-                addSortingText('countryButton', 5, 'country')
-                addSortingText('municipalityButton', 6, 'county')
-                addSortingText('localityButton', 7, 'locality')
-                addSortingText('photoButton', 8, 'associatedMedia')
-                addSortingText('coordinateButton', 9, 'decimalLongitude')
-                // addSortingText('accnoButton', 10, 'accno')
-                // addSortingText('processIDButton', 11, 'processID')
-
-            } else {
-                cell1.innerHTML =  `<a id="object-link" href="/object/?id=${i}"> ${musitData[i].catalogNumber} </a>`
-                cell1.setAttribute('style','text-align:left; vertical-align: middle') // flytt celle-styling til css
-                cell1.innerHTML =  `<a id="object-link" href="/object/?id=${i}"> ${musitData[i].catalogNumber} </a>`
-                cell1.setAttribute('style','text-align:left; vertical-align: middle') // flytt celle-styling til css
-                cell1.innerHTML =  `<a id="object-link" href="/object/?id=${i}"> ${musitData[i].catalogNumber} </a>`
-                cell2.innerHTML = musitData[i].scientificName
-                if (musitData[i].recordedBy.includes(",")) {
-                    let x = musitData[i].recordedBy.indexOf(",")
-                    let y = musitData[i].recordedBy.substr(0,x)
-                    cell3.innerHTML = y + " et al."    
-                } else {
-                    cell3.innerHTML = musitData[i].recordedBy
-                }
-                
-                cell4.innerHTML = musitData[i].eventDate
-                cell5.innerHTML = musitData[i].country
-                cell6.innerHTML = musitData[i].county
-                cell7.innerHTML = musitData[i].locality
-                if( musitData[i].associatedMedia) {
-                    cell8.innerHTML = `<span class="fas fa-camera"></span>`
-                }
-                if( musitData[i].decimalLongitude) {
-                    cell9.innerHTML = '<span class="fas fa-compass"></span>'
-                }
-                
-                cell1.className = 'row-1 row-ID'
-                cell2.className = 'row-2 row-name'
-                cell3.className = 'row-3 row-innsamler'
-                cell4.className = 'row-4 row-dato'
-                cell5.className = 'row-5 row-land'
-                cell6.className = 'row-6 row-kommune'
-                cell7.className = 'row-7 row-sted'
-                cell8.className = 'row-8 row-photo'
-                cell9.className = 'row-9 row-coordinates'
-                cell10.className = 'row-10 row-accNo'
-                cell11.className = 'row-11 row-processID'
-                
-            }
-        }
-        // Show download button
-        downloadButton.style.display = "block"
-        document.getElementById("empty-search").style.display = "block"
-        if (!searchFailed) {
-            drawMap(musitData)    
-        }
-        
-         
-    }  
-    catch(error) {
-        resultHeader.innerHTML = textItems.errorRenderResult[index]
-        searchFailed = true // is checked when map is drawn 
-    }
-}
 
 
 
@@ -239,26 +58,25 @@ downloadButton.addEventListener('click', (e) => {
     const searchTerm = search.value
     const chosenCollection = collection.value
     
-    const url = '/download/?search=' + searchTerm +'&samling=' + chosenCollection
+    const url = '/download/?search=' + searchTerm +'&samling=' + chosenCollection + '&linjeNumber=0' + '&limit=none' // vi laster ned hele søkeresultatet, begynner på første linje og tar med alle resultater
     fetch(url).then((response) => {
             
         response.text().then((data) => {
             if(data.error) {
                 return console.log(data.error)
             } else {
-                const downloadData = JSON.parse(data).unparsed
+                const downloadData = JSON.parse(data)
+                
                 // Start file download
-                download("download.txt", downloadData)
+                download("download.txt", downloadData.unparsed.results)
             }
         })
     })
 })
 
-// when somebody clicks search-button
 
-
-searchForm.addEventListener('submit', (e) => {
-    e.preventDefault()
+ const doSearch = (limit = 20) => {
+     
     // delete the previous search results
     sessionStorage.removeItem('string')
     document.getElementById("map-search").innerHTML = ""  
@@ -266,7 +84,8 @@ searchForm.addEventListener('submit', (e) => {
     searchFailed = false
     const searchTerm = search.value
     const chosenCollection = collection.value
-    
+    searchLineNumber = limit
+ 
     // empty table
     table.innerHTML = ""
     resultHeader.innerHTML = ""
@@ -287,7 +106,7 @@ searchForm.addEventListener('submit', (e) => {
         document.getElementById("please-wait").style.display = "none"
     } else {
 
-        const url = '/search/?search=' + searchTerm +'&samling=' + chosenCollection // normal search
+        const url = '/search/?search=' + searchTerm +'&samling=' + chosenCollection + '&linjeNumber=' + searchLineNumber + '&limit=' + limit // normal search
         fetch(url).then((response) => {
             if (!response.ok) {
                 throw 'noe går galt med søk, respons ikke ok'
@@ -298,10 +117,12 @@ searchForm.addEventListener('submit', (e) => {
                             resultHeader.innerHTML = textItems.serverError[index]
                             return console.log(data.error)
                         } else {
-                            
-                            const JSONdata = JSON.parse(data) 
-                        
-                            const parsedResults = Papa.parse(JSONdata.unparsed, {
+
+                            const JSONdata = JSON.parse(data)     
+
+                            sessionStorage.setItem('searchLineNumber', JSONdata.unparsed.count)
+                            sessionStorage.setItem('searchTerm', searchTerm)
+                            const parsedResults = Papa.parse(JSONdata.unparsed.results, {
                                 delimiter: "\t",
                                 newline: "\n",
                                 quoteChar: '',
@@ -312,11 +133,16 @@ searchForm.addEventListener('submit', (e) => {
                                 resultHeader.innerHTML = textItems.noHits[index]
                             } else {
                                 try {
+                                    // hvis vi får flere enn 400 treff må vi si i fra om det
+                                    if(parsedResults.data.length > 3999){
+                                        nbHitsElement.textContent = 'mer enn 4000'
+                                    } else {
+                                        nbHitsElement.textContent = parsedResults.data.length
+                                    }
+                                    nbHitsHeader.innerHTML = textItems.nbHitsText[index]
                                     sessionStorage.setItem('string', JSON.stringify(parsedResults.data))   
-                                
-                                    resultTable(parsedResults.data)
-                                    
-                                    
+                                    // resultTable() 
+                                    load()
                                 } catch (error) {
                                     resultHeader.innerHTML = textItems.errorRenderResult[index]
                                     searchFailed = true // is checked when map is drawn 
@@ -328,15 +154,22 @@ searchForm.addEventListener('submit', (e) => {
                 }
                 catch (error) {
                     console.error(error)
+                    reject(error);
                 }
             }
             document.getElementById("please-wait").style.display = "none"
         })
         
     }
-})                    
-    
-  
+}                  
+
+// when somebody clicks search-button
+searchForm.addEventListener('submit', (e) => {
+    e.preventDefault()
+    doSearch(4000) // vi skal få tilbake maks 4000 linjer med svar
+})  
+
+
 // when a collection is chosen a request is sent to the server about date of last change of the MUSIT-dump file
 collection.addEventListener('change', (e) => {
     e.preventDefault()
@@ -348,6 +181,7 @@ collection.addEventListener('change', (e) => {
     }
     sessionStorage.setItem('collection', collection.value)
 })
+
 
 const updateFooter = () => {
     const chosenCollection = collection.value
@@ -379,28 +213,26 @@ const updateFooter = () => {
 
 // show previous search-result
 const oldSearch = () => {
-    if (sessionStorage.getItem('collection') !== "null") 
-        {
-            if (sessionStorage.getItem('string') !== "null") {
-                // gets search result from storage
-                stringData = sessionStorage.getItem('string')
-                // parsing search result
-                data = JSON.parse(stringData)
+    if (sessionStorage.getItem('collection')) {
+            if (sessionStorage.getItem('string')) { //hvis det er søkeresultater i sesion storage, så skal disse vises
                 // render correct language
-                if (sessionStorage.getItem('language') === "null") {
+                if (!sessionStorage.getItem('language')) {
                     language = 'Norwegian'
                 } else {
                     language = sessionStorage.getItem('language')
                 }
                 renderText(language)
-                
-                
+                try {
                 document.getElementById('collection-select').value = sessionStorage.getItem('collection')
-                updateFooter()
-                
+                document.getElementById('search-text').value = sessionStorage.getItem('searchTerm')
+                }
+                catch {
+                    console.log('local storage empty');
+                    
+                }
+                updateFooter()                
                 // sends the data to the functions that show the results
-                resultTable(data)
-                
+                load()
             }
         } 
 }
@@ -411,6 +243,8 @@ oldSearch()
 const emptySearch = () => {
     sessionStorage.removeItem('string')
     sessionStorage.removeItem('collection')
+    sessionStorage.removeItem('searchLineNumber')
+    sessionStorage.removeItem('search-text')
     collection.value = "" 
     document.getElementById("search-text").value = ""
     
@@ -431,10 +265,6 @@ const emptySearch = () => {
     
 }
 
-  
-  
-//empty-search button (made to test things when fixing bug)
-const emptySearchButton = document.querySelector('#empty-search')
 
 emptySearchButton.addEventListener('click', (e) => {
     e.preventDefault()
@@ -442,114 +272,6 @@ emptySearchButton.addEventListener('click', (e) => {
     emptySearch()
 })
 
-// function quickSortTable (array, prop) {
-//     // const table = document.getElementById("myTable")
-//     // rows=table.rows
-//     //console.log(array)
-//     if (array.length < 2) {
-//         return array
-//     }
-//     const chosenIndex = array.length -1
-//     const chosen = array[chosenIndex]
-//     const a = []
-//     const b = []
-//     //console.log(array[0]['catalogNumber'])
-//     for (let i = 0; i < chosenIndex; i++) {
-//         const temp = array[i]
-//         console.log(Number(temp[prop]))
-//         //console.log(temp.getElementsByTagName("td")[n].innerHTML)
-//         Number(temp[prop]) < Number(chosen[prop]) ? a.push(temp) : b.push(temp)
-//     }
-//     console.log(chosen)
-//     const output = [...quickSortTable(a,prop), chosen, ...quickSortTable(b,prop)]
-//     console.log(output)
-//     console.log(output.join(' '))
-//     //return output
-
-    
-//}
-
-
-// feil for musit regno
-function sortTable(n) {
-    console.log("sort is called, can take a while")
-    
-    // får ikke til: // Show please wait
-    //document.getElementById("please-wait").style.display = "block"
-
-    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0
-    table = document.getElementById("myTable")
-    switching = true
-    // Set the sorting direction to ascending:
-    dir = "asc"
-    /* Make a loop that will continue until
-    no switching has been done: */
-    while (switching) {
-      // Start by saying: no switching is done:
-      switching = false
-      rows = table.rows
-      /* Loop through all table rows (except the
-      first, which contains table headers): */
-      for (i = 1; i < (rows.length - 1); i++) {
-        // Start by saying there should be no switching:
-        shouldSwitch = false
-        /* Get the two elements you want to compare,
-        one from current row and one from the next: */
-        x = rows[i].getElementsByTagName("td")[n]
-        
-        y = rows[i + 1].getElementsByTagName("TD")[n];
-        /* Check if the two rows should switch place,
-        based on the direction, asc or desc: */
-        if (dir == "asc") {
-          if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-            // If so, mark as a switch and break the loop:
-            shouldSwitch = true
-            break
-          }
-        } else if (dir == "desc") {
-          if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-            // If so, mark as a switch and break the loop:
-            shouldSwitch = true
-            break
-          }
-        }
-      }
-      if (shouldSwitch) {
-        /* If a switch has been marked, make the switch
-        and mark that a switch has been done: */
-        rows[i].parentNode.insertBefore(rows[i + 1], rows[i])
-        switching = true
-        // Each time a switch is done, increase this count by 1:
-        switchcount ++
-      } else {
-        /* If no switching has been done AND the direction is "asc",
-        set the direction to "desc" and run the while loop again. */
-        if (switchcount == 0 && dir == "asc") {
-          dir = "desc"
-          switching = true
-        }
-      }
-      
-    }
-   
-    console.log('sorting is done')
-    //document.getElementById("please-wait").style.display = "none"
-    if(dir == "asc") {
-        document.getElementById(`uio-arrow-down${n+1}`).style.display = "inline"
-        document.getElementById(`uio-arrow-up${n+1}`).style.display = "none"
-    } else if (dir == "desc") {
-        document.getElementById(`uio-arrow-up${n+1}`).style.display = "inline"
-        document.getElementById(`uio-arrow-down${n+1}`).style.display = "none"
-    }
-    for (i = 0; i < 10; i++) {
-        if (i === n) {
-            continue
-        }
-        document.getElementById(`uio-arrow-up${i+1}`).style.display = "inline"
-        document.getElementById(`uio-arrow-down${i+1}`).style.display = "inline"
-    }
-    
-}
 
 
 document.getElementById('large-map-button').onclick = () => {

@@ -71,19 +71,26 @@
                     
                         <br>
                              <p id="result-header"></p> 
-                        <table> 
-                        <tr>    
-                            <td id="head-nb-hits" style="white-space: nowrap;"></td>
-                            <td id="nb-hits" ></td>
-                            <td  align="right" style="width:100%">
+                        <table>  
+                        <tr >    
+
+                            <td  style="vertical-align:middle; white-space: nowrap;">Treff per side </td>
+                            <td  style="vertical-align:middle">
+                                 <select id="numer-per-page" style=" height:30px;" >
+                                    <option value="10">10</option>
+                                    <option value="20" selected="selected">20</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                    <option value="4000">All</option>
+                            </td>
+                            <td style="vertical-align:middle"  id="head-nb-hits" style="white-space: nowrap;"></td>
+                            <td  style="vertical-align:middle" id="nb-hits" ></td>
+                            <td align="right"style="vertical-align: middle;   width:100%">
                                 <button id="download-button"  style="display:none"></button>
                             </td>
                         </tr>
                     </table>
-                    <br><br>
-
-                    
-                        
+                    <br><br>        
                 </td>
                 <td>
                     <br>
@@ -119,7 +126,20 @@
         
         
         <table id="myTable"></table>
-     
+
+    <div style="text-align:center;">
+        <div class="pagination-container">
+            <div class="pagination-div">
+                <input type="button" id="first" onclick="firstPage()" value="first"  class="pagination" />
+                <input type="button" id="previous" onclick="previousPage()" value="previous"  class="pagination"/>
+                <input type="button" id="next" onclick="nextPage()" value="next"  class="pagination"/>
+                <input type="button" id="last" onclick="lastPage()" value="last"  class="pagination"/>
+                
+                {{!-- <button id="previous-page" class="pagination">Back</button>
+                <button id="next-page" class="pagination"> Next </button>
+              --}}
+            </div>
+        </div>
     </div>
 
         {{>footer}}
@@ -132,6 +152,7 @@
     <link rel="stylesheet" href="/styles/styles.css">
     <script src="/scripts/utils/ol/ol.js"></script>
     <script src="/scripts/utils/map.js"></script>
+    <script src="/scripts/utils/paginateAndRender.js"></script>
     <script src="/scripts/utils/search.js"></script>   
     
     
