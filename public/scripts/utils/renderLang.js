@@ -1,6 +1,7 @@
 const textItems = {
     // header
     aboutButton: ["Om sidene", "About"],
+    searchPageLink: ["Søkeside", "Search"],
     helpButton: ["Hjelp", "Help"],
     statistikkButton: ["Statistikk", "Statistics"],
     logo: ["/images/uio_nhm_a_cmyk.png", "/images/uio_nhm_a_eng_cmyk.png"],
@@ -12,7 +13,7 @@ const textItems = {
     vennligst: ["--Velg en samling--", "--Choose a collection--"],
     searchButton: ["Søk", "Search"],
     //----Specimens
-    total: ["Alle samlingene","All collection"],
+    total: ["Alle samlingene","All collections"],
     karplanter: ["Karplanter", "Vascular plants"],
     sopp: ["Sopp", "Fungi"],
     moser: ["Moser", "Mosses"],
@@ -24,12 +25,13 @@ const textItems = {
     // ---------DNA
     dna_karplanter: ["Karplanter (DNA)", "Vascular plants (DNA)"],
     dna_insekter: ["Insekter (DNA)", "Insects (DNA)"],
-    dna_fish_herptiles: ["Fisk & Herpentiler (DNA)", "Fish & Herptiles (DNA)"],
-    dna_fungi_lichens: ["Sopp & Lav (DNA)", "Fungus & Lichens (DNA)"],
+    dna_fish_herptiles: ["Fisk & Herptiler (DNA)", "Fish & Herptiles (DNA)"],
+    dna_fungi_lichens: ["Sopp & Lav (DNA)", "Fungi & Lichens (DNA)"],
     dna_other: ["Andre grupper (DNA)", "Other groups (DNA)"],
 
+    hitsPerPage: ["Treff per side", "Hits per page"],
     downloadLink: ["Last ned resultat", "Download results"],
-    searchResultHeadline: ["Resultat", "Search result"],
+    //searchResultHeadline: ["Resultat", "Search result"],
     nbHitsText: ["Antall treff: ", "Number of hits: "],
     headerTaxon: ["Takson", "Taxon"],
     headerCollector: ["Innsamler", "Collector"],
@@ -48,6 +50,12 @@ const textItems = {
      "Sorry, something is wrong with the chosen collection. Choose another collection, come back later, or contact us (see help page)"],
     mapHelpContent: ["Bruk mushjul, eller dobbelklikk for å zoome inn, Shift + dobbelklikk  for å zoome ut. Klikk og dra for å flytte kartutsnitt", "Use mouse-wheel, or double click to zoom in, Shift + double click to zoom out. Click and drag to move map."],
     largeMapButton: ["Større kart", "Larger map"],
+    firstButton: ["Første", "First"],
+    previousButton: ["Forrige", "Previous"],
+    nextButton: ["Neste", "Next"],
+    lastButton: ["Siste", "Last"],
+    page: ["Side ", "Page "],
+    lastPageAlert: [" (Siste side)", " (Last page)"],
     
     // object page
     searchButtonHeader: ["Tilbake til søkeresultat", "Back to search result"],
@@ -69,21 +77,21 @@ const textItems = {
     //coremaDummyText: ["her kommer corema tekst", "here comes corema text"],
     
     //ShowStat page
-    showStatHeader: ["Statistikk over samlingene", "statistic from the collections"],
-    showStatText: ["Disse tallene reflekterer hva som er registrert i museets databaser. Da kun et fåtall av samlingene har alle objektene registrert i databasene, reflekter ikke disse tallene nødvendigvis samlingens totale bredde.","These number reflext what is recorded in our databases, not necessarily the true number of itms from the collections."],
+    showStatHeader: ["Statistikk over samlingene", "Statistics from the collections"],
+    showStatText: ["Disse tallene reflekterer hva som er registrert i museets databaser. Da kun et fåtall av samlingene har alle objektene registrert i databasene, reflekterer ikke disse tallene nødvendigvis samlingenes totale bredde.",
+        "These numbers reflect what is recorded in our databases, not necessarily the true number of items in the collections."],
     
     // about page
     // aboutHeader: ["Om NHMs samlingsportal", "About NHM's collection portal"],
     // aboutText: ["Kontaktinformasjon: \<br><br> eirik.rindal@nhm.uio.no \<br> gunnhilm@nhm.uio.no \<br><br>", "Contact information: <br><br> eirik.rindal@nhm.uio.no <br> gunnhilm@nhm.uio.no <br><br>"],
 
     // help page
-    backToSearchFromHelp: ['Tilbake til søkeside', 'Back to search-page'],
     helpHeader: ["Hvordan søke", "How to search the collections"],
     helpText: [`Velg samling først, og skriv ett eller flere søkeord i søkefeltet. 
-    Du kan søke på latinsk artsnavn, lokalitet, musit-nummer, geografi osv. Stor/liten bokstav må være rett. Land må skrives på engelsk, andre felt kan inneholde engelsk eller norsk.<br><br><br>
+    Du kan søke på latinsk artsnavn, lokalitet, musit-nummer, geografi osv. Det skilles ikke på store og små bokstaver. Land må skrives på engelsk, andre felt kan inneholde engelsk eller norsk.<br><br><br>
     <span class="bold" style="font-size: 16pt">Kontaktinformasjon:</span> <br><br> gunnhilm@nhm.uio.no <br> eirik.rindal@nhm.uio.no`, 
     `Choose collection first, and enter one or more search terms in the search field. 
-    You can search for latin species name, locality, musit-number, geography etc. Big cap/small cap must be correct. Country is written in english, other fields can be either norwegian or english. <br><br><br>
+    You can search for latin species name, locality, musit-number, geography etc. The search is case insensitive. Country is written in english, other fields can be either norwegian or english. <br><br><br>
     <span class="bold" style="font-size: 16pt">Contact information:</span> <br><br> gunnhilm@nhm.uio.no  <br> eirik.rindal@nhm.uio.no`]
 }
 
@@ -102,6 +110,7 @@ const renderText = function(lang) {
     //document.querySelector('#about-button').innerHTML = textItems.aboutButton[index]
     document.querySelector('#help-button').innerHTML = textItems.helpButton[index]
     document.querySelector('#statistikk-button').innerHTML = textItems.statistikkButton[index]
+    document.querySelector('#search-page-link').innerHTML = textItems.searchPageLink[index]
 
     let logo = document.querySelector('#logo')
     logo.src = textItems.logo[index]
@@ -137,13 +146,25 @@ const renderText = function(lang) {
         document.querySelector('#vennligst').innerHTML = textItems.vennligst[index] 
         
         document.querySelector('#search-button').innerHTML = textItems.searchButton[index]
-        document.querySelector('#empty-search').innerHTML = textItems.emptySearch[index]
+        document.querySelector('#empty-search-button').innerHTML = textItems.emptySearch[index]
         document.querySelector('#header-search-page').innerHTML = textItems.headerSearchPage[index]
         document.querySelector('#select-collection-label').innerHTML = textItems.velg_samling[index]
+        document.querySelector('#hits-per-page').innerHTML = textItems.hitsPerPage[index]
+        if (sessionStorage.getItem('string')) {
+            document.getElementById("head-nb-hits").innerHTML = textItems.nbHitsText[index]
+        }
         document.querySelector('#download-button').innerHTML = textItems.downloadLink[index]
         document.querySelector('#search-text').placeholder = textItems.placeholder[index]
         document.getElementById('zoom-expl-popup').innerHTML = textItems.mapHelpContent[index]
         document.querySelector('#large-map-button').innerHTML = textItems.largeMapButton[index]
+        document.querySelector('#first').value = textItems.firstButton[index]
+        document.querySelector('#previous').value = textItems.previousButton[index]
+        document.querySelector('#next').value = textItems.nextButton[index]
+        document.querySelector('#last').value = textItems.lastButton[index]
+        document.getElementById("resultPageText").innerHTML = textItems.page[index]
+        if(document.getElementById("resultPageAlert").innerHTML) {
+            document.getElementById("resultPageAlert").innerHTML = textItems.lastPageAlert[index]
+        }
     }
 
     // object page
@@ -165,9 +186,8 @@ const renderText = function(lang) {
         const urlParams = new URLSearchParams(window.location.search)
         const id = urlParams.get('id')
 
-        const object = allObject[id]
-    
-        document.querySelector('#searchButtonHeader').innerHTML = textItems.searchButtonHeader[index]
+        const object = allObject.find(x => x.catalogNumber === id)
+
         document.querySelector("#head-species-name").innerHTML = textItems.headSpeciesName[index]
         document.querySelector("#head-det").innerHTML = textItems.headDet[index]
         document.querySelector("#head-det-date").innerHTML = textItems.headDetDate[index]
@@ -216,11 +236,6 @@ const renderText = function(lang) {
     if (location.href.includes('help')) {
         document.querySelector('#helpHeader').innerHTML = textItems.helpHeader[index]
         document.querySelector('#helpText').innerHTML = textItems.helpText[index]
-        document.querySelector('#backToSearchFromHelp').innerHTML = textItems.backToSearchFromHelp[index]
-    //     document.querySelector('#backToSearch').addEventListener('click', (e) => {
-    //     e.preventDefault()
-    //    // erase the last search result
-    //     })
     }
 
 }
@@ -243,7 +258,7 @@ document.querySelector('#language').addEventListener('change', (e) => {
     sessionStorage.setItem('language', language)
    
     if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema')) {
-        if (document.querySelector("#result-header").innerHTML) {
+        if (document.querySelector("#head-nb-hits").innerHTML) {
 
             if (language === "Norwegian") {
                 index = 0
@@ -251,10 +266,18 @@ document.querySelector('#language').addEventListener('change', (e) => {
                 index = 1
             }
 
-            document.querySelector("#result-header").innerHTML = textItems.searchResultHeadline[index]
+            //document.querySelector("#result-header").innerHTML = textItems.searchResultHeadline[index]
             document.querySelector('#head-nb-hits').innerHTML = textItems.nbHitsText[index]
             document.querySelector('#download-button').innerHTML = textItems.downloadLink[index]
             document.querySelector('#large-map-button').innerHTML = textItems.largeMapButton[index]
+            document.querySelector('#first').innerHTML = textItems.firstButton[index]
+            document.querySelector('#previous').innerHTML = textItems.previousButton[index]
+            document.querySelector('#next').innerHTML = textItems.nextButton[index]
+            document.querySelector('#last').innerHTML = textItems.lastButton[index]
+            document.getElementById("resultPageText").innerHTML = textItems.page[index]
+            if(document.getElementById("resultPageAlert").innerHTML) {
+                document.getElementById("resultPageAlert").innerHTML = textItems.lastPageAlert[index]
+            }
 
             const headerRow = document.querySelector("#myTable").rows[0]
 

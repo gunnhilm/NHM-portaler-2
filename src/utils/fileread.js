@@ -4,28 +4,30 @@ const fs = require('fs')
 
 const setCollection = (samling) => {
     let musitFile = ''
+    let mediaFile = ''
     if (samling === 'karplanter') {
-        musitFile = './src/data/vascular_o.txt'
+        musitFile = './src/data/karplanter_occurrence.txt'
     } else if (samling === 'sopp') {
-        musitFile = './src/data/fungus_o.txt'
+        musitFile = './src/data/sopp_occurrence.txt'
     } else if (samling === 'moser') {
-        musitFile = './src/data/moss_o.txt'
+        musitFile = './src/data/moser_occcurrence.txt'
     } else if (samling === 'lav') {
-        musitFile = './src/data/lichens_o.txt'
+        musitFile = './src/data/lav_occurrence.txt'
     } else if (samling === 'alger') {
-        musitFile = './src/data/algae_o.txt'
+        musitFile = './src/data/alger_occurrence.txt'
     } else if (samling === 'entomologi') {
-        musitFile = './src/data/entomology_nhmo.txt'
+        musitFile = './src/data/entomologi_occurrence.txt'
     } else if (samling === 'birds') {
         musitFile = './src/data/birds_occurrence.txt' 
+        mediaFile = './src/data/birds_media.txt'
     } else if (samling === 'mammals') {
         musitFile = './src/data/mammals_occurrence.txt'
     } 
     // ------DNA 
     else if (samling === 'dna_karplanter') {
-        musitFile = './src/data/DNA_vascular_occurrence.txt'
+        musitFile = './src/data/DNA_karplanter_occurrence.txt'
     } else if (samling === 'dna_entomologi') {
-        musitFile = './src/data/DNA_entomology_occurrence.txt'
+        musitFile = './src/data/DNA_entomologi_occurrence.txt'
     } else if (samling === 'dna_fish_herptiles') {
         musitFile = './src/data/DNA_fish_herptiles_occurrence.txt'
     } else if (samling === 'dna_fungi_lichens') {
@@ -33,14 +35,17 @@ const setCollection = (samling) => {
     } else if (samling === 'dna_other') {
         musitFile = './src/data/DNA_other_occurrence.txt'
     }
-    return musitFile
+    return { 
+        musitFile: musitFile,
+        mediaFile: mediaFile
+    }
 }
 
 
 const search = (samling, searchTerm, linjeNumber = 0, limit = 20, callback) => {
     // velg riktig MUSIT dump fil å lese
       
-    musitFile = setCollection(samling)
+    musitFile = setCollection(samling).musitFile
     if (fs.existsSync(musitFile)) {
         // cleaning the searchterm before making the search so that we get a more precise
         // remove whiteSpace
@@ -100,6 +105,8 @@ const search = (samling, searchTerm, linjeNumber = 0, limit = 20, callback) => {
         throw new Error ('throwing error in fileread')
     }
 }
+
+
 
 module.exports = { 
     search,

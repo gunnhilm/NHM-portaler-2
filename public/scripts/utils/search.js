@@ -8,12 +8,13 @@ let searchLineNumber = 0
 
 const nbHitsElement = document.getElementById('nb-hits') 
 const nbHitsHeader = document.getElementById("head-nb-hits")
+const errorMessage = document.getElementById("error-message")
 
 
 // for the download button 
 const downloadButton = document.getElementById('download-button')
 //empty-search button 
-const emptySearchButton = document.querySelector('#empty-search')
+const emptySearchButton = document.querySelector('#empty-search-button')
 //Page navigation
 // const nextPage = document.getElementById('next-page')
 // const previousPage = document.getElementById('previous-page')
@@ -88,21 +89,29 @@ downloadButton.addEventListener('click', (e) => {
  
     // empty table
     table.innerHTML = ""
-    resultHeader.innerHTML = ""
     nbHitsElement.textContent = ""
     nbHitsHeader.innerHTML = ""
+    errorMessage.innerHTML = ""
 
     // Show please wait
     document.getElementById("please-wait").style.display = "block"
     // hide download button
     downloadButton.style.display = "none"
+    document.getElementById("head-nb-hits").innerHTML = ""
     document.getElementById("zoom-button").style.display = "none"
     document.getElementById("large-map-button").style.display = "none"
-    document.getElementById("empty-search").style.display = "none"
+    document.getElementById("empty-search-button").style.display = "none"
+    document.getElementById("first").style.display = "none"
+    document.getElementById("previous").style.display = "none"
+    document.getElementById("next").style.display = "none"
+    document.getElementById("last").style.display = "none"
+    document.getElementById("resultPageText").innerHTML = ""
+    document.getElementById("resultPageNb").innerHTML = ""
+    document.getElementById("resultPageAlert").innerHTML = ""
 
     // mustChoose
     if (!chosenCollection) {
-        resultHeader.innerHTML = textItems.mustChoose[index]
+        errorMessage.innerHTML = textItems.mustChoose[index]
         document.getElementById("please-wait").style.display = "none"
     } else {
 
@@ -114,7 +123,7 @@ downloadButton.addEventListener('click', (e) => {
                 try {
                     response.text().then((data) => {
                         if(data.error) {
-                            resultHeader.innerHTML = textItems.serverError[index]
+                            errorMessage.innerHTML = textItems.serverError[index]
                             return console.log(data.error)
                         } else {
 
@@ -130,7 +139,7 @@ downloadButton.addEventListener('click', (e) => {
                             }) 
                             //check if there are any hits from the search
                             if ( parsedResults.data === undefined || parsedResults.data.length === 0 ) {
-                                resultHeader.innerHTML = textItems.noHits[index]
+                                nbHitsElement.innerHTML = textItems.noHits[index]
                             } else {
                                 try {
                                     // hvis vi får flere enn 400 treff må vi si i fra om det
@@ -144,7 +153,7 @@ downloadButton.addEventListener('click', (e) => {
                                     // resultTable() 
                                     load()
                                 } catch (error) {
-                                    resultHeader.innerHTML = textItems.errorRenderResult[index]
+                                    errorMessage.innerHTML = textItems.errorRenderResult[index]
                                     searchFailed = true // is checked when map is drawn 
                                 }
                                  
@@ -174,10 +183,12 @@ searchForm.addEventListener('submit', (e) => {
 collection.addEventListener('change', (e) => {
     e.preventDefault()
     updateFooter()
+    errorMessage.innerHTML = ""
+
     if (document.getElementById("search-text").style.display === "none" || document.getElementById("search-button").style.display === "none") {
         document.getElementById("search-text").style.display = "inline" 
         document.getElementById("search-button").style.display = "inline"
-        resultHeader.innerHTML = ""
+        //resultHeader.innerHTML = ""
     }
     sessionStorage.setItem('collection', collection.value)
 })
@@ -201,7 +212,7 @@ const updateFooter = () => {
         }) .catch((error) => {
             console.error('There is a problem, probably file for collections does not exist', error)
             emptySearch()
-            resultHeader.innerHTML = textItems.errorFileNotExisting[index]
+            errorMessage.innerHTML = textItems.errorFileNotExisting[index]
             // disable search...
             // <input id="search-text" type="text" class="input">
                         //             <button id="search-button"></button>
@@ -225,6 +236,8 @@ const oldSearch = () => {
                 try {
                 document.getElementById('collection-select').value = sessionStorage.getItem('collection')
                 document.getElementById('search-text').value = sessionStorage.getItem('searchTerm')
+                nbHitsElement.innerHTML=JSON.parse(sessionStorage.getItem('string')).length
+                
                 }
                 catch {
                     console.log('local storage empty');
@@ -250,17 +263,27 @@ const emptySearch = () => {
     
     // empty table
     table.innerHTML = ""
-    resultHeader.innerHTML = ""
+    //resultHeader.innerHTML = ""
     nbHitsElement.textContent = ""
     nbHitsHeader.innerHTML = ""
+    errorMessage.innerHTML = ""
 
     // remove old map if any and empty array
     document.getElementById("map-search").innerHTML = "" 
     // hide buttons rendered with search result
     document.getElementById("download-button").style.display = "none"
-    document.getElementById("empty-search").style.display = "none"
+    document.getElementById("head-nb-hits").innerHTML = ""
+    document.getElementById("empty-search-button").style.display = "none"
     document.getElementById("zoom-button").style.display = "none"
     document.getElementById("large-map-button").style.display = "none"
+    document.getElementById("first").style.display = "none"
+    document.getElementById("previous").style.display = "none"
+    document.getElementById("next").style.display = "none"
+    document.getElementById("last").style.display = "none"
+    document.getElementById("resultPageText").innerHTML = ""
+    document.getElementById("resultPageNb").innerHTML = ""
+    document.getElementById("resultPageAlert").innerHTML = ""
+
     // empty search-phrase and collection (but these should be kept in oldsearch)
     
 }

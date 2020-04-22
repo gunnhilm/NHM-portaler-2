@@ -1,112 +1,127 @@
+<!DOCTYPE html>
 
 <html>
-    <head> </head>
+    <head>
+        <title>Statistikk over samlingene</title>
+        <link rel="stylesheet" href="/styles/styles.css">
+    </head>
   
     <body>
-        {{>header}}
-        <br>
- 
-        <h1 id="showStatHeader">Statistikk over samlingene</h1>
-        <p id="showStatText">
-            Disse tallene reflekterer hva som er registrert i museets databaser. Da kun et fåtall av samlingene har alle objektene registrert i databasene, reflekter ikke disse tallene nødvendigvis samlingens totale bredde.
-        </p>
+        
+        <div class="wrapper">
+             {{>header}}
+            <div class="content">
+                <br><br>
+                
+                <h1 id="showStatHeader">Statistikk over samlingene</h1>
+                <p id="showStatText">
+                    Disse tallene reflekterer hva som er registrert i museets databaser. Da kun et fåtall av samlingene har alle objektene registrert i databasene, reflekter ikke disse tallene nødvendigvis samlingens totale bredde.
+                </p>
+                <br>
 
-        <label for="collection-select" id="select-collection-label"></label>
-        <select id="collection-select">
-            <option value="total" id="total"></option>
-            <optgroup label="Specimens">
-                <option value="karplanter" id="karplanter">Karplanter</option>
-                <option value="sopp" id="sopp"></option>
-                <option value="moser" id="moser"></option>
-                <option value="lav" id="lav"></option>
-                <option value="alger" id="alger">alger</option>
-                <option value="entomologi" id="insekter"></option>
-                <option value="birds" id="fugler"></option>
-                <option value="mammals" id="pattedyr"></option>
-            </optgroup>
-            <optgroup label="DNA">
-                <option value="dna_karplanter" id="dna_karplanter"></option>
-                <option value="dna_entomologi" id="dna_insekter"></option>
-                <option value="dna_fish_herptiles" id="dna_fish_herptiles"></option>
-                <option value="dna_fungi_lichens" id="dna_fungi_lichens"></option>
-                <option value="dna_other" id="dna_other">DNA-other</option>
-            </optgroup>
-        </select>
+                <label for="collection-select" id="select-collection-label"></label>
+                <select id="collection-select">
+                    <option value="total" id="total"></option>
+                    <optgroup label="Specimens">
+                        <option value="karplanter" id="karplanter">Karplanter</option>
+                        <option value="sopp" id="sopp"></option>
+                        <option value="moser" id="moser"></option>
+                        <option value="lav" id="lav"></option>
+                        <option value="alger" id="alger">alger</option>
+                        <option value="entomologi" id="insekter"></option>
+                        <option value="birds" id="fugler"></option>
+                        <option value="mammals" id="pattedyr"></option>
+                    </optgroup>
+                    <optgroup label="DNA">
+                        <option value="dna_karplanter" id="dna_karplanter"></option>
+                        <option value="dna_entomologi" id="dna_insekter"></option>
+                        <option value="dna_fish_herptiles" id="dna_fish_herptiles"></option>
+                        <option value="dna_fungi_lichens" id="dna_fungi_lichens"></option>
+                        <option value="dna_other" id="dna_other">DNA-other</option>
+                    </optgroup>
+                </select>
+                <br><br>
 
-    {{!-- Tabellen med nøkkel tall --}}
-    <table class ="summaryTable">
-        <tr>
-            <td>Samling</td>
-            <td>Antall objekter</td>
-            <td>Antall med foto</td>
-            <td>Poster med koordinater</td>
-        </tr>
-        <tr>
-            <td>Karplanter</td>
-            <td id="Karplanter_n"></td>
-            <td id="Karplanter_foto"></td>
-            <td id="Karplanter_koord"></td>
-        </tr>
-        <tr>
-            <td>Moser</td>
-            <td id="Moser_n"></td>
-            <td id="Moser_foto"></td>
-            <td id="Moser_koord"></td>
-        </tr>
-        <tr>
-            <td>Sopp</td>
-            <td id="Sopp_n"></td>
-            <td id="Sopp_foto"></td>
-            <td id="Sopp_koord"></td>
-        </tr>
-            <tr>
-            <td>Lav</td>
-                <td id="Lav_n"></td>
-            <td id="Lav_foto"></td>
-            <td id="Lav_koord"></td>
-        </tr>
-        <tr>
-            <td>Insekter</td>
-            <td id="Insekter_n"></td>
-            <td id="Insekter_foto"></td>
-            <td id="Insekter_koord"></td>
-        </tr>                   
-        <tr>
-            <td>Fugler</td>
-            <td id="Fugler_n"></td>
-            <td id="Fugler_foto"></td>
-            <td id="Fugler_koord"></td>
-        </tr>                   
-        <tr>
-            <td>Pattedyr</td>
-            <td id="Pattedyr_n"></td>
-            <td id="Pattedyr_foto"></td>
-            <td id="Pattedyr_koord"></td>
-        </tr>
-    </table>
+            {{!-- Tabellen med nøkkel tall --}}
+            <table class ="summaryTable">
+                <tr>
+                    <td>Samling</td>
+                    <td>Antall objekter</td>
+                    <td>Antall med foto</td>
+                    <td>Poster med koordinater</td>
+                </tr>
+                <tr>
+                    <td>Karplanter</td>
+                    <td id="Karplanter_n"></td>
+                    <td id="Karplanter_foto"></td>
+                    <td id="Karplanter_koord"></td>
+                </tr>
+                <tr>
+                    <td>Moser</td>
+                    <td id="Moser_n"></td>
+                    <td id="Moser_foto"></td>
+                    <td id="Moser_koord"></td>
+                </tr>
+                <tr>
+                    <td>Sopp</td>
+                    <td id="Sopp_n"></td>
+                    <td id="Sopp_foto"></td>
+                    <td id="Sopp_koord"></td>
+                </tr>
+                    <tr>
+                    <td>Lav</td>
+                        <td id="Lav_n"></td>
+                    <td id="Lav_foto"></td>
+                    <td id="Lav_koord"></td>
+                </tr>
+                <tr>
+                    <td>Insekter</td>
+                    <td id="Insekter_n"></td>
+                    <td id="Insekter_foto"></td>
+                    <td id="Insekter_koord"></td>
+                </tr>                   
+                <tr>
+                    <td>Fugler</td>
+                    <td id="Fugler_n"></td>
+                    <td id="Fugler_foto"></td>
+                    <td id="Fugler_koord"></td>
+                </tr>                   
+                <tr>
+                    <td>Pattedyr</td>
+                    <td id="Pattedyr_n"></td>
+                    <td id="Pattedyr_foto"></td>
+                    <td id="Pattedyr_koord"></td>
+                </tr>
+            </table>
+            
+            <br><br><br>
 
-    {{!-- Grafene på linje 1, Tilvekst, Akkumulativ størrelse og andel georeferete poster --}}
-    <table >      
-        <tr>
-            <td ><canvas id="tilvekst" width="400" height="400"></canvas></td>
-            <td ><canvas id="collSize" width="400" height="400"></canvas></td>
-            <td><canvas id="georef" width="400" height="400"></canvas></td> 
-        </tr>
-    </table> 
+            {{!-- Grafene på linje 1, Tilvekst, Akkumulativ størrelse og andel georeferete poster --}}
+            <table >      
+                <tr>
+                    <td ><canvas id="tilvekst" width="400" height="400"></canvas></td>
+                    <td ><canvas id="collSize" width="400" height="400"></canvas></td>
+                    <td><canvas id="georef" width="400" height="400"></canvas><br><br></td> 
+                </tr>
+            </table> 
 
-    {{!-- Grafene på linje 2, Topp 20 land og Andel poster fra Norge --}}
-    <table>
-        <tr>
-            <td><canvas id="populareCountry" width="800" height="400"></canvas></td> 
-            <td><canvas id="andelFraNorge" width="400" height="400"></canvas></td> 
-        </tr>
-    </table> 
-  
-        {{>footer}}
-    <script src="/scripts/utils/renderLang.js"></script>
-    <link rel="stylesheet" href="/styles/styles.css">
-    <link rel="stylesheet" href="/styles/Chart.css">
-    <script src="/scripts/utils/chart/Chart.min.js"></script>
-    <script src="/scripts/utils/showStat.js"></script>      
+            {{!-- Grafene på linje 2, Topp 20 land og Andel poster fra Norge --}}
+            <table>
+                <tr>
+                    <td><canvas id="populareCountry" width="800" height="400"></canvas></td> 
+                    <td><canvas id="andelFraNorge" width="400" height="400"></canvas></td> 
+                </tr>
+            </table> 
+        
+            
+            <script src="/scripts/utils/renderLang.js"></script>
+            {{!-- <link rel="stylesheet" href="/styles/styles.css"> --}}
+            <link rel="stylesheet" href="/styles/Chart.css">
+            <script src="/scripts/utils/chart/Chart.min.js"></script>
+            <script src="/scripts/utils/showStat.js"></script>      
+            </div>
+        
+            {{>footer}}
+        </div>
     </body>
 </html>

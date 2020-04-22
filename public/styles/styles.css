@@ -7,41 +7,53 @@ html *
     font-size: 30px;
 }
   
-#search-button {
-     
-    padding: 9px;
-    vertical-align: center;
-    width: 115px;
+.wrapper {
+    text-align: center
 }
 
-#empty-search {
-    padding: 9px;
-    margin-right: 12px;
-    width: 115px;
-}
-
-content, footer { 
-    width: 100%; 
-} 
 
 .content { 
     min-height: calc(100vh - 150px); 
-    margin-left: 100px;
+    display: inline-block;
+    text-align: left;
+    width: 1580px;
+    }
+
+.help-content {
+    min-height: calc(100vh - 150px); 
+    display: inline-block;
+    text-align: left;
+    width: 1580px;
 }
 
 header {
     height: 50px;
     background-color: #57AD3E;
-    /* dette er en underlig måte å sentrere bilde og lenker vertikalt på */
+    /* to center logo and links vertically: */
     line-height: 45px;
-    
 }
 
+.header-content {
+    width: 1580px;
+    display: inline-block;
+}
+
+#last-updated {
+    width: 1580px;
+    vertical-align: middle;
+    text-align: left;
+}
 
  footer {
     height: 50px;
     background-color: #57AD3E;
+    line-height: 45px;
 } 
+
+.footer-content {
+    width: 1580px;
+    display: inline-block;
+}
 
 .backLink {
     background-color: blue;
@@ -52,6 +64,7 @@ header {
 
 .headerLink {
     text-decoration: none;
+    color: white;
     float: right;
     padding-left: 10px;
     padding-right: 10px;
@@ -59,14 +72,16 @@ header {
 }
 
  #language {
-    margin-left: 50%; 
-    height: 30px;
+    border-radius:4px;
+    background-color: #57AD3E;
+    color: white;
+    border: none;
+    font-size: 16px;
 } 
 
 #logo {
     vertical-align: middle; 
     max-height: 40px;
-    margin-left: 100px;
 }
 
 
@@ -116,7 +131,7 @@ td {
     font-weight: bold;
 }
 
-/* Her kommer stylingen til resulta av søk tabellen */
+/* styling av result-table*/
 
     #result-header, #musit-regno {
         font-size: 24px;
@@ -213,18 +228,11 @@ td {
 
 .map-search {
     height: 320px;  
-    width: 810px;  
+    width: 770px;  
     color: grey;
     margin-left: 50px;
 }
 
-#zoom-button {
-    padding: 2px 12px;
-}
-
-#large-map-button {
-    padding: 2px
-}
 
 .map-object {
     height: 300px;  
@@ -232,9 +240,6 @@ td {
     color: grey;
 }
 
-#large-map-object-button {
-    padding: 2px
-}
 .map-object .map-search .ol-zoom .ol.zoom-out {
     margin-top: 204px;
 }
@@ -249,6 +254,7 @@ td {
 .neutral {
     background-color: white;
     border: white;
+    text-align: left;
 }
 
 
@@ -264,7 +270,7 @@ td {
     left: -50px; 
   }
 
-  /* for at popup'en på kartet skal få pil til punktet, som en snakkeboble */
+  /* to give the popup "arrow" to the red point */
   .ol-popup:after, .ol-popup:before {
     top: 100%;
     border: solid transparent;
@@ -376,12 +382,11 @@ td {
     background-image: '/images/icon-down.svg';
 } 
 
-/* Tabell på statistikk sia */
+/* Table on statistics-page*/
 .summaryTable  table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
-    /*  width: 100%;  */
-    }
+}
 
    .summaryTable  td, th {
     text-align:right;
@@ -395,19 +400,19 @@ td {
 
     /* pagination */
     .pagination-container {
-        text-align: center;
-        /* bredden på resultat tabellen */
+        text-align: left;
         width: 1580px;
       }
     .pagination-div{
         display: inline-block;
       }
     .pagination {
-        background-color: #4CAF50; /* Green */
+        background-color: #3f81af;
         border: none;
-        border-radius: 8px;
+        border-radius: 4px;
         color: white;
-        padding: 8px 24px;
+        font-weight: bold;
+        padding: 9px 24px;
         text-align: center;
         text-decoration: none;
         display: inline-block;
@@ -417,14 +422,96 @@ td {
         cursor: pointer;
       }
       
-      .pagination {
-        background-color: white; 
-        color: black; 
-        border: 2px solid #008CBA;
-      }
-      
       .pagination:hover {
         background-color: #008CBA;
-        border-radius: 8px;
+        border-radius: 4px;
         color: white;
       }
+
+.button {
+    padding: 9px;
+    vertical-align: center;
+    background-color: #3f81af;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#search-button:hover {
+    background-color: #008CBA;
+    border-radius: 4px;
+    color: white;
+  }
+
+   
+#search-button {
+    padding: 9px;
+    vertical-align: center;
+    width: 123px;
+    background-color: #3f81af;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#empty-search-button {
+    padding: 9px;
+    margin-right: 12px;
+    width: 123px;
+    background-color: #3f81af;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#empty-search-button:hover {
+    background-color: #008CBA;
+    border-radius: 4px;
+    color: white;
+  }
+
+#download-button {
+    padding: 9px;
+    margin-right: 12px;
+    width: 155px;
+    background-color: #3f81af;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#download-button:hover {
+    background-color: #008CBA;
+    border-radius: 4px;
+    color: white;
+  }
+
+#zoom-button {
+    padding: 2px 12px;
+}
+    
+#large-map-button {
+    padding: 2px
+}
+    
+#large-map-object-button {
+    padding: 2px
+}
+    
+#error-message {
+    padding: 30px;
+    color: red;
+    font-weight: bold;
+}

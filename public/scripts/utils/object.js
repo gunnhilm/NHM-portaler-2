@@ -31,7 +31,7 @@ const allObject = loadString()
 const urlParams = new URLSearchParams(window.location.search)
 const id = urlParams.get('id')
 
-const object = allObject[id]
+const object = allObject.find(x => x.catalogNumber === id)
 
 // to print nice locality-string:
 const country = (obj) => {
@@ -140,7 +140,6 @@ document.querySelector("#artsobsID").innerHTML = artsobsID
 // photo:
 //to get a thumbnail width is set to 150px in styles for img
 // and to to enable large photo by clicking, img is wrapped in a <a>
-
 
 // if more than one photo
 if ( object.associatedMedia.includes('|') ) {

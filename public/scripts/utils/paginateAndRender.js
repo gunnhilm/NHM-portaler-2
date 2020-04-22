@@ -1,7 +1,6 @@
 // rendered with result table (used in function resultTable())
-const resultHeader = document.getElementById("result-header")
 const table = document.getElementById("myTable")
-const hitsPerPage = document.querySelector('#numer-per-page')  
+const hitsPerPage = document.querySelector('#number-per-page')  
 
 // funksjnalitet for å bytte ut pilene  opp og ned
 function getArrowDown(i) {
@@ -14,8 +13,7 @@ function getArrowUp(i) {
 }
 
 // add sorting function to buttons in table
-function addSortingText(id, n, prop, musitData) {
-
+function addSortingText(id, n, prop, musitData) { // her er musitData alle
     document.getElementById(id).addEventListener("click", function() {
         let reverse = false
         if (document.getElementById(`uio-arrow-up${n}`).style.display == "none" & document.getElementById(`uio-arrow-down${n}`).style.display == "inline") { //uio-arrow-down${i+1}
@@ -26,7 +24,10 @@ function addSortingText(id, n, prop, musitData) {
         } else {
         musitData.sort(sort_by(prop,reverse, (a) => a.toLowerCase()))
         }
-        resultTable(musitData)
+        
+        subMusitData = musitData.slice(0,numberPerPage)
+    
+        resultTable(subMusitData, musitData) // hvordan skal jeg finne submusitdata - jo, finn hva hits per page er, og plukk ut de første x
         if(!reverse) {
             document.getElementById(`uio-arrow-down${n}`).style.display = "inline" //uio-arrow-down${n+1}
             document.getElementById(`uio-arrow-up${n}`).style.display = "none"
@@ -61,10 +62,10 @@ const sort_by = (prop, reverse, primer) => {
 }
 
 // render result table
-const resultTable = (musitData) => {    
+const resultTable = (subMusitData, musitData) => {    
     try {
-        resultHeader.innerHTML = textItems.searchResultHeadline[index]
         table.innerHTML = "";
+        
         for (let i = -1; i < pageList.length; i++) { // vi en tabell med resultaer som er like lang som det vi ba om pageList.length; 
             const row = table.insertRow(-1)
     
@@ -81,9 +82,9 @@ const resultTable = (musitData) => {
             const cell11 = row.insertCell(10)
             if (i === -1) {     // her kommer tittellinjen
             
-            // -- opp oog ned med pilene
-            getArrowDown(i)
-            getArrowUp(i)
+                // -- opp oog ned med pilene
+                getArrowDown(i)
+                getArrowUp(i)
 
                 cell1.innerHTML = `<button id='musitIDButton' class='sort'>${"MUSIT-ID".bold()} ${getArrowDown(0)} ${getArrowUp(0)}</button>`  
                 cell2.innerHTML = `<button id='scientificNameButton' class='sort'>${textItems.headerTaxon[index].bold()} ${getArrowDown(1)} ${getArrowUp(1)}</button>`
@@ -97,40 +98,40 @@ const resultTable = (musitData) => {
                 cell10.innerHTML = `<button id='accnoButton' class='sort'>${textItems.headerCoremaAccno[index].bold()} ${getArrowDown(9)} ${getArrowUp(9)}</button>`
                 cell11.innerHTML = `<button id='processIDButton' class='sort'>${textItems.headerSequence[index].bold()} ${getArrowDown(10)} ${getArrowUp(10)}</button>`
 
-            // lag overskrifene klikk og sorterbare
-            
-            addSortingText('scientificNameButton', 2, 'scientificName', musitData)
-            addSortingText('collectorButton', 3, 'recordedBy', musitData)
-            addSortingText('dateButton', 4, 'eventDate', musitData)
-            addSortingText('countryButton', 5, 'country', musitData)
-            addSortingText('municipalityButton', 6, 'county', musitData)
-            addSortingText('localityButton', 7, 'locality', musitData)
-            addSortingText('photoButton', 8, 'associatedMedia', musitData)
-            addSortingText('coordinateButton', 9, 'decimalLongitude', musitData)
-            // addSortingText('accnoButton', 10, 'accno', musitData)
-            // addSortingText('processIDButton', 11, 'processID', musitData)
-            addSortingText('musitIDButton', 1, 'catalogNumber', musitData)  // Tabbellen blir sortert på nummer
+                // lag overskrifene klikk og sorterbare
+                
+                addSortingText('scientificNameButton', 2, 'scientificName', musitData)
+                addSortingText('collectorButton', 3, 'recordedBy', musitData)
+                addSortingText('dateButton', 4, 'eventDate', musitData)
+                addSortingText('countryButton', 5, 'country', musitData)
+                addSortingText('municipalityButton', 6, 'county', musitData)
+                addSortingText('localityButton', 7, 'locality', musitData)
+                addSortingText('photoButton', 8, 'associatedMedia', musitData)
+                addSortingText('coordinateButton', 9, 'decimalLongitude', musitData)
+                // addSortingText('accnoButton', 10, 'accno', musitData)
+                // addSortingText('processIDButton', 11, 'processID', musitData)
+                addSortingText('musitIDButton', 1, 'catalogNumber', musitData)  // Tabbellen blir sortert på nummer
 
 
             } else {        // Her kommer innmaten i tabellen, selve resultatene
-                cell1.innerHTML =  `<a id="object-link" href="/object/?id=${i}"> ${musitData[i].catalogNumber} </a>`
-                cell2.innerHTML = musitData[i].scientificName
-                if (musitData[i].recordedBy.includes(",")) {
-                    let x = musitData[i].recordedBy.indexOf(",")
-                    let y = musitData[i].recordedBy.substr(0,x)
+                cell1.innerHTML =  `<a id="object-link" href="/object/?id=${subMusitData[i].catalogNumber}"> ${subMusitData[i].catalogNumber} </a>`
+                cell2.innerHTML = subMusitData[i].scientificName
+                if (subMusitData[i].recordedBy.includes(",")) {
+                    let x = subMusitData[i].recordedBy.indexOf(",")
+                    let y = subMusitData[i].recordedBy.substr(0,x)
                     cell3.innerHTML = y + " et al."    
                 } else {
-                    cell3.innerHTML = musitData[i].recordedBy
+                    cell3.innerHTML = subMusitData[i].recordedBy
                 }
                 
-                cell4.innerHTML = musitData[i].eventDate
-                cell5.innerHTML = musitData[i].country
-                cell6.innerHTML = musitData[i].county
-                cell7.innerHTML = musitData[i].locality
-                if( musitData[i].associatedMedia) {
+                cell4.innerHTML = subMusitData[i].eventDate
+                cell5.innerHTML = subMusitData[i].country
+                cell6.innerHTML = subMusitData[i].county
+                cell7.innerHTML = subMusitData[i].locality
+                if( subMusitData[i].associatedMedia) {
                     cell8.innerHTML = `<span class="fas fa-camera"></span>`
                 }
-                if( musitData[i].decimalLongitude) {
+                if( subMusitData[i].decimalLongitude) {
                     cell9.innerHTML = '<span class="fas fa-compass"></span>'
                 }
                 
@@ -145,17 +146,30 @@ const resultTable = (musitData) => {
                 cell9.className = 'row-9 row-coordinates'
                 cell10.className = 'row-10 row-accNo'
                 cell11.className = 'row-11 row-processID'
+            }
         }
-    }
         // Show download button
         downloadButton.style.display = "block"
-        document.getElementById("empty-search").style.display = "block"
+        document.getElementById("empty-search-button").style.display = "inline-block"
+        document.getElementById("first").style.display = "inline-block"
+        document.getElementById("previous").style.display = "inline-block"
+        document.getElementById("next").style.display = "inline-block"
+        document.getElementById("last").style.display = "inline-block"
+        document.getElementById("resultPageText").innerHTML = textItems.page[index]
+        document.getElementById("resultPageNb").innerHTML = " " + currentPage
+        numberOfPages = getNumberOfPages(numberPerPage)
+        if (currentPage === numberOfPages) { 
+            document.getElementById("resultPageAlert").innerHTML = textItems.lastPageAlert[index]
+        } else {
+            document.getElementById("resultPageAlert").innerHTML = ""
+        }
+
         if (!searchFailed) {
-            drawMap(musitData)    
+            drawMap(subMusitData)    
         } 
     }  
     catch(error) {
-        resultHeader.innerHTML = textItems.errorRenderResult[index]
+        errorMessage.innerHTML = textItems.errorRenderResult[index]
         searchFailed = true // is checked when map is drawn 
     }
 }
@@ -179,54 +193,54 @@ function makeList() {
 }
 
 function getNumberOfPages(numberPerPage) {
-return Math.ceil(list.length / numberPerPage);
+    return Math.ceil(list.length / numberPerPage);
 }
 
 function nextPage() {
-currentPage += 1;
-loadList();
+    currentPage += 1;
+    loadList();
 }
 
 function previousPage() {
-currentPage -= 1;
-loadList();
+    currentPage -= 1;
+    loadList();
 }
 
 function firstPage() {
     console.log('first');
     
-currentPage = 1;
-loadList();
+    currentPage = 1;
+    loadList();
 }
 
 function lastPage() {
-currentPage = numberOfPages;
-loadList();
+    currentPage = numberOfPages;
+    loadList();
 }
 
 function loadList() {
-const begin = ((currentPage - 1) * numberPerPage);
-const end = begin + numberPerPage;
-pageList = list.slice(begin, end);
+    const begin = ((currentPage - 1) * numberPerPage);
+    const end = begin + numberPerPage;
+    pageList = list.slice(begin, end);
 
-drawList();
-check();
+    drawList();
+    check();
 }
 
 function drawList() {
-    resultTable(pageList)
+    resultTable(pageList, list)
 }
 
 function check() {
-document.getElementById("next").disabled = currentPage == numberOfPages ? true : false;
-document.getElementById("previous").disabled = currentPage == 1 ? true : false;
-document.getElementById("first").disabled = currentPage == 1 ? true : false;
-document.getElementById("last").disabled = currentPage == numberOfPages ? true : false;
+    document.getElementById("next").disabled = currentPage == numberOfPages ? true : false;
+    document.getElementById("previous").disabled = currentPage == 1 ? true : false;
+    document.getElementById("first").disabled = currentPage == 1 ? true : false;
+    document.getElementById("last").disabled = currentPage == numberOfPages ? true : false;
 }
 
 function load() {
-makeList();
-loadList();
+    makeList();
+    loadList();
 }
 
 hitsPerPage.addEventListener('change', (e) => {

@@ -1,29 +1,33 @@
 <header>
     <h1>{{title}}</h1>
     <div class="header"  cellpadding="10">
-        <table>
-            <tr>
-                <td><img id="logo"></td>
-                <td width="40%"></td>
-                <td><a class="headerLink" href="/help" id="help-button"></a></td>
-                <td> <a class="headerLink" href="/showStat" id="statistikk-button"></a></td>
-                <td width="12%" align="right" >
-                <select id="language" >
-                    <option value="Norwegian">Norsk</option>
-                    <option value="English">English</option>
-                 </select>
-                </td>
-            </tr>
+        <div class="header-content">
+            <table>
+                <tr>
+                    <td><img id="logo"></td>
+                    {{!-- <td width="40%"></td> --}}
+                    <td align="right" style="width: 100%">
+                        <table>
+                            <tr>
+                                <td> <a class="headerLink" href="/" id="search-page-link"></a></td>
+                                <td> <a class="headerLink" href="/showStat" id="statistikk-button"></a></td>
+                                <td><a class="headerLink" href="/help" id="help-button"></a></td>
+                                {{!-- <td width="12%" align="right" > --}}
+                                <td>
+                                    <select id="language" >
+                                        <option value="Norwegian">Norwegian website</option>
+                                        <option value="English">English website</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
 
-        </table>
-        
+            </table>
+        </div>        
         
         {{!  <a class="headerLink" href="/about" id="about-button"></a>  --}}
-        
-       
-        
-     
-
         
     </div>
     {{!-- <script src="/scripts/utils/renderLang.js"></script>  --}}
