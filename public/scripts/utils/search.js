@@ -35,9 +35,6 @@ if (sessionStorage.language) {
     sessionStorage.setItem('language', language)
 }
 
-
-
-
 // download search-result to file
 function download(filename, text) {
     const element = document.createElement('a')
@@ -77,6 +74,7 @@ downloadButton.addEventListener('click', (e) => {
 
 
  const doSearch = (limit = 20) => {
+     console.log('vi søker');
      
     // delete the previous search results
     sessionStorage.removeItem('string')
@@ -142,7 +140,7 @@ downloadButton.addEventListener('click', (e) => {
                                 nbHitsElement.innerHTML = textItems.noHits[index]
                             } else {
                                 try {
-                                    // hvis vi får flere enn 400 treff må vi si i fra om det
+                                    // hvis vi får flere enn 4000 treff må vi si i fra om det
                                     if(parsedResults.data.length > 3999){
                                         nbHitsElement.textContent = 'mer enn 4000'
                                     } else {
@@ -284,7 +282,13 @@ const emptySearch = () => {
     document.getElementById("resultPageNb").innerHTML = ""
     document.getElementById("resultPageAlert").innerHTML = ""
 
-    // empty search-phrase and collection (but these should be kept in oldsearch)
+    // set pagination variables to default / empty
+    list.length = 0;
+    pageList.length = 0;
+    currentPage = 1;
+    numberPerPage = 20;
+    numberOfPages = 0; // calculates the total number of pages
+    document.getElementById('number-per-page').value = '20'
     
 }
 
@@ -294,7 +298,6 @@ emptySearchButton.addEventListener('click', (e) => {
     // erase the last search result
     emptySearch()
 })
-
 
 
 document.getElementById('large-map-button').onclick = () => {

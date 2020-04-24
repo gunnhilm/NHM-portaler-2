@@ -62,6 +62,8 @@ const sort_by = (prop, reverse, primer) => {
 }
 
 // render result table
+// musitData er søkeresultatet
+//subMusitDAta er det som skal vise på en paginert side
 const resultTable = (subMusitData, musitData) => {    
     try {
         table.innerHTML = "";
@@ -244,6 +246,8 @@ function load() {
 }
 
 hitsPerPage.addEventListener('change', (e) => {
+    // hvis noe har trykket på Tøm Søk, så skal vi ikke oppdatere noe som helst  
+    if(collection.value){
     e.preventDefault()
     if (hitsPerPage.value < 4000){
         numberPerPage = hitsPerPage.value
@@ -254,7 +258,7 @@ hitsPerPage.addEventListener('change', (e) => {
         numberOfPages = 1
     }
     currentPage = 1
-    
-    
     loadList()
+    }
+
 })  
