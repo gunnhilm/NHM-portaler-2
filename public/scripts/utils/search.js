@@ -81,6 +81,7 @@ downloadButton.addEventListener('click', (e) => {
     document.getElementById("map-search").innerHTML = ""  
     // reset searchFailed value
     searchFailed = false
+    resetSortedBoolean() // set all booleans in propsSorted-array in PaginateAndRender.js to false
     const searchTerm = search.value
     const chosenCollection = collection.value
     searchLineNumber = limit

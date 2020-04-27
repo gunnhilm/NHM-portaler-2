@@ -458,11 +458,11 @@ td {
     border: none;
     font-size: 16px;
     cursor: pointer;
+    float: right;
 }
 
 #empty-search-button {
     padding: 9px;
-    margin-right: 12px;
     width: 123px;
     background-color: #3f81af;
     border-radius: 4px;
@@ -471,6 +471,7 @@ td {
     border: none;
     font-size: 16px;
     cursor: pointer;
+    float: right;
 }
 
 #empty-search-button:hover {
@@ -481,7 +482,6 @@ td {
 
 #download-button {
     padding: 9px;
-    margin-right: 12px;
     width: 155px;
     background-color: #3f81af;
     border-radius: 4px;
@@ -490,6 +490,7 @@ td {
     border: none;
     font-size: 16px;
     cursor: pointer;
+    float: right;
 }
 
 #download-button:hover {

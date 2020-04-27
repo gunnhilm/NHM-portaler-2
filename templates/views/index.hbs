@@ -47,7 +47,8 @@
                                             </optgroup>
                                         </select>
                                     </td>
-                                    <td align="right" colspan="2" style="padding: 0px 31px; ">
+                                    <td  colspan="2" >
+                                        {{!-- style="padding: 0px 31px; " --}}
                                         <button id="empty-search-button" style="display:none"></button>
                                     </td>
                                 </tr>
@@ -81,8 +82,8 @@
                                 </tr>
                                 <tr>    
                                     <td style="vertical-align:middle; white-space: nowrap; "  id="head-nb-hits"></td>
-                                    <td  style="vertical-align:middle; " id="nb-hits" ></td>
-                                    <td style="vertical-align: middle;   width:100%;">
+                                    <td  style="vertical-align:middle; white-space: nowrap;" id="nb-hits" ></td>
+                                    <td style="vertical-align: middle;">
                                         <button id="download-button"  style="display:none"></button>
                                     </td>
                                 </tr>
@@ -129,9 +130,9 @@
                             <input type="button" id="previous" onclick="previousPage()" class="pagination" style="display:none"/>
                             <input type="button" id="next" onclick="nextPage()" class="pagination" style="display:none"/>
                             <input type="button" id="last" onclick="lastPage()" class="pagination" style="display:none"/>
-                            <p style="display: inline" id = "resultPageText"></p> 
-                            <p style="display: inline" id = "resultPageNb"></p>
-                            <p style="display: inline" id = "resultPageAlert"></p>
+                            <p style="display: none" id = "resultPageText"></p> 
+                            <p style="display: none" id = "resultPageNb"></p>
+                            <p style="display: inline-block" id = "resultPageAlert"></p>
                         </div>
                     </div>
                 </div>

@@ -1,52 +1,107 @@
 // rendered with result table (used in function resultTable())
 const table = document.getElementById("myTable")
-const hitsPerPage = document.querySelector('#number-per-page')  
+const hitsPerPage = document.querySelector('#number-per-page')
+
+// array with booleans that keeps track of sorting for page rendering
+let propsSorted = [
+    {id: 'catalogNumber',
+    sortedOnce: false,
+    sortedTwice: false},
+    {id: 'scientificName',
+    sortedOnce: false,
+    sortedTwice: false},
+    {id: 'recordedBy',
+    sortedOnce: false,
+    sortedTwice: false},
+    {id: 'eventDate',
+    sortedOnce: false,
+    sortedTwice: false},
+    {id: 'country',
+    sortedOnce: false,
+    sortedTwice: false},
+    {id: 'county',
+    sortedOnce: false,
+    sortedTwice: false},
+    {id: 'locality',
+    sortedOnce: false,
+    sortedTwice: false},
+    {id: 'associatedMedia',
+    sortedOnce: false,
+    sortedTwice: false},
+    {id: 'decimalLongitude',
+    sortedOnce: false,
+    sortedTwice: false},
+    {id: 'accno',
+    sortedOnce: false,
+    sortedTwice: false},
+    {id: 'processID',
+    sortedOnce: false,
+    sortedTwice: false}
+]
+
+    
+function resetSortedBoolean () {
+    for(i = 0; i < propsSorted.length; i++) {
+        propsSorted[i].sortedOnce = false
+        propsSorted[i].sortedTwice = false
+    }
+}
+
 
 // funksjnalitet for å bytte ut pilene  opp og ned
-function getArrowDown(i) {
-    let arrowDown =  `<img id='uio-arrow-down${i+1}' src='/images/icon-down.svg' width="10" height="10"></img>`
-    return (arrowDown)
-}
-function getArrowUp(i) {
-    let arrowUp = `<img id='uio-arrow-up${i+1}' src='/images/icon-up.svg' width="10" height="10"></img>`
-    return (arrowUp)
+const arrowUp = `<img id='uio-arrow-up' src='/images/icon-up.svg' width="10" height="10"></img>`
+const arrowDown =  `<img id='uio-arrow-down' src='/images/icon-down.svg' width="10" height="10"></img>`
+const arrows = arrowUp + arrowDown
+
+function getArrows(prop) {
+    if (!propsSorted.find(x => x.id === prop).sortedOnce  & !propsSorted.find(x => x.id === prop).sortedTwice) {
+        return arrows 
+    } else if (propsSorted.find(x => x.id === prop).sortedOnce) {
+        return arrowDown
+    } else if (propsSorted.find(x => x.id === prop).sortedTwice) {
+        return arrowUp
+    }
 }
 
 // add sorting function to buttons in table
 function addSortingText(id, n, prop, musitData) { // her er musitData alle
     document.getElementById(id).addEventListener("click", function() {
+        
         let reverse = false
-        if (document.getElementById(`uio-arrow-up${n}`).style.display == "none" & document.getElementById(`uio-arrow-down${n}`).style.display == "inline") { //uio-arrow-down${i+1}
-            reverse = true
-        } 
-        if (id === 'musitIDButton') {       // nummer og tekst må sorters forskjellig
+
+        if (propsSorted.find(x => x.id === prop).sortedOnce) { reverse = true }
+        
+        if (id === 'musitIDButton') { 
         musitData.sort(sort_by(prop,reverse, parseInt))
         } else {
         musitData.sort(sort_by(prop,reverse, (a) => a.toLowerCase()))
         }
         
-        subMusitData = musitData.slice(0,numberPerPage)
-    
-        resultTable(subMusitData, musitData) // hvordan skal jeg finne submusitdata - jo, finn hva hits per page er, og plukk ut de første x
-        if(!reverse) {
-            document.getElementById(`uio-arrow-down${n}`).style.display = "inline" //uio-arrow-down${n+1}
-            document.getElementById(`uio-arrow-up${n}`).style.display = "none"
+        if (propsSorted.find(x => x.id === prop).sortedOnce === propsSorted.find(x => x.id === prop).sortedTwice) {
+            propsSorted.find(x => x.id === prop).sortedOnce = true
+            propsSorted.find(x => x.id === prop).sortedTwice = false
         } else {
-            document.getElementById(`uio-arrow-up${n}`).style.display = "inline"
-            document.getElementById(`uio-arrow-down${n}`).style.display = "none"
+            propsSorted.find(x => x.id === prop).sortedOnce = !propsSorted.find(x => x.id === prop).sortedOnce
+            propsSorted.find(x => x.id === prop).sortedTwice = !propsSorted.find(x => x.id === prop).sortedTwice
         }
-        for (i = 1; i < 11; i++) {
-            if (i === n) {
-                continue
-            }
-            document.getElementById(`uio-arrow-up${i}`).style.display = "inline"
-            document.getElementById(`uio-arrow-down${i}`).style.display = "inline"
+        
+        currentPage = 1
+
+        for(i = 0; i < propsSorted.length; i++) {
+            if(propsSorted[i].id === prop) { continue; }
+            propsSorted[i].sortedOnce = false
+            propsSorted[i].sortedTwice = false
         }
-    })
+
+        subMusitData = musitData.slice(0,numberPerPage)
+       
+        resultTable(subMusitData, musitData) 
+     })
 }
 
-// sorter tabellen når noen klikker
-const sort_by = (prop, reverse, primer) => {
+
+// sort search-result when header button in table is clicked 
+ sort_by = (prop, reverse, primer) => {
     const key = primer ?
     function(x) {
         return primer(x[prop])
@@ -62,13 +117,11 @@ const sort_by = (prop, reverse, primer) => {
 }
 
 // render result table
-// musitData er søkeresultatet
-//subMusitDAta er det som skal vise på en paginert side
 const resultTable = (subMusitData, musitData) => {    
     try {
         table.innerHTML = "";
         
-        for (let i = -1; i < pageList.length; i++) { // vi en tabell med resultaer som er like lang som det vi ba om pageList.length; 
+        for (let i = -1; i < pageList.length; i++) { // vis en tabell med resultaer som er like lang som det vi ba om pageList.length; 
             const row = table.insertRow(-1)
     
             const cell1 = row.insertCell(0)
@@ -84,22 +137,18 @@ const resultTable = (subMusitData, musitData) => {
             const cell11 = row.insertCell(10)
             if (i === -1) {     // her kommer tittellinjen
             
-                // -- opp oog ned med pilene
-                getArrowDown(i)
-                getArrowUp(i)
-
-                cell1.innerHTML = `<button id='musitIDButton' class='sort'>${"MUSIT-ID".bold()} ${getArrowDown(0)} ${getArrowUp(0)}</button>`  
-                cell2.innerHTML = `<button id='scientificNameButton' class='sort'>${textItems.headerTaxon[index].bold()} ${getArrowDown(1)} ${getArrowUp(1)}</button>`
-                cell3.innerHTML = `<button id='collectorButton' class='sort'>${textItems.headerCollector[index].bold()} ${getArrowDown(2)} ${getArrowUp(2)}</button>`
-                cell4.innerHTML = `<button id='dateButton' class='sort'>${textItems.headerDate[index].bold()} ${getArrowDown(3)} ${getArrowUp(3)}</button>`
-                cell5.innerHTML = `<button id='countryButton' class='sort'>${textItems.headerCountry[index].bold()} ${getArrowDown(4)} ${getArrowUp(4)}</button>`
-                cell6.innerHTML = `<button id='municipalityButton' class='sort'>${textItems.headerMunicipality[index].bold()} ${getArrowDown(5)} ${getArrowUp(5)}</button>`
-                cell7.innerHTML = `<button id='localityButton' class='sort'>${textItems.headerLocality[index].bold()} ${getArrowDown(6)} ${getArrowUp(6)}</button>`
-                cell8.innerHTML = `<button id='photoButton' class='sort'><span class="fas fa-camera"></span>${getArrowDown(7)} ${getArrowUp(7)}</button>`
-                cell9.innerHTML = `<button id='coordinateButton' class='sort'><span class="fas fa-compass"></span>${getArrowDown(8)} ${getArrowUp(8)}</button>`
-                cell10.innerHTML = `<button id='accnoButton' class='sort'>${textItems.headerCoremaAccno[index].bold()} ${getArrowDown(9)} ${getArrowUp(9)}</button>`
-                cell11.innerHTML = `<button id='processIDButton' class='sort'>${textItems.headerSequence[index].bold()} ${getArrowDown(10)} ${getArrowUp(10)}</button>`
-
+                cell1.innerHTML = `<button id='musitIDButton' class='sort'>${"MUSIT-ID".bold()} ${getArrows('catalogNumber')} </button>` 
+                cell2.innerHTML = `<button id='scientificNameButton' class='sort'>${textItems.headerTaxon[index].bold()} ${getArrows('scientificName')} </button>`
+                cell3.innerHTML = `<button id='collectorButton' class='sort'>${textItems.headerCollector[index].bold()} ${getArrows('recordedBy')}</button>`
+                cell4.innerHTML = `<button id='dateButton' class='sort'>${textItems.headerDate[index].bold()} ${getArrows('eventDate')}</button>`
+                cell5.innerHTML = `<button id='countryButton' class='sort'>${textItems.headerCountry[index].bold()} ${getArrows('country')}</button>`
+                cell6.innerHTML = `<button id='municipalityButton' class='sort'>${textItems.headerMunicipality[index].bold()} ${getArrows('county')}</button>`
+                cell7.innerHTML = `<button id='localityButton' class='sort'>${textItems.headerLocality[index].bold()} ${getArrows('locality')}</button>`
+                cell8.innerHTML = `<button id='photoButton' class='sort'><span class="fas fa-camera"></span>${getArrows('associatedMedia')}</button>`
+                cell9.innerHTML = `<button id='coordinateButton' class='sort'><span class="fas fa-compass"></span>${getArrows('decimalLongitude')}</button>`
+                cell10.innerHTML = `<button id='accnoButton' class='sort'>${textItems.headerCoremaAccno[index].bold()} ${getArrows('accno')}</button>`
+                cell11.innerHTML = `<button id='processIDButton' class='sort'>${textItems.headerSequence[index].bold()} ${getArrows('processID')}</button>`
+                
                 // lag overskrifene klikk og sorterbare
                 
                 addSortingText('scientificNameButton', 2, 'scientificName', musitData)
@@ -157,17 +206,19 @@ const resultTable = (subMusitData, musitData) => {
         document.getElementById("previous").style.display = "inline-block"
         document.getElementById("next").style.display = "inline-block"
         document.getElementById("last").style.display = "inline-block"
+        document.getElementById("resultPageText").style.display = "inline-block"
         document.getElementById("resultPageText").innerHTML = textItems.page[index]
+        document.getElementById("resultPageNb").style.display = "inline-block"
         document.getElementById("resultPageNb").innerHTML = " " + currentPage
         numberOfPages = getNumberOfPages(numberPerPage)
         if (currentPage === numberOfPages) { 
             document.getElementById("resultPageAlert").innerHTML = textItems.lastPageAlert[index]
-        } else {
+            } else {
             document.getElementById("resultPageAlert").innerHTML = ""
         }
-
+         
         if (!searchFailed) {
-            drawMap(subMusitData)    
+            drawMap(subMusitData) 
         } 
     }  
     catch(error) {
@@ -246,8 +297,6 @@ function load() {
 }
 
 hitsPerPage.addEventListener('change', (e) => {
-    // hvis noe har trykket på Tøm Søk, så skal vi ikke oppdatere noe som helst  
-    if(collection.value){
     e.preventDefault()
     if (hitsPerPage.value < 4000){
         numberPerPage = hitsPerPage.value
@@ -258,7 +307,7 @@ hitsPerPage.addEventListener('change', (e) => {
         numberOfPages = 1
     }
     currentPage = 1
+    
+    
     loadList()
-    }
-
 })  

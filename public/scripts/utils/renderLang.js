@@ -50,6 +50,7 @@ const textItems = {
      "Sorry, something is wrong with the chosen collection. Choose another collection, come back later, or contact us (see help page)"],
     mapHelpContent: ["Bruk mushjul, eller dobbelklikk for å zoome inn, Shift + dobbelklikk  for å zoome ut. Klikk og dra for å flytte kartutsnitt", "Use mouse-wheel, or double click to zoom in, Shift + double click to zoom out. Click and drag to move map."],
     largeMapButton: ["Større kart", "Larger map"],
+    mapSearchAlt: ["Kart ikke tilgjengelig: Ingen av objektene på siden har koordinater knyttet til seg, eller de har feil format.", "Map not available: None of the objects on the page have coordinates registered, or they have the wrong format."],
     firstButton: ["Første", "First"],
     previousButton: ["Forrige", "Previous"],
     nextButton: ["Neste", "Next"],
@@ -161,9 +162,14 @@ const renderText = function(lang) {
         document.querySelector('#previous').value = textItems.previousButton[index]
         document.querySelector('#next').value = textItems.nextButton[index]
         document.querySelector('#last').value = textItems.lastButton[index]
-        document.getElementById("resultPageText").innerHTML = textItems.page[index]
+        if(document.getElementById("resultPageText").innerHTML) {
+            document.getElementById("resultPageText").innerHTML = textItems.page[index]
+        }
         if(document.getElementById("resultPageAlert").innerHTML) {
             document.getElementById("resultPageAlert").innerHTML = textItems.lastPageAlert[index]
+        }
+        if(document.querySelector("#map-search").innerHTML) {
+            document.querySelector("#map-search").innerHTML = textItems.mapSearchAlt[index]
         }
     }
 
@@ -188,6 +194,7 @@ const renderText = function(lang) {
 
         const object = allObject.find(x => x.catalogNumber === id)
 
+        
         document.querySelector("#head-species-name").innerHTML = textItems.headSpeciesName[index]
         document.querySelector("#head-det").innerHTML = textItems.headDet[index]
         document.querySelector("#head-det-date").innerHTML = textItems.headDetDate[index]
@@ -274,6 +281,7 @@ document.querySelector('#language').addEventListener('change', (e) => {
             document.querySelector('#previous').innerHTML = textItems.previousButton[index]
             document.querySelector('#next').innerHTML = textItems.nextButton[index]
             document.querySelector('#last').innerHTML = textItems.lastButton[index]
+            document.getElementById("resultPageText").style.display = "inline-block"
             document.getElementById("resultPageText").innerHTML = textItems.page[index]
             if(document.getElementById("resultPageAlert").innerHTML) {
                 document.getElementById("resultPageAlert").innerHTML = textItems.lastPageAlert[index]
@@ -281,12 +289,40 @@ document.querySelector('#language').addEventListener('change', (e) => {
 
             const headerRow = document.querySelector("#myTable").rows[0]
 
-            headerRow.cells[1].innerHTML = textItems.headerTaxon[index].bold()
-            headerRow.cells[2].innerHTML = textItems.headerCollector[index].bold()
-            headerRow.cells[3].innerHTML = textItems.headerDate[index].bold()
-            headerRow.cells[4].innerHTML = textItems.headerCountry[index].bold()
-            headerRow.cells[5].innerHTML = textItems.headerMunicipality[index].bold()
-            headerRow.cells[6].innerHTML = textItems.headerLocality[index].bold()
+            // headerRow.cells[1].innerHTML = `<button id='scientificNameButton' class='sort'>${textItems.headerTaxon[index].bold()} ${getArrowDown(1)} ${getArrowUp(1)}</button>`
+            // headerRow.cells[2].innerHTML = `<button id='collectorButton' class='sort'>${textItems.headerCollector[index].bold()} ${getArrowDown(2)} ${getArrowUp(2)}</button>`
+            // headerRow.cells[3].innerHTML = `<button id='dateButton' class='sort'>${textItems.headerDate[index].bold()} ${getArrowDown(3)} ${getArrowUp(3)}</button>`
+            // headerRow.cells[4].innerHTML = `<button id='countryButton' class='sort'>${textItems.headerCountry[index].bold()} ${getArrowDown(4)} ${getArrowUp(4)}</button>`
+            // headerRow.cells[5].innerHTML = `<button id='municipalityButton' class='sort'>${textItems.headerMunicipality[index].bold()} ${getArrowDown(5)} ${getArrowUp(5)}</button>`
+            // headerRow.cells[6].innerHTML = `<button id='localityButton' class='sort'>${textItems.headerLocality[index].bold()} ${getArrowDown(6)} ${getArrowUp(6)}</button>`
+            
+            cell2 = headerRow.cells[1]
+            cell3 = headerRow.cells[2]
+            cell4 = headerRow.cells[3]
+            cell5 = headerRow.cells[4]
+            cell6 = headerRow.cells[5]
+            cell7 = headerRow.cells[6]
+ 
+            cell2.innerHTML = `<button id='scientificNameButton' class='sort'>${textItems.headerTaxon[index].bold()} ${getArrows('scientificName')} </button>`
+            cell3.innerHTML = `<button id='collectorButton' class='sort'>${textItems.headerCollector[index].bold()} ${getArrows('recordedBy')}</button>`
+            cell4.innerHTML = `<button id='dateButton' class='sort'>${textItems.headerDate[index].bold()} ${getArrows('eventDate')}</button>`
+            cell5.innerHTML = `<button id='countryButton' class='sort'>${textItems.headerCountry[index].bold()} ${getArrows('country')}</button>`
+            cell6.innerHTML = `<button id='municipalityButton' class='sort'>${textItems.headerMunicipality[index].bold()} ${getArrows('county')}</button>`
+            cell7.innerHTML = `<button id='localityButton' class='sort'>${textItems.headerLocality[index].bold()} ${getArrows('locality')}</button>`
+            //cell10.innerHTML = `<button id='accnoButton' class='sort'>${textItems.headerCoremaAccno[index].bold()} ${getArrows('accno')}</button>`
+            //cell11.innerHTML = `<button id='processIDButton' class='sort'>${textItems.headerSequence[index].bold()} ${getArrows('processID')}</button>`
+
+            stringData = sessionStorage.getItem('string')
+            musitData = JSON.parse(stringData)      
+            addSortingText('scientificNameButton', 2, 'scientificName', musitData)
+            addSortingText('collectorButton', 3, 'recordedBy', musitData)
+            addSortingText('dateButton', 4, 'eventDate', musitData)
+            addSortingText('countryButton', 5, 'country', musitData)
+            addSortingText('municipalityButton', 6, 'county', musitData)
+            addSortingText('localityButton', 7, 'locality', musitData)
+                // // addSortingText('accnoButton', 10, 'accno', musitData)
+                // // addSortingText('processIDButton', 11, 'processID', musitData)
+            
         }
     }
 })
