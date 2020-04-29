@@ -178,7 +178,7 @@ searchForm.addEventListener('submit', (e) => {
 })  
 
 
-// when a collection is chosen a request is sent to the server about date of last change of the MUSIT-dump file
+
 collection.addEventListener('change', (e) => {
     e.preventDefault()
     updateFooter()
@@ -192,7 +192,7 @@ collection.addEventListener('change', (e) => {
     sessionStorage.setItem('collection', collection.value)
 })
 
-
+// when a collection is chosen a request is sent to the server about date of last change of the MUSIT-dump file
 const updateFooter = () => {
     const chosenCollection = collection.value
     if (chosenCollection) {

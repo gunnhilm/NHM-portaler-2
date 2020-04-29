@@ -177,7 +177,13 @@ app.get('/showStat', (req, res) => {
     })
     }
 })
-        
+ 
+// journal siden
+app.get('/journaler', (req, res) => {
+    res.render('journaler', {
+     })
+ })
+
 
 app.get('/about', (req, res) => {
    res.render('about', {

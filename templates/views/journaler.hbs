@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+    <title>Samlings Journaler</title>  
+    <link rel="stylesheet" href="/styles/styles.css">
+    </head>
+  
+    <body>
+        <div class="wrapper">
+        {{>header}}
+
+<table>
+    <tr>
+        <td>
+        <form>
+            <input id="journal-search-text" type="text" class="input" style="height:30px;  border-radius:4px; border-width: 1px" size="80">
+            <button id="journal-search-button">Søk</button>
+        </form>
+        </td>
+    </tr>
+</table>
+<b>hei hei</b>
+<div id="container"></div>
+    </div>
+    <script src="/scripts/utils/papaparse/papaparse.min.js"></script>
+    <script src="/scripts/utils/renderLang.js"></script>
+    <script src="/scripts/utils/journaler.js"></script>
+    </body>
+</html>

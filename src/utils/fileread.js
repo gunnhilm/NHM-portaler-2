@@ -6,11 +6,15 @@ const fileList = require('./fileList')
 
 const setCollection = (samling) => {
     let musitFile = ''
-    fileList.forEach(element => {
-        if (element.name === samling){
-            musitFile = './src/data/' + element.name + '_occurrence.txt'
-        }
-    });
+    if (samling === 'journaler') {
+        musitFile = './src/data/journaler.txt'
+    } else {
+        fileList.forEach(element => {
+            if (element.name === samling){
+                musitFile = './src/data/' + element.name + '_occurrence.txt'
+            }
+        });
+    }
     return musitFile 
     }
 
