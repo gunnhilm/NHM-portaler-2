@@ -114,7 +114,7 @@ downloadButton.addEventListener('click', (e) => {
         document.getElementById("please-wait").style.display = "none"
     } else {
 
-        const url = '/search/?search=' + searchTerm +'&samling=' + chosenCollection + '&linjeNumber=' + searchLineNumber + '&limit=' + limit // normal search
+        const url = '/search/?search=' + searchTerm +'&samling=' + chosenCollection + '&linjeNumber=0' + '&limit=' + limit // normal search
         fetch(url).then((response) => {
             if (!response.ok) {
                 throw 'noe går galt med søk, respons ikke ok'
@@ -125,7 +125,7 @@ downloadButton.addEventListener('click', (e) => {
                             errorMessage.innerHTML = textItems.serverError[index]
                             return console.log(data.error)
                         } else {
-
+                            
                             const JSONdata = JSON.parse(data)     
 
                             sessionStorage.setItem('searchLineNumber', JSONdata.unparsed.count)

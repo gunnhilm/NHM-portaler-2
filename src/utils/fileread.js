@@ -47,9 +47,9 @@ const search = (samling, searchTerm, linjeNumber = 0, limit = 20, callback) => {
             } 
             
             if (count === 1) {
-                // header row og legg til et feldt for linje nummer
+                // header row 
                 results =  line
-            } else if (count > linjeNumber) {
+            } else {         //if (count > linjeNumber) {
                 if (terms.length === 1){
                     if (line.toLowerCase().indexOf(terms[0]) !== -1) {
                         // søk for en match i linja  (line.indexOf(searchTerm) !== -1)
