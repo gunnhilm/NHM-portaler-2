@@ -4,6 +4,7 @@ const textItems = {
     searchPageLink: ["Søkeside", "Search"],
     helpButton: ["Hjelp", "Help"],
     statistikkButton: ["Statistikk", "Statistics"],
+    journalLink: ["Journalsøk", "Journal search"],
     logo: ["/images/uio_nhm_a_cmyk.png", "/images/uio_nhm_a_eng_cmyk.png"],
     
     // index page
@@ -90,10 +91,14 @@ const textItems = {
     helpHeader: ["Hvordan søke", "How to search the collections"],
     helpText: [`Velg samling først, og skriv ett eller flere søkeord i søkefeltet. 
     Du kan søke på latinsk artsnavn, lokalitet, musit-nummer, geografi osv. Det skilles ikke på store og små bokstaver. Land må skrives på engelsk, andre felt kan inneholde engelsk eller norsk.<br><br><br>
-    <span class="bold" style="font-size: 16pt">Kontaktinformasjon:</span> <br><br> gunnhilm@nhm.uio.no <br> eirik.rindal@nhm.uio.no`, 
+    <span class="bold" style="font-size: 16pt">Kontaktinformasjon:</span> <br><br> nhm-samlingsportaler@nhm.uio.no`, 
     `Choose collection first, and enter one or more search terms in the search field. 
     You can search for latin species name, locality, musit-number, geography etc. The search is case insensitive. Country is written in english, other fields can be either norwegian or english. <br><br><br>
-    <span class="bold" style="font-size: 16pt">Contact information:</span> <br><br> gunnhilm@nhm.uio.no  <br> eirik.rindal@nhm.uio.no`]
+    <span class="bold" style="font-size: 16pt">Contact information:</span> <br><br> nhm-samlingsportaler@nhm.uio.no`],
+
+    // journals page
+    journalHeader: ['Søk i journaler', 'Search journals']
+
 }
 
 
@@ -109,9 +114,10 @@ const renderText = function(lang) {
     
     //header
     //document.querySelector('#about-button').innerHTML = textItems.aboutButton[index]
-    document.querySelector('#help-button').innerHTML = textItems.helpButton[index]
-    document.querySelector('#statistikk-button').innerHTML = textItems.statistikkButton[index]
+    document.querySelector('#help-link').innerHTML = textItems.helpButton[index]
+    document.querySelector('#statistikk-link').innerHTML = textItems.statistikkButton[index]
     document.querySelector('#search-page-link').innerHTML = textItems.searchPageLink[index]
+    document.querySelector('#journal-link').innerHTML = textItems.journalLink[index]
 
     let logo = document.querySelector('#logo')
     logo.src = textItems.logo[index]
@@ -123,7 +129,7 @@ const renderText = function(lang) {
     
 
     //Doppdown med valg av samlinger, index page og stat page
-    if (!location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map')) {
+    if (!location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler')) {
         
        
         
@@ -143,7 +149,7 @@ const renderText = function(lang) {
         document.querySelector('#dna_other').innerHTML = textItems.dna_other[index]
     }
     // index page
-    if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map')) {
+    if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler')) {
         document.querySelector('#vennligst').innerHTML = textItems.vennligst[index] 
         
         document.querySelector('#search-button').innerHTML = textItems.searchButton[index]
@@ -245,6 +251,12 @@ const renderText = function(lang) {
         document.querySelector('#helpText').innerHTML = textItems.helpText[index]
     }
 
+    // journals page
+    if (location.href.includes('journaler')) {
+        document.querySelector('#header-journal-page').innerHTML = textItems.journalHeader[index]
+        //document.querySelector('#helpText').innerHTML = textItems.helpText[index]
+    }
+
 }
 
 let language
@@ -264,7 +276,7 @@ document.querySelector('#language').addEventListener('change', (e) => {
     renderText(language)
     sessionStorage.setItem('language', language)
    
-    if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema')) {
+    if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler')) {
         if (document.querySelector("#head-nb-hits").innerHTML) {
 
             if (language === "Norwegian") {

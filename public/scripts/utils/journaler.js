@@ -1,5 +1,5 @@
 const journalSearch = document.getElementById('journal-search-text')
-const journalSearchForm = document.getElementById('journal-search-button') 
+const journalSearchForm = document.getElementById('search-button') 
 const limit = 4000
 
 
@@ -23,29 +23,34 @@ function addHeaders(table, keys) {
 const jorurnalResultTable = (children) => {
 const table = document.createElement('table');
 table.setAttribute('id', 'journal-result-table')
+table.setAttribute('class', 'result-table')
+
 for( let i = 0; i < children.length; ++i ) {
 
-  let child = children[i];
-  if(i === 0 ) {
-    addHeaders(table, Object.keys(child));
-  }
-  const row = table.insertRow();
-  Object.keys(child).forEach(function(k) {
-    // console.log(k);
-    const cell = row.insertCell();
-    if(k === 'Flipbook indexfil') {
-        console.log('hei');
-        child[k] = '<a href="https://data.gbif.no/ggbn/flipbook' + child[k] + '"> FlipBook</a>'
-        cell.appendChild(document.createTextNode(''));
-        cell.innerHTML = child[k] 
-    } else if (k === 'Link for nedlasting av PDF') {
-        child[k] = '<a href="https://data.gbif.no/ggbn/flipbook' + child[k] + '"> PDF</a>'
-        cell.appendChild(document.createTextNode(''));
-        cell.innerHTML = child[k] 
-    } else {
-    cell.appendChild(document.createTextNode(child[k]));
+    
+    let child = children[i];
+    if(i === 0 ) {
+        addHeaders(table, Object.keys(child));
     }
-  })
+    const row = table.insertRow();
+  
+    Object.keys(child).forEach(function(k ,index) {
+        const cell = row.insertCell()
+        if (index === 0) {
+            cell.appendChild(document.createTextNode(child[k]))
+            cell.className = 'nowrap'
+        } else if(k === 'Flipbook indexfil') {
+            child[k] = '<a href="https://data.gbif.no/ggbn/flipbook' + child[k] + '"> FlipBook</a>'
+            cell.appendChild(document.createTextNode(''));
+            cell.innerHTML = child[k] 
+        } else if (k === 'Link for nedlasting av PDF') {
+            child[k] = '<a href="https://data.gbif.no/ggbn/flipbook' + child[k] + '"> PDF</a>'
+            cell.appendChild(document.createTextNode(''));
+            cell.innerHTML = child[k] 
+        } else {
+            cell.appendChild(document.createTextNode(child[k]));
+        }
+    })
 }
 
  // send tabellen til frontend

@@ -3,7 +3,7 @@ html *
    font-family: Arial;
 }
 
-#header-search-page {
+.page-header {
     font-size: 30px;
 }
   
@@ -17,13 +17,10 @@ html *
     display: inline-block;
     text-align: left;
     width: 1580px;
-    }
+}
 
-.help-content {
-    min-height: calc(100vh - 150px); 
-    display: inline-block;
-    text-align: left;
-    width: 1580px;
+#journal-content {
+    width: 2000px
 }
 
 header {
@@ -104,9 +101,9 @@ td {
     padding: 9px;
 }
 
-#object_page_header, #musit_regno {
+/* #object_page_header, #musit_regno {
     padding: 15px;
-}
+} */
 
 
 .box {
@@ -137,18 +134,28 @@ td {
         font-size: 24px;
     }
 
-    .resultTable  {
-        /* air between text */
-        table-layout: fixed;
-        white-space: nowrap;
-        
+    /* journal-page */
+   
+    
+    #journal-result-table td {
+        padding: 5px;
         
     }
-    
-    /* every second line white and grey */
-    #myTable tr:nth-child(odd)		{ background-color:#eee; }
-    #myTable tr:nth-child(even) 	{ background-color:#fff; }
 
+    .result-table th {
+        text-align: left;
+        padding: 5px
+    }
+
+    .nowrap {
+        white-space: nowrap;
+    } 
+
+    /* every second line white and grey */
+    .result-table tr:nth-child(odd)		{ background-color:#fff; }
+    .result-table tr:nth-child(even) 	{ background-color:#eee; }
+
+    
     .row-ID {
         width: 100px;
         text-align: right;
@@ -376,6 +383,7 @@ td {
   .sort {
       width: 100%;
       text-align: left;
+      padding: 0px; 
     }
 
 .uio-arrow-down {
@@ -406,29 +414,9 @@ td {
     .pagination-div{
         display: inline-block;
       }
-    .pagination {
-        background-color: #3f81af;
-        border: none;
-        border-radius: 4px;
-        color: white;
-        font-weight: bold;
-        padding: 9px 24px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        transition-duration: 0.4s;
-        cursor: pointer;
-      }
-      
-      .pagination:hover {
-        background-color: #008CBA;
-        border-radius: 4px;
-        color: white;
-      }
-
-.button {
+    
+ 
+.blue-button {
     padding: 9px;
     vertical-align: center;
     background-color: #3f81af;
@@ -437,10 +425,19 @@ td {
     font-weight: bold;
     border: none;
     font-size: 16px;
+    transition-duration: 0.4s;
     cursor: pointer;
 }
+/* .pagination {
+    padding: 9px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+  } */
 
-#search-button:hover {
+.blue-button:hover {
     background-color: #008CBA;
     border-radius: 4px;
     color: white;
@@ -448,56 +445,20 @@ td {
 
    
 #search-button {
-    padding: 9px;
-    vertical-align: center;
     width: 123px;
-    background-color: #3f81af;
-    border-radius: 4px;
-    color: white;
-    font-weight: bold;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
     float: right;
 }
 
 #empty-search-button {
-    padding: 9px;
     width: 123px;
-    background-color: #3f81af;
-    border-radius: 4px;
-    color: white;
-    font-weight: bold;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
     float: right;
 }
 
-#empty-search-button:hover {
-    background-color: #008CBA;
-    border-radius: 4px;
-    color: white;
-  }
 
 #download-button {
-    padding: 9px;
     width: 155px;
-    background-color: #3f81af;
-    border-radius: 4px;
-    color: white;
-    font-weight: bold;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
     float: right;
 }
-
-#download-button:hover {
-    background-color: #008CBA;
-    border-radius: 4px;
-    color: white;
-  }
 
 #zoom-button {
     padding: 2px 12px;
@@ -516,3 +477,4 @@ td {
     color: red;
     font-weight: bold;
 }
+
