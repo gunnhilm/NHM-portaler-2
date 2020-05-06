@@ -103,7 +103,7 @@ const drawMap = (parsedData) => {
                 if (feature) {
                     const coordinates = feature.getGeometry().getCoordinates()
                     popup.setPosition(coordinates)
-                    content.innerHTML =  `<a id="object-link" href="http://localhost:3000/object/?id=${feature.get('catalogNumber')}"> ${feature.get('catalogNumber')} </a>`
+                    content.innerHTML =  `<a id="object-link" href="/object/?id=${feature.get('catalogNumber')}"> ${feature.get('catalogNumber')} </a>`
                 } 
             })  
         } else {
@@ -205,7 +205,7 @@ const drawMapObject = (object) => {
         // add this new layer over the map
         map.addLayer(vectorLayer)
     } else {
-        if (document.querySelector('#language').value = "Norwegian") {
+        if (document.querySelector('#language').value === "Norwegian") {
             document.querySelector("#map-object").innerHTML = "Kart ikke tilgjengelig"
 
         } else {

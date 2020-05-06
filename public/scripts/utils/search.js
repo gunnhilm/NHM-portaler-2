@@ -21,7 +21,7 @@ const emptySearchButton = document.querySelector('#empty-search-button')
 
 
 // rendered with result table, in footer
-const updated = document.querySelector('#last-updated') 
+const updated = document.querySelector('#last-updated');
 
 // to decide wether map is to be drawn
 let searchFailed = false
@@ -115,6 +115,8 @@ downloadButton.addEventListener('click', (e) => {
     } else {
 
         const url = '/search/?search=' + searchTerm +'&samling=' + chosenCollection + '&linjeNumber=0' + '&limit=' + limit // normal search
+        console.log(url);
+        
         fetch(url).then((response) => {
             if (!response.ok) {
                 throw 'noe går galt med søk, respons ikke ok'
@@ -174,7 +176,7 @@ downloadButton.addEventListener('click', (e) => {
 // when somebody clicks search-button
 searchForm.addEventListener('submit', (e) => {
     e.preventDefault()
-    doSearch(4000) // vi skal få tilbake maks 4000 linjer med svar
+    doSearch(2000) // vi skal få tilbake maks 4000 linjer med svar
 })  
 
 
@@ -224,29 +226,27 @@ const updateFooter = () => {
 // show previous search-result
 const oldSearch = () => {
     if (sessionStorage.getItem('collection')) {
-            if (sessionStorage.getItem('string')) { //hvis det er søkeresultater i sesion storage, så skal disse vises
-                // render correct language
-                if (!sessionStorage.getItem('language')) {
-                    language = 'Norwegian'
-                } else {
-                    language = sessionStorage.getItem('language')
-                }
-                renderText(language)
-                try {
-                document.getElementById('collection-select').value = sessionStorage.getItem('collection')
-                document.getElementById('search-text').value = sessionStorage.getItem('searchTerm')
-                nbHitsElement.innerHTML=JSON.parse(sessionStorage.getItem('string')).length
-                
-                }
-                catch {
-                    console.log('local storage empty');
-                    
-                }
-                updateFooter()                
-                // sends the data to the functions that show the results
-                load()
+        if (sessionStorage.getItem('string')) { //hvis det er søkeresultater i sesion storage, så skal disse vises
+            // render correct language
+            if (!sessionStorage.getItem('language')) {
+                language = 'Norwegian'
+            } else {
+                language = sessionStorage.getItem('language')
             }
-        } 
+            renderText(language)
+            try {
+            document.getElementById('collection-select').value = sessionStorage.getItem('collection')
+            document.getElementById('search-text').value = sessionStorage.getItem('searchTerm')
+            nbHitsElement.innerHTML = JSON.parse(sessionStorage.getItem('string')).length
+            } catch (error) {
+                console.log('local storage empty');    
+            }
+            updateFooter()                
+            // sends the data to the functions that show the results
+            load()
+            
+        }
+    } 
 }
 
 //run the function

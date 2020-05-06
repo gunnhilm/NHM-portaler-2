@@ -10,10 +10,6 @@ let ctx = ""
 let config = ""
 let chart = ""
 
-let ctx1 = ""
-let config1 = ""
-let chart1 = ""
-
 let ctx2 = ""
 let config2 = ""
 let chart2 = ""
@@ -178,7 +174,7 @@ const harKoordinater = (data, currentCollection) => {
 // Poster fra Norge 
 const fraNorge = (data, currentCollection) => {
   for (let index = 0; index < data[currentCollection][1].geography.country.length; index++) {
-    if (data[currentCollection][1].geography.country[index].country = 'Norway')
+    if (data[currentCollection][1].geography.country[index].country === 'Norway')
     norske = data[currentCollection][1].geography.country[index].number  
     break
   }     
@@ -202,8 +198,6 @@ const getData = () => {
           // statData.json er dobbelt strigifyed så derfor dobbel parse
           data = JSON.parse(data)
           data = JSON.parse(data.unparsed)
-          console.log('Her kommer Data');
-          console.log(data)
           resolve(data)
         } catch (error) {
           console.log(error);
@@ -376,7 +370,7 @@ function updateGraf() {
 }
 
 // Når noen bytter samling
-collection.addEventListener('change', (e) => {
+collection.addEventListener('change', () => {
   updateGraf()
 })
 

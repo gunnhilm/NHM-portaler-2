@@ -71,7 +71,7 @@ const concatLocality = country(object) + stateProvince(object) + county(object) 
 // to print nice coordinates:
 const coordinates = (obj) => {
     if (obj.decimalLongitude === '' | obj.decimalLatitude === '') {
-        if (document.querySelector('#language').value = "Norwegian") {
+        if (document.querySelector('#language').value === "Norwegian") {
             return 'Ingen koordinater'
            
         } else {
@@ -137,7 +137,24 @@ document.querySelector("#artsobsID").innerHTML = artsobsID
 //document.querySelector("#head-coremaAccno").innerHTML = `<span>Corema Accno</span>`
 //document.querySelector("#coremaAccno").innerHTML = `<span>${coremaAccno}</span>`
 
+
 // photo:
+// hvis noe klikker på neste bilde
+function changeImage(index, smallImageList, imageList) {
+    index = index + 1;
+    if (index === smallImageList.length) {
+        index = 0;
+    }
+    document.getElementById("photo-anchor").href = imageList[index]
+    document.getElementById("photo-box").src = smallImageList[index]
+    return index
+}
+// lager smallImageList
+function reducePhoto(photo) {
+    return photo.replace('jpeg', 'small')
+}
+        
+
 //to get a thumbnail width is set to 150px in styles for img
 // and to to enable large photo by clicking, img is wrapped in a <a>
 
@@ -146,25 +163,11 @@ if ( object.associatedMedia.includes('|') ) {
     document.getElementById("next-photo").style.display = "block"
     let index = 0
     let imageList = object.associatedMedia.split('|')
-    
-    function reducePhoto(photo) {
-        return photo.replace('jpeg', 'small')
-    }
-
     let smallImageList = imageList.map(reducePhoto)
     document.getElementById("photo-anchor").href = imageList[0]
     document.getElementById("photo-box").src = smallImageList[0]
-    function changeImage() {
-        index = index + 1;
-        if (index == smallImageList.length) {
-            index = 0;
-        }
-        document.getElementById("photo-anchor").href = imageList[index]
-        document.getElementById("photo-box").src = smallImageList[index]
-    }
-    console.log('more pictures')
     document.getElementById("next-photo").onclick = () => {
-        changeImage()
+       index = changeImage(index, smallImageList, imageList)
     }
 } else {
     document.getElementById("photo-anchor").href = object.associatedMedia
@@ -173,13 +176,10 @@ if ( object.associatedMedia.includes('|') ) {
     document.getElementById("photo-box").src = smallImage
 }
 
-
-
-
 //map
 drawMapObject(object)
 
 // large map button
 document.getElementById('large-map-object-button').onclick = () => {
-    window.open(href=`http://localhost:3000/mapObject/?id=${id}`)
+    window.open(href=`/mapObject/?id=${id}`)
 }

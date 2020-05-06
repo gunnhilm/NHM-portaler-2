@@ -1,7 +1,5 @@
 const journalSearch = document.getElementById('journal-search-text')
 const journalSearchForm = document.getElementById('search-button') 
-const limit = 4000
-
 
 // resultattabell
 // Lag overskriftraden
@@ -9,8 +7,6 @@ function addHeaders(table, keys) {
 //   var row = table.insertRow();
   const tr = document.createElement('tr'); // Header row
   for( let i = 0; i < keys.length; i++ ) {
-    // var cell = row.insertCell();
-    // cell.appendChild(document.createTextNode(keys[i]));
 
     const th = document.createElement('th'); //column
     const text = document.createTextNode(keys[i]); //cell
@@ -33,7 +29,6 @@ for( let i = 0; i < children.length; ++i ) {
         addHeaders(table, Object.keys(child));
     }
     const row = table.insertRow();
-  
     Object.keys(child).forEach(function(k ,index) {
         const cell = row.insertCell()
         if (index === 0) {
@@ -58,13 +53,8 @@ document.getElementById('container').appendChild(table);
 }
 
 
-
-
-
 // hent ut søkeresultater
 const doJournalSearch = (limit = 2000) => {
-    console.log(journalSearch.value);
-
 
     //slett resultattabellen før vi lager en ny
     const elem = document.getElementById('journal-result-table');
@@ -72,13 +62,13 @@ const doJournalSearch = (limit = 2000) => {
     {
         document.getElementById('container').removeChild(elem);
     }
-    // document.getElementById('container').removeChild('container')
     
     const searchTerm = journalSearch.value
     const url = '/search/?search=' + searchTerm +'&samling=journaler&linjeNumber=0&limit=' + limit // normal search
         fetch(url).then((response) => {
             if (!response.ok) {
-                throw 'noe går galt med søk, respons ikke ok'
+                // throw 'noe går galt med søk, respons ikke ok' + response
+                console.error(response);
             } else {
                 try {
                     response.text().then((data) => {
@@ -94,8 +84,7 @@ const doJournalSearch = (limit = 2000) => {
                                 header: true,
                             })
                             //load results
-                            jorurnalResultTable(parsedResults.data)
-                            
+                            jorurnalResultTable(parsedResults.data) 
                         }
                     })
                 } catch (error) {
@@ -105,7 +94,6 @@ const doJournalSearch = (limit = 2000) => {
             }
         })
 } 
-
 
 
 // when somebody clicks search-button

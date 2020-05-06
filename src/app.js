@@ -3,12 +3,15 @@ const express = require('express')
 const fileRead = require('./utils/fileread')
 const getStatFile = require('./utils/getStatFile')
 //const coremaFileread = require('./utils/coremaFileread')
-const fs = require('fs')
 const footerDate = require('./utils/footerDate')
 const hbs = require('hbs')
+const helmet = require('helmet')
 
 
 const app = express()
+
+// Sikkerhets app som beskytter mot uønskede headers osv.
+app.use(helmet())
 const port = process.env.PORT || 3000
     
 
@@ -47,6 +50,7 @@ app.get('', (req, res) => {
 //  (error, results) callback med resultatene fra søket
 
 app.get('/search', (req, res) => {
+   
     if (!req.query.samling) {
         throw new Error ('collection not chosen') 
     } else {

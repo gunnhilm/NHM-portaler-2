@@ -8,6 +8,8 @@ const setCollection = (samling) => {
     let musitFile = ''
     if (samling === 'journaler') {
         musitFile = './src/data/journaler.txt'
+        console.log(musitFile);
+        
     } else {
         fileList.forEach(element => {
             if (element.name === samling){
@@ -41,11 +43,9 @@ const search = (samling, searchTerm, linjeNumber = 0, limit = 20, callback) => {
         let resultCount = 0
         readInterface.on('line', function(line) {
             count++
-            
             if (resultCount == limit) {
                 readInterface.close()
             } 
-            
             if (count === 1) {
                 // header row 
                 results =  line
@@ -81,8 +81,6 @@ const search = (samling, searchTerm, linjeNumber = 0, limit = 20, callback) => {
         throw new Error ('File not found' + musitFile)
     }
 }
-
-
 
 module.exports = { 
     search,

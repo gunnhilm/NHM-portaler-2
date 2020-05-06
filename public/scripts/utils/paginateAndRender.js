@@ -298,12 +298,12 @@ function load() {
 
 hitsPerPage.addEventListener('change', (e) => {
     e.preventDefault()
-    if (hitsPerPage.value < 4000){
+    if (hitsPerPage.value < 2000){
         numberPerPage = hitsPerPage.value
         numberPerPage = numberPerPage - 0 // to make it a number
         numberOfPages = getNumberOfPages(numberPerPage)
     } else {
-        numberPerPage = 4000
+        numberPerPage = 2000
         numberOfPages = 1
     }
     currentPage = 1
