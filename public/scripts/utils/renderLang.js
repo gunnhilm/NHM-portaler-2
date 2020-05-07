@@ -32,7 +32,6 @@ const textItems = {
 
     hitsPerPage: ["Treff per side", "Hits per page"],
     downloadLink: ["Last ned resultat", "Download results"],
-    //searchResultHeadline: ["Resultat", "Search result"],
     nbHitsText: ["Antall treff: ", "Number of hits: "],
     headerTaxon: ["Takson", "Taxon"],
     headerCollector: ["Innsamler", "Collector"],

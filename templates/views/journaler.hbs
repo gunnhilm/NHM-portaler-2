@@ -2,15 +2,15 @@
 
 <html>
     <head>
-    <title>Samlings Journaler</title>  
+    <title>Samlingsjournaler</title>  
     <link rel="stylesheet" href="/styles/styles.css">
     </head>
   
     <body>
         <div class="wrapper">
             {{>header}}
-             <br><br><br><br>
-            <div class="content" id="journal-content">
+            <div class="content">
+                <br><br><br><br>
                 <p class="page-header" id="header-journal-page"></p>
                 <table>
                     <tr>
@@ -27,16 +27,19 @@
                 </table>
                 <table >
                     <tr>
+                        <br>
                         <td style="align:left" id="head-nb-hits"></td>
                         <td style="align:left" id="nb-hits" ></td>
+                        <br>
                     </tr>
+                    
                 </table>
-                <div id="container"></div>
-                    </div>
-                    <script src="/scripts/utils/papaparse/papaparse.min.js"></script>
-                    <script src="/scripts/utils/renderLang.js"></script>
-                    <script src="/scripts/utils/journaler.js"></script>
+                <div id="container"><br></div>
+            </div>
+            {{>footer}}    
         </div>
-        {{>footer}}
+        <script src="/scripts/utils/papaparse/papaparse.min.js"></script>
+        <script src="/scripts/utils/renderLang.js"></script>
+        <script src="/scripts/utils/journaler.js"></script>
     </body>
 </html>

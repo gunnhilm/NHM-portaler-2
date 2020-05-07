@@ -2,7 +2,7 @@ const journalSearch = document.getElementById('journal-search-text')
 const journalSearchForm = document.getElementById('search-button') 
 const errorMessage = document.getElementById('head-nb-hits')
 const nbHitsElement = document.getElementById('nb-hits') 
-const columnsToShow = 5
+const columnsToShow = 13
 // resultattabell
 // Lag overskriftraden
 function addHeaders(table, keys) {
@@ -10,49 +10,51 @@ function addHeaders(table, keys) {
   const tr = document.createElement('tr'); // Header row
 //   for( let i = 0; i < keys.length; i++ ) {
     for( let i = 0; i < columnsToShow; i++ ) {
-    const th = document.createElement('th'); //column
-    const text = document.createTextNode(keys[i]); //cell
-    th.appendChild(text);
-    tr.appendChild(th);
-    table.appendChild(tr);
-  }
-}
-// lag innmaten
-const jorurnalResultTable = (children) => {
-const table = document.createElement('table');
-table.setAttribute('id', 'journal-result-table')
-table.setAttribute('class', 'result-table')
-
-
-for( let i = 0; i < children.length; ++i ) {
-    let child = children[i];
-    if(i === 0 ) {
-        addHeaders(table, Object.keys(child));
+        const th = document.createElement('th'); //column
+        const text = document.createTextNode(keys[i]); //cell
+        th.appendChild(text);
+        tr.appendChild(th);
+        table.appendChild(tr);
     }
-    const row = table.insertRow();
-    Object.keys(child).forEach(function(k ,index) {
-        if (index < columnsToShow) {
-        const cell = row.insertCell()
-        if (index === 0) {
-            cell.appendChild(document.createTextNode(child[k]))
-            cell.className = 'nowrap'
-        } else if(k.includes('Flipbook')) {
-            child[k] = '<a href="https://data.gbif.no/ggbn/flipbook' + child[k] + '"> FlipBook</a>'
-            cell.appendChild(document.createTextNode(''));
-            cell.innerHTML = child[k] 
-        } else if (k.includes('PDF')) {
-            child[k] = '<a href="https://data.gbif.no/ggbn/flipbook' + child[k] + '"> PDF</a>'
-            cell.appendChild(document.createTextNode(''));
-            cell.innerHTML = child[k] 
-        } else {
-            cell.appendChild(document.createTextNode(child[k]));
-        }
-        }
-    })
 }
 
- // send tabellen til frontend
-document.getElementById('container').appendChild(table);
+
+// lag innmaten
+const journalResultTable = (children) => {
+    const table = document.createElement('table');
+    table.setAttribute('id', 'journal-result-table')
+    table.setAttribute('class', 'result-table')
+
+
+    for( let i = 0; i < children.length; ++i ) {
+        let child = children[i];
+        if(i === 0 ) {
+            addHeaders(table, Object.keys(child));
+        }
+        const row = table.insertRow();
+        Object.keys(child).forEach(function(k ,index) {
+            if (index < columnsToShow) {
+                const cell = row.insertCell()
+                if (index === 0) {
+                    cell.appendChild(document.createTextNode(child[k]))
+                    cell.className = 'nowrap'
+                } else if(k.includes('Flipbook')) {
+                    child[k] = '<a href="https://data.gbif.no/ggbn/flipbook' + child[k] + '"> FlipBook</a>'
+                    cell.appendChild(document.createTextNode(''));
+                    cell.innerHTML = child[k] 
+                } else if (k.includes('PDF')) {
+                    child[k] = '<a href="https://data.gbif.no/ggbn/flipbook' + child[k] + '"> PDF</a>'
+                    cell.appendChild(document.createTextNode(''));
+                    cell.innerHTML = child[k] 
+                } else {
+                    cell.appendChild(document.createTextNode(child[k]));
+                }
+            }
+        })
+    }
+
+    // send tabellen til frontend
+    document.getElementById('container').appendChild(table);
 }
 
 
@@ -89,13 +91,13 @@ const doJournalSearch = (limit = 2000) => {
                             })  
                             //load results
                             if (parsedResults.data.length > 0){
-                            jorurnalResultTable(parsedResults.data)
-                            errorMessage.innerText = textItems.nbHitsText[index] 
-                            nbHitsElement.innerText = parsedResults.data.length
-                        } else {
-                            console.log('no results');
-                            errorMessage.innerText = textItems.noHits[index]   
-                        }
+                                journalResultTable(parsedResults.data)
+                                errorMessage.innerText = textItems.nbHitsText[index] 
+                                nbHitsElement.innerText = parsedResults.data.length
+                            } else {
+                                console.log('no results');
+                                errorMessage.innerText = textItems.noHits[index]   
+                            }
                         }
                     })
                 } catch (error) {
@@ -134,3 +136,5 @@ const updateFooter = () => {
 }
 
 updateFooter()
+
+

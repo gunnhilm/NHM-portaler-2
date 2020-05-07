@@ -17,10 +17,7 @@ html *
     display: inline-block;
     text-align: left;
     width: 1580px;
-}
-
-#journal-content {
-    width: 2000px
+    
 }
 
 header {
