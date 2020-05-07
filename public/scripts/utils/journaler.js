@@ -2,14 +2,14 @@ const journalSearch = document.getElementById('journal-search-text')
 const journalSearchForm = document.getElementById('search-button') 
 const errorMessage = document.getElementById('head-nb-hits')
 const nbHitsElement = document.getElementById('nb-hits') 
-
+const columnsToShow = 5
 // resultattabell
 // Lag overskriftraden
 function addHeaders(table, keys) {
 //   var row = table.insertRow();
   const tr = document.createElement('tr'); // Header row
 //   for( let i = 0; i < keys.length; i++ ) {
-    for( let i = 0; i < 4; i++ ) {
+    for( let i = 0; i < columnsToShow; i++ ) {
     const th = document.createElement('th'); //column
     const text = document.createTextNode(keys[i]); //cell
     th.appendChild(text);
@@ -31,7 +31,7 @@ for( let i = 0; i < children.length; ++i ) {
     }
     const row = table.insertRow();
     Object.keys(child).forEach(function(k ,index) {
-        if (index < 4) {
+        if (index < columnsToShow) {
         const cell = row.insertCell()
         if (index === 0) {
             cell.appendChild(document.createTextNode(child[k]))
@@ -86,7 +86,7 @@ const doJournalSearch = (limit = 2000) => {
                                 newline: "\n",
                                 quoteChar: '',
                                 header: true,
-                            })
+                            })  
                             //load results
                             if (parsedResults.data.length > 0){
                             jorurnalResultTable(parsedResults.data)
