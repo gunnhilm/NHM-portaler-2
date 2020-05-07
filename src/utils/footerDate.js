@@ -20,8 +20,7 @@ const getFileUpdatedDate = (samling, callback) => {
                 })
             } 
     } catch (error) {
-    console.log('Error in footerdate');
-                
+    console.log('Error in footerdate');      
     }
 }
 

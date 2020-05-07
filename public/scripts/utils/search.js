@@ -168,6 +168,10 @@ downloadButton.addEventListener('click', (e) => {
                 }
             }
             document.getElementById("please-wait").style.display = "none"
+        }).catch((error) => {
+            console.log('her er den nye feilen' + error);
+            errorMessage.innerHTML = textItems.serverError[index]
+            document.getElementById("please-wait").style.display = "none"
         })
         
     }
@@ -211,7 +215,7 @@ const updateFooter = () => {
             lastUpdated = 'Dataene ble sist oppdatert: ' + data.date
             updated.textContent = lastUpdated
         }) .catch((error) => {
-            console.error('There is a problem, probably file for collections does not exist', error)
+            console.error('There is a problem, probably file for collection does not exist', error)
             emptySearch()
             errorMessage.innerHTML = textItems.errorFileNotExisting[index]
             // disable search...
