@@ -69,7 +69,7 @@ const doJournalSearch = (limit = 2000) => {
     }
     
     const searchTerm = journalSearch.value
-    const url = '/search/?search=' + searchTerm +'&samling=journaler&linjeNumber=0&limit=' + limit // normal search
+    const url = urlPath + '/search/?search=' + searchTerm +'&samling=journaler&linjeNumber=0&limit=' + limit // normal search
         fetch(url).then((response) => {
             if (!response.ok) {
                 // throw 'noe går galt med søk, respons ikke ok' + response
@@ -119,7 +119,7 @@ journalSearchForm.addEventListener('click', (e) => {
 
 // when a collection is chosen a request is sent to the server about date of last change of the journaler file
 const updateFooter = () => {
-        const url = '/footer-date/?&samling=journaler' 
+        const url = urlPath + '/footer-date/?&samling=journaler' 
         fetch(url).then((response) => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');

@@ -50,7 +50,6 @@ app.get('', (req, res) => {
 //  (error, results) callback med resultatene fra søket
 
 app.get('/search', (req, res) => {
-   
     if (!req.query.samling) {
         throw new Error ('collection not chosen') 
     } else {

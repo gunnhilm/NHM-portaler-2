@@ -1,3 +1,5 @@
+const urlPath = '/nhm'
+
 const textItems = {
     // header
     aboutButton: ["Om sidene", "About"],
@@ -5,7 +7,7 @@ const textItems = {
     helpButton: ["Hjelp", "Help"],
     statistikkButton: ["Statistikk", "Statistics"],
     journalLink: ["Journalsøk", "Journal search"],
-    logo: ["/images/uio_nhm_a_cmyk.png", "/images/uio_nhm_a_eng_cmyk.png"],
+    logo: [urlPath + "/images/uio_nhm_a_cmyk.png", urlPath + "/images/uio_nhm_a_eng_cmyk.png"],
     
     // index page
     emptySearch: ["Tøm søk", "Empty search"],

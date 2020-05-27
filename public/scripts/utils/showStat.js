@@ -187,7 +187,7 @@ const fraNorge = (data, currentCollection) => {
 // Download data from the server and parse it
 const getData = () => {
   return new Promise(resolve => {
-  const url = '/showStat?getStat=true'
+  const url = urlPath + '/showStat?getStat=true'
   fetch(url).then((response) => { 
     response.text().then((data) => {
       if(data.error) {
@@ -216,7 +216,7 @@ const makeGraphs = (data) => {
   aarligTilvekst = tilvekstData(data, currentCollection) //regn ut data til grafen
   ctx = tilvekst.getContext('2d'); // fra HTML sia
   config = {
-    type: 'line',
+    type: 'bar',
       options: {
       elements: {
           point: {
@@ -240,7 +240,7 @@ const makeGraphs = (data) => {
   accumulativeSize = accumulativeCollectionSize(data, currentCollection)
   ctx2 = collSize.getContext('2d');
   config2 = {
-    type: 'line',
+    type: 'bar',
     options: {
       elements: {
           point: {

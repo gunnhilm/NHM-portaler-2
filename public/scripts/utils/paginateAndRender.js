@@ -49,8 +49,8 @@ function resetSortedBoolean () {
 
 
 // funksjnalitet for å bytte ut pilene  opp og ned
-const arrowUp = `<img id='uio-arrow-up' src='/images/icon-up.svg' width="10" height="10"></img>`
-const arrowDown =  `<img id='uio-arrow-down' src='/images/icon-down.svg' width="10" height="10"></img>`
+const arrowUp = `<img id='uio-arrow-up' src='${urlPath}/images/icon-up.svg' width="10" height="10"></img>`
+const arrowDown =  `<img id='uio-arrow-down' src='${urlPath}/images/icon-down.svg' width="10" height="10"></img>`
 const arrows = arrowUp + arrowDown
 
 function getArrows(prop) {
@@ -165,7 +165,7 @@ const resultTable = (subMusitData, musitData) => {
 
 
             } else {        // Her kommer innmaten i tabellen, selve resultatene
-                cell1.innerHTML =  `<a id="object-link" href="/object/?id=${subMusitData[i].catalogNumber}"> ${subMusitData[i].catalogNumber} </a>`
+                cell1.innerHTML =  `<a id="object-link" href="${urlPath}/object/?id=${subMusitData[i].catalogNumber}"> ${subMusitData[i].catalogNumber} </a>`
                 cell2.innerHTML = subMusitData[i].scientificName
                 if (subMusitData[i].recordedBy.includes(",")) {
                     let x = subMusitData[i].recordedBy.indexOf(",")

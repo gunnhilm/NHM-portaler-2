@@ -181,5 +181,5 @@ drawMapObject(object)
 
 // large map button
 document.getElementById('large-map-object-button').onclick = () => {
-    window.open(href=`/mapObject/?id=${id}`)
+    window.open(href=`${urlPath}/mapObject/?id=${id}`)
 }

@@ -56,7 +56,7 @@ downloadButton.addEventListener('click', (e) => {
     const searchTerm = search.value
     const chosenCollection = collection.value
     
-    const url = '/download/?search=' + searchTerm +'&samling=' + chosenCollection + '&linjeNumber=0' + '&limit=none' // vi laster ned hele søkeresultatet, begynner på første linje og tar med alle resultater
+    const url = urlPath + '/download/?search=' + searchTerm +'&samling=' + chosenCollection + '&linjeNumber=0' + '&limit=none' // vi laster ned hele søkeresultatet, begynner på første linje og tar med alle resultater
     fetch(url).then((response) => {
             
         response.text().then((data) => {
@@ -114,7 +114,7 @@ downloadButton.addEventListener('click', (e) => {
         document.getElementById("please-wait").style.display = "none"
     } else {
 
-        const url = '/search/?search=' + searchTerm +'&samling=' + chosenCollection + '&linjeNumber=0' + '&limit=' + limit // normal search
+        const url = urlPath + '/search/?search=' + searchTerm +'&samling=' + chosenCollection + '&linjeNumber=0' + '&limit=' + limit // normal search
         console.log(url);
         
         fetch(url).then((response) => {
@@ -203,7 +203,8 @@ const updateFooter = () => {
     const chosenCollection = collection.value
     if (chosenCollection) {
         sessionStorage.setItem('collection', chosenCollection)
-        const url = '/footer-date/?&samling=' + chosenCollection
+        const url =  urlPath + '/footer-date/?&samling=' + chosenCollection
+
         fetch(url).then((response) => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -306,5 +307,5 @@ emptySearchButton.addEventListener('click', (e) => {
 
 
 document.getElementById('large-map-button').onclick = () => {
-    window.open(href="/map")
+    window.open(href= urlPath + "/map")
 }
