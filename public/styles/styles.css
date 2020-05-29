@@ -412,6 +412,13 @@ td {
         display: inline-block;
       }
     
+    .pagination-container1 {
+        text-align: left;
+        width: 1580px;
+    }
+    .pagination-div1{
+        display: inline-block;
+    }
  
 .blue-button {
     padding: 9px;
@@ -425,6 +432,18 @@ td {
     transition-duration: 0.4s;
     cursor: pointer;
 }
+
+.descrete-button {
+    padding: 9px;
+    vertical-align: center;
+    
+    border-radius: 4px;
+    border: none;
+    font-size: 16px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
 /* .pagination {
     padding: 9px 24px;
     text-align: center;

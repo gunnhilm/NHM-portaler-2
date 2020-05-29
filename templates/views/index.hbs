@@ -119,21 +119,36 @@
                     </tr>
                 </table>
 
+                 <div style="text-align:center;">
+                    <div class="pagination-container1">
+                        <div class="pagination-div1">
+                            <input type="button" id="first1" onclick="firstPage()" class="descrete-button" style="display:none"/>
+                            <input type="button" id="previous1" onclick="previousPage()" class="descrete-button" style="display:none"/>
+                            <input type="button" id="next1" onclick="nextPage()" class="descrete-button" style="display:none"/>
+                            <input type="button" id="last1" onclick="lastPage()" class="descrete-button" style="display:none"/>
+                            <p style="display: none" id = "resultPageText1"></p> 
+                            <p style="display: none" id = "resultPageNb1"></p>
+                            <p style="display: inline-block" id = "resultPageAlert1"></p>
+                        </div>
+                    </div>
+                </div>
+
                 <table class="result-table" id="myTable"></table>
                 <br><br>
 
                 <div style="text-align:center;">
                     <div class="pagination-container">
                         <div class="pagination-div">
-                            <input type="button" id="first" onclick="firstPage()" class="blue-button" style="display:none"/>
-                            <input type="button" id="previous" onclick="previousPage()" class="blue-button" style="display:none"/>
-                            <input type="button" id="next" onclick="nextPage()" class="blue-button" style="display:none"/>
-                            <input type="button" id="last" onclick="lastPage()" class="blue-button" style="display:none"/>
+                            <input type="button" id="first" onclick="firstPage()" class="descrete-button" style="display:none"/>
+                            <input type="button" id="previous" onclick="previousPage()" class="descrete-button" style="display:none"/>
+                            <input type="button" id="next" onclick="nextPage()" class="descrete-button" style="display:none"/>
+                            <input type="button" id="last" onclick="lastPage()" class="descrete-button" style="display:none"/>
                             <p style="display: none" id = "resultPageText"></p> 
                             <p style="display: none" id = "resultPageNb"></p>
                             <p style="display: inline-block" id = "resultPageAlert"></p>
                         </div>
                     </div>
+                    <br>
                 </div>
             
             </div>

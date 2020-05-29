@@ -35,6 +35,7 @@ const textItems = {
     hitsPerPage: ["Treff per side", "Hits per page"],
     downloadLink: ["Last ned resultat", "Download results"],
     nbHitsText: ["Antall treff: ", "Number of hits: "],
+    headerCatNb: ["Katalognr.", "Catalog nb."],
     headerTaxon: ["Takson", "Taxon"],
     headerCollector: ["Innsamler", "Collector"],
     headerDate: ["Dato", "Date"],
@@ -44,13 +45,15 @@ const textItems = {
     headerCoremaAccno: ["DNA-bank nr.", "DNA-bank nb."],
     headerSequence: ["Sekvens ID", "Sequence ID"],
     mustChoose: ["Du må velge en samling", "You must choose a collection"],
-    placeholder: ["Søk etter latinsk artsnavn, musit-nr, person, sted... Flere søkeord i ett søk er mulig.", "Search for latin species name, musit-nb, person, place... Several terms possible."],
+    placeholder: ["Søk etter latinsk artsnavn, katalognummer, person, sted... Flere søkeord i ett søk er mulig.", "Search for latin species name, catalognumber, person, place... Several terms possible."],
     serverError: ["Serverfeil, prøv nytt søk", "Server error, try new search"],
     noHits: ["Ingen treff, prøv nytt søk", "No hits, try new search"],
     errorRenderResult: ["Noe gikk feil, søk igjen, begrens ev. søket med f.eks. flere søkeord", "Something went wrong, try a new search, possibly limit the seach by e.g. more search terms"],
     errorFileNotExisting: ["Beklager, noe er feil med valgte samling. Velg en annen samling, kom tilbake senere, eller kontakt oss (se hjelpesiden)",
      "Sorry, something is wrong with the chosen collection. Choose another collection, come back later, or contact us (see help page)"],
-    mapHelpContent: ["Bruk mushjul, eller dobbelklikk for å zoome inn, Shift + dobbelklikk  for å zoome ut. Klikk og dra for å flytte kartutsnitt", "Use mouse-wheel, or double click to zoom in, Shift + double click to zoom out. Click and drag to move map."],
+    zoomButton: ["Informasjon om kart", "Information on map"],
+    mapHelpContent: ["Bruk mushjul, eller dobbelklikk for å zoome inn, Shift + dobbelklikk  for å zoome ut. Klikk og dra for å flytte kartutsnitt. <br><br> Bare treff som er listet på sida vises i kartet. For å se alle resultater i kart, velg 'All' i Treff per side.", 
+    "Use mouse-wheel, or double click to zoom in, Shift + double click to zoom out. Click and drag to move map. <br><br> Only results listed on page are shown in map. To see all hits in map, choose 'All' in Hits per page."],
     largeMapButton: ["Større kart", "Larger map"],
     mapSearchAlt: ["Kart ikke tilgjengelig: Ingen av objektene på siden har koordinater knyttet til seg, eller de har feil format.", "Map not available: None of the objects on the page have coordinates registered, or they have the wrong format."],
     firstButton: ["Første", "First"],
@@ -91,10 +94,10 @@ const textItems = {
     // help page
     helpHeader: ["Hvordan søke", "How to search the collections"],
     helpText: [`Velg samling først, og skriv ett eller flere søkeord i søkefeltet. 
-    Du kan søke på latinsk artsnavn, lokalitet, musit-nummer, geografi osv. Det skilles ikke på store og små bokstaver. Land må skrives på engelsk, andre felt kan inneholde engelsk eller norsk.<br><br><br>
+    Du kan søke på latinsk artsnavn, lokalitet, katalognummer (f.eks. musit-nummer), geografi osv. Det skilles ikke på store og små bokstaver. Land må skrives på engelsk, andre felt kan inneholde engelsk eller norsk.<br><br><br>
     <span class="bold" style="font-size: 16pt">Kontaktinformasjon:</span> <br><br> nhm-samlingsportaler@nhm.uio.no`, 
     `Choose collection first, and enter one or more search terms in the search field. 
-    You can search for latin species name, locality, musit-number, geography etc. The search is case insensitive. Country is written in english, other fields can be either norwegian or english. <br><br><br>
+    You can search for latin species name, locality, catalog number (e.g. musit-number), geography etc. The search is case insensitive. Country is written in english, other fields can be either norwegian or english. <br><br><br>
     <span class="bold" style="font-size: 16pt">Contact information:</span> <br><br> nhm-samlingsportaler@nhm.uio.no`],
 
     // journals page
@@ -164,20 +167,32 @@ const renderText = function(lang) {
         document.querySelector('#download-button').innerHTML = textItems.downloadLink[index]
         document.querySelector('#search-text').placeholder = textItems.placeholder[index]
         document.getElementById('zoom-expl-popup').innerHTML = textItems.mapHelpContent[index]
+        document.querySelector('#zoom-button').innerHTML = textItems.zoomButton[index]
         document.querySelector('#large-map-button').innerHTML = textItems.largeMapButton[index]
         document.querySelector('#first').value = textItems.firstButton[index]
         document.querySelector('#previous').value = textItems.previousButton[index]
         document.querySelector('#next').value = textItems.nextButton[index]
         document.querySelector('#last').value = textItems.lastButton[index]
+        document.querySelector('#first1').value = textItems.firstButton[index]
+        document.querySelector('#previous1').value = textItems.previousButton[index]
+        document.querySelector('#next1').value = textItems.nextButton[index]
+        document.querySelector('#last1').value = textItems.lastButton[index]
         if(document.getElementById("resultPageText").innerHTML) {
             document.getElementById("resultPageText").innerHTML = textItems.page[index]
         }
         if(document.getElementById("resultPageAlert").innerHTML) {
             document.getElementById("resultPageAlert").innerHTML = textItems.lastPageAlert[index]
         }
-        if(document.querySelector("#map-search").innerHTML) {
-            document.querySelector("#map-search").innerHTML = textItems.mapSearchAlt[index]
+        if(document.getElementById("resultPageText1").innerHTML) {
+            document.getElementById("resultPageText1").innerHTML = textItems.page[index]
         }
+        if(document.getElementById("resultPageAlert1").innerHTML) {
+            document.getElementById("resultPageAlert1").innerHTML = textItems.lastPageAlert[index]
+        }
+        // what did we mean here?
+        // if(document.querySelector("#map-search").innerHTML) {
+        //     document.querySelector("#map-search").innerHTML = textItems.mapSearchAlt[index]
+        // }
     }
 
     // object page
@@ -294,10 +309,19 @@ document.querySelector('#language').addEventListener('change', (e) => {
             document.querySelector('#previous').innerHTML = textItems.previousButton[index]
             document.querySelector('#next').innerHTML = textItems.nextButton[index]
             document.querySelector('#last').innerHTML = textItems.lastButton[index]
+            document.querySelector('#first1').innerHTML = textItems.firstButton[index]
+            document.querySelector('#previous1').innerHTML = textItems.previousButton[index]
+            document.querySelector('#next1').innerHTML = textItems.nextButton[index]
+            document.querySelector('#last1').innerHTML = textItems.lastButton[index]
             document.getElementById("resultPageText").style.display = "inline-block"
             document.getElementById("resultPageText").innerHTML = textItems.page[index]
             if(document.getElementById("resultPageAlert").innerHTML) {
                 document.getElementById("resultPageAlert").innerHTML = textItems.lastPageAlert[index]
+            }
+            document.getElementById("resultPageText1").style.display = "inline-block"
+            document.getElementById("resultPageText1").innerHTML = textItems.page[index]
+            if(document.getElementById("resultPageAlert1").innerHTML) {
+                document.getElementById("resultPageAlert1").innerHTML = textItems.lastPageAlert[index]
             }
 
             const headerRow = document.querySelector("#myTable").rows[0]

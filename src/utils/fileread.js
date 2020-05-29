@@ -73,10 +73,13 @@ const search = (samling, searchTerm, linjeNumber = 0, limit = 20, callback) => {
                     }
                 }
             }
+            
         }).on('close', function () {
+            
             const resulstAndLine = {results, count }
             callback(undefined, resulstAndLine)
         })
+       
     } else {
         throw new Error ('File not found' + musitFile)
     }

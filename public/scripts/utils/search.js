@@ -104,9 +104,17 @@ downloadButton.addEventListener('click', (e) => {
     document.getElementById("previous").style.display = "none"
     document.getElementById("next").style.display = "none"
     document.getElementById("last").style.display = "none"
+    document.getElementById("first1").style.display = "none"
+    document.getElementById("previous1").style.display = "none"
+    document.getElementById("next1").style.display = "none"
+    document.getElementById("last1").style.display = "none"
     document.getElementById("resultPageText").innerHTML = ""
     document.getElementById("resultPageNb").innerHTML = ""
     document.getElementById("resultPageAlert").innerHTML = ""
+    document.getElementById("resultPageText1").innerHTML = ""
+    document.getElementById("resultPageNb1").innerHTML = ""
+    document.getElementById("resultPageAlert1").innerHTML = ""
+
 
     // mustChoose
     if (!chosenCollection) {
@@ -128,7 +136,8 @@ downloadButton.addEventListener('click', (e) => {
                             return console.log(data.error)
                         } else {
                             
-                            const JSONdata = JSON.parse(data)     
+                            const JSONdata = JSON.parse(data)  
+                            console.log(JSONdata)   
 
                             sessionStorage.setItem('searchLineNumber', JSONdata.unparsed.count)
                             sessionStorage.setItem('searchTerm', searchTerm)
@@ -152,6 +161,8 @@ downloadButton.addEventListener('click', (e) => {
                                     nbHitsHeader.innerHTML = textItems.nbHitsText[index]
                                     sessionStorage.setItem('string', JSON.stringify(parsedResults.data))   
                                     // resultTable() 
+
+                                   
                                     load()
                                 } catch (error) {
                                     errorMessage.innerHTML = textItems.errorRenderResult[index]
@@ -284,9 +295,17 @@ const emptySearch = () => {
     document.getElementById("previous").style.display = "none"
     document.getElementById("next").style.display = "none"
     document.getElementById("last").style.display = "none"
+    document.getElementById("first1").style.display = "none"
+    document.getElementById("previous1").style.display = "none"
+    document.getElementById("next1").style.display = "none"
+    document.getElementById("last1").style.display = "none"
     document.getElementById("resultPageText").innerHTML = ""
     document.getElementById("resultPageNb").innerHTML = ""
     document.getElementById("resultPageAlert").innerHTML = ""
+
+    document.getElementById("resultPageText1").innerHTML = ""
+    document.getElementById("resultPageNb1").innerHTML = ""
+    document.getElementById("resultPageAlert1").innerHTML = ""
 
     // set pagination variables to default / empty
     list.length = 0;

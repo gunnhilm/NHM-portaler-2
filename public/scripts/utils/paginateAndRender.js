@@ -137,7 +137,7 @@ const resultTable = (subMusitData, musitData) => {
             const cell11 = row.insertCell(10)
             if (i === -1) {     // her kommer tittellinjen
             
-                cell1.innerHTML = `<button id='musitIDButton' class='sort'>${"MUSIT-ID".bold()} ${getArrows('catalogNumber')} </button>` 
+                cell1.innerHTML = `<button id='musitIDButton' class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>` 
                 cell2.innerHTML = `<button id='scientificNameButton' class='sort'>${textItems.headerTaxon[index].bold()} ${getArrows('scientificName')} </button>`
                 cell3.innerHTML = `<button id='collectorButton' class='sort'>${textItems.headerCollector[index].bold()} ${getArrows('recordedBy')}</button>`
                 cell4.innerHTML = `<button id='dateButton' class='sort'>${textItems.headerDate[index].bold()} ${getArrows('eventDate')}</button>`
@@ -206,15 +206,26 @@ const resultTable = (subMusitData, musitData) => {
         document.getElementById("previous").style.display = "inline-block"
         document.getElementById("next").style.display = "inline-block"
         document.getElementById("last").style.display = "inline-block"
+        document.getElementById("first1").style.display = "inline-block"
+        document.getElementById("previous1").style.display = "inline-block"
+        document.getElementById("next1").style.display = "inline-block"
+        document.getElementById("last1").style.display = "inline-block"
         document.getElementById("resultPageText").style.display = "inline-block"
         document.getElementById("resultPageText").innerHTML = textItems.page[index]
         document.getElementById("resultPageNb").style.display = "inline-block"
         document.getElementById("resultPageNb").innerHTML = " " + currentPage
+        document.getElementById("resultPageText1").style.display = "inline-block"
+        document.getElementById("resultPageText1").innerHTML = textItems.page[index]
+        document.getElementById("resultPageNb1").style.display = "inline-block"
+        document.getElementById("resultPageNb1").innerHTML = " " + currentPage
+
         numberOfPages = getNumberOfPages(numberPerPage)
         if (currentPage === numberOfPages) { 
             document.getElementById("resultPageAlert").innerHTML = textItems.lastPageAlert[index]
+            document.getElementById("resultPageAlert1").innerHTML = textItems.lastPageAlert[index]
             } else {
             document.getElementById("resultPageAlert").innerHTML = ""
+            document.getElementById("resultPageAlert1").innerHTML = ""
         }
          
         if (!searchFailed) {
