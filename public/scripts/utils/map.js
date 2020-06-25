@@ -1,133 +1,241 @@
 let coordinateArray = []
 let map
-// popups
-let element = document.getElementById('popup')
-let content = document.getElementById('popup-content')
+const popup_element = document.getElementById('popup')
+const popup_content = document.getElementById('popup-content')
+const popup_closer = document.getElementById('popup-closer')
 
+var zoomModal = document.getElementById("zoom-modal")
+var zoomModalContent = document.getElementById('zoom-expl-popup')
+var largeMapButton = document.getElementById("large-map-button")
+var zoomButton = document.getElementById("zoom-button")
+var span = document.getElementsByClassName("close")[0];
 
 // render map
 const drawMap = (parsedData) => {
     // remove old map if any and empty array
     document.getElementById("map-search").innerHTML = "" 
     coordinateArray.length = 0
-    
-    
-    //try {
-    // fill an array with coordinates for the map
-    parsedData.forEach(function(item, index) {
+
+    // button with modal (pop-up) with explanation for zoom in map
         
-        if (Number(item.decimalLatitude) < 90 & Number(item.decimalLatitude) > -90 & Number(item.decimalLongitude) < 180 & Number(item.decimalLongitude) > -180) {
-            const object = { decimalLatitude: Number(item.decimalLatitude),
-                decimalLongitude: Number(item.decimalLongitude),
-                catalogNumber: item.catalogNumber,
-                index: index }
-            coordinateArray.push(object) 
-        } 
-    })
     
-    if (coordinateArray.length === 0) {
-        document.querySelector("#map-search").innerHTML = 'Objektet/-ene har ikke koordinater registrert og kart kan derfor ikke vises'
-    } else {
-        const newArray = []
-        coordinateArray.forEach(function(item) {
-            if(item.decimalLongitude) {
-                const marker = new ol.Feature({
-                    geometry: new ol.geom.Point(ol.proj.fromLonLat([Number(item.decimalLongitude), Number(item.decimalLatitude)])),
+    
+    
+    try {
+        // fill an array with coordinates for the map
+        parsedData.forEach(function(item, index) {
+            
+            if (Number(item.decimalLatitude) < 90 & Number(item.decimalLatitude) > -90 & Number(item.decimalLongitude) < 180 & Number(item.decimalLongitude) > -180) {
+                const object = { decimalLatitude: Number(item.decimalLatitude),
+                    decimalLongitude: Number(item.decimalLongitude),
                     catalogNumber: item.catalogNumber,
-                    index: item.index
-                })
-                newArray.push(marker)
-            }
+                    index: index }
+                coordinateArray.push(object) 
+            } 
         })
         
-        if(!coordinateArray.every(x => x.decimalLatitude === 0)) {
-            
-            // icon
-            const iconStyle = new ol.style.Style({
-                image: new ol.style.Icon({
-                    anchor: [0.5, 0.5],
-                    anchorXUnits: 'fraction',
-                    anchorYUnits: 'fraction',
-                    src: "https://upload.wikimedia.org/wikipedia/commons/e/ec/RedDot.svg"
-                })
+        if (coordinateArray.length === 0) {
+            document.querySelector("#map-search").innerHTML = textItems.mapSearchAlt[index]
+        } else {
+            const newArray = []
+            coordinateArray.forEach(function(item) {
+                if(item.decimalLongitude) {
+                    const marker = new ol.Feature({
+                        geometry: new ol.geom.Point(ol.proj.fromLonLat([Number(item.decimalLongitude), Number(item.decimalLatitude)])),
+                        catalogNumber: item.catalogNumber,
+                        index: item.index
+                    })
+                    newArray.push(marker)
+                }
             })
+            
+            if(!coordinateArray.every(x => x.decimalLatitude === 0)) {
                 
+                // icon
+                const iconStyle = new ol.style.Style({
+                    image: new ol.style.Circle({
+                        radius: 7,
+                        stroke: new ol.style.Stroke({
+                            color: '#000000'   //white
+                        }),
+                        fill: new ol.style.Fill({
+                            color: '#FF0000'    //red
+                        })
+                    })
+                })
+                    
 
-            newArray.forEach(function(item) {
-                item.setStyle(iconStyle)
-            })
+                newArray.forEach(function(item) {
+                    item.setStyle(iconStyle)
+                })
+                
             
+                // source object for this feature
+                const vectorSource = new ol.source.Vector({
+                    features: newArray
+                })
         
-            // source object for this feature
-            const vectorSource = new ol.source.Vector({
-                features: newArray
-            })
+                // add this object to a new layer
+                const vectorLayer = new ol.layer.Vector({
+                    source: vectorSource
+                })
+                
+                
+                const clusterSource = new ol.source.Cluster({
+                    source: vectorSource
+                })
+                
+                //indicate several dots on top of each other on exact same location
+                let styleCache = {}
+                
+                const clusterLayer = new ol.layer.Vector({
+                    source: clusterSource,
+                    style: function(feature) {
+                        let size = feature.get('features').length
+                        let textInCircle
+                        let sameCoordinates = true
+                        if (size > 1) {
+                            for (i=0; i< size -1; i++) {
+                                if (sameCoordinates = true) {
+                                    if (feature.get('features')[i].values_.geometry.flatCoordinates == feature.get('features')[i+1].values_.geometry.flatCoordinates) {
+                                        sameCoordinates = true
+                                    } else {
+                                        sameCoordinates = false
+                                    } 
+                                }
+                            }
+                            if (sameCoordinates = true) {
+                                textInCircle = size.toString()
+                            } else { textInCircle = ''}
+                        } else { textInCircle = ''}
+                
+                        let style = styleCache[size]
+                        if (!style) {
+                            style = [new ol.style.Style({
+                                image: new ol.style.Circle({
+                                    radius: 7,
+                                    stroke: new ol.style.Stroke({
+                                        color: '#000000'   //white
+                                    }),
+                                    fill: new ol.style.Fill({
+                                        color: '#FF0000'    //red
+                                    })
+                                }),
+                                text: new ol.style.Text({
+                                    text: textInCircle,
+                                    fill: new ol.style.Fill({
+                                        color: '#fff'   //white
+                                    })
+                                })
+                            })]
+                            styleCache[size] = style
+                        }
+                        return style
+                      
+                    }
+                })
+
+                map = new ol.Map({
+                    target: 'map-search',
+                    layers: [
+                    new ol.layer.Tile({
+                        source: new ol.source.OSM()
+                    }),
+                    vectorLayer,
+                    clusterLayer
+                    ],
+                    controls: ol.control.defaults({
+                        attributionOptions:
+                        ({
+                            collapsible: false
+                        })
+                    })    
+                })    
+                
+                
+                const extent = vectorSource.getExtent()
+                
+                // to make extent of map larger than exactly where  the points are
+                map.getView().fit(extent, {padding: [50, 50, 50, 50], minResolution: 50})
+                
+                // popups
+                
+                
+                const popup = new ol.Overlay({
+                    element: popup_element,
+                    positioning: 'bottom-center',
+                    stopEvent: true, // true here enables clickable link in popup
+                    offset: [0,0]
+                })
             
-            // add this object to a new layer
-            const vectorLayer = new ol.layer.Vector({
-                source: vectorSource
-            })
-            
-            map = new ol.Map({
-                target: 'map-search',
-                layers: [
-                new ol.layer.Tile({
-                    source: new ol.source.OSM()
-                }),
-                vectorLayer
-                ]    
-            })    
-            
-            const extent = vectorSource.getExtent()
-            
-            // to make extent of map larger than exactly where  the points are
-            map.getView().fit(extent, {padding: [50, 50, 50, 50], minResolution: 50})
-            
-            
-            
-            const popup = new ol.Overlay({
-                element: element,
-                positioning: 'bottom-center',
-                stopEvent: true, // true here enables clickable link in popup
-                offset: [0,0]
-            })
-        
-            map.addOverlay(popup)
-            
-            //display popup on a click
-            map.on('singleclick', function(evt) {
-                const feature = map.forEachFeatureAtPixel(evt.pixel,
+                map.addOverlay(popup)
+                
+                //display popup on a click
+                map.on('singleclick', function(evt) {
+                    popup_content.innerHTML = ''
+                    const feature = map.forEachFeatureAtPixel(evt.pixel,
                     function(feature) {
                         return feature
                     })
-                if (feature) {
-                    const coordinates = feature.getGeometry().getCoordinates()
-                    popup.setPosition(coordinates)
-                    content.innerHTML =  `<a id="object-link" href="${urlPath}/object/?id=${feature.get('catalogNumber')}"> ${feature.get('catalogNumber')} </a>`
-                } 
-            })  
-        } else {
-            document.querySelector("#map-search").innerHTML = textItems.mapSearchAlt[index]
+                    if (feature) {
+                        const coordinates = feature.getGeometry().getCoordinates()
+                        let cfeatures = feature.get('features')
+                        
+                        try {
+                            if (cfeatures.length > 1) {
+                                for (i=0; i < cfeatures.length; i++) {
+                                    popup_content.innerHTML += `<a id="object-link" href="${urlPath}/object/?id=${cfeatures[i].get('catalogNumber')}"> ${cfeatures[i].get('catalogNumber')} </a>`
+                                }
+                            }
+                            if (cfeatures.length == 1) {
+                                popup_content.innerHTML =  `<a id="object-link" href="${urlPath}/object/?id=${cfeatures[0].get('catalogNumber')}"> ${cfeatures[0].get('catalogNumber')} </a>`
+                            }
+                            popup.setPosition(coordinates)
+                        } catch (error) {
+                            zoomModal.style.display = "block"
+                            zoomModalContent.innerHTML = textItems.zoomToClickText[index]
+                        }
+                    } 
+                    
+                })  
+                
+                
+                popup_closer.onclick = function() {
+                    popup.setPosition(undefined);
+                    popup_closer.blur();
+                    return false;
+                }
+
+            } else {
+                document.querySelector("#map-search").innerHTML = textItems.mapSearchAlt[index]
+            }
+        }  
+    
+        
+        // Show the button that opens the modal
+        if(zoomButton) {
+            zoomButton.style.display = "block"
+            largeMapButton.style.display = "block"
+            
+            // When the user clicks on the button, open the modal
+            zoomButton.onclick = function() {
+                zoomModal.style.display = "block"
+                zoomModalContent.innerHTML = textItems.mapHelpContent[index]
+            }
         }
+        
+        
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0]
+
+        
+    } catch (error) {
+        console.error(error)
+        errorMessage.innerHTML = textItems.mapError[index]
+        //reject(error);
     }
-    
-    // button with modal (pop-up) with explanation for zoom in map
-    // Get the modal
-    var zoomModal = document.getElementById("zoom-modal")
 
-    // Get the button that opens the modal and show it
-    var zoomButton = document.getElementById("zoom-button")
-    zoomButton.style.display = "block"
-    document.getElementById("large-map-button").style.display = "block"
-    
-
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0]
-
-    // When the user clicks on the button, open the modal
-    zoomButton.onclick = function() {
-        zoomModal.style.display = "block"
-    }
     //document.getElementById("large-map-button").style.display = "block"
 
     // When the user clicks on <span> (x), close the modal
@@ -139,7 +247,7 @@ const drawMap = (parsedData) => {
     window.onclick = function(event) {
         if (event.target == zoomModal) {
             zoomModal.style.display = "none";
-        }
+        } 
     }
 }
 
@@ -207,26 +315,29 @@ const drawMapObject = (object) => {
     } else {
         if (document.querySelector('#language').value === "Norwegian") {
             document.querySelector("#map-object").innerHTML = "Kart ikke tilgjengelig"
-
         } else {
             document.querySelector("#map-object").innerHTML = "Map not available"
         }
+        document.getElementById('large-map-object-button').style.display = "none"
+        document.getElementById('zoom-button').style.display = "none"
     }
 
 
     // modal (pop-up) with explanation for zoom in map
     // Get the modal
-    var zoomModal = document.getElementById("zoom-modal");
+//    var zoomModal = document.getElementById("zoom-modal");
 
     // Get the button that opens the modal
-    var zoomButton = document.getElementById("zoom-button");
+  //  var zoomButton = document.getElementById("zoom-button");
 
     // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-
+    
     // When the user clicks on the button, open the modal
     zoomButton.onclick = function () {
         zoomModal.style.display = "block";
+        if (location.href.includes('object')) {
+            zoomModalContent.innerHTML = textItems.mapHelpContentObjPage[index]
+        } else {zoomModalContent.innerHTML = textItems.mapHelpContent[index]}
     }
 
     // When the user clicks on <span> (x), close the modal

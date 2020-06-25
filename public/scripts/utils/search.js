@@ -137,8 +137,7 @@ downloadButton.addEventListener('click', (e) => {
                         } else {
                             
                             const JSONdata = JSON.parse(data)  
-                            console.log(JSONdata)   
-
+                            console.log(data)
                             sessionStorage.setItem('searchLineNumber', JSONdata.unparsed.count)
                             sessionStorage.setItem('searchTerm', searchTerm)
                             const parsedResults = Papa.parse(JSONdata.unparsed.results, {
@@ -159,6 +158,7 @@ downloadButton.addEventListener('click', (e) => {
                                         nbHitsElement.textContent = parsedResults.data.length
                                     }
                                     nbHitsHeader.innerHTML = textItems.nbHitsText[index]
+                                    console.log(parsedResults.data)
                                     sessionStorage.setItem('string', JSON.stringify(parsedResults.data))   
                                     // resultTable() 
 
@@ -244,6 +244,7 @@ const oldSearch = () => {
     if (sessionStorage.getItem('collection')) {
         if (sessionStorage.getItem('string')) { //hvis det er søkeresultater i sesion storage, så skal disse vises
             // render correct language
+            
             if (!sessionStorage.getItem('language')) {
                 language = 'Norwegian'
             } else {
@@ -257,9 +258,16 @@ const oldSearch = () => {
             } catch (error) {
                 console.log('local storage empty');    
             }
+            if (sessionStorage.getItem('numberPerPage')) {
+                document.getElementById('number-per-page').value = sessionStorage.getItem('numberPerPage')
+            } else {
+                document.getElementById('number-per-page').value = '20'
+            }
             updateFooter()                
             // sends the data to the functions that show the results
             load()
+
+            
             
         }
     } 

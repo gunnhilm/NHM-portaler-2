@@ -11,10 +11,13 @@
   "author": "",
   "license": "CC-4.0",
   "dependencies": {
+    "csv-parser": "^2.3.3",
     "dompurify": "^2.0.10",
     "express": "^4.17.1",
     "hbs": "^4.1.1",
     "helmet": "^3.22.0",
+    "json2csv": "^5.0.1",
+    "papaparse": "^5.2.0",
     "path": "^0.12.7"
   },
   "devDependencies": {

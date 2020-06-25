@@ -16,7 +16,8 @@ const urlParams = new URLSearchParams(window.location.search)
 const id = urlParams.get('id')
 
 const allObject = loadString()
-const object = allObject[id]
+
+const object = allObject.find(x => x.catalogNumber === id)
 
 drawMapObject(object)
 

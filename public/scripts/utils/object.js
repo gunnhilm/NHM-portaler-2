@@ -137,6 +137,69 @@ document.querySelector("#artsobsID").innerHTML = artsobsID
 //document.querySelector("#head-coremaAccno").innerHTML = `<span>Corema Accno</span>`
 //document.querySelector("#coremaAccno").innerHTML = `<span>${coremaAccno}</span>`
 
+// items
+
+function addRow() {
+    //for (i=1; i<x; i++) {
+        row = document.getElementById("object-table").insertRow(-1)
+        cell1 = row.insertCell(0)
+        cell1.style.fontWeight = "bold"
+        cell2 = row.insertCell(1)
+        //`cell${i}_1` = row.insertCell(0)
+        //`cell${i}_2` = row.insertCell(1)
+   // }
+    
+}
+
+if(object.items) {
+    // put items in itemArray as objects
+    tempItemArray = object.itemNumbers.split(",")
+    itemArray = []
+    tempItemArray.forEach (element => itemArray.push({itemNumber: element}))
+    
+    // add properties to the item-objects
+    itemTypeArray = object.items.split(",")
+    dateArray = object.itemDates.split(",")
+    methodArray = object.itemMethods.split(",")
+    for (i=0; i<itemArray.length; i++) {
+        itemArray[i].properties = itemTypeArray[i]
+        itemArray[i].date = dateArray[i]
+        itemArray[i].method =methodArray[i]
+    }
+    console.log(itemArray)
+    
+
+
+    // loop over array
+    itemArray.forEach( item => {
+        addRow()
+        cell1.innerHTML = item.properties + ':'
+        addRow()
+        cell1.innerHTML = `<span>Item number:</span>`
+        cell2.innerHTML = item.itemNumber
+        addRow()
+        if (item.properties.includes("gDNA")) {
+            console.log('gdna')
+            cell1.innerHTML = `<span>Date of extraction:</span>`
+        } else {
+            cell1.innerHTML = `<span>Date of sampling:</span>`
+        }
+        cell2.innerHTML = item.date
+        if (item.properties.includes("gDNA")) {
+            addRow()
+            cell1.innerHTML = `<span>Method of extraction:</span>`
+            cell2.innerHTML = item.method
+        
+        }
+        addRow()
+        cell1.innerHTML = '<br>'
+    })
+
+    
+    
+
+
+}
 
 // photo:
 // hvis noe klikker på neste bilde
@@ -167,7 +230,7 @@ if ( object.associatedMedia.includes('|') ) {
     document.getElementById("photo-anchor").href = imageList[0]
     document.getElementById("photo-box").src = smallImageList[0]
     document.getElementById("next-photo").onclick = () => {
-       index = changeImage(index, smallImageList, imageList)
+        index = changeImage(index, smallImageList, imageList)
     }
 } else {
     document.getElementById("photo-anchor").href = object.associatedMedia
@@ -181,5 +244,7 @@ drawMapObject(object)
 
 // large map button
 document.getElementById('large-map-object-button').onclick = () => {
+    console.log(urlPath)
     window.open(href=`${urlPath}/mapObject/?id=${id}`)
 }
+

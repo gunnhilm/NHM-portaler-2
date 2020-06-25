@@ -26,7 +26,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <table>
+                            <table id = "object-table" border = "solid">
                                 <tr>
                                     <td id = "head-species-name" class= "bold" style= "white-space:pre"></td>
                                     <td id = "species-name" style = "border-spacing: 10px 0"></td>
@@ -65,17 +65,25 @@
                                     <td id = "habitat" style = "border-spacing: 10px 0"></td>
                                 </tr>
                                 <tr>
-                                    <td><br><br>Vevsprøve:</td>
+                                    <td>
+                                        <br><hr>
+                                    </td>
+                                    <td>
+                                        <br><hr>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Vevsprøve:</td>
                                 </tr>
                                 
-                                <tr>
+                                {{!-- <tr>
                                     <td id = "head-coremaAccno" class= "bold" >corema acc no</td>
                                     <td id = "coremaAccno" style = "border-spacing: 10px 0"> NHMO-DAR-1234/t</td>
-                                </tr>
-                                <tr>
+                                </tr> --}}
+                                {{!-- <tr>
                                     <td id = "head-date-tissue" class= "bold" >Dato for prøvetaking</td>
                                     <td id = "date-tissue" style = "border-spacing: 10px 0"> 4.mars 2019</td>
-                                </tr>
+                                </tr> --}}
                                 <tr>
                                     <td id = "head-type_tissue" class= "bold" >Type vev: </td>
                                     <td id = "type-tissue" style = "border-spacing: 10px 0"> Sporebærende element</td>
@@ -84,18 +92,18 @@
                                 <tr>
                                     <td><br><br>DNA-ekstrakt:</td>
                                 </tr>
-                                <tr>
+                                {{!-- <tr>
                                     <td id = "head-DNA-link" class= "bold" style= "white-space:pre">Corema acc no</td>
                                     <td id = "coremaAccno2" style = "border-spacing: 10px 0">NHMO-DAR-1234/d</td>
-                                </tr>
-                                <tr>
+                                </tr> --}}
+                                {{!-- <tr>
                                     <td id = "head-date-DNA" class= "bold" style= "white-space:pre">Dato for ekstraksjon:</td>
                                     <td id = "date-DNA" style = "border-spacing: 10px 0">5. mars 2019</td>
-                                </tr>
-                                <tr>
+                                </tr> --}}
+                                {{!-- <tr>
                                     <td id = "head-DNA-method" class= "bold" style= "white-space:pre">Ekstraksjonsmetode:</td>
                                     <td id = "DNA-method" style = "border-spacing: 10px 0">Qiagen</td>
-                                </tr>
+                                </tr> --}}
                                 <tr>
                                     <td id = "head-DNA-status" class= "bold" style= "white-space:pre">Status for ekstrakt:</td>
                                     <td id = "DNA-status" style = "border-spacing: 10px 0">OK</td>
@@ -138,7 +146,8 @@
                                             </a>
                                         </div>
                                         <br>
-                                        <button id="next-photo" onclick="changeImage()"></button>
+                                        <button id="next-photo"></button>
+                                        {{!-- <button id="next-photo" onclick="changeImage()"></button> --}}
                                     </td>
 
                                 </tr>

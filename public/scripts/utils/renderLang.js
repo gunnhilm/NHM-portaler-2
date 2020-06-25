@@ -31,6 +31,8 @@ const textItems = {
     dna_fish_herptiles: ["Fisk & Herptiler (DNA)", "Fish & Herptiles (DNA)"],
     dna_fungi_lichens: ["Sopp & Lav (DNA)", "Fungi & Lichens (DNA)"],
     dna_other: ["Andre grupper (DNA)", "Other groups (DNA)"],
+    // --------------specimens and DNA
+    fungi_specimens_dna: ["Sopp - specimens og DNA", "Fungi - specimens and DNA"],   //DNAlink
 
     hitsPerPage: ["Treff per side", "Hits per page"],
     downloadLink: ["Last ned resultat", "Download results"],
@@ -42,7 +44,7 @@ const textItems = {
     headerCountry: ["Land", "Country"],
     headerMunicipality: ["Kommune", "Municipality"],
     headerLocality: ["Sted", "Locality"],
-    headerCoremaAccno: ["DNA-bank nr.", "DNA-bank nb."],
+    headerCoremaAccno: ["Prøvetyper", "Sample types"],
     headerSequence: ["Sekvens ID", "Sequence ID"],
     mustChoose: ["Du må velge en samling", "You must choose a collection"],
     placeholder: ["Søk etter latinsk artsnavn, katalognummer, person, sted... Flere søkeord i ett søk er mulig.", "Search for latin species name, catalognumber, person, place... Several terms possible."],
@@ -51,14 +53,17 @@ const textItems = {
     errorRenderResult: ["Noe gikk feil, søk igjen, begrens ev. søket med f.eks. flere søkeord", "Something went wrong, try a new search, possibly limit the seach by e.g. more search terms"],
     errorFileNotExisting: ["Beklager, noe er feil med valgte samling. Velg en annen samling, kom tilbake senere, eller kontakt oss (se hjelpesiden)",
      "Sorry, something is wrong with the chosen collection. Choose another collection, come back later, or contact us (see help page)"],
+    mapError: ["Noe er feil i kartmodul", "Something is wrong in map module"],
     zoomButton: ["Informasjon om kart", "Information on map"],
-    mapHelpContent: ["Bruk mushjul, eller dobbelklikk for å zoome inn, Shift + dobbelklikk  for å zoome ut. Klikk og dra for å flytte kartutsnitt. <br><br> Bare treff som er listet på sida vises i kartet. For å se alle resultater i kart, velg 'All' i Treff per side.", 
+    mapHelpContent: ["Bruk mushjul, eller dobbelklikk for å zoome inn, Shift + dobbelklikk  for å zoome ut. Klikk og dra for å flytte kartutsnitt. <br><br> Bare treff som er listet på sida vises i kartet. For å se alle resultater i kart, velg 'All' i Treff per side.",
     "Use mouse-wheel, or double click to zoom in, Shift + double click to zoom out. Click and drag to move map. <br><br> Only results listed on page are shown in map. To see all hits in map, choose 'All' in Hits per page."],
+    mapHelpContentObjPage: ["Bruk mushjul, eller dobbelklikk for å zoome inn, Shift + dobbelklikk  for å zoome ut. Klikk og dra for å flytte kartutsnitt.", "Use mouse-wheel, or double click to zoom in, Shift + double click to zoom out. Click and drag to move map."],
+    zoomToClickText: ["Zoom in og klikk igjen", "Zoom in and click again"],
     largeMapButton: ["Større kart", "Larger map"],
     mapSearchAlt: ["Kart ikke tilgjengelig: Ingen av objektene på siden har koordinater knyttet til seg, eller de har feil format.", "Map not available: None of the objects on the page have coordinates registered, or they have the wrong format."],
     firstButton: ["Første", "First"],
     previousButton: ["Forrige", "Previous"],
-    nextButton: ["Neste", "Next"],
+    nextButton: ["Neste", "Next"], 
     lastButton: ["Siste", "Last"],
     page: ["Side ", "Page "],
     lastPageAlert: [" (Siste side)", " (Last page)"],
@@ -151,6 +156,8 @@ const renderText = function(lang) {
         document.querySelector('#dna_fish_herptiles').innerHTML = textItems.dna_fish_herptiles[index]
         document.querySelector('#dna_fungi_lichens').innerHTML = textItems.dna_fungi_lichens[index]
         document.querySelector('#dna_other').innerHTML = textItems.dna_other[index]
+        //------------------------- Specimens and DNA
+        document.querySelector("#fungi_specimens_dna").innerHTML = textItems.fungi_specimens_dna[index] //DNAlink
     }
     // index page
     if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler')) {
@@ -166,7 +173,7 @@ const renderText = function(lang) {
         }
         document.querySelector('#download-button').innerHTML = textItems.downloadLink[index]
         document.querySelector('#search-text').placeholder = textItems.placeholder[index]
-        document.getElementById('zoom-expl-popup').innerHTML = textItems.mapHelpContent[index]
+        //document.getElementById('zoom-expl-popup').innerHTML = textItems.mapHelpContent[index]
         document.querySelector('#zoom-button').innerHTML = textItems.zoomButton[index]
         document.querySelector('#large-map-button').innerHTML = textItems.largeMapButton[index]
         document.querySelector('#first').value = textItems.firstButton[index]
@@ -339,6 +346,8 @@ document.querySelector('#language').addEventListener('change', (e) => {
             cell5 = headerRow.cells[4]
             cell6 = headerRow.cells[5]
             cell7 = headerRow.cells[6]
+            cell10 = headerRow.cells[9]
+            cell11 = headerRow.cells[10]
  
             cell2.innerHTML = `<button id='scientificNameButton' class='sort'>${textItems.headerTaxon[index].bold()} ${getArrows('scientificName')} </button>`
             cell3.innerHTML = `<button id='collectorButton' class='sort'>${textItems.headerCollector[index].bold()} ${getArrows('recordedBy')}</button>`
@@ -346,8 +355,8 @@ document.querySelector('#language').addEventListener('change', (e) => {
             cell5.innerHTML = `<button id='countryButton' class='sort'>${textItems.headerCountry[index].bold()} ${getArrows('country')}</button>`
             cell6.innerHTML = `<button id='municipalityButton' class='sort'>${textItems.headerMunicipality[index].bold()} ${getArrows('county')}</button>`
             cell7.innerHTML = `<button id='localityButton' class='sort'>${textItems.headerLocality[index].bold()} ${getArrows('locality')}</button>`
-            //cell10.innerHTML = `<button id='accnoButton' class='sort'>${textItems.headerCoremaAccno[index].bold()} ${getArrows('accno')}</button>`
-            //cell11.innerHTML = `<button id='processIDButton' class='sort'>${textItems.headerSequence[index].bold()} ${getArrows('processID')}</button>`
+            cell10.innerHTML = `<button id='accnoButton' class='sort'>${textItems.headerCoremaAccno[index].bold()} ${getArrows('accno')}</button>`
+            cell11.innerHTML = `<button id='processIDButton' class='sort'>${textItems.headerSequence[index].bold()} ${getArrows('processID')}</button>`
 
             stringData = sessionStorage.getItem('string')
             musitData = JSON.parse(stringData)      

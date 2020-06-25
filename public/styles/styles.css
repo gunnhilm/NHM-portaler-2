@@ -210,7 +210,7 @@ td {
         vertical-align: middle;
     }
     .row-accNo {
-        width: 120px;
+        width: 130px;
         padding: 5px;
         vertical-align: middle;
     }
@@ -252,7 +252,7 @@ td {
     position: absolute;
     height: 100%;
     width: 100%;
-    z-index: 99;
+    /* z-index: 99; when this is abled the modal-popup with help text does not go on top*/
 }
 
 .neutral {
@@ -267,7 +267,7 @@ td {
     background-color: white;
     -webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
     filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2)); 
-    padding: 15px; 
+    padding: 20px; 
     border-radius: 10px; 
     border: 1px solid #cccccc;
     bottom: 12px; 
@@ -290,16 +290,26 @@ td {
     left: 48px;
     margin-left: -10px;
   } 
- 
-/* Popup map-help-text container */
-.popup {
+
+  .ol-popup-closer {
+    text-decoration: none;
+    position: absolute;
+    top: 2px;
+    right: 8px;
+  }
+  .ol-popup-closer:after {
+    content: "✖";
+  }
+
+  /* Popup map-help-text container */
+  .popup {
     position: relative;
     display: inline-block; /* how popup is rendered; as a block (<p>), in the line*/
     cursor: pointer;
   }
   
   /* The actual popup (appears on top) */
-  .popup .popuptext {
+  /* .popup .popuptext {
     visibility: hidden;
     width: 160px;
     background-color: #555;
@@ -312,10 +322,10 @@ td {
     bottom: 125%;
     left: 50%;
     margin-left: -80px;
-  }
+  } */
   
   /* Popup arrow */
-  .popup .popuptext::after {
+  /* .popup .popuptext::after {
     content: "";
     position: absolute;
     top: 100%;
@@ -323,15 +333,15 @@ td {
     margin-left: -5px;
     border-width: 5px;
     border-style: solid;
-    border-color: #555 transparent transparent transparent;
-  }
+    border-color: #FF0000;
+  } */
   
   /* Toggle this class when clicking on the popup container (hide and show the popup) */
-  .popup .show {
+  /* .popup .show {
     visibility: visible;
     -webkit-animation: fadeIn 1s;
     animation: fadeIn 1s
-  }
+  } */
 
   /* Modal = "popup" with zoom explanation for map*/
   /* The Modal (background) */
@@ -434,14 +444,22 @@ td {
 }
 
 .descrete-button {
-    padding: 9px;
+    padding: 7px;
     vertical-align: center;
     
     border-radius: 4px;
     border: none;
-    font-size: 16px;
+    font-size: 14px;
     transition-duration: 0.4s;
     cursor: pointer;
+}
+
+.descrete-button:disabled {
+    cursor: default
+}
+
+.small-text {
+    font-size: 14px;
 }
 
 /* .pagination {

@@ -44,6 +44,9 @@
                                                 <option value="dna_fungi_lichens" id="dna_fungi_lichens"></option>
                                                 <option value="dna_other" id="dna_other"></option>
                                             </optgroup>
+                                            <optgroup label="Specimens and DNA">
+                                                <option value="fungi_specimens_dna" id="fungi_specimens_dna"></option>
+                                            </optgroup>
                                         </select>
                                     </td>
                                     <td  colspan="2" >
@@ -93,10 +96,10 @@
                             <br>
                             <div id="map-search" class="map-search"></div>
                             <div id="popup" class="ol-popup">
-                                <!--a href="#" id="popup-link"></a-->
+                                <a href="#" id="popup-closer" class="ol-popup-closer"></a>
                                 <div id="popup-content"></div>
                             </div>
-
+      
                             <table align="right" >
                                 <tr >
                                     <td >
@@ -126,9 +129,9 @@
                             <input type="button" id="previous1" onclick="previousPage()" class="descrete-button" style="display:none"/>
                             <input type="button" id="next1" onclick="nextPage()" class="descrete-button" style="display:none"/>
                             <input type="button" id="last1" onclick="lastPage()" class="descrete-button" style="display:none"/>
-                            <p style="display: none" id = "resultPageText1"></p> 
-                            <p style="display: none" id = "resultPageNb1"></p>
-                            <p style="display: inline-block" id = "resultPageAlert1"></p>
+                            <p style="display: none" class="small-text" id = "resultPageText1"></p> 
+                            <p style="display: none"  class="small-text"id = "resultPageNb1"></p>
+                            <p style="display: inline-block"  class="small-text" id = "resultPageAlert1"></p>
                         </div>
                     </div>
                 </div>
@@ -143,9 +146,9 @@
                             <input type="button" id="previous" onclick="previousPage()" class="descrete-button" style="display:none"/>
                             <input type="button" id="next" onclick="nextPage()" class="descrete-button" style="display:none"/>
                             <input type="button" id="last" onclick="lastPage()" class="descrete-button" style="display:none"/>
-                            <p style="display: none" id = "resultPageText"></p> 
-                            <p style="display: none" id = "resultPageNb"></p>
-                            <p style="display: inline-block" id = "resultPageAlert"></p>
+                            <p style="display: none" class="small-text" id = "resultPageText"></p> 
+                            <p style="display: none" class="small-text" id = "resultPageNb"></p>
+                            <p style="display: inline-block" class="small-text" id = "resultPageAlert"></p>
                         </div>
                     </div>
                     <br>

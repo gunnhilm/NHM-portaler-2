@@ -3,41 +3,50 @@ const table = document.getElementById("myTable")
 const hitsPerPage = document.querySelector('#number-per-page')
 
 // array with booleans that keeps track of sorting for page rendering
-let propsSorted = [
-    {id: 'catalogNumber',
-    sortedOnce: false,
-    sortedTwice: false},
-    {id: 'scientificName',
-    sortedOnce: false,
-    sortedTwice: false},
-    {id: 'recordedBy',
-    sortedOnce: false,
-    sortedTwice: false},
-    {id: 'eventDate',
-    sortedOnce: false,
-    sortedTwice: false},
-    {id: 'country',
-    sortedOnce: false,
-    sortedTwice: false},
-    {id: 'county',
-    sortedOnce: false,
-    sortedTwice: false},
-    {id: 'locality',
-    sortedOnce: false,
-    sortedTwice: false},
-    {id: 'associatedMedia',
-    sortedOnce: false,
-    sortedTwice: false},
-    {id: 'decimalLongitude',
-    sortedOnce: false,
-    sortedTwice: false},
-    {id: 'accno',
-    sortedOnce: false,
-    sortedTwice: false},
-    {id: 'processID',
-    sortedOnce: false,
-    sortedTwice: false}
-]
+let propsSorted
+
+if (!sessionStorage.getItem('propsSorted')) {
+    propsSorted = [
+        {id: 'catalogNumber',
+        sortedOnce: false,
+        sortedTwice: false},
+        {id: 'scientificName',
+        sortedOnce: false,
+        sortedTwice: false},
+        {id: 'recordedBy',
+        sortedOnce: false,
+        sortedTwice: false},
+        {id: 'eventDate',
+        sortedOnce: false,
+        sortedTwice: false},
+        {id: 'country',
+        sortedOnce: false,
+        sortedTwice: false},
+        {id: 'county',
+        sortedOnce: false,
+        sortedTwice: false},
+        {id: 'locality',
+        sortedOnce: false,
+        sortedTwice: false},
+        {id: 'associatedMedia',
+        sortedOnce: false,
+        sortedTwice: false},
+        {id: 'decimalLongitude',
+        sortedOnce: false,
+        sortedTwice: false},
+        {id: 'accno',
+        sortedOnce: false,
+        sortedTwice: false},
+        {id: 'processID',
+        sortedOnce: false,
+        sortedTwice: false}
+    ]
+
+    sessionStorage.setItem('propsSorted', JSON.stringify(propsSorted))
+
+} else { 
+    propsSorted = JSON.parse(sessionStorage.getItem('propsSorted'))
+}
 
     
 function resetSortedBoolean () {
@@ -71,11 +80,21 @@ function addSortingText(id, n, prop, musitData) { // her er musitData alle
 
         if (propsSorted.find(x => x.id === prop).sortedOnce) { reverse = true }
         
-        if (id === 'musitIDButton') { 
-        musitData.sort(sort_by(prop,reverse, parseInt))
-        } else {
-        musitData.sort(sort_by(prop,reverse, (a) => a.toLowerCase()))
-        }
+        if (id === 'musitIDButton' ) { 
+            musitData.sort(sort_by(prop,reverse, parseInt))
+        } 
+        // else if ( id === 'accnoButton') {
+        //     musitData.sort(sort_by(prop,reverse, (a) => a.replace(/[/]/,'.'))) // DNAlink
+        
+        //  }
+          else {
+            if (id === 'photoButton' | id === 'coordinateButton') {
+                reverse = !reverse
+            } 
+            
+            musitData.sort(sort_by(prop,reverse, (a) =>  a.toLowerCase()))
+
+        } 
         
         if (propsSorted.find(x => x.id === prop).sortedOnce === propsSorted.find(x => x.id === prop).sortedTwice) {
             propsSorted.find(x => x.id === prop).sortedOnce = true
@@ -94,7 +113,9 @@ function addSortingText(id, n, prop, musitData) { // her er musitData alle
         }
 
         subMusitData = musitData.slice(0,numberPerPage)
-       
+        
+        sessionStorage.setItem('string', JSON.stringify(musitData))
+        sessionStorage.setItem('propsSorted', JSON.stringify(propsSorted))
         resultTable(subMusitData, musitData) 
      })
 }
@@ -102,6 +123,7 @@ function addSortingText(id, n, prop, musitData) { // her er musitData alle
 
 // sort search-result when header button in table is clicked 
  sort_by = (prop, reverse, primer) => {
+    
     const key = primer ?
     function(x) {
         return primer(x[prop])
@@ -116,11 +138,12 @@ function addSortingText(id, n, prop, musitData) { // her er musitData alle
     }
 }
 
+
+
 // render result table
 const resultTable = (subMusitData, musitData) => {    
     try {
         table.innerHTML = "";
-        
         for (let i = -1; i < pageList.length; i++) { // vis en tabell med resultaer som er like lang som det vi ba om pageList.length; 
             const row = table.insertRow(-1)
     
@@ -150,7 +173,7 @@ const resultTable = (subMusitData, musitData) => {
                 cell11.innerHTML = `<button id='processIDButton' class='sort'>${textItems.headerSequence[index].bold()} ${getArrows('processID')}</button>`
                 
                 // lag overskrifene klikk og sorterbare
-                
+                addSortingText('musitIDButton', 1, 'catalogNumber', musitData)  // Tabellen blir sortert på nummer
                 addSortingText('scientificNameButton', 2, 'scientificName', musitData)
                 addSortingText('collectorButton', 3, 'recordedBy', musitData)
                 addSortingText('dateButton', 4, 'eventDate', musitData)
@@ -159,10 +182,9 @@ const resultTable = (subMusitData, musitData) => {
                 addSortingText('localityButton', 7, 'locality', musitData)
                 addSortingText('photoButton', 8, 'associatedMedia', musitData)
                 addSortingText('coordinateButton', 9, 'decimalLongitude', musitData)
-                // addSortingText('accnoButton', 10, 'accno', musitData)
-                // addSortingText('processIDButton', 11, 'processID', musitData)
-                addSortingText('musitIDButton', 1, 'catalogNumber', musitData)  // Tabbellen blir sortert på nummer
-
+                //addSortingText('accnoButton', 10, 'accno', musitData)         // cannot make sort-function work, possibly because of "/"
+                addSortingText('processIDButton', 11, 'processID', musitData)
+                
 
             } else {        // Her kommer innmaten i tabellen, selve resultatene
                 cell1.innerHTML =  `<a id="object-link" href="${urlPath}/object/?id=${subMusitData[i].catalogNumber}"> ${subMusitData[i].catalogNumber} </a>`
@@ -185,6 +207,10 @@ const resultTable = (subMusitData, musitData) => {
                 if( subMusitData[i].decimalLongitude) {
                     cell9.innerHTML = '<span class="fas fa-compass"></span>'
                 }
+                //cell10.innerHTML = subMusitData[i].accNoDNA     //DNAlink
+                //cell11.innerHTML = subMusitData[i].processID    //DNAlink
+                
+                cell10.innerHTML = subMusitData[i].items
                 
                 cell1.className = 'row-1 row-ID'
                 cell2.className = 'row-2 row-name'
@@ -227,12 +253,19 @@ const resultTable = (subMusitData, musitData) => {
             document.getElementById("resultPageAlert").innerHTML = ""
             document.getElementById("resultPageAlert1").innerHTML = ""
         }
-         
+        
         if (!searchFailed) {
-            drawMap(subMusitData) 
+        
+            try {
+                drawMap(subMusitData) 
+            } catch (error) {
+                console.error(error)
+                reject(error);
+            }
         } 
     }  
     catch(error) {
+        console.log('er vi her?')
         errorMessage.innerHTML = textItems.errorRenderResult[index]
         searchFailed = true // is checked when map is drawn 
     }
@@ -300,6 +333,11 @@ function check() {
     document.getElementById("previous").disabled = currentPage == 1 ? true : false;
     document.getElementById("first").disabled = currentPage == 1 ? true : false;
     document.getElementById("last").disabled = currentPage == numberOfPages ? true : false;
+    document.getElementById("next1").disabled = currentPage == numberOfPages ? true : false;
+    document.getElementById("previous1").disabled = currentPage == 1 ? true : false;
+    document.getElementById("first1").disabled = currentPage == 1 ? true : false;
+    document.getElementById("last1").disabled = currentPage == numberOfPages ? true : false;
+
 }
 
 function load() {
@@ -318,7 +356,7 @@ hitsPerPage.addEventListener('change', (e) => {
         numberOfPages = 1
     }
     currentPage = 1
-    
+    sessionStorage.setItem('numberPerPage', numberPerPage)
     
     loadList()
 })  

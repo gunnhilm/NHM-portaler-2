@@ -10,6 +10,8 @@ const setCollection = (samling) => {
         musitFile = './src/data/journaler.txt'
         console.log(musitFile);
         
+    } else if (samling === 'birds') {
+        musitFile = './src/data/new_bird_file.txt'
     } else {
         fileList.forEach(element => {
             if (element.name === samling){
@@ -77,6 +79,7 @@ const search = (samling, searchTerm, linjeNumber = 0, limit = 20, callback) => {
         }).on('close', function () {
             
             const resulstAndLine = {results, count }
+            
             callback(undefined, resulstAndLine)
         })
        
