@@ -82,6 +82,14 @@ const textItems = {
     photoAlt: ['Bilde ikke tilgjengelig', 'Photo not available'],
     nextPhoto: ['Neste bilde', 'Next photo'],
     mapAlt: ['Kart ikke tilgjengelig', 'Map not available'],
+    itemsHeader: ['Prøver:','Items:'],
+    samplingDate: ['Dato for prøvetaking:','Date of sampling:'],
+    extractionDate: ['Ekstraksjonsdato:', 'Date of extraction:'],
+    itemNumber: ['Prøvenummer:','Item number:'],
+    preservation: ['Konservering:','Preservation:'],
+    method: ['Ekstraksjonsmetode:','Method of extraction:'],
+    concentration: ['DNA konsentrasjon:','DNA concentration'],
+
 
     // corema data page
     //coremaHeader: ["DNA-bank data", "DNA-bank data"],
@@ -244,17 +252,20 @@ const renderText = function(lang) {
         }
         if (object.habitat ) {
             document.querySelector("#head-habitat").innerHTML = "Habitat: "
-            
         }
+
+        document.querySelector("#itemsHeader").innerHTML = textItems.itemsHeader[index]
+
+
         document.getElementById('zoom-expl-popup').innerHTML = textItems.mapHelpContent[index]
         document.getElementById('large-map-object-button').innerHTML = textItems.largeMapButton[index]
     }
     
-    // corema page
-    if (location.href.includes('corema')) {
-        document.querySelector('#coremaHeader').innerHTML = textItems.coremaHeader[index]
-        document.querySelector('#coremaDummyText').innerHTML = textItems.coremaDummyText[index]
-    }
+    // // corema page
+    // if (location.href.includes('corema')) {
+    //     document.querySelector('#coremaHeader').innerHTML = textItems.coremaHeader[index]
+    //     document.querySelector('#coremaDummyText').innerHTML = textItems.coremaDummyText[index]
+    // }
     // Stat page
     if (location.href.includes('showStat')) {
         document.querySelector('#showStatHeader').innerHTML = textItems.showStatHeader[index]

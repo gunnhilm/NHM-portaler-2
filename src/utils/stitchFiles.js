@@ -2,43 +2,63 @@ const fs = require('fs')
 const readline = require('readline')
 const papa = require('papaparse')
 
-// read preparation.txt from corema-dump to get DNA-extract-info - and smth in array, objects
 
-const readPreparationFile = (callback) => {
-    let dnaResults = ''
+const readDumpFile = (filename, callback) => {
+    let dumpResults = ''
     const readInterface = readline.createInterface({
-        input: fs.createReadStream('../../src/data/dna_bird_preparation.txt'),
+        input: fs.createReadStream(filename),
         console: false
     })
-
 
     let count = 0
     readInterface.on('line', function(line) {
         count ++
         if (count === 1 ) {
             // header row
-            dnaResults = line
-            
+            dumpResults = line
         } else {
-            dnaResults = dnaResults + '\n' + line
+            dumpResults = dumpResults + '\n' + line
         }
-        
     })
-    
     .on('close', function () {
-
-        const parsedDnaResults = papa.parse(dnaResults, {
+        const parsedDumpResults = papa.parse(dumpResults, {
             delimiter: "\t",
             newline: "\n",
             quoteChar: '',
             header: true,
         })
-        
-        callback(undefined, parsedDnaResults.data)
-        
+        callback(undefined, parsedDumpResults.data)
     })
-    
 }
+
+// const readPreparationFile = (callback) => {
+//     let dnaResults = ''
+//     const readInterface = readline.createInterface({
+//         input: fs.createReadStream('../../src/data/dna_bird_preparation.txt'),
+//         console: false
+//     })
+
+//     let count = 0
+//     readInterface.on('line', function(line) {
+//         count ++
+//         if (count === 1 ) {
+//             // header row
+//             dnaResults = line
+//         } else {
+//             dnaResults = dnaResults + '\n' + line
+//         }
+//     })
+//     .on('close', function () {
+//         const parsedDnaResults = papa.parse(dnaResults, {
+//             delimiter: "\t",
+//             newline: "\n",
+//             quoteChar: '',
+//             header: true,
+//         })
+//         callback(undefined, parsedDnaResults.data)
+//     })
+// }
+
 
 
 
@@ -103,6 +123,7 @@ readInterface.on('line', function(line) {
         relEl = uniqueOrgArray.find(el => el.id1 === element.organismID)
         // and put the data for this organism into an object. If more items, add items to object
         if (!relEl.hasOwnProperty('type')) {
+            // her kan vi ta vekk felter vi ikke fil ha, f.eks. "rightsHolder" og "accessRights"?
             relEl = Object.assign(relEl, element)
             relEl.items = element.preparations
             // item-id
@@ -135,16 +156,16 @@ readInterface.on('line', function(line) {
     
     
 
-    readPreparationFile((error, dnaResults) => {
-        
-
+    readDumpFile('../../src/data/dna_bird_preparation.txt',(error, dnaResults) => {
+       // console.log(dnaResults)
         uniqueOrgArray.forEach(element => {
             tarray = element.item_uuid.split(",")
             dateArray = []
             methodArray = []
             tarray.forEach(uuid => {
-                
+                //console.log(uuid)
                 dnaEl = dnaResults.find(el => el.id === uuid)
+                //console.log(dnaEl)
                 if (dnaEl) {
                     if (dnaEl.preparationDate) {
                         dateArray.push(dnaEl.preparationDate)
@@ -155,32 +176,112 @@ readInterface.on('line', function(line) {
                     if (dnaEl.preparationMaterials) {
                         methodArray.push(dnaEl.preparationMaterials)
                     } else {
-                        methodArray.push('method_not_available')
+                        methodArray.push('#N/A')
                     }
-
-                } else {
-                    dateArray.push('date_not_available')
-                    methodArray.push('method_not_available')
+               } else {
+                    dateArray.push('#N/A')
+                    methodArray.push('#N/A')
                 }
-                
             })
             element.itemDates = dateArray.toString()
             element.itemMethods = methodArray.toString()
             
         })
         
-        //console.log(uniqueOrgArray[0])
-        
-        let newResults = papa.unparse(uniqueOrgArray, {
-            delimiter: "\t",
+        readDumpFile('../../src/data/dna_bird_amplification.txt',(error,sequenceResults) => {
+            //console.log(sequenceResults)
+            uniqueOrgArray.forEach(element => {
+                tarray = element.item_uuid.split(",")
+                genArray = []
+                boldArray = []
+                uriArray = []
+                tarray.forEach(uuid => {
+                    //console.log(uuid)
+                    amplEl = sequenceResults.find(el => el.id === uuid)
+                    if (amplEl) {
+                        if (amplEl.geneticAccessionNumber) {
+                            genArray.push(amplEl.geneticAccessionNumber)
+                        } else {
+                            genArray.push('#N/A')
+                        }
+                        if(amplEl.BOLDProcessID) {
+                            boldArray.push(amplEl.BOLDProcessID)
+                        } else {
+                            boldArray.push('#N/A')
+                        }
+                        if (amplEl.geneticAccessionURI) {
+                            uriArray.push(amplEl.geneticAccessionURI)
+                        } else {
+                            uriArray.push('#N/A')
+                        }
+                    } else {
+                        genArray.push('#N/A')
+                        boldArray.push('#N/A')
+                        uriArray.push('#N/A')
+                    }
+                })
+                element.itemGenAccNos = genArray.toString()
+                element.itemProcessIDs = boldArray.toString()
+                element.itemGenAccUris = uriArray.toString()
+            })
+            readDumpFile('../../src/data/bird_materialsample.txt', (error,materialsampleResults) => {
+                uniqueOrgArray.forEach(element => {
+                    tarray = element.item_uuid.split(",")
+                    concArray = []
+                    unitArray = []
+                    tarray.forEach(uuid => {
+                        matEl = materialsampleResults.find(el => el.id === uuid)
+                        if (matEl) {
+                            if (matEl.concentration) {
+                                concArray.push(matEl.concentration)
+                            } else {
+                                concArray.push('#N/A')
+                            }
+                            if (matEl.concentrationUnit) {
+                                unitArray.push(matEl.concentrationUnit)
+                            } else {
+                                unitArray.push('#N/A')
+                            }
+                        } else {
+                            concArray.push('#N/A')
+                            unitArray.push('#N/A')
+                        }
+                    })
+                    element.itemConcentrations = concArray.toString()
+                    element.itemUnits = unitArray.toString()
+                })
+
+                readDumpFile('../../src/data/birds_preservation.txt', (error, preservationResults) => {
+                    uniqueOrgArray.forEach(element => {
+                        tarray = element.item_uuid.split(",")
+                        presArray = []
+                        tarray.forEach(uuid => {
+                            presEl = preservationResults.find(el => el.id === uuid)
+                            if (presEl) {
+                                if (presEl.preservationType) {
+                                    presArray.push(presEl.preservationType.replace(',',';'))
+                                } else {
+                                    presArray.push('#N/A')
+                                }
+                            } else {
+                                presArray.push('#N/A')
+                            }
+                        })
+                        element.itemPreservations = presArray.toString()
+                    })
+
+                    let newResults = papa.unparse(uniqueOrgArray, {
+                        delimiter: "\t",
+                    })
+                    fs.writeFileSync('../data/new_bird_file.txt', newResults)
+                })
+                
+            })
+            
         })
-        fs.writeFileSync('../data/new_bird_file.txt', newResults)
+       
     })
     
-
-    //console.log(uniqueOrgArray[0])
-   
-   
 })
 
 

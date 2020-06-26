@@ -6,6 +6,10 @@ html *
 .page-header {
     font-size: 30px;
 }
+
+.obj-header {
+    font-size: 22px;
+}
   
 .wrapper {
     text-align: center

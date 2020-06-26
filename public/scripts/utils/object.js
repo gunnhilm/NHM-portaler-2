@@ -161,34 +161,67 @@ if(object.items) {
     itemTypeArray = object.items.split(",")
     dateArray = object.itemDates.split(",")
     methodArray = object.itemMethods.split(",")
+    processIDArray = object.itemProcessIDs.split(",")
+    genbankArray = object.itemGenAccNos.split(",")
+    DNAConcArray = object.itemConcentrations.split(",")
+    DNAConcUnitArray = object.itemUnits.split(",")
+    preservationArray = object.itemPreservations.split(",")
+
     for (i=0; i<itemArray.length; i++) {
         itemArray[i].properties = itemTypeArray[i]
         itemArray[i].date = dateArray[i]
         itemArray[i].method =methodArray[i]
+        itemArray[i].processID = processIDArray[i]
+        itemArray[i].genAccNo = genbankArray[i]
+        itemArray[i].DNAConc =DNAConcArray[i]
+        itemArray[i].DNAConcUnit = DNAConcUnitArray[i] 
+        itemArray[i].preservation = preservationArray[i]
     }
-    console.log(itemArray)
     
-
-
+    document.querySelector("#itemsHeader").innerHTML = textItems.itemsHeader[index]
+    // add row in table with heading for items
+    // addRow()
+    // cell1.innerHTML = '<br>'
+    // addRow()
+    // cell1.id = 'itemsHeader'
+    // cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.itemsHeader[index]}:</span>`
+    // addRow()
+    //cell1.innerHTML = '<br>'
+    
     // loop over array
     itemArray.forEach( item => {
         addRow()
         cell1.innerHTML = item.properties + ':'
+        cell1.style.fontWeight = 'normal'
         addRow()
-        cell1.innerHTML = `<span>Item number:</span>`
+        cell1.innerHTML = textItems.itemNumber[index]
         cell2.innerHTML = item.itemNumber
         addRow()
         if (item.properties.includes("gDNA")) {
-            console.log('gdna')
-            cell1.innerHTML = `<span>Date of extraction:</span>`
+            cell1.innerHTML = textItems.extractionDate[index]
         } else {
-            cell1.innerHTML = `<span>Date of sampling:</span>`
+            cell1.innerHTML = textItems.samplingDate[index]
         }
         cell2.innerHTML = item.date
+        addRow()
+        cell1.innerHTML = textItems.preservation[index]
+        cell2.innerHTML = item.preservation
         if (item.properties.includes("gDNA")) {
             addRow()
-            cell1.innerHTML = `<span>Method of extraction:</span>`
+            cell1.innerHTML = textItems.method[index]
             cell2.innerHTML = item.method
+
+            addRow()
+            cell1.innerHTML = textItems.concentration[index]
+            cell2.innerHTML = item.DNAConc + ' ' + item.DNAConcUnit
+
+            addRow()
+            cell1.innerHTML = 'BOLD ProcessID'
+            cell2.innerHTML = item.processID
+
+            addRow()
+            cell1.innerHTML = 'Genbank Acc.No'
+            cell2.innerHTML = item.genAccNo
         
         }
         addRow()
