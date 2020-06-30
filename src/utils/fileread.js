@@ -12,6 +12,8 @@ const setCollection = (samling) => {
         
     } else if (samling === 'birds') {
         musitFile = './src/data/new_bird_file.txt'
+    } else if( samling === 'mammals') {
+        musitFile = './src/data/new_mammal_file.txt'
     } else {
         fileList.forEach(element => {
             if (element.name === samling){

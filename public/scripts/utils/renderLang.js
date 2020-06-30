@@ -44,7 +44,7 @@ const textItems = {
     headerCountry: ["Land", "Country"],
     headerMunicipality: ["Kommune", "Municipality"],
     headerLocality: ["Sted", "Locality"],
-    headerCoremaAccno: ["Prøvetyper", "Sample types"],
+    headerSampleTypes: ["Objekttyper", "Sample types"],
     headerSequence: ["Sekvens ID", "Sequence ID"],
     mustChoose: ["Du må velge en samling", "You must choose a collection"],
     placeholder: ["Søk etter latinsk artsnavn, katalognummer, person, sted... Flere søkeord i ett søk er mulig.", "Search for latin species name, catalognumber, person, place... Several terms possible."],
@@ -82,13 +82,14 @@ const textItems = {
     photoAlt: ['Bilde ikke tilgjengelig', 'Photo not available'],
     nextPhoto: ['Neste bilde', 'Next photo'],
     mapAlt: ['Kart ikke tilgjengelig', 'Map not available'],
-    itemsHeader: ['Prøver:','Items:'],
+    itemsHeader: ['Objekter:','Objects:'],
     samplingDate: ['Dato for prøvetaking:','Date of sampling:'],
     extractionDate: ['Ekstraksjonsdato:', 'Date of extraction:'],
     itemNumber: ['Prøvenummer:','Item number:'],
     preservation: ['Konservering:','Preservation:'],
     method: ['Ekstraksjonsmetode:','Method of extraction:'],
     concentration: ['DNA konsentrasjon:','DNA concentration'],
+    coordPlaceholder: ['&lt;Ingen koordinater&gt;', '&lt;No coordinates&gt;'],
 
 
     // corema data page
@@ -366,7 +367,7 @@ document.querySelector('#language').addEventListener('change', (e) => {
             cell5.innerHTML = `<button id='countryButton' class='sort'>${textItems.headerCountry[index].bold()} ${getArrows('country')}</button>`
             cell6.innerHTML = `<button id='municipalityButton' class='sort'>${textItems.headerMunicipality[index].bold()} ${getArrows('county')}</button>`
             cell7.innerHTML = `<button id='localityButton' class='sort'>${textItems.headerLocality[index].bold()} ${getArrows('locality')}</button>`
-            cell10.innerHTML = `<button id='accnoButton' class='sort'>${textItems.headerCoremaAccno[index].bold()} ${getArrows('accno')}</button>`
+            cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} ${getArrows('sampleType')}</button>`
             cell11.innerHTML = `<button id='processIDButton' class='sort'>${textItems.headerSequence[index].bold()} ${getArrows('processID')}</button>`
 
             stringData = sessionStorage.getItem('string')
@@ -377,7 +378,7 @@ document.querySelector('#language').addEventListener('change', (e) => {
             addSortingText('countryButton', 5, 'country', musitData)
             addSortingText('municipalityButton', 6, 'county', musitData)
             addSortingText('localityButton', 7, 'locality', musitData)
-                // // addSortingText('accnoButton', 10, 'accno', musitData)
+                // // addSortingText('sampleTypeButton', 10, 'sampleType', musitData)
                 // // addSortingText('processIDButton', 11, 'processID', musitData)
             
         }

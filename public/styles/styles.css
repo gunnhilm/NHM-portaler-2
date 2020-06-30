@@ -163,6 +163,7 @@ td {
         padding: 5px;
         text-align:left; 
         vertical-align: middle;
+        white-space: nowrap;
     }
     .row-name {
         font-style: italic;
@@ -213,10 +214,11 @@ td {
         text-align: center;
         vertical-align: middle;
     }
-    .row-accNo {
+    .row-sampleType {
         width: 130px;
         padding: 5px;
         vertical-align: middle;
+        white-space: nowrap;
     }
     .row-processID {
         width: 120px;

@@ -34,7 +34,7 @@ if (!sessionStorage.getItem('propsSorted')) {
         {id: 'decimalLongitude',
         sortedOnce: false,
         sortedTwice: false},
-        {id: 'accno',
+        {id: 'sampleType',
         sortedOnce: false,
         sortedTwice: false},
         {id: 'processID',
@@ -83,7 +83,7 @@ function addSortingText(id, n, prop, musitData) { // her er musitData alle
         if (id === 'musitIDButton' ) { 
             musitData.sort(sort_by(prop,reverse, parseInt))
         } 
-        // else if ( id === 'accnoButton') {
+        // else if ( id === 'sampleTypeButton') {
         //     musitData.sort(sort_by(prop,reverse, (a) => a.replace(/[/]/,'.'))) // DNAlink
         
         //  }
@@ -146,7 +146,6 @@ const resultTable = (subMusitData, musitData) => {
         table.innerHTML = "";
         for (let i = -1; i < pageList.length; i++) { // vis en tabell med resultaer som er like lang som det vi ba om pageList.length; 
             const row = table.insertRow(-1)
-    
             const cell1 = row.insertCell(0)
             const cell2 = row.insertCell(1)
             const cell3 = row.insertCell(2)
@@ -157,9 +156,8 @@ const resultTable = (subMusitData, musitData) => {
             const cell8 = row.insertCell(7)
             const cell9 = row.insertCell(8)
             const cell10 = row.insertCell(9)
-            const cell11 = row.insertCell(10)
+            //const cell11 = row.insertCell(10)
             if (i === -1) {     // her kommer tittellinjen
-            
                 cell1.innerHTML = `<button id='musitIDButton' class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>` 
                 cell2.innerHTML = `<button id='scientificNameButton' class='sort'>${textItems.headerTaxon[index].bold()} ${getArrows('scientificName')} </button>`
                 cell3.innerHTML = `<button id='collectorButton' class='sort'>${textItems.headerCollector[index].bold()} ${getArrows('recordedBy')}</button>`
@@ -169,9 +167,10 @@ const resultTable = (subMusitData, musitData) => {
                 cell7.innerHTML = `<button id='localityButton' class='sort'>${textItems.headerLocality[index].bold()} ${getArrows('locality')}</button>`
                 cell8.innerHTML = `<button id='photoButton' class='sort'><span class="fas fa-camera"></span>${getArrows('associatedMedia')}</button>`
                 cell9.innerHTML = `<button id='coordinateButton' class='sort'><span class="fas fa-compass"></span>${getArrows('decimalLongitude')}</button>`
-                cell10.innerHTML = `<button id='accnoButton' class='sort'>${textItems.headerCoremaAccno[index].bold()} ${getArrows('accno')}</button>`
-                cell11.innerHTML = `<button id='processIDButton' class='sort'>${textItems.headerSequence[index].bold()} ${getArrows('processID')}</button>`
-                
+                cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} </button>`
+                //${getArrows('sampleType')}
+                //cell11.innerHTML = `<button id='processIDButton' class='sort'>${textItems.headerSequence[index].bold()} ${getArrows('processID')}</button>`
+
                 // lag overskrifene klikk og sorterbare
                 addSortingText('musitIDButton', 1, 'catalogNumber', musitData)  // Tabellen blir sortert på nummer
                 addSortingText('scientificNameButton', 2, 'scientificName', musitData)
@@ -182,10 +181,9 @@ const resultTable = (subMusitData, musitData) => {
                 addSortingText('localityButton', 7, 'locality', musitData)
                 addSortingText('photoButton', 8, 'associatedMedia', musitData)
                 addSortingText('coordinateButton', 9, 'decimalLongitude', musitData)
-                //addSortingText('accnoButton', 10, 'accno', musitData)         // cannot make sort-function work, possibly because of "/"
-                addSortingText('processIDButton', 11, 'processID', musitData)
+                //addSortingText('sampleTypeButton', 10, 'sampleType', musitData)         // cannot make sort-function work, possibly because of "/"
+                //addSortingText('processIDButton', 11, 'processID', musitData)
                 
-
             } else {        // Her kommer innmaten i tabellen, selve resultatene
                 cell1.innerHTML =  `<a id="object-link" href="${urlPath}/object/?id=${subMusitData[i].catalogNumber}"> ${subMusitData[i].catalogNumber} </a>`
                 cell2.innerHTML = subMusitData[i].scientificName
@@ -207,7 +205,6 @@ const resultTable = (subMusitData, musitData) => {
                 if( subMusitData[i].decimalLongitude) {
                     cell9.innerHTML = '<span class="fas fa-compass"></span>'
                 }
-                //cell10.innerHTML = subMusitData[i].accNoDNA     //DNAlink
                 //cell11.innerHTML = subMusitData[i].processID    //DNAlink
                 
                 cell10.innerHTML = subMusitData[i].items
@@ -221,8 +218,8 @@ const resultTable = (subMusitData, musitData) => {
                 cell7.className = 'row-7 row-sted'
                 cell8.className = 'row-8 row-photo'
                 cell9.className = 'row-9 row-coordinates'
-                cell10.className = 'row-10 row-accNo'
-                cell11.className = 'row-11 row-processID'
+                cell10.className = 'row-10 row-sampleType'
+                //cell11.className = 'row-11 row-processID'
             }
         }
         // Show download button

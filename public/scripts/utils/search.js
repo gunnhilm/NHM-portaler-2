@@ -137,7 +137,7 @@ downloadButton.addEventListener('click', (e) => {
                         } else {
                             
                             const JSONdata = JSON.parse(data)  
-                            console.log(data)
+                            
                             sessionStorage.setItem('searchLineNumber', JSONdata.unparsed.count)
                             sessionStorage.setItem('searchTerm', searchTerm)
                             const parsedResults = Papa.parse(JSONdata.unparsed.results, {
@@ -158,7 +158,6 @@ downloadButton.addEventListener('click', (e) => {
                                         nbHitsElement.textContent = parsedResults.data.length
                                     }
                                     nbHitsHeader.innerHTML = textItems.nbHitsText[index]
-                                    console.log(parsedResults.data)
                                     sessionStorage.setItem('string', JSON.stringify(parsedResults.data))   
                                     // resultTable() 
 

@@ -71,12 +71,8 @@ const concatLocality = country(object) + stateProvince(object) + county(object) 
 // to print nice coordinates:
 const coordinates = (obj) => {
     if (obj.decimalLongitude === '' | obj.decimalLatitude === '') {
-        if (document.querySelector('#language').value === "Norwegian") {
-            return 'Ingen koordinater'
-           
-        } else {
-            return 'No coordinates'
-        }
+        return textItems.coordPlaceholder[index]
+        
     } else {
         let longLetter
         let latLetter
@@ -191,8 +187,10 @@ if(object.items) {
     // loop over array
     itemArray.forEach( item => {
         addRow()
-        cell1.innerHTML = item.properties + ':'
+        cell1.innerHTML = item.properties
+        cell1.style.textDecoration  = 'underline'
         cell1.style.fontWeight = 'normal'
+        cell1.style.fontSize = '18px'
         addRow()
         cell1.innerHTML = textItems.itemNumber[index]
         cell2.innerHTML = item.itemNumber
@@ -214,16 +212,18 @@ if(object.items) {
             addRow()
             cell1.innerHTML = textItems.concentration[index]
             cell2.innerHTML = item.DNAConc + ' ' + item.DNAConcUnit
-
+            addRow()    
+            cell1.innerHTML = 'BOLD ProcessID:'
+            if (item.processID != "#N/A") {
+                const url = `http://www.boldsystems.org/index.php/Public_RecordView?processid=${item.processID}`
+                cell2.innerHTML = `<a href="${url}" target="_blank">${item.processID}</a>`
+            } else { cell2.innerHTML = "#N/A"}
             addRow()
-            cell1.innerHTML = 'BOLD ProcessID'
-            cell2.innerHTML = item.processID
-
-            addRow()
-            cell1.innerHTML = 'Genbank Acc.No'
+            cell1.innerHTML = 'Genbank Acc.No:'
             cell2.innerHTML = item.genAccNo
-        
         }
+        
+       
         addRow()
         cell1.innerHTML = '<br>'
     })
@@ -255,6 +255,7 @@ function reducePhoto(photo) {
 // and to to enable large photo by clicking, img is wrapped in a <a>
 
 // if more than one photo
+console.log(object)
 if ( object.associatedMedia.includes('|') ) {
     document.getElementById("next-photo").style.display = "block"
     let index = 0
