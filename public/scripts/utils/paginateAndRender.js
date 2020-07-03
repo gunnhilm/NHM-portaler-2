@@ -165,6 +165,12 @@ const resultTable = (subMusitData, musitData) => {
                 cell5.innerHTML = `<button id='countryButton' class='sort'>${textItems.headerCountry[index].bold()} ${getArrows('country')}</button>`
                 cell6.innerHTML = `<button id='municipalityButton' class='sort'>${textItems.headerMunicipality[index].bold()} ${getArrows('county')}</button>`
                 cell7.innerHTML = `<button id='localityButton' class='sort'>${textItems.headerLocality[index].bold()} ${getArrows('locality')}</button>`
+                // let photoProp
+                // if ( coll === 'birds' | coll === 'mammals' ) {
+                //     photoProp = 'photoIdentifiers'
+                // } else {
+                //     photoProp = 'associatedMedia'
+                // }
                 cell8.innerHTML = `<button id='photoButton' class='sort'><span class="fas fa-camera"></span>${getArrows('associatedMedia')}</button>`
                 cell9.innerHTML = `<button id='coordinateButton' class='sort'><span class="fas fa-compass"></span>${getArrows('decimalLongitude')}</button>`
                 cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} </button>`
@@ -199,13 +205,15 @@ const resultTable = (subMusitData, musitData) => {
                 cell5.innerHTML = subMusitData[i].country
                 cell6.innerHTML = subMusitData[i].county
                 cell7.innerHTML = subMusitData[i].locality
-                if( subMusitData[i].associatedMedia) {
+                if( subMusitData[i].associatedMedia ) {    
+                    cell8.innerHTML = `<span class="fas fa-camera"></span>`
+                }
+                if( subMusitData[i].photoIdentifiers ) {   
                     cell8.innerHTML = `<span class="fas fa-camera"></span>`
                 }
                 if( subMusitData[i].decimalLongitude) {
                     cell9.innerHTML = '<span class="fas fa-compass"></span>'
                 }
-                //cell11.innerHTML = subMusitData[i].processID    //DNAlink
                 
                 cell10.innerHTML = subMusitData[i].items
                 

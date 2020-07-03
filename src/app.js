@@ -55,7 +55,6 @@ app.get('/search', (req, res) => {
     } else {
         try {
             fileRead.search(req.query.samling, req.query.search, req.query.linjeNumber,req.query.limit , (error, results) => {
-                console.log(results)
                 res.send({
                     unparsed: results
                 })

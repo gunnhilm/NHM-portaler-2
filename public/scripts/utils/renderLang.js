@@ -25,14 +25,16 @@ const textItems = {
     insekter: ["Insekter", "Insects"],
     fugler: ["Fugler", "Birds"],
     pattedyr: ["Pattedyr", "Mammals"],
+    fishHerp: ["Fisk og herptiler (kun DNA)", "Fish and herptiles (only DNA)"],
+    other: ["Andre grupper (kun DNA)", "Other groups (only DNA)"],
     // ---------DNA
-    dna_karplanter: ["Karplanter (DNA)", "Vascular plants (DNA)"],
-    dna_insekter: ["Insekter (DNA)", "Insects (DNA)"],
-    dna_fish_herptiles: ["Fisk & Herptiler (DNA)", "Fish & Herptiles (DNA)"],
-    dna_fungi_lichens: ["Sopp & Lav (DNA)", "Fungi & Lichens (DNA)"],
-    dna_other: ["Andre grupper (DNA)", "Other groups (DNA)"],
-    // --------------specimens and DNA
-    fungi_specimens_dna: ["Sopp - specimens og DNA", "Fungi - specimens and DNA"],   //DNAlink
+    // dna_karplanter: ["Karplanter (DNA)", "Vascular plants (DNA)"],
+    // dna_insekter: ["Insekter (DNA)", "Insects (DNA)"],
+    // dna_fish_herptiles: ["Fisk & Herptiler (DNA)", "Fish & Herptiles (DNA)"],
+    // dna_fungi_lichens: ["Sopp & Lav (DNA)", "Fungi & Lichens (DNA)"],
+    // dna_other: ["Andre grupper (DNA)", "Other groups (DNA)"],
+    // // --------------specimens and DNA
+    // fungi_specimens_dna: ["Sopp - specimens og DNA", "Fungi - specimens and DNA"],   //DNAlink
 
     hitsPerPage: ["Treff per side", "Hits per page"],
     downloadLink: ["Last ned resultat", "Download results"],
@@ -88,6 +90,7 @@ const textItems = {
     itemNumber: ['Prøvenummer:','Item number:'],
     preservation: ['Konservering:','Preservation:'],
     method: ['Ekstraksjonsmetode:','Method of extraction:'],
+    preparedBy: ['Ekstrahert av:','Prepared by:'],
     concentration: ['DNA konsentrasjon:','DNA concentration'],
     coordPlaceholder: ['&lt;Ingen koordinater&gt;', '&lt;No coordinates&gt;'],
 
@@ -159,14 +162,16 @@ const renderText = function(lang) {
         document.querySelector('#insekter').innerHTML = textItems.insekter[index]
         document.querySelector('#fugler').innerHTML = textItems.fugler[index]
         document.querySelector('#pattedyr').innerHTML = textItems.pattedyr[index]
+        document.querySelector('#dna_fish_herptiles').innerHTML = textItems.fishHerp[index]
+        document.querySelector('#dna_other').innerHTML = textItems.other[index]
         //-------------------------- DNA
-        document.querySelector('#dna_karplanter').innerHTML = textItems.dna_karplanter[index]
-        document.querySelector('#dna_insekter').innerHTML = textItems.dna_insekter[index]
-        document.querySelector('#dna_fish_herptiles').innerHTML = textItems.dna_fish_herptiles[index]
-        document.querySelector('#dna_fungi_lichens').innerHTML = textItems.dna_fungi_lichens[index]
-        document.querySelector('#dna_other').innerHTML = textItems.dna_other[index]
-        //------------------------- Specimens and DNA
-        document.querySelector("#fungi_specimens_dna").innerHTML = textItems.fungi_specimens_dna[index] //DNAlink
+        // document.querySelector('#dna_karplanter').innerHTML = textItems.dna_karplanter[index]
+        // document.querySelector('#dna_insekter').innerHTML = textItems.dna_insekter[index]
+        // document.querySelector('#dna_fish_herptiles').innerHTML = textItems.dna_fish_herptiles[index]
+        // document.querySelector('#dna_fungi_lichens').innerHTML = textItems.dna_fungi_lichens[index]
+        // document.querySelector('#dna_other').innerHTML = textItems.dna_other[index]
+        // //------------------------- Specimens and DNA
+        // document.querySelector("#fungi_specimens_dna").innerHTML = textItems.fungi_specimens_dna[index] //DNAlink
     }
     // index page
     if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler')) {

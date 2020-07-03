@@ -157,6 +157,7 @@ if(object.items) {
     itemTypeArray = object.items.split(",")
     dateArray = object.itemDates.split(",")
     methodArray = object.itemMethods.split(",")
+    preparedByArray = object.itemPreparedBys.split(",")
     processIDArray = object.itemProcessIDs.split(",")
     genbankArray = object.itemGenAccNos.split(",")
     DNAConcArray = object.itemConcentrations.split(",")
@@ -167,6 +168,7 @@ if(object.items) {
         itemArray[i].properties = itemTypeArray[i]
         itemArray[i].date = dateArray[i]
         itemArray[i].method =methodArray[i]
+        itemArray[i].preparedBy = preparedByArray[i]
         itemArray[i].processID = processIDArray[i]
         itemArray[i].genAccNo = genbankArray[i]
         itemArray[i].DNAConc =DNAConcArray[i]
@@ -197,17 +199,24 @@ if(object.items) {
         addRow()
         if (item.properties.includes("gDNA")) {
             cell1.innerHTML = textItems.extractionDate[index]
+        } else if (item.properties === 'Voucher') {
+            cell1.innerHTML = ''
         } else {
             cell1.innerHTML = textItems.samplingDate[index]
         }
         cell2.innerHTML = item.date
         addRow()
         cell1.innerHTML = textItems.preservation[index]
-        cell2.innerHTML = item.preservation
+        if (item.properties === 'Voucher') {
+            cell2.innerHTML = 'Dried'   //this should not be hard coded, I tried to fix in stich-musit-files
+        }
         if (item.properties.includes("gDNA")) {
             addRow()
             cell1.innerHTML = textItems.method[index]
             cell2.innerHTML = item.method
+            addRow()
+            cell1.innerHTML = textItems.preparedBy[index]
+            cell2.innerHTML = item.preparedBy
 
             addRow()
             cell1.innerHTML = textItems.concentration[index]
@@ -222,16 +231,9 @@ if(object.items) {
             cell1.innerHTML = 'Genbank Acc.No:'
             cell2.innerHTML = item.genAccNo
         }
-        
-       
         addRow()
         cell1.innerHTML = '<br>'
     })
-
-    
-    
-
-
 }
 
 // photo:
@@ -256,10 +258,22 @@ function reducePhoto(photo) {
 
 // if more than one photo
 console.log(object)
-if ( object.associatedMedia.includes('|') ) {
+const coll = sessionStorage.getItem('collection')
+let mediaLink
+let imageList
+if ( coll === 'birds' | coll === 'mammals' ) {
+    mediaLink = object.photoIdentifiers
+} else {
+    mediaLink = object.associatedMedia
+}
+if ( mediaLink.includes('|') | mediaLink.includes(',')) {  // if several photos
     document.getElementById("next-photo").style.display = "block"
     let index = 0
-    let imageList = object.associatedMedia.split('|')
+    if (mediaLink.includes('|')) {
+        imageList = mediaLink.split('|')
+    } else {
+        imageList = mediaLink.split(',') // birds and mammals (corema-collections)
+    }
     let smallImageList = imageList.map(reducePhoto)
     document.getElementById("photo-anchor").href = imageList[0]
     document.getElementById("photo-box").src = smallImageList[0]
@@ -267,8 +281,8 @@ if ( object.associatedMedia.includes('|') ) {
         index = changeImage(index, smallImageList, imageList)
     }
 } else {
-    document.getElementById("photo-anchor").href = object.associatedMedia
-    let smallImage = object.associatedMedia
+    document.getElementById("photo-anchor").href = mediaLink
+    let smallImage = mediaLink
     smallImage = smallImage.replace('jpeg', 'small')
     document.getElementById("photo-box").src = smallImage
 }
