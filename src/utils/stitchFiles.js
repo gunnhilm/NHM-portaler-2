@@ -8,22 +8,21 @@ const birdPreservationFile = '../../src/data/birds_preservation.txt'
 const birdMaterialsampleFile = '../../src/data/birds_materialsample.txt'
 const birdAmplificationFile = '../../src/data/dna_birds_amplification.txt'
 const birdPreparationFile = '../../src/data/dna_birds_preparation.txt'
-const birdOccurrenceFile = '../../src/data/birds_occurrence_short.txt'
+const birdOccurrenceFile = '../../src/data/birds_occurrence_short.txt' // switch to non-short
 
 const mammalMultimediaFile = '../../src/data/mammals_multimedia.txt'
 const mammalPreservationFile = '../../src/data/mammals_preservation.txt'
 const mammalMaterialsampleFile = '../../src/data/mammals_materialsample.txt'
 const mammalAmplificationFile = '../../src/data/dna_mammals_amplification.txt'
 const mammalPreparationFile = '../../src/data/dna_mammals_preparation.txt'
-const mammalOccurrenceFile = '../../src/data/mammals_occurrence_short.txt'
+const mammalOccurrenceFile = '../../src/data/mammals_occurrence_short.txt' // switch to non-short
 
 const fishHerpMultimediaFile = '../../src/data/fishHerps_multimedia.txt'
 const fishHerpPreservationFile = '../../src/data/fishHerps_preservation.txt'
 const fishHerpMaterialsampleFile = '../../src/data/fishHerps_materialsample.txt'
 const fishHerpAmplificationFile = '../../src/data/dna_fishHerps_amplification.txt'
 const fishHerpPreparationFile = '../../src/data/dna_fishHerps_preparation.txt'
-//const fishHerpOccurrenceFile = '../../src/data/fishHerps_occurrence.txt'
-const fishHerpOccurrenceFile = '../../src/data/fishHerps_occurrence_short.txt'
+const fishHerpOccurrenceFile = '../../src/data/fishHerps_occurrence_short.txt' // switch to non-short
 
 const otherMultimediaFile = '../../src/data/others_multimedia.txt'
 const otherPreservationFile = '../../src/data/others_preservation.txt'
@@ -36,7 +35,6 @@ function fillProperty(prop, value) {
     tempArray = prop.split(",")
     tempArray.push(value)
     prop = tempArray.toString()
-    prop = prop.replace(/,/g, ",")
     return prop
 }
 
@@ -46,7 +44,6 @@ const readDumpFile = (filename, callback) => {
         input: fs.createReadStream(filename),
         console: false
     })
-
     let count = 0
     readInterface.on('line', function(line) {
         count ++
@@ -58,6 +55,7 @@ const readDumpFile = (filename, callback) => {
         }
     })
     .on('close', function () {
+        // parse the results, work with data in arrays to add column with items, then unparse back to string-format
         const parsedDumpResults = papa.parse(dumpResults, {
             delimiter: "\t",
             newline: "\n",
@@ -68,60 +66,22 @@ const readDumpFile = (filename, callback) => {
     })
 }
 
-const stitchFiles = (occurrenceFile, preparationFile, amplificationFile, materialsampleFile, preservationFile, multimediaFile, outfileName) => {
-
-
-    // read occurrence-file with birds and store each accession as an object in an array
-    let results = ''
-    const readInterface = readline.createInterface({
-        input: fs.createReadStream(occurrenceFile),
-        console: false
-    })
-
-
-
-    let count = 0
-    readInterface.on('line', function(line) {
-        count ++
-        if (count === 1 ) {
-            // header row
-            results = line
-            
-        } else {
-            results = results + '\n' + line
-        }
-        
-    })
-    .on('close', function () {
-
-        //change? return parsedResults from this, turning this into a function? kan på et vis returneres med callback-funksjonen, men jeg får den fortsatt ikke ut av funksjonen
-
-        // parse the results, work with data in arrays to add column with items, then unparse back to string-format
-    
-        const parsedResults = papa.parse(results, {
-            delimiter: "\t",
-            newline: "\n",
-            quoteChar: '',
-            header: true,
-        })
-        
-    // are there duplicates in the bird_occurrence-file? - yes, duplicates have same organismID
-    // make an array of all organismID's, and a new with only unique values
-
+const stitchCoremaFiles = (occurrenceFile, preparationFile, amplificationFile, materialsampleFile, preservationFile, multimediaFile, outfileName) => {
+    // read corema-occurrence-file and store each accession as an object in an array [orgArray]
+    readDumpFile(occurrenceFile,(error, occurrenceResults) => {
+        // make an array of all organismID's, and a new with only unique values
         const organismIDArray = []
-        
-        parsedResults.data.forEach( element => organismIDArray.push(element.organismID))   
+        occurrenceResults.forEach( element => organismIDArray.push(element.organismID))   
         const uniqueOrganismIDArray = Array.from(new Set(organismIDArray))
         
-        const uniqueOrgArray = []
-        uniqueOrganismIDArray.forEach (element => uniqueOrgArray.push({id1: element}))
+        const orgArray = []
+        uniqueOrganismIDArray.forEach (element => orgArray.push({id1: element}))
         
-        parsedResults.data.forEach( element => {
-            //find this orgID in uniqueOrgArray
-            relEl = uniqueOrgArray.find(el => el.id1 === element.organismID)
+        occurrenceResults.forEach( element => {
+            //find this orgID in orgArray
+            relEl = orgArray.find(el => el.id1 === element.organismID)
             // and put the data for this organism into an object. If more items, add items to object
             if (!relEl.hasOwnProperty('type')) {
-                // her kan vi ta vekk felter vi ikke fil ha, f.eks. "rightsHolder" og "accessRights"?
                 // The Object.assign() method copies all enumerable own properties from one or more source objects to a target object. It returns the target object.
                 relEl = Object.assign(relEl, element)
                 relEl.items = element.preparations
@@ -130,42 +90,29 @@ const stitchFiles = (occurrenceFile, preparationFile, amplificationFile, materia
                 // item-number
                 relEl.itemNumbers = element.catalogNumber
                 // date - for i.e. blood: date of sampling, same as eventDate(collecting date)
-            // relEl.date = element.eventDate
                 // turn item-number into acc-number (i.e. catalogNumber)
                 relEl.catalogNumber = relEl.catalogNumber.substring(0, relEl.catalogNumber.indexOf("/"))
-                
+                delete relEl.accessRights   // very long text that we don't think we need
                 
             } else {
-                tempArray = relEl.items.split(",")
-                tempArray.push(element.preparations)
-                relEl.items = tempArray.toString()
+                relEl.items = fillProperty(relEl.items, element.preparations)
                 relEl.items = relEl.items.replace(/,/g, ", ")
-            
-                tArrayItemNb = relEl.itemNumbers = relEl.itemNumbers.split(",")
-                tArrayItemNb.push(element.catalogNumber)
-                relEl.itemNumbers = tArrayItemNb.toString()
-                relEl.itemNumbers = relEl.itemNumbers.replace(/,/g, ", ")
-
+                relEl.itemNumbers = fillProperty(relEl.itemNumbers, element.catalogNumber)
                 relEl.item_uuid = fillProperty(relEl.item_uuid, element.id)    
-                
-                //relEl.date = fillProperty(relEl.date, element.eventDate)
-                
             }
         })
         
-        
-
         readDumpFile(preparationFile,(error, dnaResults) => {
-        // console.log(dnaResults)
-            uniqueOrgArray.forEach(element => {
+            orgArray.forEach(element => {
+                if (element.accessRights) {
+                    delete element.accessRights // very long text that we don't think we need 
+                }
                 tarray = element.item_uuid.split(",")
                 dateArray = []
                 methodArray = []
                 preparedByArray = []
                 tarray.forEach(uuid => {
-                    //console.log(uuid)
                     dnaEl = dnaResults.find(el => el.id === uuid)
-                    //console.log(dnaEl)
                     if (dnaEl) {
                         if (dnaEl.preparationDate) {
                             dateArray.push(dnaEl.preparationDate)
@@ -176,16 +123,17 @@ const stitchFiles = (occurrenceFile, preparationFile, amplificationFile, materia
                         if (dnaEl.preparationMaterials) {
                             methodArray.push(dnaEl.preparationMaterials)
                         } else {
-                            methodArray.push(' ')
+                            methodArray.push('')
                         }
                         if (dnaEl.preparedBy) {
-                            preparedByArray.push(dnaEl.preparedBy)
+                            preparedByArray.push(dnaEl.preparedBy.replace(',',';'))
+
                         } else {
                             preparedByArray.push ('')
                         }
                     } else {
-                        dateArray.push(' ')
-                        methodArray.push(' ')
+                        dateArray.push('')
+                        methodArray.push('')
                         preparedByArray.push('')
                     }
                 })
@@ -195,14 +143,12 @@ const stitchFiles = (occurrenceFile, preparationFile, amplificationFile, materia
             })
             
             readDumpFile(amplificationFile,(error,sequenceResults) => {
-                //console.log(sequenceResults)
-                uniqueOrgArray.forEach(element => {
+                orgArray.forEach(element => {
                     tarray = element.item_uuid.split(",")
                     genArray = []
                     boldArray = []
                     uriArray = []
                     tarray.forEach(uuid => {
-                        //console.log(uuid)
                         amplEl = sequenceResults.find(el => el.id === uuid)
                         if (amplEl) {
                             if (amplEl.geneticAccessionNumber) {
@@ -213,17 +159,17 @@ const stitchFiles = (occurrenceFile, preparationFile, amplificationFile, materia
                             if(amplEl.BOLDProcessID) {
                                 boldArray.push(amplEl.BOLDProcessID)
                             } else {
-                                boldArray.push(' ')
+                                boldArray.push('')
                             }
                             if (amplEl.geneticAccessionURI) {
                                 uriArray.push(amplEl.geneticAccessionURI)
                             } else {
-                                uriArray.push(' ')
+                                uriArray.push('')
                             }
                         } else {
-                            genArray.push(' ')
-                            boldArray.push(' ')
-                            uriArray.push(' ')
+                            genArray.push('')
+                            boldArray.push('')
+                            uriArray.push('')
                         }
                     })
                     element.itemGenAccNos = genArray.toString()
@@ -231,7 +177,7 @@ const stitchFiles = (occurrenceFile, preparationFile, amplificationFile, materia
                     element.itemGenAccUris = uriArray.toString()
                 })
                 readDumpFile(materialsampleFile, (error,materialsampleResults) => {
-                    uniqueOrgArray.forEach(element => {
+                    orgArray.forEach(element => {
                         tarray = element.item_uuid.split(",")
                         concArray = []
                         unitArray = []
@@ -241,16 +187,16 @@ const stitchFiles = (occurrenceFile, preparationFile, amplificationFile, materia
                                 if (matEl.concentration) {
                                     concArray.push(matEl.concentration)
                                 } else {
-                                    concArray.push(' ')
+                                    concArray.push('')
                                 }
                                 if (matEl.concentrationUnit) {
                                     unitArray.push(matEl.concentrationUnit)
                                 } else {
-                                    unitArray.push(' ')
+                                    unitArray.push('')
                                 }
                             } else {
-                                concArray.push(' ')
-                                unitArray.push(' ')
+                                concArray.push('')
+                                unitArray.push('')
                             }
                         })
                         element.itemConcentrations = concArray.toString()
@@ -258,7 +204,7 @@ const stitchFiles = (occurrenceFile, preparationFile, amplificationFile, materia
                     })
 
                     readDumpFile(preservationFile, (error, preservationResults) => {
-                        uniqueOrgArray.forEach(element => {
+                        orgArray.forEach(element => {
                             tarray = element.item_uuid.split(",")
                             presArray = []
                             tarray.forEach(uuid => {
@@ -267,16 +213,16 @@ const stitchFiles = (occurrenceFile, preparationFile, amplificationFile, materia
                                     if (presEl.preservationType) {
                                         presArray.push(presEl.preservationType.replace(',',';'))
                                     } else {
-                                        presArray.push(' ')
+                                        presArray.push('')
                                     }
                                 } else {
-                                    presArray.push(' ')
+                                    presArray.push('')
                                 }
                             })
                             element.itemPreservations = presArray.toString()
                         })
 
-                        // photo - not on item-level
+                        // photo
                         readDumpFile(multimediaFile, (error, photoResults) => {
                             // make array with  unique ids from photoResults
                             const mediaIDArray = []
@@ -313,28 +259,21 @@ const stitchFiles = (occurrenceFile, preparationFile, amplificationFile, materia
                                     }
                                 }
                             })
-                            uniqueOrgArray.forEach(element => {
+                            orgArray.forEach(element => {
                                 medEl2 = uniqueMediaObjArray.find(el => el.id1 === element.id)
                                 if (medEl2) {
                                   //  if (!element.hasOwnProperty('photoIDs')) {
                                         element.photoIDs = medEl2.photoIDs
                                         element.photoIdentifiers = medEl2.photoIdentifiers
                                         element.licenses = medEl2.licenses
-                                    //} else {
-                                    //     element.licenses = medEl2.licenseselement.photoIDs = "#N/A"
-                                    //     element.photoIdentifiers = "#N/A"
-                                    //     element.licenses = "#N/A"                                        
-                                    // }
                                 } else {
-                                    element.photoIDs = "#N/A"
-                                    element.photoIdentifiers = "#N/A"
-                                    element.licenses = "#N/A"
+                                    element.photoIDs = ''
+                                    element.photoIdentifiers = ''
+                                    element.licenses = ''
                                 }
-                                
-                                //console.log(element)
                             })
                             
-                            let newResults = papa.unparse(uniqueOrgArray, {
+                            let newResults = papa.unparse(orgArray, {
                                 delimiter: "\t",
                             })
                             fs.writeFileSync(outfileName, newResults)    
@@ -347,7 +286,7 @@ const stitchFiles = (occurrenceFile, preparationFile, amplificationFile, materia
     })
 }
 
-//stitchFiles(birdOccurrenceFile,birdPreparationFile,birdAmplificationFile,birdMaterialsampleFile,birdPreservationFile,birdMultimediaFile,'../data/bird_stitched_file.txt')
-//stitchFiles(mammalOccurrenceFile,mammalPreparationFile,mammalAmplificationFile,mammalMaterialsampleFile,mammalPreservationFile,mammalMultimediaFile,'../data/mammal_stitched_file.txt')
-//stitchFiles(fishHerpOccurrenceFile,fishHerpPreparationFile,fishHerpAmplificationFile,fishHerpMaterialsampleFile,fishHerpPreservationFile,fishHerpMultimediaFile,'../data/fishHerp_stitched_file.txt')
-stitchFiles(otherOccurrenceFile,otherPreparationFile,otherAmplificationFile,otherMaterialsampleFile,otherPreservationFile,otherMultimediaFile,'../data/other_stitched_file.txt')
+//stitchCoremaFiles(birdOccurrenceFile,birdPreparationFile,birdAmplificationFile,birdMaterialsampleFile,birdPreservationFile,birdMultimediaFile,'../data/birds_stitched_file.txt')
+//stitchCoremaFiles(mammalOccurrenceFile,mammalPreparationFile,mammalAmplificationFile,mammalMaterialsampleFile,mammalPreservationFile,mammalMultimediaFile,'../data/mammals_stitched_file.txt')
+//stitchCoremaFiles(fishHerpOccurrenceFile,fishHerpPreparationFile,fishHerpAmplificationFile,fishHerpMaterialsampleFile,fishHerpPreservationFile,fishHerpMultimediaFile,'../data/dna_fish_herptiles_stitched_file.txt')
+stitchCoremaFiles(otherOccurrenceFile,otherPreparationFile,otherAmplificationFile,otherMaterialsampleFile,otherPreservationFile,otherMultimediaFile,'../data/dna_other_stitched_file.txt')

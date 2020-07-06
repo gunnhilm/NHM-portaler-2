@@ -91,14 +91,17 @@ const coordinates = (obj) => {
 }
 
 // to print nice musit regno
-let justCatalogNumber = object.catalogNumber
+// let justCatalogNumber = object.catalogNumber
 
-const indexOfNumber = justCatalogNumber.search(/\d/) // sjekk hvis nummeret også inneholder instutisjonskoder og fjerne disse
-if (indexOfNumber > 0) {
-    justCatalogNumber = justCatalogNumber.slice(indexOfNumber)
-}
-const regno = `${object.institutionCode}-${object.collectionCode}-${justCatalogNumber}`
-const regnoEl = `<span>${regno}` 
+// const indexOfNumber = justCatalogNumber.search(/\d/) // sjekk hvis nummeret også inneholder instutisjonskoder og fjerne disse
+// if (indexOfNumber > 0) {
+//     justCatalogNumber = justCatalogNumber.slice(indexOfNumber)
+// }
+// const regno = `${object.institutionCode}-${object.collectionCode}-${justCatalogNumber}`
+
+//const regnoEl = `<span>${regno}` 
+const regnoEl = `<span>${object.catalogNumber}` 
+
 
 // data only displayed if existing
 let headArtsobs = ''
@@ -261,12 +264,12 @@ console.log(object)
 const coll = sessionStorage.getItem('collection')
 let mediaLink
 let imageList
-if ( coll === 'birds' | coll === 'mammals' ) {
+if ( coll === 'birds' || coll === 'mammals' || coll === 'dna_fish_herptiles' || coll === 'dna_other') {
     mediaLink = object.photoIdentifiers
 } else {
     mediaLink = object.associatedMedia
 }
-if ( mediaLink.includes('|') | mediaLink.includes(',')) {  // if several photos
+if ( mediaLink.includes('|') || mediaLink.includes(',')) {  // if several photos
     document.getElementById("next-photo").style.display = "block"
     let index = 0
     if (mediaLink.includes('|')) {

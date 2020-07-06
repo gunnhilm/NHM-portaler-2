@@ -1,17 +1,19 @@
 const fs = require('fs')
 const readline = require('readline')
 const papa = require('papaparse')
-const { Console } = require('console')
+//const { Console } = require('console')
 
 // filenames
-const fungiOccurrenceFile = '../../src/data/sopp_occurrence_short.txt'
-const lichenOccurrenceFile = '../../src/data/lav_occurrence_short.txt'
-const entOccurrenceFile = '../../src/data/entomologi_occurrence_short.txt'
-const plantOccurrenceFile = '../../src/data/plants_occurrence_short.txt'
 
+// from musit
+const fungiOccurrenceFile = '../../src/data/sopp_occurrence_short.txt' // switch to non-short
+const lichenOccurrenceFile = '../../src/data/lav_occurrence_short.txt' // switch to non-short
+const entOccurrenceFile = '../../src/data/entomologi_occurrence_short.txt' // switch to non-short
+const plantOccurrenceFile = '../../src/data/karplanter_occurrence_short.txt' // switch to non-short
 
-const funLichDnaOccurrenceFile = '../../src/data/dna_fungi_lichen_occurrence.txt'
-const funLichRelationshipFile = '../../src/data/fungi_lichen_resourcerelationship.txt'
+// from corema
+const funLichDnaOccurrenceFile = '../../src/data/dna_fungi_lichens_occurrence.txt'
+const funLichRelationshipFile = '../../src/data/fungi_lichens_resourcerelationship.txt'
 const funLichPreparationFile = '../../src/data/dna_fungi_lichens_preparation.txt'
 const funLichAmplificationFile = '../../src/data/dna_fungi_lichens_amplification.txt'
 const funLichMaterialsampleFile = '../../src/data/dna_fungi_lichens_materialsample.txt'
@@ -24,8 +26,7 @@ const entAmplificationFile = '../../src/data/dna_entomology_amplification.txt'
 const entMaterialsampleFile = '../../src/data/dna_entomology_materialsample.txt'
 const entPreservationFile = '../../src/data/dna_entomology_preservation.txt'
 
-//const plantDnaOccurrenceFile = '../../src/data/dna_plants_occurrence.txt'
-const plantDnaOccurrenceFile = '../../src/data/dna_plants_occurrence_short.txt'
+const plantDnaOccurrenceFile = '../../src/data/dna_plants_occurrence_short.txt' // switch to non-short
 const plantRelationshipFile = '../../src/data/plants_resourcerelationship.txt'
 const plantPreparationFile = '../../src/data/dna_plants_preparation.txt'
 const plantAmplificationFile = '../../src/data/dna_plants_amplification.txt' // empty file, no amplification info for plants...
@@ -39,7 +40,6 @@ function fillProperty(prop, value) {
     tempArray = prop.split(",")
     tempArray.push(value)
     prop = tempArray.toString()
-    //prop = prop.replace(/,/g, ",")
     return prop
 }
 
@@ -49,7 +49,6 @@ const readDumpFile = (filename, callback) => {
         input: fs.createReadStream(filename),
         console: false
     })
-
     let count = 0
     readInterface.on('line', function(line) {
         count ++
@@ -72,49 +71,23 @@ const readDumpFile = (filename, callback) => {
 }
 
 const stitchMusitCoremaFiles = (occurrenceFile, dnaOccurrenceFile, relationshipFile, preparationFile, amplificationFile, materialsampleFile, preservationFile, collSpecTextToReplace, collSpecPlacement, outfileName) => {
-    // read musit-occurrence-file with fungi and store each accession as an object in an array
-    let results = ''
-    const readInterface = readline.createInterface({
-        input: fs.createReadStream(occurrenceFile),
-        console: false
-    })
-
-
-
-    let count = 0
-    readInterface.on('line', function(line) {
-        count ++
-        if (count === 1 ) {
-            // header row
-            results = line
-            
-        } else {
-            results = results + '\n' + line
-        }
-        
-    })
-    .on('close', function () {
-        //change? return parsedResults from this, turning this into a function? kan på et vis returneres med callback-funksjonen, men jeg får den fortsatt ikke ut av funksjonen
-        // parse the results, work with data in arrays to add column with items, then unparse back to string-format
-        const parsedResults = papa.parse(results, {
-            delimiter: "\t",
-            newline: "\n",
-            quoteChar: '',
-            header: true,
-        })
-
+    // read musit-occurrence-file and store each accession as an object in an array [orgArray]
+    readDumpFile(occurrenceFile, (error, occurrenceResults) => {
         // 1) create orgArray with all organisms from musit-file and add property musitNo (same as catalogNumber, with prefix) and other empty properties
         const orgArray = []
-        parsedResults.data.forEach( element => orgArray.push(element))  
+        occurrenceResults.forEach( element => orgArray.push(element))  
         orgArray.forEach(el => {
-            el.musitNo = el.institutionCode + '-' + el.collectionCode + '-' + el.catalogNumber
+            el.musitNo = el.institutionCode + '-' + el.collectionCode + '-' + el.catalogNumber  // redundancy with new catalogNumber, see below, musitno should go, but uncertain of consequences
             el.organismID = ''
-            el.itemUUIDs = 'dummyUUID'
+            el.itemUUIDs = 'dummyUUID' // to be able to list 'Voucher' as an item
             el.items = 'Voucher'
             el.itemNumbers = el.musitNo
+            if (el.recordedBy) { el.recordedBy = el.recordedBy.trim() } // to clean up collectors field in entomology
+            if (el.identifiedBy) { el.identifiedBy = el.identifiedBy.trim() }
+            el.catalogNumber = el.institutionCode + '-' + el.collectionCode + '-' + el.catalogNumber    // redundancy with musitNo, musitno should go, but uncertain of consequences
         })
         
-        // 2) create array uniqueRelationObjects with all itemUUIDs, all relations from relation-file, and musitNo
+        // 2) create array uniqueRelationObjects with all itemUUIDs from corema, all relations from relation-file, and musitNo
         readDumpFile(relationshipFile, (error, relationshipResults) => {
             //there might be several relations for one itemUUIDs
             const relationIDs = []
@@ -128,20 +101,19 @@ const stitchMusitCoremaFiles = (occurrenceFile, dnaOccurrenceFile, relationshipF
             relationshipResults.forEach(element => {
                 relationEl = uniqueRelationObjects.find(el => el.id === element.id)
                 ///////////////////////////////// I don't believe I'll use this
-                if (!relationEl.hasOwnProperty('relations')) {
-                    relationEl.relations = element.relatedResourceID
-                } else {
-                    tempArray = relationEl.relations.split(",")
-                    tempArray.push(element.relatedResourceID)
-                    relationEl.relations = tempArray.toString()
-                }
-            ////////////////////////////////
+                // if (!relationEl.hasOwnProperty('relations')) {
+                //     relationEl.relations = element.relatedResourceID
+                // } else {
+                //     tempArray = relationEl.relations.split(",")
+                //     tempArray.push(element.relatedResourceID)
+                //     relationEl.relations = tempArray.toString()
+                // }
                 if (element.relatedResourceID.includes('urn:catalog:O:') || element.relatedResourceID.includes('urn:catalog:NHMO:')) {
                     relationEl.musitNo = element.relatedResourceID.replace(collSpecTextToReplace, collSpecPlacement)
                 }
             })
 
-            // 3) read corema-occ-file and 4) add musitNo to this, and add item-info to orgArray
+            // 3) read corema-occ-file and 4) add musitNo to this, and 5) add item-info to orgArray
             readDumpFile(dnaOccurrenceFile,(error, coremaResults) => {
                 const coremaIDs = []    // for those corema-records that are not in musit
                 coremaResults.forEach(element => {
@@ -155,7 +127,7 @@ const stitchMusitCoremaFiles = (occurrenceFile, dnaOccurrenceFile, relationshipF
                         // add object from corema to orgArray
                         // is organism already in there?
                         const coremaEl = coremaIDs.find(el => el.organismID === element.organismID)
-                        // if not, add element
+                        // if not, add element, 6)
                         if (!coremaEl) {
                             coremaIDs.push(element)
                             const lastIndex = coremaIDs.length - 1
@@ -170,7 +142,7 @@ const stitchMusitCoremaFiles = (occurrenceFile, dnaOccurrenceFile, relationshipF
                             coremaEl.itemUUIDs = fillProperty(coremaEl.itemUUIDs, element.id)
                         }
                     }    
-                    // add item-info to orgArray-objects from musit
+                    // 5) add item-info to orgArray-objects from musit
                     const org = orgArray.find(el => el.musitNo === element.musitNo)
                     if (org) {
                         if (org.items === '') {
@@ -186,12 +158,15 @@ const stitchMusitCoremaFiles = (occurrenceFile, dnaOccurrenceFile, relationshipF
                     }
                 })
 
-                // concatenate [coremaEl], which contains records from corema with no counterpart in musit, with orgArray; records from musit
+                // 7) add [coremaEl], which contains records from corema with no counterpart in musit, to [orgArray]; records from musit
                 orgArray.push(...coremaIDs)
                
-            
+                // 8) add info about items from four different dump-files
                 readDumpFile(preparationFile,(error, dnaResults) => {
                     orgArray.forEach(element => {
+                        if (element.accessRights) {
+                            delete element.accessRights // very long text that we don't think we need 
+                        }
                         tarray = element.itemUUIDs.split(",")
                         dateArray = []
                         methodArray = []
@@ -224,7 +199,6 @@ const stitchMusitCoremaFiles = (occurrenceFile, dnaOccurrenceFile, relationshipF
                         element.itemDates = dateArray.toString()
                         element.itemMethods = methodArray.toString()
                         element.itemPreparedBys = preparedByArray.toString()
-                        
                     })
                     
                     readDumpFile(amplificationFile,(error,sequenceResults) => {
@@ -320,10 +294,9 @@ const stitchMusitCoremaFiles = (occurrenceFile, dnaOccurrenceFile, relationshipF
             })
         })
     })
-            
 }
 
-//stitchMusitCoremaFiles(fungiOccurrenceFile,funLichDnaOccurrenceFile,funLichRelationshipFile,funLichPreparationFile,funLichAmplificationFile,funLichMaterialsampleFile,funLichPreservationFile, 'urn:catalog:O:F:','O-F-', '../data/fungi_stitched_file.txt')
-//stitchMusitCoremaFiles(lichenOccurrenceFile,funLichDnaOccurrenceFile,funLichRelationshipFile,funLichPreparationFile,funLichAmplificationFile,funLichMaterialsampleFile,funLichPreservationFile, 'urn:catalog:O:L:','O-L-','../data/lichen_stitched_file.txt')
-//stitchMusitCoremaFiles(entOccurrenceFile,entDnaOccurrenceFile,entRelationshipFile,entPreparationFile,entAmplificationFile,entMaterialsampleFile,entPreservationFile, 'urn:catalog:NHMO:ENT:','NHMO-ENT-','../data/ent_stitched_file.txt')
-stitchMusitCoremaFiles(plantOccurrenceFile,plantDnaOccurrenceFile,plantRelationshipFile,plantPreparationFile,plantAmplificationFile,plantMaterialsampleFile,plantPreservationFile, 'urn:catalog:O:V:','O-V-','../data/plant_stitched_file.txt')
+stitchMusitCoremaFiles(fungiOccurrenceFile,funLichDnaOccurrenceFile,funLichRelationshipFile,funLichPreparationFile,funLichAmplificationFile,funLichMaterialsampleFile,funLichPreservationFile, 'urn:catalog:O:F:','O-F-', '../data/sopp_stitched_file.txt')
+//stitchMusitCoremaFiles(lichenOccurrenceFile,funLichDnaOccurrenceFile,funLichRelationshipFile,funLichPreparationFile,funLichAmplificationFile,funLichMaterialsampleFile,funLichPreservationFile, 'urn:catalog:O:L:','O-L-','../data/lav_stitched_file.txt')
+//stitchMusitCoremaFiles(entOccurrenceFile,entDnaOccurrenceFile,entRelationshipFile,entPreparationFile,entAmplificationFile,entMaterialsampleFile,entPreservationFile, 'urn:catalog:NHMO:ENT:','NHMO-ENT-','../data/entomologi_stitched_file.txt')
+//stitchMusitCoremaFiles(plantOccurrenceFile,plantDnaOccurrenceFile,plantRelationshipFile,plantPreparationFile,plantAmplificationFile,plantMaterialsampleFile,plantPreservationFile, 'urn:catalog:O:V:','O-V-','../data/karplanter_stitched_file.txt')

@@ -126,18 +126,20 @@ downloadButton.addEventListener('click', (e) => {
         console.log(url);
         
         fetch(url).then((response) => {
+            console.log('her')
+                            
             if (!response.ok) {
                 throw 'noe går galt med søk, respons ikke ok'
             } else {
                 try {
                     response.text().then((data) => {
                         if(data.error) {
+                            
                             errorMessage.innerHTML = textItems.serverError[index]
                             return console.log(data.error)
                         } else {
                             
                             const JSONdata = JSON.parse(data)  
-                            
                             sessionStorage.setItem('searchLineNumber', JSONdata.unparsed.count)
                             sessionStorage.setItem('searchTerm', searchTerm)
                             const parsedResults = Papa.parse(JSONdata.unparsed.results, {

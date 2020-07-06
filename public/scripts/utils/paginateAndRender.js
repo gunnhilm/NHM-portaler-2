@@ -82,18 +82,11 @@ function addSortingText(id, n, prop, musitData) { // her er musitData alle
         
         if (id === 'musitIDButton' ) { 
             musitData.sort(sort_by(prop,reverse, parseInt))
-        } 
-        // else if ( id === 'sampleTypeButton') {
-        //     musitData.sort(sort_by(prop,reverse, (a) => a.replace(/[/]/,'.'))) // DNAlink
-        
-        //  }
-          else {
+        } else {
             if (id === 'photoButton' | id === 'coordinateButton') {
                 reverse = !reverse
             } 
-            
             musitData.sort(sort_by(prop,reverse, (a) =>  a.toLowerCase()))
-
         } 
         
         if (propsSorted.find(x => x.id === prop).sortedOnce === propsSorted.find(x => x.id === prop).sortedTwice) {
@@ -165,15 +158,9 @@ const resultTable = (subMusitData, musitData) => {
                 cell5.innerHTML = `<button id='countryButton' class='sort'>${textItems.headerCountry[index].bold()} ${getArrows('country')}</button>`
                 cell6.innerHTML = `<button id='municipalityButton' class='sort'>${textItems.headerMunicipality[index].bold()} ${getArrows('county')}</button>`
                 cell7.innerHTML = `<button id='localityButton' class='sort'>${textItems.headerLocality[index].bold()} ${getArrows('locality')}</button>`
-                // let photoProp
-                // if ( coll === 'birds' | coll === 'mammals' ) {
-                //     photoProp = 'photoIdentifiers'
-                // } else {
-                //     photoProp = 'associatedMedia'
-                // }
                 cell8.innerHTML = `<button id='photoButton' class='sort'><span class="fas fa-camera"></span>${getArrows('associatedMedia')}</button>`
                 cell9.innerHTML = `<button id='coordinateButton' class='sort'><span class="fas fa-compass"></span>${getArrows('decimalLongitude')}</button>`
-                cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} </button>`
+                cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} ${getArrows('sampleType')}</button>`
                 //${getArrows('sampleType')}
                 //cell11.innerHTML = `<button id='processIDButton' class='sort'>${textItems.headerSequence[index].bold()} ${getArrows('processID')}</button>`
 
@@ -187,7 +174,7 @@ const resultTable = (subMusitData, musitData) => {
                 addSortingText('localityButton', 7, 'locality', musitData)
                 addSortingText('photoButton', 8, 'associatedMedia', musitData)
                 addSortingText('coordinateButton', 9, 'decimalLongitude', musitData)
-                //addSortingText('sampleTypeButton', 10, 'sampleType', musitData)         // cannot make sort-function work, possibly because of "/"
+                addSortingText('sampleTypeButton', 10, 'sampleType', musitData)         // cannot make sort-function work
                 //addSortingText('processIDButton', 11, 'processID', musitData)
                 
             } else {        // Her kommer innmaten i tabellen, selve resultatene
@@ -205,10 +192,10 @@ const resultTable = (subMusitData, musitData) => {
                 cell5.innerHTML = subMusitData[i].country
                 cell6.innerHTML = subMusitData[i].county
                 cell7.innerHTML = subMusitData[i].locality
+                console.log(subMusitData[i])
                 if( subMusitData[i].associatedMedia ) {    
                     cell8.innerHTML = `<span class="fas fa-camera"></span>`
-                }
-                if( subMusitData[i].photoIdentifiers ) {   
+                } else if( subMusitData[i].photoIdentifiers ) {   
                     cell8.innerHTML = `<span class="fas fa-camera"></span>`
                 }
                 if( subMusitData[i].decimalLongitude) {

@@ -10,31 +10,21 @@ const setCollection = (samling) => {
         musitFile = './src/data/journaler.txt'
         console.log(musitFile);
         
-    } else if (samling === 'birds') {
-        musitFile = './src/data/bird_stitched_file.txt'
-    } else if( samling === 'mammals') {
-        musitFile = './src/data/mammal_stitched_file.txt'
-    } else if (samling === 'sopp') {
-        musitFile = './src/data/fungi_stitched_file.txt'
-    } else if (samling === 'lav') {
-        musitFile = './src/data/lichen_stitched_file.txt'
-    } else if (samling === 'entomologi') {
-        musitFile = './src/data/ent_stitched_file.txt'
-    } else if (samling === 'karplanter') {
-        musitFile = './src/data/plant_stitched_file.txt'
-    } else if (samling === 'dna_fish_herptiles') {
-        musitFile = './src/data/fishHerp_stitched_file.txt'
-    } else if (samling === 'dna_other') {
-        musitFile = './src/data/other_stitched_file.txt'
-    } else {
+    } else if (samling === 'alger' || samling === 'moser') {
         fileList.forEach(element => {
             if (element.name === samling){
                 musitFile = './src/data/' + element.name + '_occurrence.txt'
             }
-        });
+        })
+    } else {
+        fileList.forEach(element => {
+            if (element.name === samling){
+                musitFile = './src/data/' + element.name + '_stitched_file.txt'
+            }
+        })
     }
     return musitFile 
-    }
+}
 
 const search = (samling, searchTerm, linjeNumber = 0, limit = 20, callback) => {
     // velg riktig MUSIT dump fil å lese
