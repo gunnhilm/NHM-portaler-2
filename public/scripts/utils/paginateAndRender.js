@@ -137,6 +137,7 @@ function addSortingText(id, n, prop, musitData) { // her er musitData alle
 const resultTable = (subMusitData, musitData) => {    
     try {
         table.innerHTML = "";
+        console.log(subMusitData)
         for (let i = -1; i < pageList.length; i++) { // vis en tabell med resultaer som er like lang som det vi ba om pageList.length; 
             const row = table.insertRow(-1)
             const cell1 = row.insertCell(0)
@@ -149,7 +150,7 @@ const resultTable = (subMusitData, musitData) => {
             const cell8 = row.insertCell(7)
             const cell9 = row.insertCell(8)
             const cell10 = row.insertCell(9)
-            //const cell11 = row.insertCell(10)
+            const cell11 = row.insertCell(10)
             if (i === -1) {     // her kommer tittellinjen
                 cell1.innerHTML = `<button id='musitIDButton' class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>` 
                 cell2.innerHTML = `<button id='scientificNameButton' class='sort'>${textItems.headerTaxon[index].bold()} ${getArrows('scientificName')} </button>`
@@ -161,8 +162,8 @@ const resultTable = (subMusitData, musitData) => {
                 cell8.innerHTML = `<button id='photoButton' class='sort'><span class="fas fa-camera"></span>${getArrows('associatedMedia')}</button>`
                 cell9.innerHTML = `<button id='coordinateButton' class='sort'><span class="fas fa-compass"></span>${getArrows('decimalLongitude')}</button>`
                 cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} ${getArrows('sampleType')}</button>`
-                //${getArrows('sampleType')}
-                //cell11.innerHTML = `<button id='processIDButton' class='sort'>${textItems.headerSequence[index].bold()} ${getArrows('processID')}</button>`
+                cell11.innerHTML = `<select id='checkboxSelect' class='sort'><option value="select" id="select">${textItems.select[index].bold()}</option><option value="all" id="selectAll">${textItems.selectAll[index]}</option><option value="none" id="selectNone">${ textItems.selectNone[index]}</option></select>`
+                //investigateChecked()
 
                 // lag overskrifene klikk og sorterbare
                 addSortingText('musitIDButton', 1, 'catalogNumber', musitData)  // Tabellen blir sortert på nummer
@@ -192,7 +193,6 @@ const resultTable = (subMusitData, musitData) => {
                 cell5.innerHTML = subMusitData[i].country
                 cell6.innerHTML = subMusitData[i].county
                 cell7.innerHTML = subMusitData[i].locality
-                console.log(subMusitData[i])
                 if( subMusitData[i].associatedMedia ) {    
                     cell8.innerHTML = `<span class="fas fa-camera"></span>`
                 } else if( subMusitData[i].photoIdentifiers ) {   
@@ -203,6 +203,16 @@ const resultTable = (subMusitData, musitData) => {
                 }
                 
                 cell10.innerHTML = subMusitData[i].items
+                cell11.innerHTML = `<input type="checkbox" id=checkbox${i} onclick="registerChecked(${i})" ></input>`
+                
+                if (investigateChecked2(subMusitData[i])) {
+                    document.getElementById(`checkbox${i}`).checked = true
+                } else {
+                    document.getElementById(`checkbox${i}`).checked = false
+                }
+                
+                
+               
                 
                 cell1.className = 'row-1 row-ID'
                 cell2.className = 'row-2 row-name'
@@ -214,7 +224,7 @@ const resultTable = (subMusitData, musitData) => {
                 cell8.className = 'row-8 row-photo'
                 cell9.className = 'row-9 row-coordinates'
                 cell10.className = 'row-10 row-sampleType'
-                //cell11.className = 'row-11 row-processID'
+                cell11.className = 'row-11 row-checkbox'
             }
         }
         // Show download button
@@ -231,21 +241,44 @@ const resultTable = (subMusitData, musitData) => {
         document.getElementById("resultPageText").style.display = "inline-block"
         document.getElementById("resultPageText").innerHTML = textItems.page[index]
         document.getElementById("resultPageNb").style.display = "inline-block"
-        document.getElementById("resultPageNb").innerHTML = " " + currentPage
+        numberOfPages = getNumberOfPages(numberPerPage)
+        document.getElementById("resultPageNb").innerHTML = " " + currentPage+ '/' + numberOfPages
         document.getElementById("resultPageText1").style.display = "inline-block"
         document.getElementById("resultPageText1").innerHTML = textItems.page[index]
         document.getElementById("resultPageNb1").style.display = "inline-block"
-        document.getElementById("resultPageNb1").innerHTML = " " + currentPage
-
-        numberOfPages = getNumberOfPages(numberPerPage)
-        if (currentPage === numberOfPages) { 
-            document.getElementById("resultPageAlert").innerHTML = textItems.lastPageAlert[index]
-            document.getElementById("resultPageAlert1").innerHTML = textItems.lastPageAlert[index]
-            } else {
-            document.getElementById("resultPageAlert").innerHTML = ""
-            document.getElementById("resultPageAlert1").innerHTML = ""
-        }
+        document.getElementById("resultPageNb1").innerHTML = " " + currentPage + '/' + numberOfPages
+            
+        // Last page-alert
+        // if (currentPage === numberOfPages) { 
+        //     document.getElementById("resultPageAlert").innerHTML = textItems.lastPageAlert[index]
+        //     document.getElementById("resultPageAlert1").innerHTML = textItems.lastPageAlert[index]
+        //     } else {
+        //     document.getElementById("resultPageAlert").innerHTML = ""
+        //     document.getElementById("resultPageAlert1").innerHTML = ""
+        // }
         
+        const select = document.getElementById('checkboxSelect')
+        select.onchange =() => {
+            const nbHitsOnPage = document.getElementById('number-per-page').value
+            if (select.value == "all") {
+                for (i = 0; i < nbHitsOnPage; i++) {
+                    document.getElementById(`checkbox${i}`).checked = true
+                }
+                let searchResult = JSON.parse(sessionStorage.getItem('string'))
+                searchResult.forEach(el => el.checked = true)
+                sessionStorage.setItem('string', JSON.stringify(searchResult))
+            } else if (select.value == "none") {
+                console.log('none')
+                for (i = 0; i < nbHitsOnPage; i++) {
+                    document.getElementById(`checkbox${i}`).checked = false
+                }
+                let searchResult = JSON.parse(sessionStorage.getItem('string'))
+                searchResult.forEach(el => el.checked = false)
+                sessionStorage.setItem('string', JSON.stringify(searchResult))
+            }
+
+        
+        }
         if (!searchFailed) {
         
             try {
@@ -270,7 +303,8 @@ const resultTable = (subMusitData, musitData) => {
 var list = new Array();
 var pageList = new Array();
 var currentPage = 1;
-let numberPerPage = 20;
+//let numberPerPage = 20;
+let numberPerPage = sessionStorage.getItem('numberPerPage')
 var numberOfPages = 0; // calculates the total number of pages
 
 function makeList() {
@@ -318,6 +352,7 @@ function loadList() {
 
 function drawList() {
     resultTable(pageList, list)
+    console.log(pageList)
 }
 
 function check() {
@@ -352,3 +387,46 @@ hitsPerPage.addEventListener('change', (e) => {
     
     loadList()
 })  
+
+//if (document.getElementById('checkboxSelect')) {
+    
+//}
+
+// check if checkbox should be checked when rendering result (i.e. navigating between pages in search result)
+
+const investigateChecked = (i) => {
+    let searchResult = JSON.parse(sessionStorage.getItem('string'))
+    
+    //for (i=0; i < searchResult.length; i++) {
+        let searchResultIndex = i + ((currentPage -1 ) * numberPerPage)
+      //  console.log(searchResultIndex)
+        if (searchResult[searchResultIndex].hasOwnProperty('checked')) {
+            if (searchResult[searchResultIndex].checked) {
+                //document.getElementById(`checkbox${searchResultIndex}`).checked = true
+                return true
+            } else {
+                return false
+            }
+        } else {
+            //document.getElementById(`checkbox${searchResultIndex}`).checked = false
+            return false
+        }
+    //}
+}
+
+const investigateChecked2 = (subData) => {
+    //let searchResultIndex = i + ((currentPage -1 ) * numberPerPage)
+  //  console.log(searchResultIndex)
+    if (subData.hasOwnProperty('checked')) {
+        if (subData.checked) {
+            //document.getElementById(`checkbox${searchResultIndex}`).checked = true
+            return true
+        } else {
+            return false
+        }
+    } else {
+        //document.getElementById(`checkbox${searchResultIndex}`).checked = false
+        return false
+    }
+//}
+}

@@ -23,6 +23,7 @@ const loadString = () => {
 
 //hide next-photo-button, only in use when more than one photo
 document.getElementById("next-photo").style.display = "none"
+document.getElementById("nb-photos").style.display = "none"
 
 //get the object from session storage
 const allObject = loadString()
@@ -269,8 +270,9 @@ if ( coll === 'birds' || coll === 'mammals' || coll === 'dna_fish_herptiles' || 
 } else {
     mediaLink = object.associatedMedia
 }
-if ( mediaLink.includes('|') || mediaLink.includes(',')) {  // if several photos
+if ( mediaLink.includes('|') | mediaLink.includes(',')) {  // if several photos
     document.getElementById("next-photo").style.display = "block"
+    document.getElementById("nb-photos").style.display = "block"
     let index = 0
     if (mediaLink.includes('|')) {
         imageList = mediaLink.split('|')
@@ -278,11 +280,15 @@ if ( mediaLink.includes('|') || mediaLink.includes(',')) {  // if several photos
         imageList = mediaLink.split(',') // birds and mammals (corema-collections)
     }
     let smallImageList = imageList.map(reducePhoto)
+    let length = imageList[0].length
+    if (smallImageList[0].charAt(0) === '"') {smallImageList[0] = smallImageList[0].substring(1,length--)}
     document.getElementById("photo-anchor").href = imageList[0]
     document.getElementById("photo-box").src = smallImageList[0]
     document.getElementById("next-photo").onclick = () => {
         index = changeImage(index, smallImageList, imageList)
+        document.getElementById("nb-photos").innerHTML = (index+1)  + '/' + imageList.length 
     }
+    document.getElementById("nb-photos").innerHTML = index+1  + '/' + imageList.length 
 } else {
     document.getElementById("photo-anchor").href = mediaLink
     let smallImage = mediaLink

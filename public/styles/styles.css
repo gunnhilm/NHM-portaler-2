@@ -220,12 +220,16 @@ td {
         vertical-align: middle;
         white-space: nowrap;
     }
-    .row-processID {
-        width: 120px;
+    .row-checkbox {
         padding: 5px;
         vertical-align: middle;
+        text-align: center;
+    }
+    input[type=checkbox] {
+        transform: scale(1.5);
     }
     
+
 
 .italic {
     font-style: italic;
@@ -242,7 +246,6 @@ td {
     color: grey;
     margin-left: 50px;
 }
-
 
 .map-object {
     height: 300px;  

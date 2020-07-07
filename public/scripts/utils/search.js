@@ -53,23 +53,33 @@ function download(filename, text) {
 // when download-button is clicked
 downloadButton.addEventListener('click', (e) => {
     e.preventDefault()
-    const searchTerm = search.value
-    const chosenCollection = collection.value
+    // const searchTerm = search.value
+    // const chosenCollection = collection.value
     
-    const url = urlPath + '/download/?search=' + searchTerm +'&samling=' + chosenCollection + '&linjeNumber=0' + '&limit=none' // vi laster ned hele søkeresultatet, begynner på første linje og tar med alle resultater
-    fetch(url).then((response) => {
-            
-        response.text().then((data) => {
-            if(data.error) {
-                return console.log(data.error)
-            } else {
-                const downloadData = JSON.parse(data)
-                
+    // const url = urlPath + '/download/?search=' + searchTerm +'&samling=' + chosenCollection + '&linjeNumber=0' + '&limit=none' // vi laster ned hele søkeresultatet, begynner på første linje og tar med alle resultater
+    // fetch(url).then((response) => {
+        // response.text().then((data) => {
+        //     if(data.error) {
+        //         return console.log(data.error)
+        //     } else {
+        //         const downloadData = JSON.parse(data)
+        
                 // Start file download
-                download("download.txt", downloadData.unparsed.results)
-            }
-        })
-    })
+                const searchResult = JSON.parse(sessionStorage.getItem('string'))
+                // loop through - put those wich checked in new array
+                const newArray = []
+                searchResult.forEach(el => {
+                    if (el.checked) {newArray.push(el)}
+                })
+                const downloadResult = Papa.unparse(newArray, {
+                    delimiter: "\t",
+                })
+                console.log(downloadResult)
+                //download("download.txt", downloadData.unparsed.results)
+                download("download.txt", downloadResult)
+            //}
+        //})
+    //})
 })
 
 
@@ -259,6 +269,7 @@ const oldSearch = () => {
             } catch (error) {
                 console.log('local storage empty');    
             }
+            console.log(sessionStorage.getItem('numberPerPage'))
             if (sessionStorage.getItem('numberPerPage')) {
                 document.getElementById('number-per-page').value = sessionStorage.getItem('numberPerPage')
             } else {
@@ -267,7 +278,6 @@ const oldSearch = () => {
             updateFooter()                
             // sends the data to the functions that show the results
             load()
-
             
             
         }
@@ -337,3 +347,27 @@ emptySearchButton.addEventListener('click', (e) => {
 document.getElementById('large-map-button').onclick = () => {
     window.open(href= urlPath + "/map")
 }
+
+
+// checkboxes
+// catch records that are checked
+let searchResult = JSON.parse(sessionStorage.getItem('string'))
+
+const registerChecked = (i,data) => {
+    let searchResultIndex = i + ((currentPage -1 ) * numberPerPage)
+    searchResult[searchResultIndex].checked = true
+    sessionStorage.setItem('string', JSON.stringify(searchResult))
+}
+
+const getCheckedRecords = () => {
+    searchResult.forEach(el => {
+        if (el.checked) {
+            console.log(el.catalogNumber)
+            console.log(el.checked)
+        }
+    })
+}
+
+ document.getElementById("checked").onclick = () => {
+     getCheckedRecords()
+ }

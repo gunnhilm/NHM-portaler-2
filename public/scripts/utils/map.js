@@ -184,11 +184,11 @@ const drawMap = (parsedData) => {
                         try {
                             if (cfeatures.length > 1) {
                                 for (i=0; i < cfeatures.length; i++) {
-                                    popup_content.innerHTML += `<a id="object-link" href="${urlPath}/object/?id=${cfeatures[i].get('catalogNumber')}"> ${cfeatures[i].get('catalogNumber')} </a>`
+                                    popup_content.innerHTML += `<a id="object-link" style="white-space: nowrap" href="${urlPath}/object/?id=${cfeatures[i].get('catalogNumber')}"> ${cfeatures[i].get('catalogNumber')}</a>`
                                 }
                             }
                             if (cfeatures.length == 1) {
-                                popup_content.innerHTML =  `<a id="object-link" href="${urlPath}/object/?id=${cfeatures[0].get('catalogNumber')}"> ${cfeatures[0].get('catalogNumber')} </a>`
+                                popup_content.innerHTML =  `<a id="object-link" style="white-space: nowrap" href="${urlPath}/object/?id=${cfeatures[0].get('catalogNumber')}"> ${cfeatures[0].get('catalogNumber')} </a>`
                             }
                             popup.setPosition(coordinates)
                         } catch (error) {

@@ -47,7 +47,10 @@ const textItems = {
     headerMunicipality: ["Kommune", "Municipality"],
     headerLocality: ["Sted", "Locality"],
     headerSampleTypes: ["Objekttyper", "Sample types"],
-    headerSequence: ["Sekvens ID", "Sequence ID"],
+    select: ["Velg", "Select"],
+    selectAll: ["Alle", "All"],
+    selectNone: ["Ingen", "None"],
+    //headerSequence: ["Sekvens ID", "Sequence ID"],
     mustChoose: ["Du må velge en samling", "You must choose a collection"],
     placeholder: ["Søk etter latinsk artsnavn, katalognummer, person, sted... Flere søkeord i ett søk er mulig.", "Search for latin species name, catalognumber, person, place... Several terms possible."],
     serverError: ["Serverfeil, prøv nytt søk", "Server error, try new search"],
@@ -164,6 +167,7 @@ const renderText = function(lang) {
         document.querySelector('#pattedyr').innerHTML = textItems.pattedyr[index]
         document.querySelector('#dna_fish_herptiles').innerHTML = textItems.fishHerp[index]
         document.querySelector('#dna_other').innerHTML = textItems.other[index]
+        
         //-------------------------- DNA
         // document.querySelector('#dna_karplanter').innerHTML = textItems.dna_karplanter[index]
         // document.querySelector('#dna_insekter').innerHTML = textItems.dna_insekter[index]

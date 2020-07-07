@@ -27,7 +27,7 @@
                                         <label for="collection-select" id="select-collection-label" ></label>
                                         <select id="collection-select" style=" height:30px; border-radius:4px;" >
                                             <option value="" id="vennligst" ></option>
-                                            <optgroup label="Specimens">
+                                            {{!-- <optgroup label="Specimens"> --}}
                                                 <option value="karplanter" id="karplanter"></option>
                                                 <option value="sopp" id="sopp"></option>
                                                 <option value="moser" id="moser"></option>
@@ -38,7 +38,7 @@
                                                 <option value="mammals" id="pattedyr"></option>
                                                 <option value="dna_fish_herptiles" id="dna_fish_herptiles"></option>
                                                 <option value="dna_other" id="dna_other"></option>
-                                            </optgroup>
+                                            {{!-- </optgroup> --}}
                                             {{!-- <optgroup label="DNA">
                                                 <option value="dna_karplanter" id="dna_karplanter"></option>
                                                 <option value="dna_entomologi" id="dna_insekter"></option>
@@ -86,6 +86,8 @@
                                     <td  style="vertical-align:middle; white-space: nowrap;" id="nb-hits" ></td>
                                     <td style="vertical-align: middle;">
                                         <button class="blue-button" id="download-button"  style="display:none"></button>
+                                    </td>
+                                    <td> <button id="checked">get checked</button>
                                     </td>
                                 </tr>
                             </table>
