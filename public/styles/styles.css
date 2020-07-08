@@ -503,6 +503,11 @@ td {
     float: right;
 }
 
+#download-photo-button {
+    width: 155px;
+    float: right;
+}
+
 #zoom-button {
     padding: 2px 12px;
 }

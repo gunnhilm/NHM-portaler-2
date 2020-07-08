@@ -137,7 +137,6 @@ function addSortingText(id, n, prop, musitData) { // her er musitData alle
 const resultTable = (subMusitData, musitData) => {    
     try {
         table.innerHTML = "";
-        console.log(subMusitData)
         for (let i = -1; i < pageList.length; i++) { // vis en tabell med resultaer som er like lang som det vi ba om pageList.length; 
             const row = table.insertRow(-1)
             const cell1 = row.insertCell(0)
@@ -205,7 +204,7 @@ const resultTable = (subMusitData, musitData) => {
                 cell10.innerHTML = subMusitData[i].items
                 cell11.innerHTML = `<input type="checkbox" id=checkbox${i} onclick="registerChecked(${i})" ></input>`
                 
-                if (investigateChecked2(subMusitData[i])) {
+                if (investigateChecked(i)) {
                     document.getElementById(`checkbox${i}`).checked = true
                 } else {
                     document.getElementById(`checkbox${i}`).checked = false
@@ -229,6 +228,7 @@ const resultTable = (subMusitData, musitData) => {
         }
         // Show download button
         downloadButton.style.display = "block"
+        downloadPhotoButton.style.display = "block"
         document.getElementById("empty-search-button").style.display = "inline-block"
         document.getElementById("first").style.display = "inline-block"
         document.getElementById("previous").style.display = "inline-block"
@@ -261,14 +261,19 @@ const resultTable = (subMusitData, musitData) => {
         select.onchange =() => {
             const nbHitsOnPage = document.getElementById('number-per-page').value
             if (select.value == "all") {
-                for (i = 0; i < nbHitsOnPage; i++) {
+                let max
+                if (currentPage == numberOfPages) {
+                    max = list.length - ((numberOfPages-1) * numberPerPage)
+                } else {
+                    max = nbHitsOnPage
+                }
+                for (i = 0; i < max; i++) {
                     document.getElementById(`checkbox${i}`).checked = true
                 }
                 let searchResult = JSON.parse(sessionStorage.getItem('string'))
                 searchResult.forEach(el => el.checked = true)
                 sessionStorage.setItem('string', JSON.stringify(searchResult))
             } else if (select.value == "none") {
-                console.log('none')
                 for (i = 0; i < nbHitsOnPage; i++) {
                     document.getElementById(`checkbox${i}`).checked = false
                 }
@@ -321,24 +326,28 @@ function getNumberOfPages(numberPerPage) {
 
 function nextPage() {
     currentPage += 1;
-    loadList();
+    //loadList();
+    load()
 }
 
 function previousPage() {
     currentPage -= 1;
-    loadList();
+    //loadList();
+    load()
 }
 
 function firstPage() {
     console.log('first');
     
     currentPage = 1;
-    loadList();
+    //loadList();
+    load()
 }
 
 function lastPage() {
     currentPage = numberOfPages;
-    loadList();
+    //loadList();
+    load()
 }
 
 function loadList() {
@@ -352,7 +361,6 @@ function loadList() {
 
 function drawList() {
     resultTable(pageList, list)
-    console.log(pageList)
 }
 
 function check() {
@@ -388,45 +396,27 @@ hitsPerPage.addEventListener('change', (e) => {
     loadList()
 })  
 
-//if (document.getElementById('checkboxSelect')) {
-    
-//}
-
 // check if checkbox should be checked when rendering result (i.e. navigating between pages in search result)
-
 const investigateChecked = (i) => {
     let searchResult = JSON.parse(sessionStorage.getItem('string'))
     
-    //for (i=0; i < searchResult.length; i++) {
         let searchResultIndex = i + ((currentPage -1 ) * numberPerPage)
-      //  console.log(searchResultIndex)
-        if (searchResult[searchResultIndex].hasOwnProperty('checked')) {
             if (searchResult[searchResultIndex].checked) {
-                //document.getElementById(`checkbox${searchResultIndex}`).checked = true
                 return true
             } else {
                 return false
             }
-        } else {
-            //document.getElementById(`checkbox${searchResultIndex}`).checked = false
-            return false
-        }
-    //}
 }
 
-const investigateChecked2 = (subData) => {
-    //let searchResultIndex = i + ((currentPage -1 ) * numberPerPage)
-  //  console.log(searchResultIndex)
-    if (subData.hasOwnProperty('checked')) {
-        if (subData.checked) {
-            //document.getElementById(`checkbox${searchResultIndex}`).checked = true
-            return true
+// when checking off a checkbox
+const registerChecked = (i) => {
+    let searchResult = JSON.parse(sessionStorage.getItem('string'))
+    
+    let searchResultIndex = i + ((currentPage -1 ) * numberPerPage)
+        if (searchResult[searchResultIndex].checked) {
+            searchResult[searchResultIndex].checked = false
         } else {
-            return false
+            searchResult[searchResultIndex].checked = true
         }
-    } else {
-        //document.getElementById(`checkbox${searchResultIndex}`).checked = false
-        return false
-    }
-//}
+    sessionStorage.setItem('string', JSON.stringify(searchResult))
 }

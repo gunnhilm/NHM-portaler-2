@@ -38,6 +38,7 @@ const textItems = {
 
     hitsPerPage: ["Treff per side", "Hits per page"],
     downloadLink: ["Last ned resultat", "Download results"],
+    downloadPhoto: ["Last ned bilder", "Download photos"],
     nbHitsText: ["Antall treff: ", "Number of hits: "],
     headerCatNb: ["Katalognr.", "Catalog nb."],
     headerTaxon: ["Takson", "Taxon"],
@@ -190,6 +191,7 @@ const renderText = function(lang) {
             document.getElementById("head-nb-hits").innerHTML = textItems.nbHitsText[index]
         }
         document.querySelector('#download-button').innerHTML = textItems.downloadLink[index]
+        document.querySelector('#download-photo-button').innerHTML = textItems.downloadPhoto[index]
         document.querySelector('#search-text').placeholder = textItems.placeholder[index]
         //document.getElementById('zoom-expl-popup').innerHTML = textItems.mapHelpContent[index]
         document.querySelector('#zoom-button').innerHTML = textItems.zoomButton[index]
@@ -332,6 +334,7 @@ document.querySelector('#language').addEventListener('change', (e) => {
             //document.querySelector("#result-header").innerHTML = textItems.searchResultHeadline[index]
             document.querySelector('#head-nb-hits').innerHTML = textItems.nbHitsText[index]
             document.querySelector('#download-button').innerHTML = textItems.downloadLink[index]
+            document.querySelector('#download-photo-button').innerHTML = textItems.downloadPhoto[index]
             document.querySelector('#large-map-button').innerHTML = textItems.largeMapButton[index]
             document.querySelector('#first').innerHTML = textItems.firstButton[index]
             document.querySelector('#previous').innerHTML = textItems.previousButton[index]

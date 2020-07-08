@@ -305,3 +305,15 @@ document.getElementById('large-map-object-button').onclick = () => {
     window.open(href=`${urlPath}/mapObject/?id=${id}`)
 }
 
+// document.getElementById('nextObject').onclick = () => {
+//     console.log('neste objekt')
+// }   
+
+// console.log(allObject)
+// const objIndex = allObject.findIndex(el =>  el.catalogNumber = id)
+// console.log(objIndex)
+// const nextObjCatNumber = allObject[objIndex + 1].catalogNumber
+// console.log(nextObjCatNumber)
+// document.getElementById('nextObjectCell').innerHTML = `<a id="next-object-link" href="${urlPath}/object/?id=${nextObjCatNumber}">Neste objekt ${nextObjCatNumber} </a>`
+
+

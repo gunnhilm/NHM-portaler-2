@@ -13,6 +13,7 @@ const errorMessage = document.getElementById("error-message")
 
 // for the download button 
 const downloadButton = document.getElementById('download-button')
+const downloadPhotoButton = document.getElementById('download-photo-button')
 //empty-search button 
 const emptySearchButton = document.querySelector('#empty-search-button')
 //Page navigation
@@ -49,6 +50,44 @@ function download(filename, text) {
     document.body.removeChild(element)
 }
 
+function downloadPhoto2(filename, photoToDownload) {
+    const element = document.createElement('a')
+    element.href = photoToDownload
+    element.download = filename
+    
+    element.style.display = 'none'
+    document.body.appendChild(element)
+    element.click()
+    document.body.removeChild(element)
+}
+
+const downloadPhoto3 = (url, path, callback) => {
+    request.head(url, (err, res, body) => {
+        request(url)
+        .pipe(fs.createWriteStream(path))
+    })
+}
+
+function forceDownload(url, fileName){
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url, true);
+    xhr.responseType = "blob";
+    xhr.onload = function(){
+        var urlCreator = window.URL || window.webkitURL;
+        var imageUrl = urlCreator.createObjectURL(this.response);
+        var tag = document.createElement('a');
+        tag.href = imageUrl;
+        tag.download = fileName;
+        document.body.appendChild(tag);
+        tag.click();
+        document.body.removeChild(tag);
+    }
+    xhr.send();
+}
+
+
+
+
 
 // when download-button is clicked
 downloadButton.addEventListener('click', (e) => {
@@ -82,6 +121,25 @@ downloadButton.addEventListener('click', (e) => {
     //})
 })
 
+downloadPhotoButton.addEventListener('click', (e) => {
+    e.preventDefault()
+    const searchResult = JSON.parse(sessionStorage.getItem('string'))
+    // loop through - put those wich checked in new array
+    const newArray = []
+    searchResult.forEach(el => {
+        if (el.checked) {newArray.push(el)}
+    })
+    const photoToDownload = searchResult[2].associatedMedia
+    console.log(photoToDownload)
+
+    
+    const downloadResult = Papa.unparse(newArray, {
+        delimiter: "\t",
+    })
+    console.log(downloadResult)
+    //downloadPhoto("download.jpg", photoToDownload)
+    forceDownload(photoToDownload, 'image.jpg')
+})
 
  const doSearch = (limit = 20) => {
      console.log('vi søker');
@@ -106,6 +164,7 @@ downloadButton.addEventListener('click', (e) => {
     document.getElementById("please-wait").style.display = "block"
     // hide download button
     downloadButton.style.display = "none"
+    downloadPhotoButton.style.display = "none"
     document.getElementById("head-nb-hits").innerHTML = ""
     document.getElementById("zoom-button").style.display = "none"
     document.getElementById("large-map-button").style.display = "none"
@@ -170,6 +229,8 @@ downloadButton.addEventListener('click', (e) => {
                                         nbHitsElement.textContent = parsedResults.data.length
                                     }
                                     nbHitsHeader.innerHTML = textItems.nbHitsText[index]
+                                    parsedResults.data.forEach(el => el.checked = false)
+                                    console.log(parsedResults.data)
                                     sessionStorage.setItem('string', JSON.stringify(parsedResults.data))   
                                     // resultTable() 
 
@@ -269,7 +330,6 @@ const oldSearch = () => {
             } catch (error) {
                 console.log('local storage empty');    
             }
-            console.log(sessionStorage.getItem('numberPerPage'))
             if (sessionStorage.getItem('numberPerPage')) {
                 document.getElementById('number-per-page').value = sessionStorage.getItem('numberPerPage')
             } else {
@@ -306,6 +366,7 @@ const emptySearch = () => {
     document.getElementById("map-search").innerHTML = "" 
     // hide buttons rendered with search result
     document.getElementById("download-button").style.display = "none"
+    document.getElementById("download-photo-button").style.display = "none"
     document.getElementById("head-nb-hits").innerHTML = ""
     document.getElementById("empty-search-button").style.display = "none"
     document.getElementById("zoom-button").style.display = "none"
@@ -351,13 +412,9 @@ document.getElementById('large-map-button').onclick = () => {
 
 // checkboxes
 // catch records that are checked
-let searchResult = JSON.parse(sessionStorage.getItem('string'))
 
-const registerChecked = (i,data) => {
-    let searchResultIndex = i + ((currentPage -1 ) * numberPerPage)
-    searchResult[searchResultIndex].checked = true
-    sessionStorage.setItem('string', JSON.stringify(searchResult))
-}
+
+
 
 const getCheckedRecords = () => {
     searchResult.forEach(el => {
@@ -368,6 +425,6 @@ const getCheckedRecords = () => {
     })
 }
 
- document.getElementById("checked").onclick = () => {
-     getCheckedRecords()
- }
+//  document.getElementById("checked").onclick = () => {
+//      getCheckedRecords()
+//  }
