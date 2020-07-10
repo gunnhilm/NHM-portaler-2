@@ -8,7 +8,8 @@ const papa = require('papaparse')
 // from musit
 const fungiOccurrenceFile = '../../src/data/sopp_occurrence_short.txt' // switch to non-short
 const lichenOccurrenceFile = '../../src/data/lav_occurrence_short.txt' // switch to non-short
-const entOccurrenceFile = '../../src/data/entomologi_occurrence_short.txt' // switch to non-short
+//const entOccurrenceFile = '../../src/data/entomologi_occurrence_short.txt' // switch to non-short
+const entOccurrenceFile = '../../src/data/entomologi_occurrence.txt' // switch to non-short
 const plantOccurrenceFile = '../../src/data/karplanter_occurrence_short.txt' // switch to non-short
 
 // from corema
@@ -296,7 +297,7 @@ const stitchMusitCoremaFiles = (occurrenceFile, dnaOccurrenceFile, relationshipF
     })
 }
 
-stitchMusitCoremaFiles(fungiOccurrenceFile,funLichDnaOccurrenceFile,funLichRelationshipFile,funLichPreparationFile,funLichAmplificationFile,funLichMaterialsampleFile,funLichPreservationFile, 'urn:catalog:O:F:','O-F-', '../data/sopp_stitched_file.txt')
+//stitchMusitCoremaFiles(fungiOccurrenceFile,funLichDnaOccurrenceFile,funLichRelationshipFile,funLichPreparationFile,funLichAmplificationFile,funLichMaterialsampleFile,funLichPreservationFile, 'urn:catalog:O:F:','O-F-', '../data/sopp_stitched_file.txt')
 //stitchMusitCoremaFiles(lichenOccurrenceFile,funLichDnaOccurrenceFile,funLichRelationshipFile,funLichPreparationFile,funLichAmplificationFile,funLichMaterialsampleFile,funLichPreservationFile, 'urn:catalog:O:L:','O-L-','../data/lav_stitched_file.txt')
-//stitchMusitCoremaFiles(entOccurrenceFile,entDnaOccurrenceFile,entRelationshipFile,entPreparationFile,entAmplificationFile,entMaterialsampleFile,entPreservationFile, 'urn:catalog:NHMO:ENT:','NHMO-ENT-','../data/entomologi_stitched_file.txt')
+stitchMusitCoremaFiles(entOccurrenceFile,entDnaOccurrenceFile,entRelationshipFile,entPreparationFile,entAmplificationFile,entMaterialsampleFile,entPreservationFile, 'urn:catalog:NHMO:ENT:','NHMO-ENT-','../data/entomologi_stitched_file.txt')
 //stitchMusitCoremaFiles(plantOccurrenceFile,plantDnaOccurrenceFile,plantRelationshipFile,plantPreparationFile,plantAmplificationFile,plantMaterialsampleFile,plantPreservationFile, 'urn:catalog:O:V:','O-V-','../data/karplanter_stitched_file.txt')

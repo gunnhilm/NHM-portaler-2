@@ -65,7 +65,7 @@ const downloadPhoto3 = (url, path, callback) => {
     request.head(url, (err, res, body) => {
         request(url)
         .pipe(fs.createWriteStream(path))
-    })
+    }) 
 }
 
 function forceDownload(url, fileName){
@@ -113,7 +113,6 @@ downloadButton.addEventListener('click', (e) => {
                 const downloadResult = Papa.unparse(newArray, {
                     delimiter: "\t",
                 })
-                console.log(downloadResult)
                 //download("download.txt", downloadData.unparsed.results)
                 download("download.txt", downloadResult)
             //}
@@ -229,7 +228,7 @@ downloadPhotoButton.addEventListener('click', (e) => {
                                         nbHitsElement.textContent = parsedResults.data.length
                                     }
                                     nbHitsHeader.innerHTML = textItems.nbHitsText[index]
-                                    parsedResults.data.forEach(el => el.checked = false)
+                                    //parsedResults.data.forEach(el => el.checked = false)
                                     console.log(parsedResults.data)
                                     sessionStorage.setItem('string', JSON.stringify(parsedResults.data))   
                                     // resultTable() 

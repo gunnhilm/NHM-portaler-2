@@ -34,7 +34,7 @@ if (!sessionStorage.getItem('propsSorted')) {
         {id: 'decimalLongitude',
         sortedOnce: false,
         sortedTwice: false},
-        {id: 'sampleType',
+        {id: 'items',
         sortedOnce: false,
         sortedTwice: false},
         {id: 'processID',
@@ -72,23 +72,29 @@ function getArrows(prop) {
     }
 }
 
+
 // add sorting function to buttons in table
 function addSortingText(id, n, prop, musitData) { // her er musitData alle
     document.getElementById(id).addEventListener("click", function() {
-        
         let reverse = false
 
         if (propsSorted.find(x => x.id === prop).sortedOnce) { reverse = true }
-        
         if (id === 'musitIDButton' ) { 
             musitData.sort(sort_by(prop,reverse, parseInt))
-        } else {
+            //musitData.sort()
+        } 
+        
+        // else if (id === 'sampleTypeButton'){
+        //     console.log('sampeltypebutton sort')
+        // } 
+        else {
             if (id === 'photoButton' | id === 'coordinateButton') {
                 reverse = !reverse
             } 
-            musitData.sort(sort_by(prop,reverse, (a) =>  a.toLowerCase()))
+
+            musitData.sort(sort_by(prop,reverse, (a) => a.toLowerCase()))
         } 
-        
+
         if (propsSorted.find(x => x.id === prop).sortedOnce === propsSorted.find(x => x.id === prop).sortedTwice) {
             propsSorted.find(x => x.id === prop).sortedOnce = true
             propsSorted.find(x => x.id === prop).sortedTwice = false
@@ -114,6 +120,7 @@ function addSortingText(id, n, prop, musitData) { // her er musitData alle
 }
 
 
+
 // sort search-result when header button in table is clicked 
  sort_by = (prop, reverse, primer) => {
     
@@ -132,10 +139,10 @@ function addSortingText(id, n, prop, musitData) { // her er musitData alle
 }
 
 
-
 // render result table
 const resultTable = (subMusitData, musitData) => {    
     try {
+        
         table.innerHTML = "";
         for (let i = -1; i < pageList.length; i++) { // vis en tabell med resultaer som er like lang som det vi ba om pageList.length; 
             const row = table.insertRow(-1)
@@ -160,7 +167,8 @@ const resultTable = (subMusitData, musitData) => {
                 cell7.innerHTML = `<button id='localityButton' class='sort'>${textItems.headerLocality[index].bold()} ${getArrows('locality')}</button>`
                 cell8.innerHTML = `<button id='photoButton' class='sort'><span class="fas fa-camera"></span>${getArrows('associatedMedia')}</button>`
                 cell9.innerHTML = `<button id='coordinateButton' class='sort'><span class="fas fa-compass"></span>${getArrows('decimalLongitude')}</button>`
-                cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} ${getArrows('sampleType')}</button>`
+                cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} </button>`
+                cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} ${getArrows('items')}</button>`
                 cell11.innerHTML = `<select id='checkboxSelect' class='sort'><option value="select" id="select">${textItems.select[index].bold()}</option><option value="all" id="selectAll">${textItems.selectAll[index]}</option><option value="none" id="selectNone">${ textItems.selectNone[index]}</option></select>`
                 //investigateChecked()
 
@@ -174,7 +182,7 @@ const resultTable = (subMusitData, musitData) => {
                 addSortingText('localityButton', 7, 'locality', musitData)
                 addSortingText('photoButton', 8, 'associatedMedia', musitData)
                 addSortingText('coordinateButton', 9, 'decimalLongitude', musitData)
-                addSortingText('sampleTypeButton', 10, 'sampleType', musitData)         // cannot make sort-function work
+                addSortingText('sampleTypeButton', 10, 'items', musitData)         
                 //addSortingText('processIDButton', 11, 'processID', musitData)
                 
             } else {        // Her kommer innmaten i tabellen, selve resultatene
@@ -203,6 +211,7 @@ const resultTable = (subMusitData, musitData) => {
                 
                 cell10.innerHTML = subMusitData[i].items
                 cell11.innerHTML = `<input type="checkbox" id=checkbox${i} onclick="registerChecked(${i})" ></input>`
+                //cell11.innerHTML = `<input type="checkbox" id=checkbox${i}  ></input>`
                 
                 if (investigateChecked(i)) {
                     document.getElementById(`checkbox${i}`).checked = true
@@ -308,11 +317,12 @@ const resultTable = (subMusitData, musitData) => {
 var list = new Array();
 var pageList = new Array();
 var currentPage = 1;
-//let numberPerPage = 20;
-let numberPerPage = sessionStorage.getItem('numberPerPage')
+let numberPerPage = 20;
+sessionStorage.setItem('numberPerPage',numberPerPage)
 var numberOfPages = 0; // calculates the total number of pages
 
 function makeList() {
+    
     list.length = 0; // tømme Array
     stringData = sessionStorage.getItem('string')
     // parsing search result
@@ -337,8 +347,6 @@ function previousPage() {
 }
 
 function firstPage() {
-    console.log('first');
-    
     currentPage = 1;
     //loadList();
     load()
@@ -354,12 +362,12 @@ function loadList() {
     const begin = ((currentPage - 1) * numberPerPage);
     const end = begin + numberPerPage;
     pageList = list.slice(begin, end);
-
     drawList();
     check();
 }
 
 function drawList() {
+    
     resultTable(pageList, list)
 }
 
@@ -376,6 +384,7 @@ function check() {
 }
 
 function load() {
+    
     makeList();
     loadList();
 }
