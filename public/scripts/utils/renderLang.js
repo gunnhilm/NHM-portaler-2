@@ -50,6 +50,7 @@ const textItems = {
     headerSampleTypes: ["Objekttyper", "Sample types"],
     select: ["Velg", "Select"],
     selectAll: ["Alle", "All"],
+    selectAllOnPage: ["Alle på siden", "All on page"],
     selectNone: ["Ingen", "None"],
     //headerSequence: ["Sekvens ID", "Sequence ID"],
     mustChoose: ["Du må velge en samling", "You must choose a collection"],
@@ -63,9 +64,12 @@ const textItems = {
     zoomButton: ["Informasjon om kart", "Information on map"],
     mapHelpContent: ["Bruk mushjul, eller dobbelklikk for å zoome inn, Shift + dobbelklikk  for å zoome ut. Klikk og dra for å flytte kartutsnitt. <br><br> Bare treff som er listet på sida vises i kartet. For å se alle resultater i kart, velg 'All' i Treff per side.",
     "Use mouse-wheel, or double click to zoom in, Shift + double click to zoom out. Click and drag to move map. <br><br> Only results listed on page are shown in map. To see all hits in map, choose 'All' in Hits per page."],
+    mapCheckedMessage: ["Velg post(er) fra listen", "Select record(s) from list"],
     mapHelpContentObjPage: ["Bruk mushjul, eller dobbelklikk for å zoome inn, Shift + dobbelklikk  for å zoome ut. Klikk og dra for å flytte kartutsnitt.", "Use mouse-wheel, or double click to zoom in, Shift + double click to zoom out. Click and drag to move map."],
     zoomToClickText: ["Zoom in og klikk igjen", "Zoom in and click again"],
     largeMapButton: ["Større kart", "Larger map"],
+    downloadMapButton: ["Last ned kart", "Download map"],
+    checkedInMap: ["Vis valgte poster i kart", "Show selected records in map"],
     mapSearchAlt: ["Kart ikke tilgjengelig: Ingen av objektene på siden har koordinater knyttet til seg, eller de har feil format.", "Map not available: None of the objects on the page have coordinates registered, or they have the wrong format."],
     firstButton: ["Første", "First"],
     previousButton: ["Forrige", "Previous"],
@@ -85,8 +89,14 @@ const textItems = {
     headLocality: ['Lokalitet: ', 'Locality: '],
     headCoordinates: ['Koordinater: ', 'Coordinates: '],
     headArtsobs: ['Artsobservasjon ID: ', 'Species Observation ID: '],
+    headSex: ['Kjønn:', 'Sex:'],
+    headLifeStage: ['Livsstadium:', 'Life stage:'],
+    headSamplingProtocol: ['Innsamlingsmetode:', 'Sampling protocol:'],
+    headTaxonomy: ['Taksonomi:', 'Taxonomy:'],
+    headTypeStatus: ['Typestatus:', 'Type status:'],
     photoAlt: ['Bilde ikke tilgjengelig', 'Photo not available'],
     nextPhoto: ['Neste bilde', 'Next photo'],
+    previousPhoto: ['Forrige bilde', 'Previous photo'] ,
     mapAlt: ['Kart ikke tilgjengelig', 'Map not available'],
     itemsHeader: ['Objekter:','Objects:'],
     samplingDate: ['Dato for prøvetaking:','Date of sampling:'],
@@ -196,6 +206,8 @@ const renderText = function(lang) {
         //document.getElementById('zoom-expl-popup').innerHTML = textItems.mapHelpContent[index]
         document.querySelector('#zoom-button').innerHTML = textItems.zoomButton[index]
         document.querySelector('#large-map-button').innerHTML = textItems.largeMapButton[index]
+        document.querySelector('#export-png').innerHTML = textItems.downloadMapButton[index]
+        document.querySelector('#checkedInMap').innerHTML = textItems.checkedInMap[index]
         document.querySelector('#first').value = textItems.firstButton[index]
         document.querySelector('#previous').value = textItems.previousButton[index]
         document.querySelector('#next').value = textItems.nextButton[index]
@@ -254,6 +266,7 @@ const renderText = function(lang) {
 
         document.querySelector("#photo-box").alt = textItems.photoAlt[index]
         document.querySelector("#next-photo").innerHTML = textItems.nextPhoto[index]
+        document.querySelector("#previous-photo").innerHTML = textItems.previousPhoto[index]
         
         if(!object.decimalLatitude | !object.decimalLongitude) {
             document.querySelector("#map-object").innerHTML = textItems.mapAlt[index]
@@ -265,7 +278,22 @@ const renderText = function(lang) {
         if (object.habitat ) {
             document.querySelector("#head-habitat").innerHTML = "Habitat: "
         }
-
+        if (object.sex) {
+            document.querySelector("#head-sex").innerHTML = textItems.headSex[index]
+        }
+        if (object.lifeStage) {
+            document.querySelector("#head-lifeStage").innerHTML = textItems.headLifeStage[index]
+        }
+        if (object.samplingProtocol) {
+            document.querySelector("#head-samplingProtocol").innerHTML = textItems.headSamplingProtocol[index]
+        }
+        if (object.kingdom || object.class || object.order || object.family) {
+            document.querySelector("#head-taxonomy").innerHTML = textItems.headTaxonomy[index]
+        }
+        if (object.typeStatus) {
+            document.querySelector("#head-typeStatus").innerHTML = textItems.headTypeStatus[index]
+        }
+        
         document.querySelector("#itemsHeader").innerHTML = textItems.itemsHeader[index]
 
 
@@ -336,6 +364,8 @@ document.querySelector('#language').addEventListener('change', (e) => {
             document.querySelector('#download-button').innerHTML = textItems.downloadLink[index]
             document.querySelector('#download-photo-button').innerHTML = textItems.downloadPhoto[index]
             document.querySelector('#large-map-button').innerHTML = textItems.largeMapButton[index]
+            document.querySelector('#export-png').innerHTML = textItems.downloadMapButton[index]
+            document.querySelector('#checkedInMap').innerHTML = textItems.checkedInMap[index]   
             document.querySelector('#first').innerHTML = textItems.firstButton[index]
             document.querySelector('#previous').innerHTML = textItems.previousButton[index]
             document.querySelector('#next').innerHTML = textItems.nextButton[index]

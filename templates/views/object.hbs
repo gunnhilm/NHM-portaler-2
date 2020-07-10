@@ -68,6 +68,27 @@
                                     <td id = "head-habitat" class= "bold"></td>
                                     <td id = "habitat" style = "border-spacing: 10px 0"></td>
                                 </tr>
+                                <tr><td><br></td></tr>
+                                <tr>
+                                    <td id = "head-sex" class= "bold"></td>
+                                    <td id = "sex" style = "border-spacing: 10px 0"></td>
+                                </tr>
+                                <tr>
+                                    <td id = "head-lifeStage" class= "bold"></td>
+                                    <td id = "lifeStage" style = "border-spacing: 10px 0"></td>
+                                </tr>
+                                <tr>
+                                    <td id = "head-samplingProtocol" class= "bold"></td>
+                                    <td id = "samplingProtocol" style = "border-spacing: 10px 0"></td>
+                                </tr>
+                                <tr>
+                                    <td id = "head-taxonomy" class= "bold"></td>
+                                    <td id = "taxonomy" style = "border-spacing: 10px 0"></td>
+                                </tr>
+                                <tr>
+                                    <td id = "head-typeStatus" class= "bold"></td>
+                                    <td id = "typeStatus" style = "border-spacing: 10px 0"></td>
+                                </tr>
                                 <tr>
                                     <td>
                                         <br><hr>
@@ -94,12 +115,24 @@
                             <table> --}}
                         </td>
                         <td>
-                            <table>
-                                 <tr>
+                            <table >
+                                <tr>
                                     <td>&nbsp &nbsp</td>
                                     <td>
                                         <div id="map-object" class="map-object"></div>
                                         <br>
+                                    </td>
+                                    <td>
+                                        <div class="map-object">
+                                            <a id="photo-anchor">   
+                                                <img id="photo-box">
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp &nbsp</td>
+                                    <td>
                                         <button id="zoom-button">Zoom</button>
                                         <div id="zoom-modal" class="modal">
                                             <div class="modal-content">
@@ -108,20 +141,14 @@
                                             </div>    
                                         </div>
                                         <button id="large-map-object-button"></button>
-                                    </td>
-                                    <td>&nbsp &nbsp</td>
-                                    <td>
-                                        <div class="map-object">
-                                            <a id="photo-anchor">   
-                                                <img id="photo-box">
-                                            </a>
-                                        </div>
-                                        <br>
-                                        <div >
-                                            <button id="next-photo"></button>
-                                            <div id="nb-photos"></div>
-                                        </div>
                                         
+                                    </td>
+                                    <td>
+                                        <div id = "photoButtons">
+                                            <div class="photoButtonsClass"> <button id="next-photo"></button> </div>
+                                            <div class="photoButtonsClass"> <button id="previous-photo"></button></div>
+                                            <div class="photoButtonsClass"><div id="nb-photos"></div></div>
+                                        </div>
                                         {{!-- <button id="next-photo" onclick="changeImage()"></button> --}}
                                     </td>
 

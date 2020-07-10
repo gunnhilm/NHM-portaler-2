@@ -23,6 +23,7 @@ const loadString = () => {
 
 //hide next-photo-button, only in use when more than one photo
 document.getElementById("next-photo").style.display = "none"
+document.getElementById("previous-photo").style.display = "none"
 document.getElementById("nb-photos").style.display = "none"
 
 //get the object from session storage
@@ -105,6 +106,7 @@ const regnoEl = `<span>${object.catalogNumber}`
 
 
 // data only displayed if existing
+
 let headArtsobs = ''
 let artsobsID = ''
 if( object.ArtObsID ) {
@@ -117,6 +119,21 @@ if (object.habitat ) {
     habitat = `<span>${object.habitat}</span>`
 }
 
+//let headSex = ''
+let sex = ''
+if (object.sex) { sex =  `<span>${object.sex}</span>`}
+let lifeStage = ''
+if (object.lifeStage) { lifeStage =  `<span>${object.lifeStage}</span>`}
+let samplingProtocol = ''
+if (object.samplingProtocol) { samplingProtocol =  `<span>${object.samplingProtocol}</span>`}
+//let headTypeStatus = ''
+let typeStatus = ''
+if (object.typeStatus) { typeStatus =  `<span>${object.typeStatus}</span>`}
+
+let taxonomy = ''
+if (object.kingdom || object.class || object.order || object.family) {
+    taxonomy = `<span>${object.kingdom} ${object.class} ${object.order} ${object.family}</span>`
+}
 
 
 // put content in html-boxes
@@ -132,6 +149,12 @@ document.querySelector("#locality").innerHTML = `<span>${concatLocality}</span>`
 document.querySelector("#coordinates").innerHTML = `<span>${coordinates(object)}</span>`
 document.querySelector("#habitat").innerHTML = habitat
 document.querySelector("#artsobsID").innerHTML = artsobsID
+
+document.querySelector('#sex').innerHTML = sex
+document.querySelector('#lifeStage').innerHTML = lifeStage
+document.querySelector('#samplingProtocol').innerHTML = samplingProtocol
+document.querySelector('#taxonomy').innerHTML = taxonomy
+document.querySelector('#typeStatus').innerHTML = typeStatus
 
 //document.querySelector("#bold-link").innerHTML = `<span>${APIurlSpecimenEl}</span>`
 //document.querySelector("#head-coremaAccno").innerHTML = `<span>Corema Accno</span>`
@@ -212,8 +235,12 @@ if(object.items) {
         addRow()
         cell1.innerHTML = textItems.preservation[index]
         if (item.properties === 'Voucher') {
-            cell2.innerHTML = 'Dried'   //this should not be hard coded, I tried to fix in stich-musit-files
+            cell2.innerHTML = object.preparations
+        } else {
+            cell2.innerHTML = item.preservation
         }
+        
+        
         if (item.properties.includes("gDNA")) {
             addRow()
             cell1.innerHTML = textItems.method[index]
@@ -242,10 +269,20 @@ if(object.items) {
 
 // photo:
 // hvis noe klikker på neste bilde
-function changeImage(index, smallImageList, imageList) {
-    index = index + 1;
-    if (index === smallImageList.length) {
+function changeImage(index, direction, smallImageList, imageList) {
+    //index = index + direction;
+    if (direction == 'f') {
+        if (index === smallImageList.length-1) {
         index = 0;
+        } else {
+            index = index +1
+        }
+    } else if (direction == 'r') {
+        if (index == 0) {
+            index = smallImageList.length-1
+        } else {
+            index = index -1
+        }
     }
     document.getElementById("photo-anchor").href = imageList[index]
     document.getElementById("photo-box").src = smallImageList[index]
@@ -272,6 +309,7 @@ if ( coll === 'birds' || coll === 'mammals' || coll === 'dna_fish_herptiles' || 
 }
 if ( mediaLink.includes('|') | mediaLink.includes(',')) {  // if several photos
     document.getElementById("next-photo").style.display = "block"
+    document.getElementById("previous-photo").style.display = "block"
     document.getElementById("nb-photos").style.display = "block"
     let index = 0
     if (mediaLink.includes('|')) {
@@ -284,9 +322,17 @@ if ( mediaLink.includes('|') | mediaLink.includes(',')) {  // if several photos
     if (smallImageList[0].charAt(0) === '"') {smallImageList[0] = smallImageList[0].substring(1,length--)}
     document.getElementById("photo-anchor").href = imageList[0]
     document.getElementById("photo-box").src = smallImageList[0]
+    
     document.getElementById("next-photo").onclick = () => {
-        index = changeImage(index, smallImageList, imageList)
+        index = changeImage(index, 'f', smallImageList, imageList)
         document.getElementById("nb-photos").innerHTML = (index+1)  + '/' + imageList.length 
+        
+    }
+    
+    document.getElementById("previous-photo").onclick = () => {
+        index = changeImage(index, 'r', smallImageList, imageList)
+        document.getElementById("nb-photos").innerHTML = (index+1)  + '/' + imageList.length 
+        console.log(index)
     }
     document.getElementById("nb-photos").innerHTML = index+1  + '/' + imageList.length 
 } else {

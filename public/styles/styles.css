@@ -526,3 +526,12 @@ td {
     font-weight: bold;
 }
 
+
+#photoButtons {
+    width: 100%;
+    text-align: left
+}
+
+.photoButtonsClass {
+    display: inline-block;
+}

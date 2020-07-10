@@ -286,7 +286,7 @@ const stitchCoremaFiles = (occurrenceFile, preparationFile, amplificationFile, m
     })
 }
 
-//stitchCoremaFiles(birdOccurrenceFile,birdPreparationFile,birdAmplificationFile,birdMaterialsampleFile,birdPreservationFile,birdMultimediaFile,'../data/birds_stitched_file.txt')
+stitchCoremaFiles(birdOccurrenceFile,birdPreparationFile,birdAmplificationFile,birdMaterialsampleFile,birdPreservationFile,birdMultimediaFile,'../data/birds_stitched_file.txt')
 //stitchCoremaFiles(mammalOccurrenceFile,mammalPreparationFile,mammalAmplificationFile,mammalMaterialsampleFile,mammalPreservationFile,mammalMultimediaFile,'../data/mammals_stitched_file.txt')
 //stitchCoremaFiles(fishHerpOccurrenceFile,fishHerpPreparationFile,fishHerpAmplificationFile,fishHerpMaterialsampleFile,fishHerpPreservationFile,fishHerpMultimediaFile,'../data/dna_fish_herptiles_stitched_file.txt')
-stitchCoremaFiles(otherOccurrenceFile,otherPreparationFile,otherAmplificationFile,otherMaterialsampleFile,otherPreservationFile,otherMultimediaFile,'../data/dna_other_stitched_file.txt')
+//stitchCoremaFiles(otherOccurrenceFile,otherPreparationFile,otherAmplificationFile,otherMaterialsampleFile,otherPreservationFile,otherMultimediaFile,'../data/dna_other_stitched_file.txt')

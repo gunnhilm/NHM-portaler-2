@@ -169,7 +169,12 @@ const resultTable = (subMusitData, musitData) => {
                 cell9.innerHTML = `<button id='coordinateButton' class='sort'><span class="fas fa-compass"></span>${getArrows('decimalLongitude')}</button>`
                 cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} </button>`
                 cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} ${getArrows('items')}</button>`
-                cell11.innerHTML = `<select id='checkboxSelect' class='sort'><option value="select" id="select">${textItems.select[index].bold()}</option><option value="all" id="selectAll">${textItems.selectAll[index]}</option><option value="none" id="selectNone">${ textItems.selectNone[index]}</option></select>`
+                cell11.innerHTML = `<select id='checkboxSelect' class='sort'>
+                    <option value="select" id="select">${textItems.select[index].bold()}</option>
+                    <option value="all" id="selectAll">${textItems.selectAll[index]}</option>
+                    <option value="all_on_page" id="selectAllOnPage">${ textItems.selectAllOnPage[index]}</option>
+                    <option value="none" id="selectNone">${ textItems.selectNone[index]}</option>
+                </select>`
                 //investigateChecked()
 
                 // lag overskrifene klikk og sorterbare
@@ -266,37 +271,11 @@ const resultTable = (subMusitData, musitData) => {
         //     document.getElementById("resultPageAlert1").innerHTML = ""
         // }
         
-        const select = document.getElementById('checkboxSelect')
-        select.onchange =() => {
-            const nbHitsOnPage = document.getElementById('number-per-page').value
-            if (select.value == "all") {
-                let max
-                if (currentPage == numberOfPages) {
-                    max = list.length - ((numberOfPages-1) * numberPerPage)
-                } else {
-                    max = nbHitsOnPage
-                }
-                for (i = 0; i < max; i++) {
-                    document.getElementById(`checkbox${i}`).checked = true
-                }
-                let searchResult = JSON.parse(sessionStorage.getItem('string'))
-                searchResult.forEach(el => el.checked = true)
-                sessionStorage.setItem('string', JSON.stringify(searchResult))
-            } else if (select.value == "none") {
-                for (i = 0; i < nbHitsOnPage; i++) {
-                    document.getElementById(`checkbox${i}`).checked = false
-                }
-                let searchResult = JSON.parse(sessionStorage.getItem('string'))
-                searchResult.forEach(el => el.checked = false)
-                sessionStorage.setItem('string', JSON.stringify(searchResult))
-            }
 
-        
-        }
         if (!searchFailed) {
         
             try {
-                drawMap(subMusitData) 
+                drawMap(musitData) 
             } catch (error) {
                 console.error(error)
                 reject(error);

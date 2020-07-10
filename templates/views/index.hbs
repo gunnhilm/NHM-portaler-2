@@ -85,7 +85,7 @@
                                     <td style="vertical-align:middle; white-space: nowrap; "  id="head-nb-hits"></td>
                                     <td  style="vertical-align:middle; white-space: nowrap;" id="nb-hits" ></td>
                                     <td style="vertical-align: middle;">
-                                        <button class="blue-button" id="download-button"  style="display:none"></button>
+                                        <button class="blue-button" id="download-button"  style="display:none"><i class="fa fa-download"></i></button>
                                     </td>
                                     {{!-- <td> <button id="checked">get checked</button>
                                     </td> --}}
@@ -94,7 +94,7 @@
                                     <td></td>
                                     <td></td>
                                     <td style="vertical-align: middle;"><br>
-                                        <button class="blue-button" id="download-photo-button" style="display: none"></button>
+                                        <button class="blue-button" id="download-photo-button" style="display: none"><i class="fa fa-download"></i></button>
                                         
                                     </td>
                                 </tr>
@@ -123,6 +123,14 @@
                                     <td >
                                         <button id="large-map-button" style="display:none"></button>
                                         <br>
+                                    </td>
+                                    <td>
+                                        {{!-- downloadmap --}}
+                                        <button id="export-png" style="display:none"></button>
+                                        <a id="image-download" download="map.png"></a>
+                                    </td>
+                                    <td>
+                                        <button id="checkedInMap" style = "display:noe"></button>
                                     </td>
                                 </tr>
                             </table>
@@ -168,6 +176,7 @@
         </div>
 
         <script src="https://kit.fontawesome.com/409783eafe.js" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
         <script src="/nhm/scripts/utils/papaparse/papaparse.min.js"></script>
         <script src="/nhm/scripts/utils/renderLang.js"></script>
         <link rel="stylesheet" href="/nhm/styles/styles.css">

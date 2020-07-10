@@ -4,11 +4,13 @@ const popup_element = document.getElementById('popup')
 const popup_content = document.getElementById('popup-content')
 const popup_closer = document.getElementById('popup-closer')
 
-var zoomModal = document.getElementById("zoom-modal")
-var zoomModalContent = document.getElementById('zoom-expl-popup')
-var largeMapButton = document.getElementById("large-map-button")
-var zoomButton = document.getElementById("zoom-button")
-var span = document.getElementsByClassName("close")[0];
+const zoomModal = document.getElementById("zoom-modal")
+const zoomModalContent = document.getElementById('zoom-expl-popup')
+const largeMapButton = document.getElementById("large-map-button")
+const zoomButton = document.getElementById("zoom-button")
+const downloadMapButton = document.getElementById("export-png")
+const checkedInMap = document.getElementById("checkedInMap")
+const span = document.getElementsByClassName("close")[0];
 
 // render map
 const drawMap = (parsedData) => {
@@ -16,11 +18,6 @@ const drawMap = (parsedData) => {
     document.getElementById("map-search").innerHTML = "" 
     coordinateArray.length = 0
 
-    // button with modal (pop-up) with explanation for zoom in map
-        
-    
-    
-    
     try {
         // fill an array with coordinates for the map
         parsedData.forEach(function(item, index) {
@@ -155,10 +152,10 @@ const drawMap = (parsedData) => {
                 
                 const extent = vectorSource.getExtent()
                 
-                // to make extent of map larger than exactly where  the points are
+                // // to make extent of map larger than exactly where  the points are
                 map.getView().fit(extent, {padding: [50, 50, 50, 50], minResolution: 50})
                 
-                // popups
+                // // popups
                 
                 
                 const popup = new ol.Overlay({
@@ -206,16 +203,20 @@ const drawMap = (parsedData) => {
                     return false;
                 }
 
+               
+
             } else {
                 document.querySelector("#map-search").innerHTML = textItems.mapSearchAlt[index]
             }
         }  
     
-        
-        // Show the button that opens the modal
+                 
+        // // Show the button that opens the modal
         if(zoomButton) {
             zoomButton.style.display = "block"
             largeMapButton.style.display = "block"
+            downloadMapButton.style.display = "block"
+            checkedInMap.style.display = "block"
             
             // When the user clicks on the button, open the modal
             zoomButton.onclick = function() {
@@ -223,9 +224,6 @@ const drawMap = (parsedData) => {
                 zoomModalContent.innerHTML = textItems.mapHelpContent[index]
             }
         }
-        
-        
-
         // Get the <span> element that closes the modal
         var span = document.getElementsByClassName("close")[0]
 
@@ -250,6 +248,7 @@ const drawMap = (parsedData) => {
         } 
     }
 }
+
 
 
 
@@ -352,3 +351,5 @@ const drawMapObject = (object) => {
         }
     }
 }
+
+

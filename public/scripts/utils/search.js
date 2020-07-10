@@ -107,12 +107,19 @@ downloadButton.addEventListener('click', (e) => {
                 const searchResult = JSON.parse(sessionStorage.getItem('string'))
                 // loop through - put those wich checked in new array
                 const newArray = []
+                let downloadResult
                 searchResult.forEach(el => {
                     if (el.checked) {newArray.push(el)}
                 })
-                const downloadResult = Papa.unparse(newArray, {
-                    delimiter: "\t",
-                })
+                if (newArray.length == 0) {
+                    downloadResult = Papa.unparse(searchResult, {
+                        delimiter: "\t",
+                    })
+                } else {
+                    downloadResult = Papa.unparse(newArray, {
+                        delimiter: "\t",
+                    })
+                }
                 //download("download.txt", downloadData.unparsed.results)
                 download("download.txt", downloadResult)
             //}
@@ -427,3 +434,78 @@ const getCheckedRecords = () => {
 //  document.getElementById("checked").onclick = () => {
 //      getCheckedRecords()
 //  }
+
+//Download map as png-file
+document.getElementById('export-png').addEventListener('click', function() {
+    map.once('postcompose', function(event) {
+      var canvas = event.context.canvas;
+      if (navigator.msSaveBlob) {
+        navigator.msSaveBlob(canvas.msToBlob(), 'map.png');
+      } else {
+        var link = document.getElementById('image-download');
+        link.href = canvas.toDataURL();
+        link.click();
+      }
+    });
+    map.renderSync();
+})
+
+// show selected records in map
+document.getElementById('checkedInMap').addEventListener('click', function() {
+    const searchResult = JSON.parse(sessionStorage.getItem('string'))
+    // loop through - put those which are checked in new array
+    const newArray = []
+    searchResult.forEach(el => {
+        if (el.checked) {newArray.push(el)}
+    })
+    if (newArray.length == 0) {
+        zoomModal.style.display = "block"
+        zoomModalContent.innerHTML = textItems.mapCheckedMessage[index]
+    } else {
+        drawMap(newArray)
+    }
+    
+})
+
+
+const select = document.getElementById('checkboxSelect')
+select.onchange =() => {
+    const nbHitsOnPage = document.getElementById('number-per-page').value
+    let max
+    if (currentPage == numberOfPages) {
+        max = list.length - ((numberOfPages-1) * numberPerPage)
+    } else {
+        max = nbHitsOnPage
+    }
+    if (select.value == "all") {
+        for (i = 0; i < max; i++) {
+            document.getElementById(`checkbox${i}`).checked = true
+        }
+        let searchResult = JSON.parse(sessionStorage.getItem('string'))
+        searchResult.forEach(el => el.checked = true)
+        sessionStorage.setItem('string', JSON.stringify(searchResult))
+    } else if (select.value == "all_on_page") {
+        // keep all on other pages that are checked
+        // find those in subMusitData in searchResult and check them, and save searchresult
+        for (i = 0; i < max; i++) {
+            document.getElementById(`checkbox${i}`).checked = true
+        }
+        let searchResult = JSON.parse(sessionStorage.getItem('string'))
+        let subArray = []
+        subMusitData.forEach(el => subArray.push(el.catalogNumber))
+        searchResult.forEach(el => {
+            if (subArray.includes(el.catalogNumber)) {
+                el.checked = true
+            }
+        })
+        sessionStorage.setItem('string', JSON.stringify(searchResult))
+    } else if (select.value == "none") {
+        for (i = 0; i < max; i++) {
+            document.getElementById(`checkbox${i}`).checked = false
+        }
+        let searchResult = JSON.parse(sessionStorage.getItem('string'))
+        searchResult.forEach(el => el.checked = false)
+        sessionStorage.setItem('string', JSON.stringify(searchResult))
+    }
+}
+
