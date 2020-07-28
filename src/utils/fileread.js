@@ -10,18 +10,13 @@ const setCollection = (samling) => {
         musitFile = './src/data/journaler.txt'
         console.log(musitFile);
         
-    } else if (samling === 'alger' || samling === 'moser') {
+    } else {
         fileList.forEach(element => {
             if (element.name === samling){
                 musitFile = './src/data/' + element.name + '_occurrence.txt'
             }
         })
-    } else {
-        fileList.forEach(element => {
-            if (element.name === samling){
-                musitFile = './src/data/' + element.name + '_stitched_file.txt'
-            }
-        })
+    
     }
     return musitFile 
 }

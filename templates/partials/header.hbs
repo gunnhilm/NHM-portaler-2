@@ -1,23 +1,22 @@
 <header>
-    <h1>{{title}}</h1>
     <div class="header"  cellpadding="10">
         <div class="header-content">
             <table>
                 <tr>
-                    <td><img id="logo"></td>
+                    <td><img id="logo" alt="Naturhistorisk museum logo"></td>
                     {{!-- <td width="40%"></td> --}}
                     <td align="right" style="width: 100%">
                         <table>
                             <tr>
-                                <td> <a class="headerLink" href="/nhm/" id="search-page-link"></a></td>
-                                <td> <a class="headerLink" href="/nhm/showStat" id="statistikk-link"></a></td>
-                                <td><a class="headerLink" href="/nhm/help" id="help-link"></a></td>
-                                <td><a class="headerLink" href="/nhm/journaler" id="journal-link"></a></td>
+                                <td> <a class="headerLink" href="/nhm/" id="search-page-link">Søkeside</a></td>
+                                <td> <a class="headerLink" href="/nhm/showStat" id="statistikk-link">Statistikk</a></td>
+                                <td><a class="headerLink" href="/nhm/help" id="help-link">Hjelp</a></td>
+                                <td><a class="headerLink" href="/nhm/journaler" id="journal-link">Journalsøk</a></td>
 
                                 {{!-- <td width="12%" align="right" > --}}
                                 <td>
-                                    <select id="language" >
-                                        <option value="Norwegian">Norwegian website</option>
+                                    <select id="language" aria-label="Select language">
+                                        <option value="Norwegian" selected >Norwegian website</option>
                                         <option value="English">English website</option>
                                     </select>
                                 </td>

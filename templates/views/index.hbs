@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="no">
     <head>
     <title>Nettportal søkeside</title>  
     </head>
@@ -27,7 +27,6 @@
                                         <label for="collection-select" id="select-collection-label" ></label>
                                         <select id="collection-select" style=" height:30px; border-radius:4px;" >
                                             <option value="" id="vennligst" ></option>
-                                            {{!-- <optgroup label="Specimens"> --}}
                                                 <option value="karplanter" id="karplanter"></option>
                                                 <option value="sopp" id="sopp"></option>
                                                 <option value="moser" id="moser"></option>
@@ -38,19 +37,10 @@
                                                 <option value="mammals" id="pattedyr"></option>
                                                 <option value="dna_fish_herptiles" id="dna_fish_herptiles"></option>
                                                 <option value="dna_other" id="dna_other"></option>
-                                            {{!-- </optgroup> --}}
-                                            {{!-- <optgroup label="DNA">
-                                                <option value="dna_karplanter" id="dna_karplanter"></option>
-                                                <option value="dna_entomologi" id="dna_insekter"></option>
-                                                <option value="dna_fish_herptiles" id="dna_fish_herptiles"></option>
-                                                <option value="dna_fungi_lichens" id="dna_fungi_lichens"></option>
-                                                <option value="dna_other" id="dna_other"></option>
-                                            </optgroup> --}}
                                         </select>
                                     </td>
                                     <td  colspan="2" >
-                                        {{!-- style="padding: 0px 31px; " --}}
-                                        <button class="blue-button" id="empty-search-button" style="display:none"></button>
+                                        <button class="blue-button" id="empty-search-button" style="display:none" title="Slett søke resultater"></button>
                                     </td>
                                 </tr>
                                 <tr>
@@ -58,17 +48,17 @@
                                         <br>
                                         <br>
                                         <form>
-                                            <input id="search-text" type="text" class="input" style="height:30px;  border-radius:4px; border-width: 1px" size="80">
-                                            <button class="blue-button" id="search-button"></button>
+                                            <input id="search-text" type="text" class="input" style="height:30px;  border-radius:4px; border-width: 1px" size="80" title="Skriv innnsøke ord">
+                                            <button class="blue-button" id="search-button" title="Søk"></button>
                                         </form>
                                         <br>
                                         <img id="please-wait" src="/nhm/images/ajax-loader.gif" alt="Please Wait"  style="display:none" valign="top">
                                     </td>
                                 </tr>
                                 <tr >    
-                                    <td id="hits-per-page" style="vertical-align:middle; white-space: nowrap; width: 110px;"></td>
+                                    <td id="hits-per-page" style="vertical-align:middle; white-space: nowrap; width: 110px;" title="Antall treff per side"></td>
                                     <td  style="vertical-align:middle; " >
-                                        <select id="number-per-page" style=" height:30px; border-radius:4px;" >
+                                        <select id="number-per-page" style=" height:30px; border-radius:4px;" title="Antall treff per side">
                                             <option value="10">10</option>
                                             <option value="20" selected="selected">20</option>
                                             <option value="50">50</option>
@@ -76,7 +66,7 @@
                                             <option value="4000">All</option>
                                         </select>
                                     </td>
-                                    <td id="error-message"></td>
+                                    <td id="error-message" title="Feil melding"></td>
                                 </tr>
                                 <tr>
                                     <td><br><br></td>
@@ -85,7 +75,7 @@
                                     <td style="vertical-align:middle; white-space: nowrap; "  id="head-nb-hits"></td>
                                     <td  style="vertical-align:middle; white-space: nowrap;" id="nb-hits" ></td>
                                     <td style="vertical-align: middle;">
-                                        <button class="blue-button" id="download-button"  style="display:none"><i class="fa fa-download"></i></button>
+                                        <button class="blue-button" id="download-button"  style="display:none" title="Last ned resultater"><i class="fa fa-download"></i></button>
                                     </td>
                                     {{!-- <td> <button id="checked">get checked</button>
                                     </td> --}}
@@ -94,7 +84,7 @@
                                     <td></td>
                                     <td></td>
                                     <td style="vertical-align: middle;"><br>
-                                        <button class="blue-button" id="download-photo-button" style="display: none"><i class="fa fa-download"></i></button>
+                                        <button class="blue-button" id="download-photo-button" style="display: none"><i class="fa fa-download" title="last ned bilder"></i></button>
                                         
                                     </td>
                                 </tr>
@@ -112,7 +102,7 @@
                             <table align="right" >
                                 <tr >
                                     <td >
-                                        <button id="zoom-button" style="display:none">Zoom</button>
+                                        <button id="zoom-button" style="display:none" title="Bruksanvisning kart">Zoom</button>
                                         <div id="zoom-modal" class="modal">
                                             <div class="modal-content">
                                                 <span class="close">&times;</span>
@@ -121,16 +111,16 @@
                                         </div>
                                     </td>
                                     <td >
-                                        <button id="large-map-button" style="display:none"></button>
+                                        <button id="large-map-button" style="display:none" title="Vis stort kart"></button>
                                         <br>
                                     </td>
                                     <td>
                                         {{!-- downloadmap --}}
-                                        <button id="export-png" style="display:none"></button>
+                                        <button id="export-png" style="display:none" title="Last ned kart som bilde"></button>
                                         <a id="image-download" download="map.png"></a>
                                     </td>
                                     <td>
-                                        <button id="checkedInMap" style = "display:noe"></button>
+                                        <button id="checkedInMap" style = "display:noe" title="Vis valgt poster i kart"></button>
                                     </td>
                                 </tr>
                             </table>
@@ -142,10 +132,10 @@
                  <div style="text-align:center;">
                     <div class="pagination-container1">
                         <div class="pagination-div1">
-                            <input type="button" id="first1" onclick="firstPage()" class="descrete-button" style="display:none"/>
-                            <input type="button" id="previous1" onclick="previousPage()" class="descrete-button" style="display:none"/>
-                            <input type="button" id="next1" onclick="nextPage()" class="descrete-button" style="display:none"/>
-                            <input type="button" id="last1" onclick="lastPage()" class="descrete-button" style="display:none"/>
+                            <input type="button" id="first1" onclick="firstPage()" class="descrete-button" style="display:none" value="Vis første side"/>
+                            <input type="button" id="previous1" onclick="previousPage()" class="descrete-button" style="display:none" value="Vis forrige side"/>
+                            <input type="button" id="next1" onclick="nextPage()" class="descrete-button" style="display:none" value="Vis neste side"/>
+                            <input type="button" id="last1" onclick="lastPage()" class="descrete-button" style="display:none" value="Vis siste side"/>
                             <p style="display: none" class="small-text" id = "resultPageText1"></p> 
                             <p style="display: none"  class="small-text"id = "resultPageNb1"></p>
                             <p style="display: inline-block"  class="small-text" id = "resultPageAlert1"></p>
@@ -159,10 +149,10 @@
                 <div style="text-align:center;">
                     <div class="pagination-container">
                         <div class="pagination-div">
-                            <input type="button" id="first" onclick="firstPage()" class="descrete-button" style="display:none"/>
-                            <input type="button" id="previous" onclick="previousPage()" class="descrete-button" style="display:none"/>
-                            <input type="button" id="next" onclick="nextPage()" class="descrete-button" style="display:none"/>
-                            <input type="button" id="last" onclick="lastPage()" class="descrete-button" style="display:none"/>
+                            <input type="button" id="first" onclick="firstPage()" class="descrete-button" style="display:none" value="Vis første side"/>
+                            <input type="button" id="previous" onclick="previousPage()" class="descrete-button" style="display:none" value="Vis forrige side"/>
+                            <input type="button" id="next" onclick="nextPage()" class="descrete-button" style="display:none" value="Vis neste side"/>
+                            <input type="button" id="last" onclick="lastPage()" class="descrete-button" style="display:none" value="Vis siste side"/>
                             <p style="display: none" class="small-text" id = "resultPageText"></p> 
                             <p style="display: none" class="small-text" id = "resultPageNb"></p>
                             <p style="display: inline-block" class="small-text" id = "resultPageAlert"></p>

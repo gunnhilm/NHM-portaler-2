@@ -136,5 +136,6 @@ const updateFooter = () => {
 }
 
 updateFooter()
+doJournalSearch()
 
 
