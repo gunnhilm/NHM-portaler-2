@@ -17,6 +17,7 @@ LoadModule proxy_http_module modules/mod_proxy_http.so
 in the http-vhost.conf file add this:
 
 <VirtualHost *:80>
+
     ServerAdmin webmaster@NHM-portaler-2.com
 	DocumentRoot "/Apache24/htdocs/NHM-portaler-2/public"
     ServerName localhost
@@ -26,6 +27,7 @@ in the http-vhost.conf file add this:
 	ProxyPass / http://localhost:3000/
 	ProxyPassReverse / http://localhost:3000/
 	ProxyPreserveHost On
+	
 </VirtualHost>
 
 
