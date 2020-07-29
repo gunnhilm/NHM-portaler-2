@@ -28,6 +28,7 @@ in the http-vhost.conf file add this:
 	ProxyPassReverse / http://localhost:3000/
 	ProxyPreserveHost On
 	
+</VirtualHost>	
 </VirtualHost>
 
 
