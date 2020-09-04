@@ -31,7 +31,7 @@ const search = (samling, searchTerm, linjeNumber = 0, limit = 20, callback) => {
         searchTerm = searchTerm.trim()
         // Case insensitve search
         searchTerm = searchTerm.toLowerCase()
-        console.log( 'Seach Term: ' + searchTerm);
+        console.log( 'Search Term: ' + searchTerm);
         
         terms = searchTerm.split(' ')
         let results = ''

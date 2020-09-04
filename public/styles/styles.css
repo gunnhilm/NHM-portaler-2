@@ -3,162 +3,240 @@ html *
    font-family: Arial;
 }
 
-.page-header {
-    font-size: 30px;
-}
-
-.obj-header {
-    font-size: 22px;
-}
-  
-.wrapper {
-    text-align: center
-}
-
-
-.content { 
-    min-height: calc(100vh - 150px); 
-    display: inline-block;
-    text-align: left;
-    width: 1580px;
-    
-}
+/*header.hbs*/
 
 header {
     height: 50px;
     background-color: #57AD3E;
     /* to center logo and links vertically: */
-    line-height: 45px;
+    /* line-height: 45px; */
+    
 }
 
 .header-content {
-    width: 1580px;
+    width: 90%;
     display: inline-block;
+    height: 48px;
+    
+}
+.header-left {
+    float: left;
+}
+@media only screen and (max-width: 950px) {
+    
+    .result-table {
+        font-size: 12px;
+        font-weight: normal;
+    }
 }
 
-#last-updated {
-    width: 1580px;
-    vertical-align: middle;
-    text-align: left;
+@media only screen and (max-width: 820px) {
+    .sub-header-right{
+        background-color: #57AD3E;
+        width: 100%;
+        float:right;
+        /* margin-top: 48px; */
+    }
+    .headerLink {
+        width: 60px;
+        font-size: 12px;
+    }
+    .row-sampleType {
+        display: none;
+    }
+    .row-land {
+        display: none;
+    }
+    .cell10  {
+        display: none;
+    }
+    .cell5 {
+        display: none;
+    }
+    /* #language {
+        font-size: 12px;
+    } */
 }
 
- footer {
+@media only screen and (max-width: 600px) {
+    .header-right {
+        background-color: #57AD3E;
+        width: 10%;
+        float:right;
+        /* margin-top: 48px; */
+    }
+    .headerLink {
+        width: 60px;
+        font-size: 12px;
+    }
+    .row-innsamler {
+        display: none;
+    }
+    .cell3 {
+        display: none;
+    }
+   
+    /* #language {
+        font-size: 12px;
+    } */
+}
+
+
+.headerLink {
+    text-decoration: none;
+    color: white;
+    float: right;
+    padding: 15px;
+    background-color: #57AD3E;
+}
+
+#language {
+    border-radius:4px;
+    background-color: #57AD3E;
+    color: white;
+    border: none;
+    float: right;
+    padding: 15px;
+    /* font-size: 16px; */
+} 
+
+#logo {
+    padding: 15px;
+}
+
+/* footer.hbs */
+footer {
     height: 50px;
     background-color: #57AD3E;
     line-height: 45px;
 } 
 
 .footer-content {
-    width: 1580px;
+    width: 90%;
     display: inline-block;
+    height: 48px;
 }
 
-.backLink {
-    background-color: blue;
-    color: white;
-    text-decoration: none;
-    padding: 10px;
-}
-
-.headerLink {
-    text-decoration: none;
-    color: white;
-    float: right;
-    padding-left: 10px;
-    padding-right: 10px;
-    
-}
-
- #language {
-    border-radius:4px;
-    background-color: #57AD3E;
-    color: white;
-    border: none;
-    font-size: 16px;
-} 
-
-#logo {
-    vertical-align: middle; 
-    max-height: 40px;
+#last-updated {
+    vertical-align: middle;
+    text-align: left;
 }
 
 
-.languageLink {
-    padding: 20px;
-    color: black;    
+/* all or several pages */
+
+/* .wrapper makes sure content is sentered with some margins on the sides */
+.wrapper {
+    text-align: center
 }
 
-.column {
-    float: left;
-    width: 400px;
+.content { 
+    min-height: calc(100vh - 150px); 
+    display: inline-block;
+    text-align: left;
+    width: 90%;
+}
+
+.page-header {
+    font-size: 30px;
 }
 
 td {
     vertical-align: top;
+}
+
+#error-message {
+    padding: 30px;
+    color: red;
+    font-weight: bold;
+}
+
+/* buttons */
+.blue-button {
+    padding: 6px;
+    vertical-align: center;
+    background-color: #3f81af;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    border: none;
+    font-size: 16px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    min-width: 60px;
+}
+.descrete-button {
+    padding: 7px;
+    vertical-align: center;
+    
+    border-radius: 4px;
+    border: none;
+    font-size: 14px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+.descrete-button:disabled {
+    cursor: default
+}
+.blue-button:hover {
+    background-color: #008CBA;
+    border-radius: 4px;
+    color: white;
   }
-
-#searchButtonHeader {
-    
-    padding: 9px;
+#search-button {
+    /* width: 123px; */
+    float: right;
+}
+#empty-search-button {
+    /* width: 123px; */
+    float: right;
+}
+#download-button {
+    /* width: 155px; */
+    float: right;
+}
+#download-photo-button {
+    /* width: 155px; */
+    float: right;
+}
+#zoom-button {
+    padding: 2px 12px;
+}
+#large-map-button {
+    padding: 2px
+}
+#large-map-object-button {
+    padding: 2px
+}
+#photoButtons {
+    width: 100%;
+    text-align: left
+}
+.photoButtonsClass {
+    display: inline-block;
 }
 
-/* #object_page_header, #musit_regno {
-    padding: 15px;
-} */
+/* index/search page */
 
-
-.box {
-    height: 200px;
-}
-
-
-.bold {
-    font-weight: bold;
-}
-
-.italic {
-    font-style: italic;
-}
-
-#photo-box {
-    height: 300px;
-    
-}
-
-#name_colon {
-    font-weight: bold;
-}
-
-/* styling av result-table*/
-
-    #result-header, #musit-regno {
-        font-size: 24px;
+    .form-row:after {
+        content: "";
+        display: table;
+        clear: both;
     }
 
-    /* journal-page */
-   
-    
-    #journal-result-table td {
-        padding: 5px;
-        
-    }
-
+    /* result-table, in index.hbs */
     .result-table th {
         text-align: left;
         padding: 5px
     }
 
-    .nowrap {
-        white-space: nowrap;
-    } 
+        /* every second line white and grey */
+        .result-table tr:nth-child(odd)		{ background-color:#fff; }
+        .result-table tr:nth-child(even) 	{ background-color:#eee; }
 
-    /* every second line white and grey */
-    .result-table tr:nth-child(odd)		{ background-color:#fff; }
-    .result-table tr:nth-child(even) 	{ background-color:#eee; }
-
-    
+    /* result-table, in paginateAndRender.js */
     .row-ID {
-        width: 100px;
+        width: 7%;
         text-align: right;
         padding: 5px;
         text-align:left; 
@@ -167,60 +245,60 @@ td {
     }
     .row-name {
         font-style: italic;
-        width: 230px;
+        width: 21%;
         padding: 5px;
         vertical-align: middle;
     }
     .row-innsamler {
-        width: 140px;
+        width: 10%;
         padding: 5px;
         vertical-align: middle;
-  
+
     }
     .row-dato {
-        width: 100px;
+        width: 7%;
         padding: 5px;
         vertical-align: middle;
     }
     .row-land {
-        width: 100px;
+        width: 7%;
         padding: 5px;
         vertical-align: middle;
     }
     .row-kommune {
-        width: 150px;
+        width: 11%;
         padding: 5px;
         vertical-align: middle;
     }
     .row-sted {
-        width: 300px;
+        width: 15%;
         padding: 5px;
-        white-space: nowrap;
+        /* white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        display: inline-block;
+        display: inline-block; */
         vertical-align: middle;
     }
-   
     .row-photo {
-        width: 50px;
+        width: 4%;
         padding: 5px;
         text-align: center;
         vertical-align: middle;
     }
     .row-coordinates {
-        width: 50px;
+        width: 4%;
         padding: 5px;
         text-align: center;
         vertical-align: middle;
     }
     .row-sampleType {
-        width: 130px;
+        width: 9%;
         padding: 5px;
         vertical-align: middle;
         white-space: nowrap;
     }
     .row-checkbox {
+        width: 5%;
         padding: 5px;
         vertical-align: middle;
         text-align: center;
@@ -228,49 +306,65 @@ td {
     input[type=checkbox] {
         transform: scale(1.5);
     }
+
+    .sort {
+        width: 100%;
+        text-align: left;
+        padding: 0px; 
+    }
+    .uio-arrow-down {
+        background-image: '/images/icon-down.svg';
+    } 
     
 
+    /* pagination, in index.hbs */
+    .pagination-container {
+        text-align: left;
+        width: 1580px;
+    }
+    .pagination-div{
+        display: inline-block;
+    }
+    .pagination-container1 {
+        text-align: left;
+        width: 1580px;
+    }
+    .pagination-div1{
+        display: inline-block;
+    }
+    .small-text {
+        font-size: 14px;
+    }
+    
 
-.italic {
-    font-style: italic;
+/* object-page */
+.obj-header {
+    font-size: 22px;
+}
+.bold {
+    font-weight: bold;
+}
+#photo-box {
+    height: 300px;
 }
 
-.right {
-    position: absolute;
-    right: 100px;
-}
+/* map-stuff, on various pages */
 
+
+.map-object .map-search .ol-zoom .ol.zoom-out {
+    margin-top: 204px;
+}
 .map-search {
     height: 320px;  
-    width: 770px;  
+    width: 100%;  
     color: grey;
-    margin-left: 50px;
+    /* margin-left: 50px; */
 }
-
 .map-object {
     height: 300px;  
     width: 300px;  
     color: grey;
 }
-
-.map-object .map-search .ol-zoom .ol.zoom-out {
-    margin-top: 204px;
-}
-
-.large-map {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    /* z-index: 99; when this is abled the modal-popup with help text does not go on top*/
-}
-
-.neutral {
-    background-color: white;
-    border: white;
-    text-align: left;
-}
-
-
 .ol-popup {
     position: absolute;
     background-color: white;
@@ -282,7 +376,6 @@ td {
     bottom: 12px; 
     left: -50px; 
   }
-
   /* to give the popup "arrow" to the red point */
   .ol-popup:after, .ol-popup:before {
     top: 100%;
@@ -299,7 +392,6 @@ td {
     left: 48px;
     margin-left: -10px;
   } 
-
   .ol-popup-closer {
     text-decoration: none;
     position: absolute;
@@ -317,44 +409,9 @@ td {
     cursor: pointer;
   }
   
-  /* The actual popup (appears on top) */
-  /* .popup .popuptext {
-    visibility: hidden;
-    width: 160px;
-    background-color: #555;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 8px 0;
-    position: absolute;
-    z-index: 1;
-    bottom: 125%;
-    left: 50%;
-    margin-left: -80px;
-  } */
-  
-  /* Popup arrow */
-  /* .popup .popuptext::after {
-    content: "";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: #FF0000;
-  } */
-  
-  /* Toggle this class when clicking on the popup container (hide and show the popup) */
-  /* .popup .show {
-    visibility: visible;
-    -webkit-animation: fadeIn 1s;
-    animation: fadeIn 1s
-  } */
-
   /* Modal = "popup" with zoom explanation for map*/
   /* The Modal (background) */
-.modal {
+  .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
@@ -366,7 +423,6 @@ td {
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
   }
-  
   /* Modal Content/Box */
   .modal-content {
     background-color: #fefefe;
@@ -375,7 +431,6 @@ td {
     border: 1px solid #888;
     width: 80%; /* Could be more or less, depending on screen size */
   }
-  
   /* The Close Button */
   .close {
     color: #aaa;
@@ -383,34 +438,25 @@ td {
     font-size: 28px;
     font-weight: bold;
   }
-  
   .close:hover,
   .close:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;
   }
-  
-  .down {
-    transform: rotate(45deg);
-    -webkit-transform: rotate(45deg);
-  } 
-
-  .sort {
-      width: 100%;
-      text-align: left;
-      padding: 0px; 
-    }
-
-.uio-arrow-down {
-    background-image: '/images/icon-down.svg';
-} 
-
-/* Table on statistics-page*/
-.summaryTable  table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
+.large-map {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    /* z-index: 99; when this is abled the modal-popup with help text does not go on top*/
 }
+
+/* statistics-page */
+    /* Table on statistics-page*/
+    .summaryTable  table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+    }
 
    .summaryTable  td, th {
     text-align:right;
@@ -420,118 +466,11 @@ td {
   .summaryTable   tr:nth-child(even) {
     background-color: #dddddd;
     }
+
+/* journal-page */
+#journal-result-table td {
+    padding: 5px;
     
-
-    /* pagination */
-    .pagination-container {
-        text-align: left;
-        width: 1580px;
-      }
-    .pagination-div{
-        display: inline-block;
-      }
-    
-    .pagination-container1 {
-        text-align: left;
-        width: 1580px;
-    }
-    .pagination-div1{
-        display: inline-block;
-    }
- 
-.blue-button {
-    padding: 9px;
-    vertical-align: center;
-    background-color: #3f81af;
-    border-radius: 4px;
-    color: white;
-    font-weight: bold;
-    border: none;
-    font-size: 16px;
-    transition-duration: 0.4s;
-    cursor: pointer;
-}
-
-.descrete-button {
-    padding: 7px;
-    vertical-align: center;
-    
-    border-radius: 4px;
-    border: none;
-    font-size: 14px;
-    transition-duration: 0.4s;
-    cursor: pointer;
-}
-
-.descrete-button:disabled {
-    cursor: default
-}
-
-.small-text {
-    font-size: 14px;
-}
-
-/* .pagination {
-    padding: 9px 24px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    margin: 4px 2px;
-    cursor: pointer;
-  } */
-
-.blue-button:hover {
-    background-color: #008CBA;
-    border-radius: 4px;
-    color: white;
-  }
-
-   
-#search-button {
-    width: 123px;
-    float: right;
-}
-
-#empty-search-button {
-    width: 123px;
-    float: right;
 }
 
 
-#download-button {
-    width: 155px;
-    float: right;
-}
-
-#download-photo-button {
-    width: 155px;
-    float: right;
-}
-
-#zoom-button {
-    padding: 2px 12px;
-}
-    
-#large-map-button {
-    padding: 2px
-}
-    
-#large-map-object-button {
-    padding: 2px
-}
-    
-#error-message {
-    padding: 30px;
-    color: red;
-    font-weight: bold;
-}
-
-
-#photoButtons {
-    width: 100%;
-    text-align: left
-}
-
-.photoButtonsClass {
-    display: inline-block;
-}

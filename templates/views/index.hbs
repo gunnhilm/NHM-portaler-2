@@ -2,14 +2,15 @@
 
 <html lang="no">
     <head>
-    <title>Nettportal søkeside</title>  
+    <title>Nettportal søkeside</title> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     </head>
   
     <body>
         <div class="wrapper">
             {{>header}}
             <div class="content">
-                <table>
+                <table width="100%">
                     <tr>
                         <td>
                         <br><br><br><br>
@@ -17,119 +18,122 @@
                     </tr>
                     <tr>
                         {{!-- cell with all text-fields to the left --}}
-                        <td valign="top" width="740px">
-                            <p class="page-header" id="header-search-page"></p>
-                            {{!-- table with all text-fields to the left except title --}}
-                            <table> 
-                                <tr>
-                                    {{!-- cell-row with select-collection and search -button --}}
-                                    <td style="vertical-align: middle; " colspan="2">
-                                        <label for="collection-select" id="select-collection-label" ></label>
-                                        <select id="collection-select" style=" height:30px; border-radius:4px;" >
-                                            <option value="" id="vennligst" ></option>
-                                                <option value="karplanter" id="karplanter"></option>
-                                                <option value="sopp" id="sopp"></option>
-                                                <option value="moser" id="moser"></option>
-                                                <option value="lav" id="lav"></option>
-                                                <option value="alger" id="alger"></option>
-                                                <option value="entomologi" id="insekter"></option>
-                                                <option value="birds" id="fugler"></option>
-                                                <option value="mammals" id="pattedyr"></option>
-                                                <option value="dna_fish_herptiles" id="dna_fish_herptiles"></option>
-                                                <option value="dna_other" id="dna_other"></option>
-                                        </select>
-                                    </td>
-                                    <td  colspan="2" >
-                                        <button class="blue-button" id="empty-search-button" style="display:none" title="Slett søke resultater"></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan = "3">
-                                        <br>
-                                        <br>
-                                        <form>
-                                            <input id="search-text" type="text" class="input" style="height:30px;  border-radius:4px; border-width: 1px" size="80" title="Skriv innnsøke ord">
-                                            <button class="blue-button" id="search-button" title="Søk"></button>
-                                        </form>
-                                        <br>
-                                        <img id="please-wait" src="/nhm/images/ajax-loader.gif" alt="Please Wait"  style="display:none" valign="top">
-                                    </td>
-                                </tr>
-                                <tr >    
-                                    <td id="hits-per-page" style="vertical-align:middle; white-space: nowrap; width: 110px;" title="Antall treff per side"></td>
-                                    <td  style="vertical-align:middle; " >
-                                        <select id="number-per-page" style=" height:30px; border-radius:4px;" title="Antall treff per side">
-                                            <option value="10">10</option>
-                                            <option value="20" selected="selected">20</option>
-                                            <option value="50">50</option>
-                                            <option value="100">100</option>
-                                            <option value="4000">All</option>
-                                        </select>
-                                    </td>
-                                    <td id="error-message" title="Feil melding"></td>
-                                </tr>
-                                <tr>
-                                    <td><br><br></td>
-                                </tr>
-                                <tr>    
-                                    <td style="vertical-align:middle; white-space: nowrap; "  id="head-nb-hits"></td>
-                                    <td  style="vertical-align:middle; white-space: nowrap;" id="nb-hits" ></td>
-                                    <td style="vertical-align: middle;">
-                                        <button class="blue-button" id="download-button"  style="display:none" title="Last ned resultater"><i class="fa fa-download"></i></button>
-                                    </td>
-                                    {{!-- <td> <button id="checked">get checked</button>
-                                    </td> --}}
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td style="vertical-align: middle;"><br>
-                                        <button class="blue-button" id="download-photo-button" style="display: none"><i class="fa fa-download" title="last ned bilder"></i></button>
-                                        
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                        {{!-- table cell with map --}}
-                        <td > 
-                            <br>
-                            <div id="map-search" class="map-search"></div>
-                            <div id="popup" class="ol-popup">
-                                <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-                                <div id="popup-content"></div>
+                         <td width="100%">
+                            <div  style="width:50%; float:left">
+                                <p class="page-header" id="header-search-page"></p>
+                                {{!-- table with all text-fields to the left except title --}}
+                                <table width="100%"> 
+                                    <tr>
+                                        {{!-- cell-row with select-collection and search -button --}}
+                                        <td style="vertical-align: middle" colspan="2">
+                                            <label for="collection-select" id="select-collection-label" ></label>
+                                            <select id="collection-select" style=" height:30px; border-radius:4px;" >
+                                                <option value="" id="vennligst" ></option>
+                                                    <option value="karplanter" id="karplanter"></option>
+                                                    <option value="sopp" id="sopp"></option>
+                                                    <option value="moser" id="moser"></option>
+                                                    <option value="lav" id="lav"></option>
+                                                    <option value="alger" id="alger"></option>
+                                                    <option value="entomologi" id="insekter"></option>
+                                                    <option value="birds" id="fugler"></option>
+                                                    <option value="mammals" id="pattedyr"></option>
+                                                    <option value="dna_fish_herptiles" id="dna_fish_herptiles"></option>
+                                                    <option value="dna_other" id="dna_other"></option>
+                                            </select>
+                                        </td>
+                                        <td  colspan="2">
+                                            <button class="blue-button" id="empty-search-button" style="display:none" title="Slett søke resultater"></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan = "3">
+                                            <br>
+                                            <br>
+                                            <form>
+                                                <div  style="float: left; width:100%">
+                                                    <input id="search-text" type="text" class="input" style="height:30px;  width:99%; border-radius:4px; border-width: 1px; "   title="Skriv innnsøke ord">
+                                                    
+                                                </div>
+                                                <br><br><br>
+                                                <div style="float: right">
+                                                    <button class="blue-button" id="search-button" title="Søk" style="width:10%"></button>
+                                                </div>
+                                            </form>
+                                            <br>
+                                            <img id="please-wait" src="/nhm/images/ajax-loader.gif" alt="Please Wait"  style="display:none" valign="top">
+                                        </td>
+                                    </tr>
+                                    <tr >    
+                                        <td id="hits-per-page" style="vertical-align:middle; white-space: nowrap; width: 110px;" title="Antall treff per side"></td>
+                                        <td  style="vertical-align:middle; " >
+                                            <select id="number-per-page" style=" height:30px; border-radius:4px;" title="Antall treff per side">
+                                                <option value="10">10</option>
+                                                <option value="20" selected="selected">20</option>
+                                                <option value="50">50</option>
+                                                <option value="100">100</option>
+                                                <option value="4000">All</option>
+                                            </select>
+                                        </td>
+                                        <td id="error-message" title="Feil melding"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><br><br></td>
+                                    </tr>
+                                    <tr>    
+                                        <td style="vertical-align:middle; white-space: nowrap; "  id="head-nb-hits"></td>
+                                        <td  style="vertical-align:middle; white-space: nowrap;" id="nb-hits" ></td>
+                                        <td style="vertical-align: middle;">
+                                            <button class="blue-button" id="download-button"  style="display:none" title="Last ned resultater"><i class="fa fa-download"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td style="vertical-align: middle;"><br>
+                                        </td>
+                                    </tr>
+                                </table>
                             </div>
-      
-                            <table align="right" >
-                                <tr >
-                                    <td >
-                                        <button id="zoom-button" style="display:none" title="Bruksanvisning kart">Zoom</button>
-                                        <div id="zoom-modal" class="modal">
-                                            <div class="modal-content">
-                                                <span class="close">&times;</span>
-                                                <span class="popuptext" id="zoom-expl-popup"></span>
-                                            </div>    
-                                        </div>
-                                    </td>
-                                    <td >
-                                        <button id="large-map-button" style="display:none" title="Vis stort kart"></button>
-                                        <br>
-                                    </td>
-                                    <td>
-                                        {{!-- downloadmap --}}
-                                        <button id="export-png" style="display:none" title="Last ned kart som bilde"></button>
-                                        <a id="image-download" download="map.png"></a>
-                                    </td>
-                                    <td>
-                                        <button id="checkedInMap" style = "display:noe" title="Vis valgt poster i kart"></button>
-                                    </td>
-                                </tr>
-                            </table>
+                        {{!-- table cell with map --}}
+                            <div id="mapDiv" style="width:49%; min-width:254px;  float:left; margin-left:5px; ">
+                                <br>
+                                <div id="map-search" class="map-search"></div>
+                                <div id="popup" class="ol-popup">
+                                    <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                                    <div id="popup-content"></div>
+                                </div>
+        
+                                <table align="right" >
+                                    <tr >
+                                        <td >
+                                            <button id="zoom-button" style="display:none" title="Bruksanvisning kart">Zoom</button>
+                                            <div id="zoom-modal" class="modal">
+                                                <div class="modal-content">
+                                                    <span class="close">&times;</span>
+                                                    <span class="popuptext" id="zoom-expl-popup"></span>
+                                                </div>    
+                                            </div>
+                                        </td>
+                                        <td >
+                                            <button id="large-map-button" style="display:none" title="Vis stort kart"></button>
+                                            <br>
+                                        </td>
+                                        <td>
+                                            {{!-- downloadmap --}}
+                                            <button id="export-png" style="display:none" title="Last ned kart som bilde"></button>
+                                            <a id="image-download" download="map.png"></a>
+                                        </td>
+                                        <td>
+                                            <button id="checkedInMap" style = "display:none" title="Vis valgt poster i kart"></button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
                         </td>
-                    
                     </tr>
                 </table>
 
-                 <div style="text-align:center;">
+                <div style="text-align:center;">
                     <div class="pagination-container1">
                         <div class="pagination-div1">
                             <input type="button" id="first1" onclick="firstPage()" class="descrete-button" style="display:none" value="Vis første side"/>
@@ -143,7 +147,9 @@
                     </div>
                 </div>
 
-                <table class="result-table" id="myTable"></table>
+                <div style="overflow-x:auto">
+                    <table class="result-table" id="myTable"></table>
+                </div>
                 <br><br>
 
                 <div style="text-align:center;">

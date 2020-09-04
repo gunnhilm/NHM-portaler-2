@@ -16,10 +16,6 @@ const downloadButton = document.getElementById('download-button')
 const downloadPhotoButton = document.getElementById('download-photo-button')
 //empty-search button 
 const emptySearchButton = document.querySelector('#empty-search-button')
-//Page navigation
-// const nextPage = document.getElementById('next-page')
-// const previousPage = document.getElementById('previous-page')
-
 
 // rendered with result table, in footer
 const updated = document.querySelector('#last-updated');
@@ -50,102 +46,123 @@ function download(filename, text) {
     document.body.removeChild(element)
 }
 
-function downloadPhoto2(filename, photoToDownload) {
-    const element = document.createElement('a')
-    element.href = photoToDownload
-    element.download = filename
-    
-    element.style.display = 'none'
-    document.body.appendChild(element)
-    element.click()
-    document.body.removeChild(element)
-}
-
-const downloadPhoto3 = (url, path, callback) => {
-    request.head(url, (err, res, body) => {
-        request(url)
-        .pipe(fs.createWriteStream(path))
-    }) 
-}
-
-function forceDownload(url, fileName){
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", url, true);
-    xhr.responseType = "blob";
-    xhr.onload = function(){
-        var urlCreator = window.URL || window.webkitURL;
-        var imageUrl = urlCreator.createObjectURL(this.response);
-        var tag = document.createElement('a');
-        tag.href = imageUrl;
-        tag.download = fileName;
-        document.body.appendChild(tag);
-        tag.click();
-        document.body.removeChild(tag);
-    }
-    xhr.send();
-}
-
-
 
 
 
 // when download-button is clicked
 downloadButton.addEventListener('click', (e) => {
     e.preventDefault()
-    // const searchTerm = search.value
-    // const chosenCollection = collection.value
-    
-    // const url = urlPath + '/download/?search=' + searchTerm +'&samling=' + chosenCollection + '&linjeNumber=0' + '&limit=none' // vi laster ned hele søkeresultatet, begynner på første linje og tar med alle resultater
-    // fetch(url).then((response) => {
-        // response.text().then((data) => {
-        //     if(data.error) {
-        //         return console.log(data.error)
-        //     } else {
-        //         const downloadData = JSON.parse(data)
         
-                // Start file download
-                const searchResult = JSON.parse(sessionStorage.getItem('string'))
-                // loop through - put those wich checked in new array
-                const newArray = []
-                let downloadResult
-                searchResult.forEach(el => {
-                    if (el.checked) {newArray.push(el)}
-                })
-                if (newArray.length == 0) {
-                    downloadResult = Papa.unparse(searchResult, {
-                        delimiter: "\t",
-                    })
-                } else {
-                    downloadResult = Papa.unparse(newArray, {
-                        delimiter: "\t",
-                    })
-                }
-                //download("download.txt", downloadData.unparsed.results)
-                download("download.txt", downloadResult)
-            //}
-        //})
-    //})
-})
-
-downloadPhotoButton.addEventListener('click', (e) => {
-    e.preventDefault()
+    // Start file download
     const searchResult = JSON.parse(sessionStorage.getItem('string'))
     // loop through - put those wich checked in new array
     const newArray = []
+    let downloadResult
     searchResult.forEach(el => {
         if (el.checked) {newArray.push(el)}
     })
-    const photoToDownload = searchResult[2].associatedMedia
-    console.log(photoToDownload)
+    if (newArray.length == 0) {
+        downloadResult = Papa.unparse(searchResult, {
+            delimiter: "\t",
+        })
+    } else {
+        downloadResult = Papa.unparse(newArray, {
+            delimiter: "\t",
+        })
+    }
+    //download("download.txt", downloadData.unparsed.results)
+    download("download.txt", downloadResult)
+})
+
+
+
+// downloadPhotoButton.addEventListener('click', (e) => {
+//     e.preventDefault()
+    
+//     const url = urlPath + '/downloadImage/'
+//         console.log(url);
+        
+//         fetch(url).then((response) => {
+//             console.log('image-her')
+                            
+//             if (!response.ok) {
+//                 throw 'noe går galt med bilde-nedlasting, respons ikke ok'
+//             } else {
+//                 try {
+//                     console.log(response)
+//                     // response.text().then((data) => {
+//                     //     if(data.error) {
+                            
+//                     //         errorMessage.innerHTML = textItems.serverError[index]
+//                     //         return console.log(data.error)
+//                     //     } else {
+                            
+//                     //         const JSONdata = JSON.parse(data)  
+//                     //         sessionStorage.setItem('searchLineNumber', JSONdata.unparsed.count)
+//                     //         sessionStorage.setItem('searchTerm', searchTerm)
+//                     //         const parsedResults = Papa.parse(JSONdata.unparsed.results, {
+//                     //             delimiter: "\t",
+//                     //             newline: "\n",
+//                     //             quoteChar: '',
+//                     //             header: true,
+//                     //         }) 
+//                     //         //check if there are any hits from the search
+//                     //         if ( parsedResults.data === undefined || parsedResults.data.length === 0 ) {
+//                     //             nbHitsElement.innerHTML = textItems.noHits[index]
+//                     //         } else {
+//                     //             try {
+//                     //                 // hvis vi får flere enn 4000 treff må vi si i fra om det
+//                     //                 if(parsedResults.data.length > 3999){
+//                     //                     nbHitsElement.textContent = 'mer enn 4000'
+//                     //                 } else {
+//                     //                     nbHitsElement.textContent = parsedResults.data.length
+//                     //                 }
+//                     //                 nbHitsHeader.innerHTML = textItems.nbHitsText[index]
+//                     //                 //parsedResults.data.forEach(el => el.checked = false)
+//                     //                 console.log(parsedResults.data)
+//                     //                 sessionStorage.setItem('string', JSON.stringify(parsedResults.data))   
+//                     //                 // resultTable() 
+
+                                   
+//                     //                 load()
+//                     //             } catch (error) {
+//                     //                 errorMessage.innerHTML = textItems.errorRenderResult[index]
+//                     //                 searchFailed = true // is checked when map is drawn 
+//                     //             }
+                                 
+//                     //         }
+//                     //     }
+//                     // })
+//                 }
+//                 catch (error) {
+//                     console.error(error)
+//                     reject(error);
+//                 }
+//             }
+//             //document.getElementById("please-wait").style.display = "none"
+//         }).catch((error) => {
+//             console.log('her er den nye bilde-download feilen' + error);
+//             //errorMessage.innerHTML = textItems.serverError[index]
+//             //document.getElementById("please-wait").style.display = "none"
+//         })
+
+//     // const searchResult = JSON.parse(sessionStorage.getItem('string'))
+//     // // loop through - put those wich checked in new array
+//     // const newArray = []
+//     // searchResult.forEach(el => {
+//     //     if (el.checked) {newArray.push(el)}
+//     // })
+//     // console.log(newArray)
+//     // const photoToDownload = newArray[0].associatedMedia
+    
+//     // console.log(photoToDownload)
 
     
-    const downloadResult = Papa.unparse(newArray, {
-        delimiter: "\t",
-    })
-    console.log(downloadResult)
-    //downloadPhoto("download.jpg", photoToDownload)
-    forceDownload(photoToDownload, 'image.jpg')
-})
+//     // const downloadResult = Papa.unparse(newArray, {
+//     //     delimiter: "\t",
+//     // })
+//     // forceDownload(photoToDownload, 'image.jpg')
+// })
 
  const doSearch = (limit = 20) => {
      console.log('vi søker');
@@ -170,7 +187,7 @@ downloadPhotoButton.addEventListener('click', (e) => {
     document.getElementById("please-wait").style.display = "block"
     // hide download button
     downloadButton.style.display = "none"
-    downloadPhotoButton.style.display = "none"
+    //downloadPhotoButton.style.display = "none"
     document.getElementById("head-nb-hits").innerHTML = ""
     document.getElementById("zoom-button").style.display = "none"
     document.getElementById("large-map-button").style.display = "none"
@@ -196,13 +213,8 @@ downloadPhotoButton.addEventListener('click', (e) => {
         errorMessage.innerHTML = textItems.mustChoose[index]
         document.getElementById("please-wait").style.display = "none"
     } else {
-
         const url = urlPath + '/search/?search=' + searchTerm +'&samling=' + chosenCollection + '&linjeNumber=0' + '&limit=' + limit // normal search
-        console.log(url);
-        
         fetch(url).then((response) => {
-            console.log('her')
-                            
             if (!response.ok) {
                 throw 'noe går galt med søk, respons ikke ok'
             } else {
@@ -235,12 +247,8 @@ downloadPhotoButton.addEventListener('click', (e) => {
                                         nbHitsElement.textContent = parsedResults.data.length
                                     }
                                     nbHitsHeader.innerHTML = textItems.nbHitsText[index]
-                                    //parsedResults.data.forEach(el => el.checked = false)
-                                    console.log(parsedResults.data)
                                     sessionStorage.setItem('string', JSON.stringify(parsedResults.data))   
-                                    // resultTable() 
-
-                                   
+                                    
                                     load()
                                 } catch (error) {
                                     errorMessage.innerHTML = textItems.errorRenderResult[index]
@@ -330,9 +338,9 @@ const oldSearch = () => {
             }
             renderText(language)
             try {
-            document.getElementById('collection-select').value = sessionStorage.getItem('collection')
-            document.getElementById('search-text').value = sessionStorage.getItem('searchTerm')
-            nbHitsElement.innerHTML = JSON.parse(sessionStorage.getItem('string')).length
+                document.getElementById('collection-select').value = sessionStorage.getItem('collection')
+                document.getElementById('search-text').value = sessionStorage.getItem('searchTerm')
+                nbHitsElement.innerHTML = JSON.parse(sessionStorage.getItem('string')).length
             } catch (error) {
                 console.log('local storage empty');    
             }
@@ -341,6 +349,8 @@ const oldSearch = () => {
             } else {
                 document.getElementById('number-per-page').value = '20'
             }
+            
+            console.log(currentPage)
             updateFooter()                
             // sends the data to the functions that show the results
             load()
@@ -358,6 +368,9 @@ const emptySearch = () => {
     sessionStorage.removeItem('collection')
     sessionStorage.removeItem('searchLineNumber')
     sessionStorage.removeItem('search-text')
+    sessionStorage.removeItem('currentPage')
+    sessionStorage.removeItem('numberPerPage')
+    
     collection.value = "" 
     document.getElementById("search-text").value = ""
     
@@ -372,11 +385,13 @@ const emptySearch = () => {
     document.getElementById("map-search").innerHTML = "" 
     // hide buttons rendered with search result
     document.getElementById("download-button").style.display = "none"
-    document.getElementById("download-photo-button").style.display = "none"
+   // document.getElementById("download-photo-button").style.display = "none"
     document.getElementById("head-nb-hits").innerHTML = ""
     document.getElementById("empty-search-button").style.display = "none"
     document.getElementById("zoom-button").style.display = "none"
     document.getElementById("large-map-button").style.display = "none"
+    document.getElementById("export-png").style.display = "none"
+    document.getElementById("checkedInMap").style.display = "none"
     document.getElementById("first").style.display = "none"
     document.getElementById("previous").style.display = "none"
     document.getElementById("next").style.display = "none"
@@ -431,10 +446,6 @@ const getCheckedRecords = () => {
     })
 }
 
-//  document.getElementById("checked").onclick = () => {
-//      getCheckedRecords()
-//  }
-
 //Download map as png-file
 document.getElementById('export-png').addEventListener('click', function() {
     map.once('postcompose', function(event) {
@@ -469,43 +480,45 @@ document.getElementById('checkedInMap').addEventListener('click', function() {
 
 
 const select = document.getElementById('checkboxSelect')
-select.onchange =() => {
-    const nbHitsOnPage = document.getElementById('number-per-page').value
-    let max
-    if (currentPage == numberOfPages) {
-        max = list.length - ((numberOfPages-1) * numberPerPage)
-    } else {
-        max = nbHitsOnPage
-    }
-    if (select.value == "all") {
-        for (i = 0; i < max; i++) {
-            document.getElementById(`checkbox${i}`).checked = true
+if(select) {
+    select.onchange =() => {
+        const nbHitsOnPage = document.getElementById('number-per-page').value
+        let max
+        if (currentPage == numberOfPages) {
+            max = list.length - ((numberOfPages-1) * numberPerPage)
+        } else {
+            max = nbHitsOnPage
         }
-        let searchResult = JSON.parse(sessionStorage.getItem('string'))
-        searchResult.forEach(el => el.checked = true)
-        sessionStorage.setItem('string', JSON.stringify(searchResult))
-    } else if (select.value == "all_on_page") {
-        // keep all on other pages that are checked
-        // find those in subMusitData in searchResult and check them, and save searchresult
-        for (i = 0; i < max; i++) {
-            document.getElementById(`checkbox${i}`).checked = true
-        }
-        let searchResult = JSON.parse(sessionStorage.getItem('string'))
-        let subArray = []
-        subMusitData.forEach(el => subArray.push(el.catalogNumber))
-        searchResult.forEach(el => {
-            if (subArray.includes(el.catalogNumber)) {
-                el.checked = true
+        if (select.value == "all") {
+            for (i = 0; i < max; i++) {
+                document.getElementById(`checkbox${i}`).checked = true
             }
-        })
-        sessionStorage.setItem('string', JSON.stringify(searchResult))
-    } else if (select.value == "none") {
-        for (i = 0; i < max; i++) {
-            document.getElementById(`checkbox${i}`).checked = false
+            let searchResult = JSON.parse(sessionStorage.getItem('string'))
+            searchResult.forEach(el => el.checked = true)
+            sessionStorage.setItem('string', JSON.stringify(searchResult))
+        } else if (select.value == "all_on_page") {
+            // keep all on other pages that are checked
+            // find those in subMusitData in searchResult and check them, and save searchresult
+            for (i = 0; i < max; i++) {
+                document.getElementById(`checkbox${i}`).checked = true
+            }
+            let searchResult = JSON.parse(sessionStorage.getItem('string'))
+            let subArray = []
+            subMusitData.forEach(el => subArray.push(el.catalogNumber))
+            searchResult.forEach(el => {
+                if (subArray.includes(el.catalogNumber)) {
+                    el.checked = true
+                }
+            })
+            sessionStorage.setItem('string', JSON.stringify(searchResult))
+        } else if (select.value == "none") {
+            for (i = 0; i < max; i++) {
+                document.getElementById(`checkbox${i}`).checked = false
+            }
+            let searchResult = JSON.parse(sessionStorage.getItem('string'))
+            searchResult.forEach(el => el.checked = false)
+            sessionStorage.setItem('string', JSON.stringify(searchResult))
         }
-        let searchResult = JSON.parse(sessionStorage.getItem('string'))
-        searchResult.forEach(el => el.checked = false)
-        sessionStorage.setItem('string', JSON.stringify(searchResult))
     }
 }
 

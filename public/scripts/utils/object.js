@@ -307,6 +307,7 @@ if ( coll === 'birds' || coll === 'mammals' || coll === 'dna_fish_herptiles' || 
 } else {
     mediaLink = object.associatedMedia
 }
+//if (mediaLink) {console.log("yes")} else {console.log("no")}
 if ( mediaLink.includes('|') | mediaLink.includes(',')) {  // if several photos
     document.getElementById("next-photo").style.display = "block"
     document.getElementById("previous-photo").style.display = "block"
@@ -345,7 +346,8 @@ if ( mediaLink.includes('|') | mediaLink.includes(',')) {  // if several photos
 //map
 drawMapObject(object)
 
-// large map button
+
+// large map 
 document.getElementById('large-map-object-button').onclick = () => {
     console.log(urlPath)
     window.open(href=`${urlPath}/mapObject/?id=${id}`)

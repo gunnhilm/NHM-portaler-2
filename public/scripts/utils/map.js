@@ -276,6 +276,8 @@ const drawMapObject = (object) => {
     if (object.decimalLatitude & object.decimalLongitude) {
 
         initialize_map()
+        document.getElementById('zoom-button').style.display = "inline-block"
+        document.getElementById('large-map-object-button').style.display = "inline-block"
 
         // red dot on map:
 

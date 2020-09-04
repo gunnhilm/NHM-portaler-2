@@ -3,6 +3,7 @@
 <html>
     <head>
         <title>Nettportal objektvisning</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
         <link rel="stylesheet" href="/nhm/styles/styles.css">
         <script src="/nhm/scripts/utils/ol/ol.js"></script>
     </head>
@@ -13,159 +14,116 @@
             {{>header}}
             <br><br>
             <div class="content">
-           
                 <br>
-                
-            
-                <table >
-                    <tr>
-                        <td width = "500px">
-                            
-                            <p class="page-header" id="musit-regno"></p>
-                            {{!-- <p class="obj-header" id="obj-page-header">Voucher: </p> --}}
-                        </td>
-                        {{!-- <td id = "nextObjectCell">
-                            
-                        </td> --}}
-                    </tr>
-                    <tr>
-                        <td>
-                            <table id = "object-table">
-                                <tr>
-                                    <td id = "head-species-name" class= "bold" style= "white-space:pre"></td>
-                                    <td id = "species-name" style = "border-spacing: 10px 0"></td>
-                                </tr>
-                                <tr>
-                                    <td id = "head-det" class= "bold" style= "white-space:pre"></td>
-                                    <td id = "det" style = "border-spacing: 10px 0"></td>
-                                </tr>
-                                <tr>
-                                    <td id = "head-det-date" class= "bold" style= "white-space:pre"></td>
-                                    <td id = "det-date" style = "border-spacing: 10px 0"></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td id = "head-coll-date" class= "bold" style= "white-space:pre"></td>
-                                    <td id = "coll-date" style = "border-spacing: 10px 0"></td>
-                                </tr>
-                                <tr>
-                                    <td id = "head-coll" class= "bold" ></td>
-                                    <td id = "coll" style = "border-spacing: 10px 0"></td>
-                                </tr>
-                                <tr>
-                                    <td id = "head-locality" class= "bold"></td>
-                                    <td id = "locality" style = "border-spacing: 10px 0"></td>
-                                </tr>
-                                <tr>
-                                    <td id = "head-coordinates" class= "bold"></td>
-                                    <td id = "coordinates" style = "border-spacing: 10px 0"></td>
-                                </tr>
-                                <tr>
-                                    <td id = "head-artsobs" class= "bold" style= "white-space:pre"></td>
-                                    <td id = "artsobsID" style = "border-spacing: 10px 0"></td>
-                                </tr>
-                                <tr>
-                                    <td id = "head-habitat" class= "bold"></td>
-                                    <td id = "habitat" style = "border-spacing: 10px 0"></td>
-                                </tr>
-                                <tr><td><br></td></tr>
-                                <tr>
-                                    <td id = "head-sex" class= "bold"></td>
-                                    <td id = "sex" style = "border-spacing: 10px 0"></td>
-                                </tr>
-                                <tr>
-                                    <td id = "head-lifeStage" class= "bold"></td>
-                                    <td id = "lifeStage" style = "border-spacing: 10px 0"></td>
-                                </tr>
-                                <tr>
-                                    <td id = "head-samplingProtocol" class= "bold"></td>
-                                    <td id = "samplingProtocol" style = "border-spacing: 10px 0"></td>
-                                </tr>
-                                <tr>
-                                    <td id = "head-taxonomy" class= "bold"></td>
-                                    <td id = "taxonomy" style = "border-spacing: 10px 0"></td>
-                                </tr>
-                                <tr>
-                                    <td id = "head-typeStatus" class= "bold"></td>
-                                    <td id = "typeStatus" style = "border-spacing: 10px 0"></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <br><hr>
-                                    </td>
-                                    <td>
-                                        <br><hr>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td id = "itemsHeader" class= "obj-header" ></td>
-                                </tr>
-                                <tr>
-                                    <td><br></td>
-                                </tr>
-                                <tr>
-                                    <td id = "head-habitat" class= "bold"></td>
-                                    <td id = "habitat" style = "border-spacing: 10px 0"></td>
-                                </tr>
-                                
-                            </table>
-                             {{!-- </table>
-                        </td>
-                        <td>
-                            <table> --}}
-                        </td>
-                        <td>
-                            <table >
-                                <tr>
-                                    <td>&nbsp &nbsp</td>
-                                    <td>
-                                        <div id="map-object" class="map-object"></div>
-                                        <br>
-                                    </td>
-                                    <td>
-                                        <div class="map-object">
-                                            <a id="photo-anchor">   
-                                                <img id="photo-box">
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>&nbsp &nbsp</td>
-                                    <td>
-                                        <button id="zoom-button">Zoom</button>
-                                        <div id="zoom-modal" class="modal">
-                                            <div class="modal-content">
-                                                <span class="close">&times;</span>
-                                                <span class="popuptext" id="zoom-expl-popup"></span>
-                                            </div>    
-                                        </div>
-                                        <button id="large-map-object-button"></button>
-                                        
-                                    </td>
-                                    <td>
-                                        <div id = "photoButtons">
-                                            <div class="photoButtonsClass"> <button id="next-photo"></button> </div>
-                                            <div class="photoButtonsClass"> <button id="previous-photo"></button></div>
-                                            <div class="photoButtonsClass"><div id="nb-photos"></div></div>
-                                        </div>
-                                        {{!-- <button id="next-photo" onclick="changeImage()"></button> --}}
-                                    </td>
-
-                                </tr>
-                            </table>
-                        </td>
-
+                <div style="width:100%">
+                    <p class="page-header" id="musit-regno"></p>
+                </div>
+                <div style="width:40%; float:left; min-width:300px">
+                    <table id = "object-table">
+                        <tr>
+                            <td id = "head-species-name" class= "bold" style= "white-space:pre"></td>
+                            <td id = "species-name" style = "border-spacing: 10px 0"></td>
+                        </tr>
+                        <tr>
+                            <td id = "head-det" class= "bold" style= "white-space:pre"></td>
+                            <td id = "det" style = "border-spacing: 10px 0"></td>
+                        </tr>
+                        <tr>
+                            <td id = "head-det-date" class= "bold" style= "white-space:pre"></td>
+                            <td id = "det-date" style = "border-spacing: 10px 0"></td>
+                        </tr>
+                        
+                        <tr>
+                            <td id = "head-coll-date" class= "bold" style= "white-space:pre"></td>
+                            <td id = "coll-date" style = "border-spacing: 10px 0"></td>
+                        </tr>
+                        <tr>
+                            <td id = "head-coll" class= "bold" ></td>
+                            <td id = "coll" style = "border-spacing: 10px 0"></td>
+                        </tr>
+                        <tr>
+                            <td id = "head-locality" class= "bold"></td>
+                            <td id = "locality" style = "border-spacing: 10px 0"></td>
+                        </tr>
+                        <tr>
+                            <td id = "head-coordinates" class= "bold"></td>
+                            <td id = "coordinates" style = "border-spacing: 10px 0"></td>
+                        </tr>
+                        <tr>
+                            <td id = "head-artsobs" class= "bold" style= "white-space:pre"></td>
+                            <td id = "artsobsID" style = "border-spacing: 10px 0"></td>
+                        </tr>
+                        <tr>
+                            <td id = "head-habitat" class= "bold"></td>
+                            <td id = "habitat" style = "border-spacing: 10px 0"></td>
+                        </tr>
+                        <tr><td><br></td></tr>
+                        <tr>
+                            <td id = "head-sex" class= "bold"></td>
+                            <td id = "sex" style = "border-spacing: 10px 0"></td>
+                        </tr>
+                        <tr>
+                            <td id = "head-lifeStage" class= "bold"></td>
+                            <td id = "lifeStage" style = "border-spacing: 10px 0"></td>
+                        </tr>
+                        <tr>
+                            <td id = "head-samplingProtocol" class= "bold"></td>
+                            <td id = "samplingProtocol" style = "border-spacing: 10px 0"></td>
+                        </tr>
+                        <tr>
+                            <td id = "head-taxonomy" class= "bold"></td>
+                            <td id = "taxonomy" style = "border-spacing: 10px 0"></td>
+                        </tr>
+                        <tr>
+                            <td id = "head-typeStatus" class= "bold"></td>
+                            <td id = "typeStatus" style = "border-spacing: 10px 0"></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <br><hr>
+                            </td>
+                            <td>
+                                <br><hr>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id = "itemsHeader" class= "obj-header" ></td>
+                        </tr>
+                        <tr>
+                            <td><br></td>
+                        </tr>
+                        <tr>
+                            <td id = "head-habitat" class= "bold"></td>
+                            <td id = "habitat" style = "border-spacing: 10px 0"></td>
+                        </tr>
+                        
+                    </table>
+                </div>
+                <div style="width:29%; float:left; min-width:300px">
+                    <div class="map-object" id="map-object"></div>
+                    <button id="zoom-button" style="display:none">Zoom</button>
+                    <div id="zoom-modal" class="modal">
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            <span class="popuptext" id="zoom-expl-popup"></span>
+                        </div>    
+                    </div>
+                    <button id="large-map-object-button" style="display:none"></button>
+                    <br><br>
+                </div>
+                <div style="width:29%; float:left; min-width:254px">
+                    <div class="map-object">
+                        <a id="photo-anchor">   
+                            <img id="photo-box">
+                        </a>
+                    </div>
+                        <div id = "photoButtons">
+                        <div class="photoButtonsClass"> <button id="next-photo"></button> </div>
+                        <div class="photoButtonsClass"> <button id="previous-photo"></button></div>
+                        <div class="photoButtonsClass"><div id="nb-photos"></div></div>
+                    </div>
+                </div>
                     
-                    </tr>
-                
-                    <tr>
-                        <td><br><br></td>
-                    </tr>
-                   
-                    
-                </table>
-            
                 <script src="/nhm/scripts/utils/papaparse/papaparse.min.js"></script>
                 <script src="/nhm/scripts/utils/renderLang.js"></script>
                 <script src="/nhm/scripts/utils/map.js"></script>

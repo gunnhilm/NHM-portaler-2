@@ -26,6 +26,20 @@ let ctx5 = ""
 let config5 = ""
 let chart5 = ""
 
+// for rendering language - not yet implemented (Aug 2020) - texts in graphs are in norwegian
+let langIndex
+// if (sessionStorage.language) {
+//     language = sessionStorage.getItem('language')
+//     document.querySelector('#language').value = language
+// } else {
+//     language = document.querySelector('#language').value
+//     sessionStorage.setItem('language', language)
+// }
+if (language === "Norwegian") {
+  langIndex = 0
+} else if (language === "English") {
+  langIndex = 1
+}
 
 // formate numbers
 /**
@@ -268,7 +282,7 @@ const makeGraphs = (data) => {
     options: {
     title: {
       display: true,
-      text: 'Georefererte  poster',
+      text: 'Georefererte poster', //textItems.nbCoordHeader[langIndex],
       align: "left"
     },
     legend: {

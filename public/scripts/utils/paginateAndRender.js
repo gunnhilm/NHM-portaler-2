@@ -144,18 +144,21 @@ const resultTable = (subMusitData, musitData) => {
     try {
         
         table.innerHTML = "";
-        for (let i = -1; i < pageList.length; i++) { // vis en tabell med resultaer som er like lang som det vi ba om pageList.length; 
+        for (let i = -1; i < pageList.length; i++) { // vis en tabell med resultater som er like lang som det vi ba om pageList.length; 
             const row = table.insertRow(-1)
             const cell1 = row.insertCell(0)
             const cell2 = row.insertCell(1)
             const cell3 = row.insertCell(2)
+            cell3.className += "cell3"
             const cell4 = row.insertCell(3)
             const cell5 = row.insertCell(4)
+            cell5.className += "cell5";
             const cell6 = row.insertCell(5)
             const cell7 = row.insertCell(6)
             const cell8 = row.insertCell(7)
             const cell9 = row.insertCell(8)
             const cell10 = row.insertCell(9)
+            cell10.className += "cell10";
             const cell11 = row.insertCell(10)
             if (i === -1) {     // her kommer tittellinjen
                 cell1.innerHTML = `<button id='musitIDButton' class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>` 
@@ -225,7 +228,6 @@ const resultTable = (subMusitData, musitData) => {
                 }
                 
                 
-               
                 
                 cell1.className = 'row-1 row-ID'
                 cell2.className = 'row-2 row-name'
@@ -242,7 +244,7 @@ const resultTable = (subMusitData, musitData) => {
         }
         // Show download button
         downloadButton.style.display = "block"
-        downloadPhotoButton.style.display = "block"
+        //downloadPhotoButton.style.display = "block"
         document.getElementById("empty-search-button").style.display = "inline-block"
         document.getElementById("first").style.display = "inline-block"
         document.getElementById("previous").style.display = "inline-block"
@@ -262,16 +264,7 @@ const resultTable = (subMusitData, musitData) => {
         document.getElementById("resultPageNb1").style.display = "inline-block"
         document.getElementById("resultPageNb1").innerHTML = " " + currentPage + '/' + numberOfPages
             
-        // Last page-alert
-        // if (currentPage === numberOfPages) { 
-        //     document.getElementById("resultPageAlert").innerHTML = textItems.lastPageAlert[index]
-        //     document.getElementById("resultPageAlert1").innerHTML = textItems.lastPageAlert[index]
-        //     } else {
-        //     document.getElementById("resultPageAlert").innerHTML = ""
-        //     document.getElementById("resultPageAlert1").innerHTML = ""
-        // }
         
-
         if (!searchFailed) {
         
             try {
@@ -293,10 +286,22 @@ const resultTable = (subMusitData, musitData) => {
 // pagination part
 // https://www.thatsoftwaredude.com/content/6125/how-to-paginate-through-a-collection-in-javascript
 
-var list = new Array();
-var pageList = new Array();
-var currentPage = 1;
-let numberPerPage = 20;
+let list = new Array();
+let pageList = new Array();
+
+if (sessionStorage.getItem('currentPage')) {
+    currentPage = sessionStorage.getItem('currentPage')
+} else {
+    currentPage = 1
+}
+let numberPerPage
+if (sessionStorage.getItem('numberPerPage')) {
+    numberPerPage = sessionStorage.getItem('numberPerPage')
+} else {
+    numberPerPage = 20
+}
+
+
 sessionStorage.setItem('numberPerPage',numberPerPage)
 var numberOfPages = 0; // calculates the total number of pages
 
@@ -306,33 +311,39 @@ function makeList() {
     stringData = sessionStorage.getItem('string')
     // parsing search result
     list = JSON.parse(stringData)   
-    numberOfPages = getNumberOfPages();
+    numberOfPages = getNumberOfPages(numberPerPage);
+    console.log(numberOfPages)
 }
 
 function getNumberOfPages(numberPerPage) {
+    console.log(numberPerPage)
     return Math.ceil(list.length / numberPerPage);
 }
 
 function nextPage() {
     currentPage += 1;
+    sessionStorage.setItem('currentPage', currentPage)
     //loadList();
     load()
 }
 
 function previousPage() {
     currentPage -= 1;
+    sessionStorage.setItem('currentPage', currentPage)
     //loadList();
     load()
 }
 
 function firstPage() {
     currentPage = 1;
+    sessionStorage.setItem('currentPage', currentPage)
     //loadList();
     load()
 }
 
 function lastPage() {
     currentPage = numberOfPages;
+    sessionStorage.setItem('currentPage', currentPage)
     //loadList();
     load()
 }

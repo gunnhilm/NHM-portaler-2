@@ -7,7 +7,7 @@ const textItems = {
     helpButton: ["Hjelp", "Help"],
     statistikkButton: ["Statistikk", "Statistics"],
     journalLink: ["Journalsøk", "Journal search"],
-    logo: [urlPath + "/images/uio_nhm_a_cmyk.png", urlPath + "/images/uio_nhm_a_eng_cmyk.png"],
+    logo: [urlPath + "/images/UiO NHM SH V2 RGB.png", urlPath + "/images/uio_nhm_a_eng_cmyk.png"],
     
     // index page
     emptySearch: ["Tøm søk", "Empty search"],
@@ -27,15 +27,6 @@ const textItems = {
     pattedyr: ["Pattedyr", "Mammals"],
     fishHerp: ["Fisk og herptiler (kun DNA)", "Fish and herptiles (only DNA)"],
     other: ["Andre grupper (kun DNA)", "Other groups (only DNA)"],
-    // ---------DNA
-    // dna_karplanter: ["Karplanter (DNA)", "Vascular plants (DNA)"],
-    // dna_insekter: ["Insekter (DNA)", "Insects (DNA)"],
-    // dna_fish_herptiles: ["Fisk & Herptiler (DNA)", "Fish & Herptiles (DNA)"],
-    // dna_fungi_lichens: ["Sopp & Lav (DNA)", "Fungi & Lichens (DNA)"],
-    // dna_other: ["Andre grupper (DNA)", "Other groups (DNA)"],
-    // // --------------specimens and DNA
-    // fungi_specimens_dna: ["Sopp - specimens og DNA", "Fungi - specimens and DNA"],   //DNAlink
-
     hitsPerPage: ["Treff per side", "Hits per page"],
     downloadLink: ["Last ned resultat", "Download results"],
     downloadPhoto: ["Last ned bilder", "Download photos"],
@@ -54,7 +45,7 @@ const textItems = {
     selectNone: ["Ingen", "None"],
     //headerSequence: ["Sekvens ID", "Sequence ID"],
     mustChoose: ["Du må velge en samling", "You must choose a collection"],
-    placeholder: ["Søk etter latinsk artsnavn, katalognummer, person, sted... Flere søkeord i ett søk er mulig.", "Search for latin species name, catalognumber, person, place... Several terms possible."],
+    placeholder: [" Søk etter latinsk artsnavn, katalognummer, person, sted... ", " Search for latin species name, catalognumber, person, place... "],
     serverError: ["Serverfeil, prøv nytt søk", "Server error, try new search"],
     noHits: ["Ingen treff, prøv nytt søk", "No hits, try new search"],
     errorRenderResult: ["Noe gikk feil, søk igjen, begrens ev. søket med f.eks. flere søkeord", "Something went wrong, try a new search, possibly limit the seach by e.g. more search terms"],
@@ -108,19 +99,16 @@ const textItems = {
     concentration: ['DNA konsentrasjon:','DNA concentration'],
     coordPlaceholder: ['&lt;Ingen koordinater&gt;', '&lt;No coordinates&gt;'],
 
-
-    // corema data page
-    //coremaHeader: ["DNA-bank data", "DNA-bank data"],
-    //coremaDummyText: ["her kommer corema tekst", "here comes corema text"],
-    
     //ShowStat page
     showStatHeader: ["Statistikk over samlingene", "Statistics from the collections"],
     showStatText: ["Disse tallene reflekterer hva som er registrert i museets databaser. Da kun et fåtall av samlingene har alle objektene registrert i databasene, reflekterer ikke disse tallene nødvendigvis samlingenes totale bredde.",
         "These numbers reflect what is recorded in our databases, not necessarily the true number of items in the collections."],
-    
-    // about page
-    // aboutHeader: ["Om NHMs samlingsportal", "About NHM's collection portal"],
-    // aboutText: ["Kontaktinformasjon: \<br><br> eirik.rindal@nhm.uio.no \<br> gunnhilm@nhm.uio.no \<br><br>", "Contact information: <br><br> eirik.rindal@nhm.uio.no <br> gunnhilm@nhm.uio.no <br><br>"],
+    collectionHeader: ["Samling", "Collection"],
+    nbObjHeader: ["Antall objekter", "Number of objects"],
+    nbPhotoHeader: ["Antall med foto", "Records with photo"],
+    nbCoordHeader: ["Poster med koordinater", "Records with coordinates"],
+    vascularHeader: ["Karplanter", "Vascular plants"],
+    mossesHeader: ["Moser", "Mosses"],
 
     // help page
     helpHeader: ["Hvordan søke", "How to search the collections"],
@@ -148,7 +136,6 @@ const renderText = function(lang) {
     }
     
     //header
-    //document.querySelector('#about-button').innerHTML = textItems.aboutButton[index]
     document.querySelector('#help-link').innerHTML = textItems.helpButton[index]
     document.querySelector('#statistikk-link').innerHTML = textItems.statistikkButton[index]
     document.querySelector('#search-page-link').innerHTML = textItems.searchPageLink[index]
@@ -165,9 +152,6 @@ const renderText = function(lang) {
 
     //Doppdown med valg av samlinger, index page og stat page
     if (!location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler')) {
-        
-       
-        
         document.querySelector('#karplanter').innerHTML = textItems.karplanter[index]
         document.querySelector('#sopp').innerHTML = textItems.sopp[index]
         document.querySelector('#moser').innerHTML = textItems.moser[index]
@@ -178,16 +162,8 @@ const renderText = function(lang) {
         document.querySelector('#pattedyr').innerHTML = textItems.pattedyr[index]
         document.querySelector('#dna_fish_herptiles').innerHTML = textItems.fishHerp[index]
         document.querySelector('#dna_other').innerHTML = textItems.other[index]
-        
-        //-------------------------- DNA
-        // document.querySelector('#dna_karplanter').innerHTML = textItems.dna_karplanter[index]
-        // document.querySelector('#dna_insekter').innerHTML = textItems.dna_insekter[index]
-        // document.querySelector('#dna_fish_herptiles').innerHTML = textItems.dna_fish_herptiles[index]
-        // document.querySelector('#dna_fungi_lichens').innerHTML = textItems.dna_fungi_lichens[index]
-        // document.querySelector('#dna_other').innerHTML = textItems.dna_other[index]
-        // //------------------------- Specimens and DNA
-        // document.querySelector("#fungi_specimens_dna").innerHTML = textItems.fungi_specimens_dna[index] //DNAlink
     }
+
     // index page
     if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler')) {
         document.querySelector('#vennligst').innerHTML = textItems.vennligst[index] 
@@ -201,7 +177,7 @@ const renderText = function(lang) {
             document.getElementById("head-nb-hits").innerHTML = textItems.nbHitsText[index]
         }
         document.querySelector('#download-button').innerHTML = textItems.downloadLink[index]
-        document.querySelector('#download-photo-button').innerHTML = textItems.downloadPhoto[index]
+        //document.querySelector('#download-photo-button').innerHTML = textItems.downloadPhoto[index]
         document.querySelector('#search-text').placeholder = textItems.placeholder[index]
         //document.getElementById('zoom-expl-popup').innerHTML = textItems.mapHelpContent[index]
         document.querySelector('#zoom-button').innerHTML = textItems.zoomButton[index]
@@ -229,15 +205,16 @@ const renderText = function(lang) {
             document.getElementById("resultPageAlert1").innerHTML = textItems.lastPageAlert[index]
         }
         // what did we mean here?
-        // if(document.querySelector("#map-search").innerHTML) {
-        //     document.querySelector("#map-search").innerHTML = textItems.mapSearchAlt[index]
-        // }
+        if(!document.querySelector("#map-search").innerHTML) {
+            document.querySelector("#map-search").innerHTML = textItems.mapSearchAlt[index]
+        }
     }
 
     // object page
     if (location.href.includes('object')) {
         // read string and get the object from sessionStorage (for the object-page)
         const loadString = () => {
+            
             const objectJSON = sessionStorage.getItem('string')
             
             try {//object
@@ -254,6 +231,7 @@ const renderText = function(lang) {
         const id = urlParams.get('id')
 
         const object = allObject.find(x => x.catalogNumber === id)
+        
 
         
         document.querySelector("#head-species-name").innerHTML = textItems.headSpeciesName[index]
@@ -301,16 +279,23 @@ const renderText = function(lang) {
         document.getElementById('large-map-object-button').innerHTML = textItems.largeMapButton[index]
     }
     
-    // // corema page
-    // if (location.href.includes('corema')) {
-    //     document.querySelector('#coremaHeader').innerHTML = textItems.coremaHeader[index]
-    //     document.querySelector('#coremaDummyText').innerHTML = textItems.coremaDummyText[index]
-    // }
     // Stat page
     if (location.href.includes('showStat')) {
         document.querySelector('#showStatHeader').innerHTML = textItems.showStatHeader[index]
         document.querySelector('#showStatText').innerHTML = textItems.showStatText[index]
         document.querySelector('#total').innerHTML = textItems.total[index] // ekstra valg på dropp dawn
+        document.querySelector('#Collection_header').innerHTML = textItems.collectionHeader[index]
+        document.querySelector('#NbObj_header').innerHTML = textItems.nbObjHeader[index]
+        document.querySelector('#NbPhoto_header').innerHTML = textItems.nbPhotoHeader[index]
+        document.querySelector('#NbCoord_header').innerHTML = textItems.nbCoordHeader[index]
+        document.querySelector('#Vascular_header').innerHTML = textItems.karplanter[index]
+        document.querySelector('#Mosses_header').innerHTML = textItems.moser[index]
+        document.querySelector('#Fungi_header').innerHTML = textItems.sopp[index]
+        document.querySelector('#Lichen_header').innerHTML = textItems.lav[index]
+        document.querySelector('#Insects_header').innerHTML = textItems.insekter[index]
+        document.querySelector('#Birds_header').innerHTML = textItems.fugler[index]
+        document.querySelector('#Mammals_header').innerHTML = textItems.pattedyr[index]
+        
     }
 
     // about page
@@ -359,7 +344,6 @@ document.querySelector('#language').addEventListener('change', (e) => {
                 index = 1
             }
 
-            //document.querySelector("#result-header").innerHTML = textItems.searchResultHeadline[index]
             document.querySelector('#head-nb-hits').innerHTML = textItems.nbHitsText[index]
             document.querySelector('#download-button').innerHTML = textItems.downloadLink[index]
             document.querySelector('#download-photo-button').innerHTML = textItems.downloadPhoto[index]
@@ -387,13 +371,6 @@ document.querySelector('#language').addEventListener('change', (e) => {
 
             const headerRow = document.querySelector("#myTable").rows[0]
 
-            // headerRow.cells[1].innerHTML = `<button id='scientificNameButton' class='sort'>${textItems.headerTaxon[index].bold()} ${getArrowDown(1)} ${getArrowUp(1)}</button>`
-            // headerRow.cells[2].innerHTML = `<button id='collectorButton' class='sort'>${textItems.headerCollector[index].bold()} ${getArrowDown(2)} ${getArrowUp(2)}</button>`
-            // headerRow.cells[3].innerHTML = `<button id='dateButton' class='sort'>${textItems.headerDate[index].bold()} ${getArrowDown(3)} ${getArrowUp(3)}</button>`
-            // headerRow.cells[4].innerHTML = `<button id='countryButton' class='sort'>${textItems.headerCountry[index].bold()} ${getArrowDown(4)} ${getArrowUp(4)}</button>`
-            // headerRow.cells[5].innerHTML = `<button id='municipalityButton' class='sort'>${textItems.headerMunicipality[index].bold()} ${getArrowDown(5)} ${getArrowUp(5)}</button>`
-            // headerRow.cells[6].innerHTML = `<button id='localityButton' class='sort'>${textItems.headerLocality[index].bold()} ${getArrowDown(6)} ${getArrowUp(6)}</button>`
-            
             cell2 = headerRow.cells[1]
             cell3 = headerRow.cells[2]
             cell4 = headerRow.cells[3]

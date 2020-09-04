@@ -15,7 +15,7 @@ const mammalPreservationFile = '../../src/data/mammals_preservation.txt'
 const mammalMaterialsampleFile = '../../src/data/mammals_materialsample.txt'
 const mammalAmplificationFile = '../../src/data/dna_mammals_amplification.txt'
 const mammalPreparationFile = '../../src/data/dna_mammals_preparation.txt'
-const mammalOccurrenceFile = '../../src/data/mammals_occurrence_short.txt' // switch to non-short
+const mammalOccurrenceFile = '../../src/data/mammals_occurrence.txt' // switch to non-short
 
 const fishHerpMultimediaFile = '../../src/data/fishHerps_multimedia.txt'
 const fishHerpPreservationFile = '../../src/data/fishHerps_preservation.txt'
@@ -286,7 +286,7 @@ const stitchCoremaFiles = (occurrenceFile, preparationFile, amplificationFile, m
     })
 }
 
-stitchCoremaFiles(birdOccurrenceFile,birdPreparationFile,birdAmplificationFile,birdMaterialsampleFile,birdPreservationFile,birdMultimediaFile,'../data/birds_stitched_file.txt')
-//stitchCoremaFiles(mammalOccurrenceFile,mammalPreparationFile,mammalAmplificationFile,mammalMaterialsampleFile,mammalPreservationFile,mammalMultimediaFile,'../data/mammals_stitched_file.txt')
+//stitchCoremaFiles(birdOccurrenceFile,birdPreparationFile,birdAmplificationFile,birdMaterialsampleFile,birdPreservationFile,birdMultimediaFile,'../data/birds_stitched_file.txt')
+stitchCoremaFiles(mammalOccurrenceFile,mammalPreparationFile,mammalAmplificationFile,mammalMaterialsampleFile,mammalPreservationFile,mammalMultimediaFile,'../data/mammals_stitched_file.txt')
 //stitchCoremaFiles(fishHerpOccurrenceFile,fishHerpPreparationFile,fishHerpAmplificationFile,fishHerpMaterialsampleFile,fishHerpPreservationFile,fishHerpMultimediaFile,'../data/dna_fish_herptiles_stitched_file.txt')
 //stitchCoremaFiles(otherOccurrenceFile,otherPreparationFile,otherAmplificationFile,otherMaterialsampleFile,otherPreservationFile,otherMultimediaFile,'../data/dna_other_stitched_file.txt')
