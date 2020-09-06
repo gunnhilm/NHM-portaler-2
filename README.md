@@ -7,7 +7,7 @@ Make sure you have [NodeJS](https://nodejs.org/en/) installed.
 Download the portal to a folder on your computer. In a console window form the "NHM-portaler-2" folder run npm -i
 
 ### Apache
-The portal is setup to run behind a apache server. To run the portal locally on your (windows) computer install  Apache from i.e. [Apachelounge](https://www.apachelounge.com/download/), and make the following adjustments:
+The portal is setup to run behind a apache server. To run the portal locally on your (windows) computer install Apache from i.e. [Apachelounge](https://www.apachelounge.com/download/), and make the following adjustments:
 
 in the httpd.conf file uncomment the lines:
 
