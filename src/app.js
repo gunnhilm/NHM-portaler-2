@@ -69,31 +69,32 @@ app.get('/search', (req, res) => {
 })
 
 // for å laste ned søkeresultatene
-app.get('/download', (req, res) => {
-    if (!req.query.search) {
-        return res.send({
-            error: 'ingen data å laste ned'
-        })
-    } else {
+// app.get('/download', (req, res) => {
+//     console.log("i app download")
+//     if (!req.query.search) {
+//         return res.send({
+//             error: 'ingen data å laste ned'
+//         })
+//     } else {
 
-        fileRead.search(req.query.samling, req.query.search, req.query.linjeNumber,req.query.limit, (error, results) => {
+//         fileRead.search(req.query.samling, req.query.search, req.query.linjeNumber,req.query.limit, (error, results) => {
 
             
-            if (results){
-                 res.send({
-                    unparsed: results
-                }) 
+//             if (results){
+//                  res.send({
+//                     unparsed: results
+//                 }) 
               
-            } else {
-                console.log('Error: no results came back from seach')
-            }
-        })
-    }
-})
+//             } else {
+//                 console.log('Error: no results came back from seach')
+//             }
+//         })
+//     }
+// })
 
 // to download image(s)
 // app.get('/downloadImage', (req, res) => {
-//     console.log(req)
+//     console.log(req.query)
 //     if (!req.query.search) {
 //         console.log('feil?')
 //         return res.send({

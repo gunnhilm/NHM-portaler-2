@@ -7,7 +7,7 @@ const textItems = {
     helpButton: ["Hjelp", "Help"],
     statistikkButton: ["Statistikk", "Statistics"],
     journalLink: ["Journalsøk", "Journal search"],
-    logo: [urlPath + "/images/UiO NHM SH V2 RGB.png", urlPath + "/images/uio_nhm_a_eng_cmyk.png"],
+    logo: [urlPath + "/images/UiO NHM SH V2 RGB.png", urlPath + "/images/uio_nhm_a_eng_cmyk_2.png"],
     
     // index page
     emptySearch: ["Tøm søk", "Empty search"],
@@ -144,7 +144,7 @@ const renderText = function(lang) {
     let logo = document.querySelector('#logo')
     logo.src = textItems.logo[index]
     if (language === "Norwegian") {
-        logo.setAttribute("style", "height:15px")
+        logo.setAttribute("style", "height:30px")
     } else if (language === "English") {
         logo.setAttribute("style", "height:30px")
     }
@@ -205,9 +205,10 @@ const renderText = function(lang) {
             document.getElementById("resultPageAlert1").innerHTML = textItems.lastPageAlert[index]
         }
         // what did we mean here?
-        if(!document.querySelector("#map-search").innerHTML) {
-            document.querySelector("#map-search").innerHTML = textItems.mapSearchAlt[index]
-        }
+        // kutt
+        // if(!document.querySelector("#map-search").innerHTML) {
+        //     document.querySelector("#map-search").innerHTML = textItems.mapSearchAlt[index]
+        // }
     }
 
     // object page
@@ -346,7 +347,7 @@ document.querySelector('#language').addEventListener('change', (e) => {
 
             document.querySelector('#head-nb-hits').innerHTML = textItems.nbHitsText[index]
             document.querySelector('#download-button').innerHTML = textItems.downloadLink[index]
-            document.querySelector('#download-photo-button').innerHTML = textItems.downloadPhoto[index]
+            //document.querySelector('#download-photo-button').innerHTML = textItems.downloadPhoto[index]
             document.querySelector('#large-map-button').innerHTML = textItems.largeMapButton[index]
             document.querySelector('#export-png').innerHTML = textItems.downloadMapButton[index]
             document.querySelector('#checkedInMap').innerHTML = textItems.checkedInMap[index]   

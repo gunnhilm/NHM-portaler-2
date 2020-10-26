@@ -22,6 +22,18 @@ header {
 .header-left {
     float: left;
 }
+
+@media only screen and (min-width: 848px) {
+    #language {
+        font-size: 16px;
+    }
+    .headerLink {
+        color: white;
+        background-color: #57AD3E;
+        
+    }
+}
+
 @media only screen and (max-width: 950px) {
     
     .result-table {
@@ -30,16 +42,21 @@ header {
     }
 }
 
-@media only screen and (max-width: 820px) {
+@media only screen and (max-width: 847px) {
     .sub-header-right{
-        background-color: #57AD3E;
         width: 100%;
         float:right;
-        /* margin-top: 48px; */
+    }
+    .headerLink {
+        color: #57AD3E;
+        background-color: white;
+        
+    }
+    .header-right {
+        background-color: white;
     }
     .headerLink {
         width: 60px;
-        font-size: 12px;
     }
     .row-sampleType {
         display: none;
@@ -53,9 +70,9 @@ header {
     .cell5 {
         display: none;
     }
-    /* #language {
-        font-size: 12px;
-    } */
+    #language {
+        font-size: 16px; 
+    }
 }
 
 @media only screen and (max-width: 600px) {
@@ -68,6 +85,8 @@ header {
     .headerLink {
         width: 60px;
         font-size: 12px;
+        color: white;
+        background-color: #57AD3E;
     }
     .row-innsamler {
         display: none;
@@ -76,18 +95,16 @@ header {
         display: none;
     }
    
-    /* #language {
+    #language {
         font-size: 12px;
-    } */
+    }
 }
 
 
 .headerLink {
     text-decoration: none;
-    color: white;
     float: right;
     padding: 15px;
-    background-color: #57AD3E;
 }
 
 #language {
@@ -97,8 +114,11 @@ header {
     border: none;
     float: right;
     padding: 15px;
-    /* font-size: 16px; */
 } 
+
+#language-optgroup {
+    font-size: 16px;
+}
 
 #logo {
     padding: 15px;
@@ -202,9 +222,10 @@ td {
 #zoom-button {
     padding: 2px 12px;
 }
-#large-map-button {
+#large-map-button, #export-png, #checkedInMap {
     padding: 2px
 }
+
 #large-map-object-button {
     padding: 2px
 }

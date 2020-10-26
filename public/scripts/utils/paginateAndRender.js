@@ -179,7 +179,7 @@ const resultTable = (subMusitData, musitData) => {
                     <option value="none" id="selectNone">${ textItems.selectNone[index]}</option>
                 </select>`
                 //investigateChecked()
-
+                
                 // lag overskrifene klikk og sorterbare
                 addSortingText('musitIDButton', 1, 'catalogNumber', musitData)  // Tabellen blir sortert på nummer
                 addSortingText('scientificNameButton', 2, 'scientificName', musitData)
@@ -266,7 +266,6 @@ const resultTable = (subMusitData, musitData) => {
             
         
         if (!searchFailed) {
-        
             try {
                 drawMap(musitData) 
             } catch (error) {
@@ -274,6 +273,7 @@ const resultTable = (subMusitData, musitData) => {
                 reject(error);
             }
         } 
+        
     }  
     catch(error) {
         console.log('er vi her?')
