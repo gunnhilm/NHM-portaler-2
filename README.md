@@ -38,7 +38,7 @@ The portal depends on the MUSIT-dump files, containing data about natural histor
 Download the files from the [MUSIT-dump page](http://www.unimus.no/nedlasting/datasett/) and place in the "NHM-portaler-2\src\data" folder.
 
 ## Run the portal
-In a console window form the "NHM-portaler-2" folder run "npm run start" or "npm run dev" to run development mode. The portal will run on localhst:3000
+In a console window form the "NHM-portaler-2" folder run "npm run start" or "npm run dev" to run development mode. The portal will run on localhost:3000
 
 Start your apache server, if you are using Apachelounge from a console window in the folder  C:\Apache24\bin run "httpd.exe".
 
