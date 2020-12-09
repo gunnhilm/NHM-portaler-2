@@ -6,7 +6,7 @@ const getStatFile = require('./utils/getStatFile')
 const footerDate = require('./utils/footerDate')
 const hbs = require('hbs')
 const helmet = require('helmet')
-const request = require('request') // move to fileread
+// const request = require('request') // move to fileread
 const fs = require ('fs') // move to fileread
 
 
@@ -195,9 +195,14 @@ app.get('/mapObject', (req, res) => {
     res.render('mapObject', {})
 })
 
+app.get('/getDOI', (req, res) => {
+    res.render('getDOI', {})
+})
+
 app.get('*', (req, res) => {
     res.render('404', {})
 })
+
 
 app.listen(port, () => {
     console.log('Server is up on port ' + port)
