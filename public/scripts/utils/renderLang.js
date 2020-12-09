@@ -120,8 +120,19 @@ const textItems = {
     <span class="bold" style="font-size: 16pt">Contact information:</span> <br><br> nhm-samlingsportaler@nhm.uio.no`],
 
     // journals page
-    journalHeader: ['Søk i journaler', 'Search journals']
+    journalHeader: ['Søk i journaler', 'Search journals'],
 
+    // getDOI page
+    getDOIHeader: ['Få DOI fra GBIF basert på en liste med museumsnumre','Get DOI from GBIF from a list of museum numbers'],
+    selectMuseum: ['--Velg museum--', '--Select museum--'],
+    selectCollection: ['--Velg samling--', '--Select collection--'],
+    onloggingData: ['GBIF påloggingsdata:', 'GBIF onlogging information:'],
+    emailRequest: ['Din epostadresse','Enter your email address'],
+    usernameRequest: ['GBIF brukernavn', 'GBIF username'],
+    passwordRequest: ['GBIF passord', 'GBIF password'],
+    pasteRequest: ['Lim inn museumsnumre', 'Paste museum numbers'],
+    resetButton: ['Nullstill skjema', 'Reset form'],
+    results: ['Resultater:', 'Results:']
 }
 
 
@@ -151,7 +162,7 @@ const renderText = function(lang) {
     
 
     //Doppdown med valg av samlinger, index page og stat page
-    if (!location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler')) {
+    if (!location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler') & !location.href.includes('getDOI')) {
         document.querySelector('#karplanter').innerHTML = textItems.karplanter[index]
         document.querySelector('#sopp').innerHTML = textItems.sopp[index]
         document.querySelector('#moser').innerHTML = textItems.moser[index]
@@ -165,7 +176,7 @@ const renderText = function(lang) {
     }
 
     // index page
-    if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler')) {
+    if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler')& !location.href.includes('getDOI')) {
         document.querySelector('#vennligst').innerHTML = textItems.vennligst[index] 
         
         document.querySelector('#search-button').innerHTML = textItems.searchButton[index]
@@ -317,6 +328,19 @@ const renderText = function(lang) {
         //document.querySelector('#helpText').innerHTML = textItems.helpText[index]
     }
 
+    // getDOI page
+    if (location.href.includes('getDOI')) {
+        document.querySelector('#getDOIHeader').innerHTML = textItems.getDOIHeader[index]
+        document.querySelector('#selectMuseum').innerHTML = textItems.selectMuseum[index] 
+        document.querySelector('#selectCollection').innerHTML = textItems.selectCollection[index] 
+        document.querySelector('#onloggingData').innerHTML = textItems.onloggingData[index]
+        document.querySelector('#emailRequest').innerHTML = textItems.emailRequest[index]
+        document.querySelector('#usernameRequest').innerHTML = textItems.usernameRequest[index]
+        document.querySelector('#passwordRequest').innerHTML = textItems.passwordRequest[index]
+        document.querySelector('#pasteRequest').innerHTML = textItems.pasteRequest[index]
+        document.querySelector('#resetButton').innerHTML = textItems.resetButton[index]
+        document.querySelector('#results').innerHTML = textItems.results[index]
+    }
 }
 
 let language
@@ -336,7 +360,7 @@ document.querySelector('#language').addEventListener('change', (e) => {
     renderText(language)
     sessionStorage.setItem('language', language)
    
-    if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler')) {
+    if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler') & !location.href.includes('getDOI')) {
         if (document.querySelector("#head-nb-hits").innerHTML) {
 
             if (language === "Norwegian") {

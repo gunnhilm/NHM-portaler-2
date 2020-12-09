@@ -119,7 +119,14 @@ document.getElementById('museum-select').addEventListener('change',function(){
         // tøm list
         select.options.length = 0
         // første linje
-        select.options[select.options.length] = new Option(' -- select an option -- ', 0);
+        let language
+        language = sessionStorage.getItem('language')
+        if (language === "English") {
+            index = 1
+        } else {
+            index = 0
+        }
+        select.options[select.options.length] = new Option(textItems.selectCollection[index] , 0);
         select.options[0].disabled = true
         let i=1
         for (const [index] of Object.entries(GBifIdentifiers[valgtMuseum])) {
