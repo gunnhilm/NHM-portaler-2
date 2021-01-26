@@ -170,7 +170,7 @@ const resultTable = (subMusitData, musitData) => {
                 cell7.innerHTML = `<button id='localityButton' class='sort'>${textItems.headerLocality[index].bold()} ${getArrows('locality')}</button>`
                 cell8.innerHTML = `<button id='photoButton' class='sort'><span class="fas fa-camera"></span>${getArrows('associatedMedia')}</button>`
                 cell9.innerHTML = `<button id='coordinateButton' class='sort'><span class="fas fa-compass"></span>${getArrows('decimalLongitude')}</button>`
-                cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} </button>`
+                //cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} </button>`
                 cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} ${getArrows('items')}</button>`
                 cell11.innerHTML = `<select id='checkboxSelect' class='sort'>
                     <option value="select" id="select">${textItems.select[index].bold()}</option>
@@ -180,7 +180,7 @@ const resultTable = (subMusitData, musitData) => {
                 </select>`
                 //investigateChecked()
                 
-                // lag overskrifene klikk og sorterbare
+                // lag overskriftene klikk og sorterbare
                 addSortingText('musitIDButton', 1, 'catalogNumber', musitData)  // Tabellen blir sortert på nummer
                 addSortingText('scientificNameButton', 2, 'scientificName', musitData)
                 addSortingText('collectorButton', 3, 'recordedBy', musitData)
@@ -244,7 +244,7 @@ const resultTable = (subMusitData, musitData) => {
         }
         // Show download button
         downloadButton.style.display = "block"
-        //downloadPhotoButton.style.display = "block"
+        downloadPhotoButton.style.display = "block"
         document.getElementById("empty-search-button").style.display = "inline-block"
         document.getElementById("first").style.display = "inline-block"
         document.getElementById("previous").style.display = "inline-block"

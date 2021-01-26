@@ -77,110 +77,54 @@ downloadButton.addEventListener('click', (e) => {
 
 
 
-// downloadPhotoButton.addEventListener('click', (e) => {
-//     e.preventDefault()
+downloadPhotoButton.addEventListener('click', (e) => {
+    e.preventDefault()
     
-//     const url = urlPath + '/downloadImage/'
-//         console.log(url);
+    const url = urlPath + '/downloadImage/'
+        console.log(url);
         
-//         // fetch(url).then((response) => {
-//         //     console.log('image-her')
-                            
-//         //     if (!response.ok) {
-//         //         throw 'noe går galt med bilde-nedlasting, respons ikke ok'
-//         //     } else {
-//         //         try {
-//         //             console.log(response)
-//         //             response.text().then((data) => {
-//         //                 if(data.error) {
-                            
-//         //                     errorMessage.innerHTML = textItems.serverError[index]
-//         //                     return console.log(data.error)
-//         //                 } else {
-                            
-//         //                     const JSONdata = JSON.parse(data)  
-//         //                     sessionStorage.setItem('searchLineNumber', JSONdata.unparsed.count)
-//         //                     sessionStorage.setItem('searchTerm', searchTerm)
-//         //                     const parsedResults = Papa.parse(JSONdata.unparsed.results, {
-//         //                         delimiter: "\t",
-//         //                         newline: "\n",
-//         //                         quoteChar: '',
-//         //                         header: true,
-//         //                     }) 
-//         //                     //check if there are any hits from the search
-//         //                     if ( parsedResults.data === undefined || parsedResults.data.length === 0 ) {
-//         //                         nbHitsElement.innerHTML = textItems.noHits[index]
-//         //                     } else {
-//         //                         try {
-//         //                             // hvis vi får flere enn 4000 treff må vi si i fra om det
-//         //                             if(parsedResults.data.length > 3999){
-//         //                                 nbHitsElement.textContent = 'mer enn 4000'
-//         //                             } else {
-//         //                                 nbHitsElement.textContent = parsedResults.data.length
-//         //                             }
-//         //                             nbHitsHeader.innerHTML = textItems.nbHitsText[index]
-//         //                             //parsedResults.data.forEach(el => el.checked = false)
-//         //                             console.log(parsedResults.data)
-//         //                             sessionStorage.setItem('string', JSON.stringify(parsedResults.data))   
-//         //                             // resultTable() 
+        
+    const searchResult = JSON.parse(sessionStorage.getItem('string'))
+    // loop through - put those wich checked in new array
+    const newArray = []
+    searchResult.forEach(el => {
+        if (el.checked) {newArray.push(el)}
+    })
+    console.log(newArray)
+    // legger til kode her
+    if (newArray.length == 0) {
+        console.log('velg bilder å laste ned')
+        zoomModal.style.display = "block";
+        zoomModalContent.innerHTML = textItems.mapCheckedMessage[index]
 
-                                   
-//         //                             load()
-//         //                         } catch (error) {
-//         //                             errorMessage.innerHTML = textItems.errorRenderResult[index]
-//         //                             searchFailed = true // is checked when map is drawn 
-//         //                         }
-                                 
-//         //                     }
-//         //                 }
-//         //             })
-//         //         }
-//         //         catch (error) {
-//         //             console.error(error)
-//         //             reject(error);
-//         //         }
-//         //     }
-//         //     //document.getElementById("please-wait").style.display = "none"
-//         // }).catch((error) => {
-//         //     console.log('her er den nye bilde-download feilen' + error);
-//         //     //errorMessage.innerHTML = textItems.serverError[index]
-//         //     //document.getElementById("please-wait").style.display = "none"
-//         // })
-
-//     const searchResult = JSON.parse(sessionStorage.getItem('string'))
-//     // loop through - put those wich checked in new array
-//     const newArray = []
-//     searchResult.forEach(el => {
-//         if (el.checked) {newArray.push(el)}
-//     })
-//     console.log(newArray)
-//     const photoToDownload = newArray[0].associatedMedia
-    
-//     console.log(photoToDownload)
-
-    
-    
-//     //forceDownload(photoToDownload, 'image.jpg')
-// })
+        
+    } else {
+        newArray.forEach( el => {
+            const photoToDownload = el.associatedMedia    
+            console.log(photoToDownload)
+            forceDownload(photoToDownload, `image${el.catalogNumber}.jpg`)
+        })
+    }
+})
 
 
-/////// does not work, but I don't know if it is because the images lack a certain header, or if this is not longer possible (in chrome)
-// function forceDownload(url, fileName){
-//     var xhr = new XMLHttpRequest();
-//     xhr.open("GET", url, true);
-//     xhr.responseType = "blob";
-//     xhr.onload = function(){
-//         var urlCreator = window.URL || window.webkitURL;
-//         var imageUrl = urlCreator.createObjectURL(this.response);
-//         var tag = document.createElement('a');
-//         tag.href = imageUrl;
-//         tag.download = fileName;
-//         document.body.appendChild(tag);
-//         tag.click();
-//         document.body.removeChild(tag);
-//     }
-//     xhr.send();
-// }
+
+function forceDownload(url, fileName){
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url, true);
+    xhr.responseType = "blob";
+    xhr.onload = function(){
+        var urlCreator = window.URL || window.webkitURL;
+        var imageUrl = urlCreator.createObjectURL(this.response);
+        var tag = document.createElement('a');
+        tag.href = imageUrl;
+        tag.download = fileName;
+        document.body.appendChild(tag);
+        tag.click();
+        document.body.removeChild(tag);
+    }
+    xhr.send();
+}
 
  const doSearch = (limit = 20) => {
      console.log('vi søker');
@@ -205,7 +149,7 @@ downloadButton.addEventListener('click', (e) => {
     document.getElementById("please-wait").style.display = "block"
     // hide download button
     downloadButton.style.display = "none"
-    //downloadPhotoButton.style.display = "none"
+    downloadPhotoButton.style.display = "none"
     document.getElementById("head-nb-hits").innerHTML = ""
     document.getElementById("zoom-button").style.display = "none"
     document.getElementById("large-map-button").style.display = "none"

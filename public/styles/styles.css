@@ -17,17 +17,25 @@ header {
     width: 90%;
     display: inline-block;
     height: 48px;
-    
 }
+
 .header-left {
     float: left;
 }
 
+/*endre her; legg til denne*/
+.sub-header-right{
+    float: right; 
+}
+
+
 @media only screen and (min-width: 848px) {
     #language {
         font-size: 16px;
+        
     }
     .headerLink {
+
         color: white;
         background-color: #57AD3E;
         
@@ -42,21 +50,20 @@ header {
     }
 }
 
-@media only screen and (max-width: 847px) {
+@media only screen and (max-width: 974px) {
     .sub-header-right{
         width: 100%;
         float:right;
+        
     }
     .headerLink {
         color: #57AD3E;
         background-color: white;
+        width: 60px;
         
     }
     .header-right {
         background-color: white;
-    }
-    .headerLink {
-        width: 60px;
     }
     .row-sampleType {
         display: none;
@@ -72,21 +79,31 @@ header {
     }
     #language {
         font-size: 16px; 
+        background-color: white;
+        color:#57AD3E;
     }
 }
 
 @media only screen and (max-width: 600px) {
     .header-right {
-        background-color: #57AD3E;
+        
+        margin-top: 50px;
         width: 10%;
         float:right;
         /* margin-top: 48px; */
     }
+    .sub-header-right {
+        
+        margin: 5px;
+        color: white;
+        
+        
+    }
     .headerLink {
         width: 60px;
         font-size: 12px;
-        color: white;
-        background-color: #57AD3E;
+        /* color: white; endre her*/ 
+        /* background-color: #57AD3E; endre her*/
     }
     .row-innsamler {
         display: none;
@@ -97,6 +114,7 @@ header {
    
     #language {
         font-size: 12px;
+        
     }
 }
 

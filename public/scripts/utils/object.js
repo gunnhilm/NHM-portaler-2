@@ -353,6 +353,7 @@ document.getElementById('large-map-object-button').onclick = () => {
     window.open(href=`${urlPath}/mapObject/?id=${id}`)
 }
 
+
 // document.getElementById('nextObject').onclick = () => {
 //     console.log('neste objekt')
 // }   

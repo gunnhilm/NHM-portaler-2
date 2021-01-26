@@ -101,14 +101,24 @@
                 </div>
                 <div style="width:29%; float:left; min-width:300px">
                     <div class="map-object" id="map-object"></div>
-                    <button id="zoom-button" style="display:none">Zoom</button>
-                    <div id="zoom-modal" class="modal">
-                        <div class="modal-content">
-                            <span class="close">&times;</span>
-                            <span class="popuptext" id="zoom-expl-popup"></span>
-                        </div>    
-                    </div>
-                    <button id="large-map-object-button" style="display:none"></button>
+                    <table>
+                        <tr>
+                            <td>
+                                <button id="zoom-button" style="display:none">Zoom</button>
+                                <div id="zoom-modal" class="modal">
+                                    <div class="modal-content">
+                                        <span class="close">&times;</span>
+                                        <span class="popuptext" id="zoom-expl-popup"></span>
+                                    </div>    
+                                </div>
+                            </td>
+                            <td>
+                                <button id="large-map-object-button" style="display:none"></button>
+                            </td>
+                            
+                        </tr>
+                    </table>
+                    
                     <br><br>
                 </div>
                 <div style="width:29%; float:left; min-width:254px">
@@ -117,10 +127,20 @@
                             <img id="photo-box">
                         </a>
                     </div>
-                        <div id = "photoButtons">
-                        <div class="photoButtonsClass"> <button id="next-photo"></button> </div>
-                        <div class="photoButtonsClass"> <button id="previous-photo"></button></div>
-                        <div class="photoButtonsClass"><div id="nb-photos"></div></div>
+                    <div id = "photoButtons">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div class="photoButtonsClass"> <button id="next-photo"></button> </div>
+                                </td>
+                                <td>
+                                    <div class="photoButtonsClass"> <button id="previous-photo"></button></div>
+                                </td>
+                                <td>
+                                    <div class="photoButtonsClass"><div id="nb-photos"></div></div>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
                     

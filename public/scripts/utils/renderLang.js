@@ -188,9 +188,9 @@ const renderText = function(lang) {
             document.getElementById("head-nb-hits").innerHTML = textItems.nbHitsText[index]
         }
         document.querySelector('#download-button').innerHTML = textItems.downloadLink[index]
-        //document.querySelector('#download-photo-button').innerHTML = textItems.downloadPhoto[index]
+        document.querySelector('#download-photo-button').innerHTML = textItems.downloadPhoto[index]
         document.querySelector('#search-text').placeholder = textItems.placeholder[index]
-        //document.getElementById('zoom-expl-popup').innerHTML = textItems.mapHelpContent[index]
+        document.getElementById('zoom-expl-popup').innerHTML = textItems.mapHelpContent[index]
         document.querySelector('#zoom-button').innerHTML = textItems.zoomButton[index]
         document.querySelector('#large-map-button').innerHTML = textItems.largeMapButton[index]
         document.querySelector('#export-png').innerHTML = textItems.downloadMapButton[index]
@@ -289,6 +289,7 @@ const renderText = function(lang) {
 
         document.getElementById('zoom-expl-popup').innerHTML = textItems.mapHelpContent[index]
         document.getElementById('large-map-object-button').innerHTML = textItems.largeMapButton[index]
+     
     }
     
     // Stat page
@@ -371,7 +372,7 @@ document.querySelector('#language').addEventListener('change', (e) => {
 
             document.querySelector('#head-nb-hits').innerHTML = textItems.nbHitsText[index]
             document.querySelector('#download-button').innerHTML = textItems.downloadLink[index]
-            //document.querySelector('#download-photo-button').innerHTML = textItems.downloadPhoto[index]
+            document.querySelector('#download-photo-button').innerHTML = textItems.downloadPhoto[index]
             document.querySelector('#large-map-button').innerHTML = textItems.largeMapButton[index]
             document.querySelector('#export-png').innerHTML = textItems.downloadMapButton[index]
             document.querySelector('#checkedInMap').innerHTML = textItems.checkedInMap[index]   

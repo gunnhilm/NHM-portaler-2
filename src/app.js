@@ -93,24 +93,24 @@ app.get('/search', (req, res) => {
 // })
 
 // to download image(s)
-// app.get('/downloadImage', (req, res) => {
-//     console.log(req.query)
-//     if (!req.query.search) {
-//         console.log('feil?')
-//         return res.send({
-//             error: 'ingen bilder å laste ned'
-//         })
-//     }
-//      else {
-//          console.log('app-image-download')
-//         const url = 'http://www.unimus.no/felles/bilder/web_hent_bilde.php?id=13254255&type=jpeg'
-//         const path = './images/image.jpg' 
-//         downloadImage(url, path, () => {
-//             console.log('✅ Done!')
-//           })
+app.get('/downloadImage', (req, res) => {
+    console.log(req.query)
+    if (!req.query.search) {
+        console.log('feil?')
+        return res.send({
+            error: 'ingen bilder å laste ned'
+        })
+    }
+     else {
+         console.log('app-image-download')
+        const url = 'http://www.unimus.no/felles/bilder/web_hent_bilde.php?id=13254255&type=jpeg'
+        const path = './images/image.jpg' 
+        downloadImage(url, path, () => {
+            console.log('✅ Done!')
+          })
         
-//     }
-// })
+    }
+})
 
 // // move to fileRead
 // const downloadImage = (url, path, callback) => {

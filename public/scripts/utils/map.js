@@ -276,9 +276,12 @@ const drawMapObject = (object) => {
     if (object.decimalLatitude & object.decimalLongitude) {
 
         initialize_map()
-        document.getElementById('zoom-button').style.display = "inline-block"
-        document.getElementById('large-map-object-button').style.display = "inline-block"
-
+        if (!location.href.includes('mapObject')) {
+            document.getElementById('zoom-button').style.display = "inline-block"
+            document.getElementById('large-map-object-button').style.display = "inline-block"
+            // document.getElementById('export-png').style.display = "inline-block"
+        }
+        
         // red dot on map:
 
         // feature object
@@ -321,6 +324,9 @@ const drawMapObject = (object) => {
         }
         document.getElementById('large-map-object-button').style.display = "none"
         document.getElementById('zoom-button').style.display = "none"
+        document.getElementById('export-png').style.display = "none"
+        document.getElementById('checkedInMap').style.display = "none"
+
     }
 
 
@@ -334,24 +340,26 @@ const drawMapObject = (object) => {
     // Get the <span> element that closes the modal
     
     // When the user clicks on the button, open the modal
-    zoomButton.onclick = function () {
-        zoomModal.style.display = "block";
-        if (location.href.includes('object')) {
-            zoomModalContent.innerHTML = textItems.mapHelpContentObjPage[index]
-        } else {zoomModalContent.innerHTML = textItems.mapHelpContent[index]}
-    }
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function () {
-        zoomModal.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function (event) {
-        if (event.target == zoomModal) {
+    if (zoomButton) {
+        zoomButton.onclick = function () {
+            zoomModal.style.display = "block";
+            if (location.href.includes('object')) {
+                zoomModalContent.innerHTML = textItems.mapHelpContentObjPage[index]
+            } else {zoomModalContent.innerHTML = textItems.mapHelpContent[index]}
+        }
+         // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
             zoomModal.style.display = "none";
         }
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == zoomModal) {
+                zoomModal.style.display = "none";
+            }
+        }
     }
+
+    
 }
 
 
