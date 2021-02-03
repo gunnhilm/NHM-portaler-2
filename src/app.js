@@ -43,6 +43,43 @@ app.get('', (req, res) => {
     }
 })
 
+app.get('/nhm', (req, res) => {
+    if (!req.query.search) {
+        return res.render('index', {
+        })
+    } else {
+        fileRead.search(req.query.search, (error, results) => {
+            res.render('index', {
+                results: results
+             })
+         })
+    }
+})
+app.get('/tmu', (req, res) => {
+    if (!req.query.search) {
+        return res.render('index', {
+        })
+    } else {
+        fileRead.search(req.query.search, (error, results) => {
+            res.render('index', {
+                results: results
+             })
+         })
+    }
+})
+app.get('/um', (req, res) => {
+    if (!req.query.search) {
+        return res.render('index', {
+        })
+    } else {
+        fileRead.search(req.query.search, (error, results) => {
+            res.render('index', {
+                results: results
+             })
+         })
+    }
+})
+
 // Søk er treff i MUSIT-dump fila
 // input:
 //  req.query.samling = samling fra dropdown
