@@ -1,5 +1,5 @@
 // show collections in select dependent on museum
-if(!window.location.href.includes('nhm')) {
+if(window.location.href.includes('tmu') | window.location.href.includes('um')) {
     document.querySelector('#coremaopt').style.display = 'none'
     document.querySelector('#DNAopt').style.display = 'none'
     document.querySelector('#alger').style.display = 'none'

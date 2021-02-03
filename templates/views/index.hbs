@@ -28,43 +28,30 @@
                                         <td style="vertical-align: middle" colspan="2">
                                             <label for="collection-select" id="select-collection-label" ></label>
                                             <select id="collection-select" style=" height:30px; border-radius:4px;" >
-                                                <option value="" id="vennligst" ></option>
-
-                                            
-                                            <optgroup label="Specimens">
+                                                <option value="" id="vennligst" >--Velg en samling--</option>
+                                            <optgroup label="Specimens" id="specimensOptgroup">                                                <option value="karplanter" id="karplanter">Karplanter</option>
                                                 <option value="karplanter" id="karplanter"></option>
-                                                <option value="sopp" id="sopp"></option>
-                                                <option value="moser" id="moser"></option>
-                                                <option value="lav" id="lav"></option>
-                                                <option value="alger" id="alger"></option>
-                                                <option value="entomologi" id="insekter"></option>
+                                                <option value="sopp" id="sopp">Sopp</option>
+                                                <option value="moser" id="moser">Moser</option>
+                                                <option value="lav" id="lav">Lav</option>
+                                                <option value="alger" id="alger">Alger</option>
+                                                <option value="entomologi" id="insekter">Insekter</option>
                                             </optgroup>
                                             <optgroup label ="Specimens og DNA" id ='coremaopt'>
-                                                <option value="birds" id="fugler"></option>
-                                                <option value="mammals" id="pattedyr"></option>
+                                                <option value="birds" id="fugler">Fugler</option>
+                                                <option value="mammals" id="pattedyr">Pattedyr</option>
                                             </optgroup>
                                             <optgroup label="DNA" id="DNAopt">
-                                                <option value="dna_karplanter" id="dna_karplanter"></option>
-                                                <option value="dna_entomologi" id="dna_insekter"></option>
-                                                <option value="dna_fish_herptiles" id="dna_fish_herptiles"></option>
-                                                <option value="dna_fungi_lichens" id="dna_fungi_lichens"></option>
-                                                <option value="dna_other" id="dna_other"></option>
+                                                <option value="dna_karplanter" id="dna_karplanter">Karplanter</option>
+                                                <option value="dna_entomologi" id="dna_insekter">Insekter</option>
+                                                <option value="dna_fish_herptiles" id="dna_fish_herptiles">Fisk og herptiler</option>
+                                                <option value="dna_fungi_lichens" id="dna_fungi_lichens">Sopp og lav</option>
+                                                <option value="dna_other" id="dna_other">Andre grupper</option>
                                             </optgroup>
-                                            {{!-- <option value="" id="vennligst" ></option>
-                                                    <option value="karplanter" id="karplanter"></option>
-                                                    <option value="sopp" id="sopp"></option>
-                                                    <option value="moser" id="moser"></option>
-                                                    <option value="lav" id="lav"></option>
-                                                    <option value="alger" id="alger"></option>
-                                                    <option value="entomologi" id="insekter"></option>
-                                                    <option value="birds" id="fugler"></option>
-                                                    <option value="mammals" id="pattedyr"></option>
-                                                    <option value="dna_fish_herptiles" id="dna_fish_herptiles"></option>
-                                                    <option value="dna_other" id="dna_other"></option> --}}
                                             </select>
                                         </td>
                                         <td  colspan="2">
-                                            <button class="blue-button" id="empty-search-button" style="display:none" title="Slett søke resultater"></button>
+                                            <button class="blue-button" id="empty-search-button" style="display:none" title="Slett søke resultater">Tøm søk</button>
                                         </td>
                                     </tr>
                                     <tr>
@@ -78,7 +65,7 @@
                                                 </div>
                                                 <br><br><br>
                                                 <div style="float: right">
-                                                    <button class="blue-button" id="search-button" title="Søk"></button>
+                                                    <button class="blue-button" id="search-button" title="Søk">Søk</button>
                                                 </div>
                                             </form>
                                             <br>
@@ -105,7 +92,7 @@
                                         <td style="vertical-align:middle; white-space: nowrap; "  id="head-nb-hits"></td>
                                         <td  style="vertical-align:middle; white-space: nowrap;" id="nb-hits" ></td>
                                         <td style="vertical-align: middle;">
-                                            <button class="blue-button" id="download-button"  style="display:none" title="Last ned resultater"><i class="fa fa-download"></i></button>
+                                            <button class="blue-button" id="download-button"  style="display:none" title="Last ned resultater">Last ned resultat<i class="fa fa-download"></i></button>
                                         </td>
                                    
                                     </tr>
@@ -113,7 +100,7 @@
                                         <td></td>
                                         <td></td>
                                         <td style="vertical-align: middle;">
-                                            <button class="blue-button" id="download-photo-button"  style="display:none" title="Last ned bilder"><i class="fa fa-download"></i></button>
+                                            <button class="blue-button" id="download-photo-button"  style="display:none" title="Last ned bilder"><i class="fa fa-download"></i>Last ned bilder</button>
                                         </td>
                                     </tr>
                                 </table>
@@ -139,16 +126,16 @@
                                             </div>
                                         </td>
                                         <td >
-                                            <button id="large-map-button" style="display:none" title="Vis stort kart"></button>
+                                            <button id="large-map-button" style="display:none" title="Vis stort kart">Større kart</button>
                                             <br>
                                         </td>
                                         <td>
                                             {{!-- downloadmap --}}
-                                            <button id="export-png" style="display:none" title="Last ned kart som bilde"></button>
+                                            <button id="export-png" style="display:none" title="Last ned kart som bilde">Last ned kart</button>
                                             <a id="image-download" download="map.png"></a>
                                         </td>
                                         <td>
-                                            <button id="checkedInMap" style = "display:none" title="Vis valgt poster i kart"></button>
+                                            <button id="checkedInMap" style = "display:none" title="Vis valgt poster i kart">Vis valgte poster i kart</button>
                                         </td>
                                     </tr>
                                 </table>
@@ -195,9 +182,12 @@
             {{>footer}}
         </div>
 
-        <script src="https://kit.fontawesome.com/409783eafe.js" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+        {{!-- <script src="https://kit.fontawesome.com/409783eafe.js" crossorigin="anonymous"></script> --}}
+        <script src="/nhm/scripts/utils/font/409783eafe.js"></script>
+        {{!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script> --}}
+        <script src="/nhm/scripts/utils/jspdf/jspdf.min.js"></script>
         <script src="/nhm/scripts/utils/papaparse/papaparse.min.js"></script>
+        <script src="/nhm/scripts/utils/textItems.js"></script>
         <script src="/nhm/scripts/utils/renderLang.js"></script>
         <link rel="stylesheet" href="/nhm/styles/styles.css">
         <link id="museumStyle" rel="stylesheet" type="text/css" href= "">

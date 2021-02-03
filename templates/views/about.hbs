@@ -2,20 +2,23 @@
 
 <html>
     <head>
-    <link rel="stylesheet" href="/nhm/styles/styles.css">
-    <link rel="stylesheet" href="/nhm/styles/styles_NHM.css">
 
     </head>
   
 
     <body>
         {{>header}}
-        <div class="content">
-            <h1 id="aboutHeader"></h1>
-            <p class="neutral" id="aboutText"></p>
-        </div>
-       
-     {{>footer}}
-     <script src="/nhm/scripts/utils/renderLang.js"></script>
+            <div class="content">
+                <h1 id="aboutHeader"></h1>
+                <p class="neutral" id="aboutText"></p>
+            </div>
+        
+        {{>footer}}
+        <script src="/nhm/scripts/utils/textItems.js"></script>
+        <script src="/nhm/scripts/utils/renderLang.js"></script>
+        <link rel="stylesheet" href="/nhm/styles/styles.css">
+        <link id="museumStyle" rel="stylesheet" type="text/css" href= "">
+        <script src="/nhm/scripts/utils/showCorrectMuseum.js"></script>
+
     </body>
 </html>

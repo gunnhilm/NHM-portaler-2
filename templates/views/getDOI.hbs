@@ -3,8 +3,7 @@
     <head>
         <title>Get DOI from GBIF from a list of museum numbers</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-        <link rel="stylesheet" href="/nhm/styles/styles.css">
-        <link rel="stylesheet" href="/nhm/styles/styles_NHM.css">
+        
     </head>
     <body>
         <div class="wrapper">
@@ -103,6 +102,10 @@
             </div>
             {{>footer}}
         </div>
+        <link rel="stylesheet" href="/nhm/styles/styles.css">
+        <link id="museumStyle" rel="stylesheet" type="text/css" href= "">
+        <script src="/nhm/scripts/utils/showCorrectMuseum.js"></script>
+        <script src="/nhm/scripts/utils/textItems.js"></script>
         <script src="/nhm/scripts/utils/renderLang.js"></script>
         <script src="/nhm/scripts/utils/papaparse/papaparse.min.js"></script>
         <script src="/nhm/scripts/utils/getDOI/dataObject.js"></script>

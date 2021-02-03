@@ -1,171 +1,6 @@
-const urlPath = '/nhm'
-
-const textItems = {
-    // header
-    aboutButton: ["Om sidene", "About"],
-    searchPageLink: ["Søkeside", "Search"],
-    helpButton: ["Hjelp", "Help"],
-    statistikkButton: ["Statistikk", "Statistics"],
-    journalLink: ["Journalsøk", "Journal search"],
-    mobileMenuBtn: ["Meny", "Menu"],
-    logo: [urlPath + "/images/UiO NHM SH V2 RGB.png", urlPath + "/images/uio_nhm_a_eng_cmyk_2.png"],
-    // logo: [urlPath + "/images/Tromsø_museum_Logo_Bokmal_2l_Bla.png", urlPath + "/images/Tromsø_museum_Logo_Bokmal_2l_Bla.png"],
-//    logo: [urlPath + "/images/UiBlogoUM_white_v.png", urlPath + "/images/UiBlogoUM_white_v.png"],
-    
-    
-    // index page
-    emptySearch: ["Tøm søk", "Empty search"],
-    headerSearchPage: ["Søk i samlingene", "Search the collections"],
-    velg_samling: ["", "" ], //["Velg en samling", "Choose a collection" ],
-    vennligst: ["--Velg en samling--", "--Choose a collection--"],
-    searchButton: ["Søk", "Search"],
-    //----Specimens
-    total: ["Alle samlingene","All collections"],
-    karplanter: ["Karplanter", "Vascular plants"],
-    sopp: ["Sopp", "Fungi"],
-    moser: ["Moser", "Mosses"],
-    lav: ["Lav", "Lichens"],
-    alger: ["Alger", "Algae"],
-    insekter: ["Insekter", "Insects"],
-    fugler: ["Fugler", "Birds"],
-    pattedyr: ["Pattedyr", "Mammals"],
-    
-    fishHerp: ["Fisk og herptiler", "Fish and herptiles"],
-    fungiLichens: ["Sopp og lav", "Fungi and lichens"],
-    other: ["Andre grupper", "Other groups"],
-    hitsPerPage: ["Treff per side", "Hits per page"],
-    downloadLink: ["Last ned resultat", "Download results"],
-    downloadPhoto: ["Last ned bilder", "Download photos"],
-    nbHitsText: ["Antall treff: ", "Number of hits: "],
-    headerCatNb: ["Katalognr.", "Catalog nb."],
-    headerTaxon: ["Takson", "Taxon"],
-    headerCollector: ["Innsamler", "Collector"],
-    headerDate: ["Dato", "Date"],
-    headerCountry: ["Land", "Country"],
-    headerMunicipality: ["Kommune", "Municipality"],
-    headerLocality: ["Sted", "Locality"],
-    headerCoremaNo: ["Corema no", "Corema no"],
-
-    headerSampleTypes: ["Objekttype", "Sample type"],
-    select: ["Velg", "Select"],
-    selectAll: ["Alle", "All"],
-    selectAllOnPage: ["Alle på siden", "All on page"],
-    selectNone: ["Ingen", "None"],
-    //headerSequence: ["Sekvens ID", "Sequence ID"],
-    mustChoose: ["Du må velge en samling", "You must choose a collection"],
-    placeholder: [" Søk etter latinsk artsnavn, katalognummer, person, sted... ", " Search for latin species name, catalognumber, person, place... "],
-    serverError: ["Serverfeil, prøv nytt søk", "Server error, try new search"],
-    noHits: ["Ingen treff, prøv nytt søk", "No hits, try new search"],
-    errorRenderResult: ["Noe gikk feil, søk igjen, begrens ev. søket med f.eks. flere søkeord", "Something went wrong, try a new search, possibly limit the seach by e.g. more search terms"],
-    errorFileNotExisting: ["Beklager, noe er feil med valgte samling. Velg en annen samling, kom tilbake senere, eller kontakt oss (se hjelpesiden)",
-     "Sorry, something is wrong with the chosen collection. Choose another collection, come back later, or contact us (see help page)"],
-    mapError: ["Noe er feil i kartmodul", "Something is wrong in map module"],
-    zoomButton: ["Informasjon om kart", "Information on map"],
-    mapHelpContent: ["Bruk mushjul, eller dobbelklikk for å zoome inn, Shift + dobbelklikk  for å zoome ut. Klikk og dra for å flytte kartutsnitt. <br><br> Bare treff som er listet på sida vises i kartet. For å se alle resultater i kart, velg 'All' i Treff per side.",
-    "Use mouse-wheel, or double click to zoom in, Shift + double click to zoom out. Click and drag to move map. <br><br> Only results listed on page are shown in map. To see all hits in map, choose 'All' in Hits per page."],
-    mapCheckedMessage: ["Velg post(er) fra listen", "Select record(s) from list"],
-    mapHelpContentObjPage: ["Bruk mushjul, eller dobbelklikk for å zoome inn, Shift + dobbelklikk  for å zoome ut. Klikk og dra for å flytte kartutsnitt.", "Use mouse-wheel, or double click to zoom in, Shift + double click to zoom out. Click and drag to move map."],
-    zoomToClickText: ["Zoom in og klikk igjen", "Zoom in and click again"],
-    largeMapButton: ["Større kart", "Larger map"],
-    downloadMapButton: ["Last ned kart", "Download map"],
-    checkedInMap: ["Vis valgte poster i kart", "Show selected records in map"],
-    mapSearchAlt: ["Kart ikke tilgjengelig: Ingen av objektene på siden har koordinater knyttet til seg, eller de har feil format.", "Map not available: None of the objects on the page have coordinates registered, or they have the wrong format."],
-    firstButton: ["Første", "First"],
-    previousButton: ["Forrige", "Previous"],
-    nextButton: ["Neste", "Next"], 
-    lastButton: ["Siste", "Last"],
-    page: ["Side ", "Page "],
-    lastPageAlert: [" (Siste side)", " (Last page)"],
-    b: ["Blod", "Blood"],
-    p: ["Konservert objekt", "Preserved specimen"],
-    o: ["Osteologisk objekt", "Osteological specimen"],
-    ob: ["Observasjon", "Observation"],
-    f: ["Fjær", "Feather"],
-    n: ["Reir", "Nest"],
-    ot: ["Uspesifisert", "Unspecified"],
-    sr: ["Spermopptak", "Sperm recording"],
-    si: ["Spermbilde", "Sperm image"],
-    t: ["Vev", "Tissue"],
-    ts: ["Testikler", "Testes"],
-    ep: ["Ektoparasitt", "Ectoparasite"],
-    bs: ["Blodstryk",  "Blood smear"],
-    u: ["Ukjent", "Unknown"],
-    cf: ["Kloakkvæske", "Cloacal fluids"],
-
-    
-    // object page
-    searchButtonHeader: ["Tilbake til søkeresultat", "Back to search result"],
-    objectPageHeader: ['Objektvisning', 'Object view'],
-    headSpeciesName: ['Vitenskapelig navn: ', 'Scientific name: '],
-    headDet: ['Bestemt av: ', 'Determined by: '],
-    headDetDate: ['Dato for bestemming: ', 'Date of determination: '],
-    headCollDate: ['Innsamlingsdato: ', 'Collection date: '],
-    headColl: ['Innsamler: ', 'Collector: '],
-    headLocality: ['Lokalitet: ', 'Locality: '],
-    headCoordinates: ['Koordinater: ', 'Coordinates: '],
-    headArtsobs: ['Artsobservasjon ID: ', 'Species Observation ID: '],
-    headSex: ['Kjønn:', 'Sex:'],
-    headLifeStage: ['Livsstadium:', 'Life stage:'],
-    headSamplingProtocol: ['Innsamlingsmetode:', 'Sampling protocol:'],
-    headTaxonomy: ['Taksonomi:', 'Taxonomy:'],
-    headTypeStatus: ['Typestatus:', 'Type status:'],
-    photoAlt: ['Bilde ikke tilgjengelig', 'Photo not available'],
-    nextPhoto: ['Neste bilde', 'Next photo'],
-    previousPhoto: ['Forrige bilde', 'Previous photo'] ,
-    mapAlt: ['Kart ikke tilgjengelig', 'Map not available'],
-    itemsHeader: ['Objekttyper:','Specimen types:'],
-    preservedSp: ['Har prøve(r) i DNA-banken:', 'Has item(s) in the DNA-bank:'],
-    
-    samplingDate: ['Dato for prøvetaking:','Date of sampling:'],
-    extractionDate: ['Ekstraksjonsdato:', 'Date of extraction:'],
-    itemNumber: ['Prøvenummer:','Item number:'],
-    preservation: ['Konservering:','Preservation:'],
-    method: ['Ekstraksjonsmetode:','Method of extraction:'],
-    preparedBy: ['Ekstrahert av:','Prepared by:'],
-    concentration: ['DNA konsentrasjon:','DNA concentration'],
-    coordPlaceholder: ['&lt;Ingen koordinater&gt;', '&lt;No coordinates&gt;'],
-
-    //ShowStat page
-    showStatHeader: ["Statistikk over samlingene", "Statistics from the collections"],
-    showStatText: ["Disse tallene reflekterer hva som er registrert i museets databaser. Da kun et fåtall av samlingene har alle objektene registrert i databasene, reflekterer ikke disse tallene nødvendigvis samlingenes totale bredde.",
-        "These numbers reflect what is recorded in our databases, not necessarily the true number of items in the collections."],
-    collectionHeader: ["Samling", "Collection"],
-    nbObjHeader: ["Antall objekter", "Number of objects"],
-    nbPhotoHeader: ["Antall med foto", "Records with photo"],
-    nbCoordHeader: ["Poster med koordinater", "Records with coordinates"],
-    vascularHeader: ["Karplanter", "Vascular plants"],
-    mossesHeader: ["Moser", "Mosses"],
-
-    // help page
-    helpHeader: ["Hvordan søke", "How to search the collections"],
-    helpText: [`Velg samling først, og skriv ett eller flere søkeord i søkefeltet. 
-    Du kan søke på latinsk artsnavn, lokalitet, katalognummer (f.eks. musit-nummer), geografi osv. Det skilles ikke på store og små bokstaver. Land må skrives på engelsk, andre felt kan inneholde engelsk eller norsk.<br><br><br>
-    <span class="bold" style="font-size: 16pt">Kontaktinformasjon:</span> <br><br> nhm-samlingsportaler@nhm.uio.no`, 
-    `Choose collection first, and enter one or more search terms in the search field. 
-    You can search for latin species name, locality, catalog number (e.g. musit-number), geography etc. The search is case insensitive. Country is written in english, other fields can be either norwegian or english. <br><br><br>
-    <span class="bold" style="font-size: 16pt">Contact information:</span> <br><br> nhm-samlingsportaler@nhm.uio.no`],
-
-    // journals page
-    journalHeader: ['Søk i journaler', 'Search journals'],
-
-    // getDOI page
-    getDOIHeader: ['Få DOI fra GBIF basert på en liste med museumsnumre','Get DOI from GBIF from a list of museum numbers'],
-    selectMuseum: ['--Velg museum--', '--Select museum--'],
-    selectCollection: ['--Velg samling--', '--Select collection--'],
-    onloggingData: ['GBIF påloggingsdata:', 'GBIF onlogging information:'],
-    emailRequest: ['Din epostadresse','Enter your email address'],
-    usernameRequest: ['GBIF brukernavn', 'GBIF username'],
-    passwordRequest: ['GBIF passord', 'GBIF password'],
-    pasteRequest: ['Lim inn museumsnumre', 'Paste museum numbers'],
-    resetButton: ['Nullstill skjema', 'Reset form'],
-    results: ['Resultater:', 'Results:']
-}
-
+// textItems[] is in separate file textItems.js
 
 const renderText = function(lang) {
-    // if (lang === "Norwegian") {
-    //     index = 0
-    // } else 
     if (lang === "English") {
         index = 1
     } else {
@@ -184,12 +19,15 @@ const renderText = function(lang) {
     document.querySelector('#mobileMenuBtn').innerHTML = textItems.mobileMenuBtn[index]
 
     let logo = document.querySelector('#logo')
-    logo.src = textItems.logo[index]
-    if (language === "Norwegian") {
-        logo.setAttribute("style", "height:30px")
-    } else if (language === "English") {
-        logo.setAttribute("style", "height:30px")
+    if (window.location.href.includes('tmu')) {
+        logo.src = textItems.logoTMU[index]
+    } else if (window.location.href.includes('um')) {
+        logo.src = textItems.logoUM[index]
+    } else {
+        logo.src = textItems.logoNHM[index]
     }
+    
+    
 
     /* When the user clicks on the menu-button (mobile-screens),
     toggle between hiding and showing the dropdown content */
@@ -214,13 +52,14 @@ const renderText = function(lang) {
 
     //Dropdown med valg av samlinger, index page og stat page
     if (!location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler') & !location.href.includes('getDOI')) {
-        
+        // document.querySelector('#specimensOptgroup').innerHTML = textItems.specimensOptgroup[index]
         document.querySelector('#karplanter').innerHTML = textItems.karplanter[index]
         document.querySelector('#sopp').innerHTML = textItems.sopp[index]
         document.querySelector('#moser').innerHTML = textItems.moser[index]
         document.querySelector('#lav').innerHTML = textItems.lav[index]
         document.querySelector('#alger').innerHTML = textItems.alger[index]
         document.querySelector('#insekter').innerHTML = textItems.insekter[index]
+        // document.querySelector('#coremaopt').innerHTML = textItems.coremaopt[index]
         document.querySelector('#fugler').innerHTML = textItems.fugler[index]
         document.querySelector('#pattedyr').innerHTML = textItems.pattedyr[index]
         document.querySelector('#dna_karplanter').innerHTML = textItems.karplanter[index]
@@ -228,6 +67,7 @@ const renderText = function(lang) {
         document.querySelector('#dna_fish_herptiles').innerHTML = textItems.fishHerp[index]
         document.querySelector('#dna_fungi_lichens').innerHTML = textItems.fungiLichens[index]
         document.querySelector('#dna_other').innerHTML = textItems.other[index]
+        
     }
 
     // index page
@@ -238,7 +78,7 @@ const renderText = function(lang) {
         document.querySelector('#search-button').innerHTML = textItems.searchButton[index]
         document.querySelector('#empty-search-button').innerHTML = textItems.emptySearch[index]
         document.querySelector('#header-search-page').innerHTML = textItems.headerSearchPage[index]
-        document.querySelector('#select-collection-label').innerHTML = textItems.velg_samling[index]
+        //document.querySelector('#select-collection-label').innerHTML = textItems.selectCollectionLabel[index]
         document.querySelector('#hits-per-page').innerHTML = textItems.hitsPerPage[index]
         if (sessionStorage.getItem('string')) {
             document.getElementById("head-nb-hits").innerHTML = textItems.nbHitsText[index]

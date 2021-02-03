@@ -17,6 +17,10 @@ footer {
     color: white;
 }
 
+#journal-link {
+    display: 'none';
+}
+
 .headerLink:hover {
     background-color: #d46866
 }

@@ -20,8 +20,28 @@
 
                 <label for="collection-select" id="select-collection-label"></label>
                 <select id="collection-select">
+
                     <option value="total" id="total"></option>
-                    <option value="karplanter" id="karplanter"></option>
+                    <optgroup label="Specimens">
+                                                <option value="karplanter" id="karplanter"></option>
+                                                <option value="sopp" id="sopp"></option>
+                                                <option value="moser" id="moser"></option>
+                                                <option value="lav" id="lav"></option>
+                                                <option value="alger" id="alger"></option>
+                                                <option value="entomologi" id="insekter"></option>
+                                            </optgroup>
+                                            <optgroup label ="Specimens og DNA" id ='coremaopt'>
+                                                <option value="birds" id="fugler"></option>
+                                                <option value="mammals" id="pattedyr"></option>
+                                            </optgroup>
+                                            <optgroup label="DNA" id="DNAopt">
+                                                <option value="dna_karplanter" id="dna_karplanter"></option>
+                                                <option value="dna_entomologi" id="dna_insekter"></option>
+                                                <option value="dna_fish_herptiles" id="dna_fish_herptiles"></option>
+                                                <option value="dna_fungi_lichens" id="dna_fungi_lichens"></option>
+                                                <option value="dna_other" id="dna_other"></option>
+                                            </optgroup>
+                    {{!-- <option value="karplanter" id="karplanter"></option>
                     <option value="sopp" id="sopp"></option>
                     <option value="moser" id="moser"></option>
                     <option value="lav" id="lav"></option>
@@ -30,7 +50,7 @@
                     <option value="birds" id="fugler"></option>
                     <option value="mammals" id="pattedyr"></option>
                     <option value="dna_fish_herptiles" id="dna_fish_herptiles"></option>
-                    <option value="dna_other" id="dna_other"></option>
+                    <option value="dna_other" id="dna_other"></option> --}}
                 </select>
                 <br><br>
 
@@ -105,9 +125,10 @@
                 </tr>
             </table> 
         
-            
+            <script src="/nhm/scripts/utils/textItems.js"></script>
             <script src="/nhm/scripts/utils/renderLang.js"></script>
-            {{!-- <link rel="stylesheet" href="/nhm/styles/styles.css"> --}}
+            <script src="/nhm/scripts/utils/showCorrectMuseum.js"></script>
+            <link id="museumStyle" rel="stylesheet" type="text/css" href= "">
             <link rel="stylesheet" href="/nhm/styles/Chart.css">
             <script src="/nhm/scripts/utils/chart/Chart.min.js"></script>
             <script src="/nhm/scripts/utils/showStat.js"></script>      

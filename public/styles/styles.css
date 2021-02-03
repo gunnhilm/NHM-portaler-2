@@ -33,6 +33,7 @@ header {
     
   }
 
+  
   /* Dropdown Button */
 .dropbtn {
     padding: 16px;
@@ -167,7 +168,7 @@ header {
 
 #logo {
     padding: 15px;
-    
+    height: 30px;
 }
 
 /* footer.hbs */
