@@ -1,9 +1,9 @@
 const fs = require('fs')
 const fileRead = require('./fileread')
 
-const getFileUpdatedDate = (samling, callback) => {
+const getFileUpdatedDate = (museum, samling, callback) => {
     try {
-            musitFile = fileRead.setCollection(samling)
+            musitFile = fileRead.setCollection(museum, samling)
             if (fs.existsSync(musitFile)) {
                 fs.stat(musitFile, function(err, stats) {
                     let time = stats.mtime

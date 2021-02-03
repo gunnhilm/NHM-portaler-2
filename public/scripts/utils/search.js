@@ -1,5 +1,5 @@
 console.log('client side javascript is loaded')
-
+// urlPath er definert i renderLang.js fila
 // on page initially
 const collection = document.querySelector('#collection-select') 
 const searchForm = document.querySelector('form') 
@@ -48,8 +48,6 @@ function download(filename, text) {
 }
 
 
-
-
 // when download-button is clicked
 downloadButton.addEventListener('click', (e) => {
     e.preventDefault()
@@ -74,7 +72,6 @@ downloadButton.addEventListener('click', (e) => {
     //download("download.txt", downloadData.unparsed.results)
     download("download.txt", downloadResult)
 })
-
 
 
 downloadPhotoButton.addEventListener('click', (e) => {
@@ -126,7 +123,14 @@ function forceDownload(url, fileName){
     xhr.send();
 }
 
- const doSearch = (limit = 20) => {
+const getCurrentMuseum = () => {
+    // finn ut hvilket museum 
+    let museum = window.location.pathname
+    museum = museum.slice(5)
+    return museum
+}
+
+const doSearch = (limit = 20) => {
      console.log('vi søker');
      
     // delete the previous search results
@@ -137,9 +141,10 @@ function forceDownload(url, fileName){
     resetSortedBoolean() // set all booleans in propsSorted-array in PaginateAndRender.js to false
     const searchTerm = search.value
     console.log(search.value)
-    console.log('p')
     const chosenCollection = collection.value
     searchLineNumber = limit
+
+    let museum = getCurrentMuseum()   
  
     // empty table
     table.innerHTML = ""
@@ -173,13 +178,12 @@ function forceDownload(url, fileName){
     document.getElementById("resultPageNb1").innerHTML = ""
     document.getElementById("resultPageAlert1").innerHTML = ""
 
-
     // mustChoose
     if (!chosenCollection) {
         errorMessage.innerHTML = textItems.mustChoose[index]
         document.getElementById("please-wait").style.display = "none"
     } else {
-        const url = urlPath + '/search/?search=' + searchTerm +'&samling=' + chosenCollection + '&linjeNumber=0' + '&limit=' + limit // normal search
+        const url = urlPath + '/search/?search=' + searchTerm + '&museum=' + museum + '&samling=' + chosenCollection + '&linjeNumber=0' + '&limit=' + limit // normal search
         fetch(url).then((response) => {
             if (!response.ok) {
                 throw 'noe går galt med søk, respons ikke ok'
@@ -187,11 +191,9 @@ function forceDownload(url, fileName){
                 try {
                     response.text().then((data) => {
                         if(data.error) {
-                            
                             errorMessage.innerHTML = textItems.serverError[index]
                             return console.log(data.error)
                         } else {
-                            
                             const JSONdata = JSON.parse(data)  
                             sessionStorage.setItem('searchLineNumber', JSONdata.unparsed.count)
                             sessionStorage.setItem('searchTerm', searchTerm)
@@ -213,14 +215,12 @@ function forceDownload(url, fileName){
                                         nbHitsElement.textContent = parsedResults.data.length
                                     }
                                     nbHitsHeader.innerHTML = textItems.nbHitsText[index]
-                                    sessionStorage.setItem('string', JSON.stringify(parsedResults.data))   
-                                    
-                                    load()
-                                } catch (error) {
-                                    errorMessage.innerHTML = textItems.errorRenderResult[index]
-                                    searchFailed = true // is checked when map is drawn 
-                                }
-                                 
+                                    sessionStorage.setItem('string', JSON.stringify(parsedResults.data))      
+                                    load() 
+                                    } catch (error) {
+                                        errorMessage.innerHTML = textItems.errorRenderResult[index]
+                                        searchFailed = true // is checked when map is drawn 
+                                    }        
                             }
                         }
                     })
@@ -263,10 +263,11 @@ collection.addEventListener('change', (e) => {
 
 // when a collection is chosen a request is sent to the server about date of last change of the MUSIT-dump file
 const updateFooter = () => {
+    let museum = getCurrentMuseum()  
     const chosenCollection = collection.value
     if (chosenCollection) {
         sessionStorage.setItem('collection', chosenCollection)
-        const url =  urlPath + '/footer-date/?&samling=' + chosenCollection
+        const url =  urlPath + '/footer-date/?&samling=' + chosenCollection + '&museum=' + museum
 
         fetch(url).then((response) => {
             if (!response.ok) {
@@ -399,9 +400,6 @@ document.getElementById('large-map-button').onclick = () => {
 
 // checkboxes
 // catch records that are checked
-
-
-
 
 const getCheckedRecords = () => {
     searchResult.forEach(el => {
