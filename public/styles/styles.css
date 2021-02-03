@@ -3,14 +3,11 @@ html *
    font-family: Arial;
 }
 
-/*header.hbs*/
 
 header {
     height: 50px;
-    background-color: #57AD3E;
     /* to center logo and links vertically: */
     /* line-height: 45px; */
-    
 }
 
 .header-content {
@@ -29,16 +26,53 @@ header {
 }
 
 
+.header-link {
+    display: block;
+    width: 60px;
+    border: solid;
+    
+  }
+
+  /* Dropdown Button */
+.dropbtn {
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+  }
+
+  /* The container <div> - needed to position the dropdown content */
+.dropdown {
+    float: right;
+    display: none;
+  }
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {display:block;}
+
+.mobileLink {
+    padding: 15px;
+}
+
 @media only screen and (min-width: 848px) {
     #language {
         font-size: 16px;
-        
-    }
-    .headerLink {
-
-        color: white;
-        background-color: #57AD3E;
-        
     }
 }
 
@@ -52,18 +86,19 @@ header {
 
 @media only screen and (max-width: 974px) {
     .sub-header-right{
-        width: 100%;
+        display: none;
+        /* width: 100%;
         float:right;
-        
+         */
     }
+
+    .dropdown {
+        display: block;
+      }
+    
     .headerLink {
-        color: #57AD3E;
-        background-color: white;
         width: 60px;
         
-    }
-    .header-right {
-        background-color: white;
     }
     .row-sampleType {
         display: none;
@@ -79,26 +114,21 @@ header {
     }
     #language {
         font-size: 16px; 
-        background-color: white;
-        color:#57AD3E;
     }
 }
 
 @media only screen and (max-width: 600px) {
-    .header-right {
-        
-        margin-top: 50px;
+    /* div with language */
+    /* .header-right {
         width: 10%;
         float:right;
-        /* margin-top: 48px; */
-    }
-    .sub-header-right {
-        
+    } */
+    /* div with header-links */
+    /* .sub-header-right {
+        border: solid;
         margin: 5px;
-        color: white;
-        
-        
-    }
+    } */
+
     .headerLink {
         width: 60px;
         font-size: 12px;
@@ -114,7 +144,6 @@ header {
    
     #language {
         font-size: 12px;
-        
     }
 }
 
@@ -127,8 +156,6 @@ header {
 
 #language {
     border-radius:4px;
-    background-color: #57AD3E;
-    color: white;
     border: none;
     float: right;
     padding: 15px;
@@ -140,12 +167,12 @@ header {
 
 #logo {
     padding: 15px;
+    
 }
 
 /* footer.hbs */
 footer {
     height: 50px;
-    background-color: #57AD3E;
     line-height: 45px;
 } 
 

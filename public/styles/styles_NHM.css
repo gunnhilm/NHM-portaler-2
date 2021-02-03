@@ -1,0 +1,64 @@
+header {
+    background-color: #57AD3E;
+    
+}
+
+/* footer.hbs */
+footer {
+    background-color: #57AD3E;
+} 
+
+#language {
+    background-color: #57AD3E;
+    color: white;
+} 
+
+.headerLink {
+    color: white;
+}
+
+.headerLink:hover {
+    background-color: #82b373
+}
+
+/* Dropdown Button */
+  .dropbtn {
+    background-color:#57AD3E;
+    color: white;
+  }
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    background-color:#57AD3E;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: white;
+  }
+
+  /* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #82b373}
+
+
+@media only screen and (max-width: 974px) {
+    /* .headerLink {
+        color: #57AD3E;
+        background-color: white;
+    } */
+    /* .header-right {
+        background-color: white;
+    } */
+    /* #language {
+        background-color: white;
+        color:#57AD3E;
+    } */
+}
+
+@media only screen and (max-width: 670px) {
+
+    #logo {
+        position: absolute;
+        clip: rect(0px,60px,200px,0px)
+    }
+}

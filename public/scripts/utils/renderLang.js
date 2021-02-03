@@ -7,7 +7,11 @@ const textItems = {
     helpButton: ["Hjelp", "Help"],
     statistikkButton: ["Statistikk", "Statistics"],
     journalLink: ["Journalsøk", "Journal search"],
+    mobileMenuBtn: ["Meny", "Menu"],
     logo: [urlPath + "/images/UiO NHM SH V2 RGB.png", urlPath + "/images/uio_nhm_a_eng_cmyk_2.png"],
+    // logo: [urlPath + "/images/Tromsø_museum_Logo_Bokmal_2l_Bla.png", urlPath + "/images/Tromsø_museum_Logo_Bokmal_2l_Bla.png"],
+//    logo: [urlPath + "/images/UiBlogoUM_white_v.png", urlPath + "/images/UiBlogoUM_white_v.png"],
+    
     
     // index page
     emptySearch: ["Tøm søk", "Empty search"],
@@ -25,8 +29,10 @@ const textItems = {
     insekter: ["Insekter", "Insects"],
     fugler: ["Fugler", "Birds"],
     pattedyr: ["Pattedyr", "Mammals"],
-    fishHerp: ["Fisk og herptiler (kun DNA)", "Fish and herptiles (only DNA)"],
-    other: ["Andre grupper (kun DNA)", "Other groups (only DNA)"],
+    
+    fishHerp: ["Fisk og herptiler", "Fish and herptiles"],
+    fungiLichens: ["Sopp og lav", "Fungi and lichens"],
+    other: ["Andre grupper", "Other groups"],
     hitsPerPage: ["Treff per side", "Hits per page"],
     downloadLink: ["Last ned resultat", "Download results"],
     downloadPhoto: ["Last ned bilder", "Download photos"],
@@ -38,7 +44,9 @@ const textItems = {
     headerCountry: ["Land", "Country"],
     headerMunicipality: ["Kommune", "Municipality"],
     headerLocality: ["Sted", "Locality"],
-    headerSampleTypes: ["Objekttyper", "Sample types"],
+    headerCoremaNo: ["Corema no", "Corema no"],
+
+    headerSampleTypes: ["Objekttype", "Sample type"],
     select: ["Velg", "Select"],
     selectAll: ["Alle", "All"],
     selectAllOnPage: ["Alle på siden", "All on page"],
@@ -68,6 +76,22 @@ const textItems = {
     lastButton: ["Siste", "Last"],
     page: ["Side ", "Page "],
     lastPageAlert: [" (Siste side)", " (Last page)"],
+    b: ["Blod", "Blood"],
+    p: ["Konservert objekt", "Preserved specimen"],
+    o: ["Osteologisk objekt", "Osteological specimen"],
+    ob: ["Observasjon", "Observation"],
+    f: ["Fjær", "Feather"],
+    n: ["Reir", "Nest"],
+    ot: ["Uspesifisert", "Unspecified"],
+    sr: ["Spermopptak", "Sperm recording"],
+    si: ["Spermbilde", "Sperm image"],
+    t: ["Vev", "Tissue"],
+    ts: ["Testikler", "Testes"],
+    ep: ["Ektoparasitt", "Ectoparasite"],
+    bs: ["Blodstryk",  "Blood smear"],
+    u: ["Ukjent", "Unknown"],
+    cf: ["Kloakkvæske", "Cloacal fluids"],
+
     
     // object page
     searchButtonHeader: ["Tilbake til søkeresultat", "Back to search result"],
@@ -89,7 +113,9 @@ const textItems = {
     nextPhoto: ['Neste bilde', 'Next photo'],
     previousPhoto: ['Forrige bilde', 'Previous photo'] ,
     mapAlt: ['Kart ikke tilgjengelig', 'Map not available'],
-    itemsHeader: ['Objekter:','Objects:'],
+    itemsHeader: ['Objekttyper:','Specimen types:'],
+    preservedSp: ['Har prøve(r) i DNA-banken:', 'Has item(s) in the DNA-bank:'],
+    
     samplingDate: ['Dato for prøvetaking:','Date of sampling:'],
     extractionDate: ['Ekstraksjonsdato:', 'Date of extraction:'],
     itemNumber: ['Prøvenummer:','Item number:'],
@@ -151,6 +177,11 @@ const renderText = function(lang) {
     document.querySelector('#statistikk-link').innerHTML = textItems.statistikkButton[index]
     document.querySelector('#search-page-link').innerHTML = textItems.searchPageLink[index]
     document.querySelector('#journal-link').innerHTML = textItems.journalLink[index]
+    document.querySelector('#menu_help-link').innerHTML = textItems.helpButton[index]
+    document.querySelector('#menu_statistikk-link').innerHTML = textItems.statistikkButton[index]
+    document.querySelector('#menu_search-page-link').innerHTML = textItems.searchPageLink[index]
+    document.querySelector('#menu_journal-link').innerHTML = textItems.journalLink[index]
+    document.querySelector('#mobileMenuBtn').innerHTML = textItems.mobileMenuBtn[index]
 
     let logo = document.querySelector('#logo')
     logo.src = textItems.logo[index]
@@ -159,10 +190,31 @@ const renderText = function(lang) {
     } else if (language === "English") {
         logo.setAttribute("style", "height:30px")
     }
+
+    /* When the user clicks on the menu-button (mobile-screens),
+    toggle between hiding and showing the dropdown content */
+    document.getElementById("mobileMenuBtn").onclick = function () {
+        document.getElementById("myDropdown").classList.toggle("show");
+    }
+  
+  // Close the dropdown menu if the user clicks outside of it
+  window.onclick = function(event) {
+    if (!event.target.matches('.dropbtn')) {
+      var dropdowns = document.getElementsByClassName("dropdown-content");
+      var i;
+      for (i = 0; i < dropdowns.length; i++) {
+        var openDropdown = dropdowns[i];
+        if (openDropdown.classList.contains('show')) {
+          openDropdown.classList.remove('show');
+        }
+      }
+    }
+  }
     
 
-    //Doppdown med valg av samlinger, index page og stat page
+    //Dropdown med valg av samlinger, index page og stat page
     if (!location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler') & !location.href.includes('getDOI')) {
+        
         document.querySelector('#karplanter').innerHTML = textItems.karplanter[index]
         document.querySelector('#sopp').innerHTML = textItems.sopp[index]
         document.querySelector('#moser').innerHTML = textItems.moser[index]
@@ -171,12 +223,16 @@ const renderText = function(lang) {
         document.querySelector('#insekter').innerHTML = textItems.insekter[index]
         document.querySelector('#fugler').innerHTML = textItems.fugler[index]
         document.querySelector('#pattedyr').innerHTML = textItems.pattedyr[index]
+        document.querySelector('#dna_karplanter').innerHTML = textItems.karplanter[index]
+        document.querySelector('#dna_insekter').innerHTML = textItems.insekter[index]
         document.querySelector('#dna_fish_herptiles').innerHTML = textItems.fishHerp[index]
+        document.querySelector('#dna_fungi_lichens').innerHTML = textItems.fungiLichens[index]
         document.querySelector('#dna_other').innerHTML = textItems.other[index]
     }
 
     // index page
     if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler')& !location.href.includes('getDOI')) {
+        
         document.querySelector('#vennligst').innerHTML = textItems.vennligst[index] 
         
         document.querySelector('#search-button').innerHTML = textItems.searchButton[index]
@@ -284,7 +340,8 @@ const renderText = function(lang) {
             document.querySelector("#head-typeStatus").innerHTML = textItems.headTypeStatus[index]
         }
         
-        document.querySelector("#itemsHeader").innerHTML = textItems.itemsHeader[index]
+        //document.querySelector("#itemsHeader").innerHTML = textItems.itemsHeader[index]
+        document.querySelector("#preservedSp").innerHTML = textItems.preservedSp[index]
 
 
         document.getElementById('zoom-expl-popup').innerHTML = textItems.mapHelpContent[index]
@@ -332,7 +389,6 @@ const renderText = function(lang) {
     // getDOI page
     if (location.href.includes('getDOI')) {
         document.querySelector('#getDOIHeader').innerHTML = textItems.getDOIHeader[index]
-        document.querySelector('#selectMuseum').innerHTML = textItems.selectMuseum[index] 
         document.querySelector('#selectCollection').innerHTML = textItems.selectCollection[index] 
         document.querySelector('#onloggingData').innerHTML = textItems.onloggingData[index]
         document.querySelector('#emailRequest').innerHTML = textItems.emailRequest[index]
@@ -412,8 +468,20 @@ document.querySelector('#language').addEventListener('change', (e) => {
             cell5.innerHTML = `<button id='countryButton' class='sort'>${textItems.headerCountry[index].bold()} ${getArrows('country')}</button>`
             cell6.innerHTML = `<button id='municipalityButton' class='sort'>${textItems.headerMunicipality[index].bold()} ${getArrows('county')}</button>`
             cell7.innerHTML = `<button id='localityButton' class='sort'>${textItems.headerLocality[index].bold()} ${getArrows('locality')}</button>`
-            cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} ${getArrows('sampleType')}</button>`
-            cell11.innerHTML = `<button id='processIDButton' class='sort'>${textItems.headerSequence[index].bold()} ${getArrows('processID')}</button>`
+            if (document.querySelector('#collection-select option:checked').parentElement.label === 'Specimens') {
+                cell10.innerHTML = `<button id='coremaNoButton' class='sort'>${textItems.headerCoremaNo[index].bold()} ${getArrows('coremaNo')}</button>`
+            } else {
+                cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} ${getArrows('sampleType')}</button>`
+            }
+            cell11.innerHTML = `<select id='checkboxSelect' class='sort'>
+                    <option value="select" id="select">${textItems.select[index].bold()}</option>
+                    <option value="all" id="selectAll">${textItems.selectAll[index]}</option>
+                    <option value="all_on_page" id="selectAllOnPage">${ textItems.selectAllOnPage[index]}</option>
+                    <option value="none" id="selectNone">${ textItems.selectNone[index]}</option>
+                </select>`
+
+
+            
 
             stringData = sessionStorage.getItem('string')
             musitData = JSON.parse(stringData)      

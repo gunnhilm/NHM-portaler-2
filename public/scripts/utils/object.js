@@ -173,99 +173,121 @@ function addRow() {
    // }
     
 }
+//document.querySelector("#itemsHeader").innerHTML = textItems.itemsHeader[index]
+console.log(sessionStorage.getItem('collection'))
 
-if(object.items) {
-    // put items in itemArray as objects
-    tempItemArray = object.itemNumbers.split(",")
-    itemArray = []
-    tempItemArray.forEach (element => itemArray.push({itemNumber: element}))
-    
-    // add properties to the item-objects
-    itemTypeArray = object.items.split(",")
-    dateArray = object.itemDates.split(",")
-    methodArray = object.itemMethods.split(",")
-    preparedByArray = object.itemPreparedBys.split(",")
-    processIDArray = object.itemProcessIDs.split(",")
-    genbankArray = object.itemGenAccNos.split(",")
-    DNAConcArray = object.itemConcentrations.split(",")
-    DNAConcUnitArray = object.itemUnits.split(",")
-    preservationArray = object.itemPreservations.split(",")
-
-    for (i=0; i<itemArray.length; i++) {
-        itemArray[i].properties = itemTypeArray[i]
-        itemArray[i].date = dateArray[i]
-        itemArray[i].method =methodArray[i]
-        itemArray[i].preparedBy = preparedByArray[i]
-        itemArray[i].processID = processIDArray[i]
-        itemArray[i].genAccNo = genbankArray[i]
-        itemArray[i].DNAConc =DNAConcArray[i]
-        itemArray[i].DNAConcUnit = DNAConcUnitArray[i] 
-        itemArray[i].preservation = preservationArray[i]
+if (!sessionStorage.getItem('collection').includes('dna') & !sessionStorage.getItem('collection') === 'birds' & !sessionStorage.getItem('collection') === 'mammals') {
+    if(object.coremaUUID) {
+        document.querySelector("#preservedSp").innerHTML = textItems.preservedSp[index]
+        document.querySelector("#corema-link").innerHTML = `<a id="object-link" href="#" onclick="searchInCorema(object.coremaNo);return false;"> ${object.coremaNo} </a>`
+        function searchInCorema(coremaNo) {
+            console.log(coremaNo)
+            // vent til vi har sti med samlinger - kan peke rett på
+        }
     }
-    
-    document.querySelector("#itemsHeader").innerHTML = textItems.itemsHeader[index]
-    // add row in table with heading for items
-    // addRow()
-    // cell1.innerHTML = '<br>'
-    // addRow()
-    // cell1.id = 'itemsHeader'
-    // cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.itemsHeader[index]}:</span>`
-    // addRow()
-    //cell1.innerHTML = '<br>'
-    
-    // loop over array
-    itemArray.forEach( item => {
-        addRow()
-        cell1.innerHTML = item.properties
-        cell1.style.textDecoration  = 'underline'
-        cell1.style.fontWeight = 'normal'
-        cell1.style.fontSize = '18px'
-        addRow()
-        cell1.innerHTML = textItems.itemNumber[index]
-        cell2.innerHTML = item.itemNumber
-        addRow()
-        if (item.properties.includes("gDNA")) {
-            cell1.innerHTML = textItems.extractionDate[index]
-        } else if (item.properties === 'Voucher') {
-            cell1.innerHTML = ''
-        } else {
-            cell1.innerHTML = textItems.samplingDate[index]
-        }
-        cell2.innerHTML = item.date
-        addRow()
-        cell1.innerHTML = textItems.preservation[index]
-        if (item.properties === 'Voucher') {
-            cell2.innerHTML = object.preparations
-        } else {
-            cell2.innerHTML = item.preservation
-        }
-        
-        
-        if (item.properties.includes("gDNA")) {
-            addRow()
-            cell1.innerHTML = textItems.method[index]
-            cell2.innerHTML = item.method
-            addRow()
-            cell1.innerHTML = textItems.preparedBy[index]
-            cell2.innerHTML = item.preparedBy
+} else {
+    document.querySelector("#preservedSp").innerHTML = 'basisOfRecord:'
+    document.querySelector("#corema-link").innerHTML = object.basisOfRecord
 
-            addRow()
-            cell1.innerHTML = textItems.concentration[index]
-            cell2.innerHTML = item.DNAConc + ' ' + item.DNAConcUnit
-            addRow()    
-            cell1.innerHTML = 'BOLD ProcessID:'
-            if (item.processID != "#N/A") {
-                const url = `http://www.boldsystems.org/index.php/Public_RecordView?processid=${item.processID}`
-                cell2.innerHTML = `<a href="${url}" target="_blank">${item.processID}</a>`
-            } else { cell2.innerHTML = "#N/A"}
-            addRow()
-            cell1.innerHTML = 'Genbank Acc.No:'
-            cell2.innerHTML = item.genAccNo
-        }
-        addRow()
-        cell1.innerHTML = '<br>'
-    })
+    document.querySelector("#head-preparation").innerHTML = 'preparation:'
+    document.querySelector("#preparation").innerHTML = object.preparations
+
+    document.querySelector("#head-disposition").innerHTML = 'disposition:'
+    document.querySelector("#disposition").innerHTML = object.disposition
+
 }
+
+//     // put items in itemArray as objects
+//     tempItemArray = object.itemNumbers.split(",")
+//     itemArray = []
+//     tempItemArray.forEach (element => itemArray.push({itemNumber: element}))
+    
+//     // add properties to the item-objects
+//     itemTypeArray = object.items.split(",")
+//     dateArray = object.itemDates.split(",")
+//     methodArray = object.itemMethods.split(",")
+//     preparedByArray = object.itemPreparedBys.split(",")
+//     processIDArray = object.itemProcessIDs.split(",")
+//     genbankArray = object.itemGenAccNos.split(",")
+//     DNAConcArray = object.itemConcentrations.split(",")
+//     DNAConcUnitArray = object.itemUnits.split(",")
+//     preservationArray = object.itemPreservations.split(",")
+
+//     for (i=0; i<itemArray.length; i++) {
+//         itemArray[i].properties = itemTypeArray[i]
+//         itemArray[i].date = dateArray[i]
+//         itemArray[i].method =methodArray[i]
+//         itemArray[i].preparedBy = preparedByArray[i]
+//         itemArray[i].processID = processIDArray[i]
+//         itemArray[i].genAccNo = genbankArray[i]
+//         itemArray[i].DNAConc =DNAConcArray[i]
+//         itemArray[i].DNAConcUnit = DNAConcUnitArray[i] 
+//         itemArray[i].preservation = preservationArray[i]
+//     }
+    
+    
+//     // add row in table with heading for items
+//     // addRow()
+//     // cell1.innerHTML = '<br>'
+//     // addRow()
+//     // cell1.id = 'itemsHeader'
+//     // cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.itemsHeader[index]}:</span>`
+//     // addRow()
+//     //cell1.innerHTML = '<br>'
+    
+//     // loop over array
+//     itemArray.forEach( item => {
+//         addRow()
+//         cell1.innerHTML = item.properties
+//         cell1.style.textDecoration  = 'underline'
+//         cell1.style.fontWeight = 'normal'
+//         cell1.style.fontSize = '18px'
+//         addRow()
+//         cell1.innerHTML = textItems.itemNumber[index]
+//         cell2.innerHTML = item.itemNumber
+//         addRow()
+//         if (item.properties.includes("gDNA")) {
+//             cell1.innerHTML = textItems.extractionDate[index]
+//         } else if (item.properties === 'Voucher') {
+//             cell1.innerHTML = ''
+//         } else {
+//             cell1.innerHTML = textItems.samplingDate[index]
+//         }
+//         cell2.innerHTML = item.date
+//         addRow()
+//         cell1.innerHTML = textItems.preservation[index]
+//         if (item.properties === 'Voucher') {
+//             cell2.innerHTML = object.preparations
+//         } else {
+//             cell2.innerHTML = item.preservation
+//         }
+        
+        
+//         if (item.properties.includes("gDNA")) {
+//             addRow()
+//             cell1.innerHTML = textItems.method[index]
+//             cell2.innerHTML = item.method
+//             addRow()
+//             cell1.innerHTML = textItems.preparedBy[index]
+//             cell2.innerHTML = item.preparedBy
+
+//             addRow()
+//             cell1.innerHTML = textItems.concentration[index]
+//             cell2.innerHTML = item.DNAConc + ' ' + item.DNAConcUnit
+//             addRow()    
+//             cell1.innerHTML = 'BOLD ProcessID:'
+//             if (item.processID != "#N/A") {
+//                 const url = `http://www.boldsystems.org/index.php/Public_RecordView?processid=${item.processID}`
+//                 cell2.innerHTML = `<a href="${url}" target="_blank">${item.processID}</a>`
+//             } else { cell2.innerHTML = "#N/A"}
+//             addRow()
+//             cell1.innerHTML = 'Genbank Acc.No:'
+//             cell2.innerHTML = item.genAccNo
+//         }
+//         addRow()
+//         cell1.innerHTML = '<br>'
+//     })
+// }
 
 // photo:
 // hvis noe klikker på neste bilde
@@ -298,7 +320,7 @@ function reducePhoto(photo) {
 // and to to enable large photo by clicking, img is wrapped in a <a>
 
 // if more than one photo
-console.log(object)
+
 const coll = sessionStorage.getItem('collection')
 let mediaLink
 let imageList
@@ -307,40 +329,42 @@ if ( coll === 'birds' || coll === 'mammals' || coll === 'dna_fish_herptiles' || 
 } else {
     mediaLink = object.associatedMedia
 }
-//if (mediaLink) {console.log("yes")} else {console.log("no")}
-if ( mediaLink.includes('|') | mediaLink.includes(',')) {  // if several photos
-    document.getElementById("next-photo").style.display = "block"
-    document.getElementById("previous-photo").style.display = "block"
-    document.getElementById("nb-photos").style.display = "block"
-    let index = 0
-    if (mediaLink.includes('|')) {
-        imageList = mediaLink.split('|')
-    } else {
-        imageList = mediaLink.split(',') // birds and mammals (corema-collections)
-    }
-    let smallImageList = imageList.map(reducePhoto)
-    let length = imageList[0].length
-    if (smallImageList[0].charAt(0) === '"') {smallImageList[0] = smallImageList[0].substring(1,length--)}
-    document.getElementById("photo-anchor").href = imageList[0]
-    document.getElementById("photo-box").src = smallImageList[0]
-    
-    document.getElementById("next-photo").onclick = () => {
-        index = changeImage(index, 'f', smallImageList, imageList)
-        document.getElementById("nb-photos").innerHTML = (index+1)  + '/' + imageList.length 
+if (mediaLink) {
+    if ( mediaLink.includes('|') | mediaLink.includes(',')) {  // if several photos
+        document.getElementById("next-photo").style.display = "block"
+        document.getElementById("previous-photo").style.display = "block"
+        document.getElementById("nb-photos").style.display = "block"
+        let index = 0
+        if (mediaLink.includes('|')) {
+            imageList = mediaLink.split('|')
+        } else {
+            imageList = mediaLink.split(',') // birds and mammals (corema-collections)
+        }
+        let smallImageList = imageList.map(reducePhoto)
+        let length = imageList[0].length
+        if (smallImageList[0].charAt(0) === '"') {smallImageList[0] = smallImageList[0].substring(1,length--)}
+        document.getElementById("photo-anchor").href = imageList[0]
+        document.getElementById("photo-box").src = smallImageList[0]
         
+        document.getElementById("next-photo").onclick = () => {
+            index = changeImage(index, 'f', smallImageList, imageList)
+            document.getElementById("nb-photos").innerHTML = (index+1)  + '/' + imageList.length 
+            
+        }
+        
+        document.getElementById("previous-photo").onclick = () => {
+            index = changeImage(index, 'r', smallImageList, imageList)
+            document.getElementById("nb-photos").innerHTML = (index+1)  + '/' + imageList.length 
+            console.log(index)
+        }
+        document.getElementById("nb-photos").innerHTML = index+1  + '/' + imageList.length 
+    } else {
+        document.getElementById("photo-anchor").href = mediaLink
+        let smallImage = mediaLink
+        smallImage = smallImage.replace('jpeg', 'small')
+        document.getElementById("photo-box").src = smallImage
     }
     
-    document.getElementById("previous-photo").onclick = () => {
-        index = changeImage(index, 'r', smallImageList, imageList)
-        document.getElementById("nb-photos").innerHTML = (index+1)  + '/' + imageList.length 
-        console.log(index)
-    }
-    document.getElementById("nb-photos").innerHTML = index+1  + '/' + imageList.length 
-} else {
-    document.getElementById("photo-anchor").href = mediaLink
-    let smallImage = mediaLink
-    smallImage = smallImage.replace('jpeg', 'small')
-    document.getElementById("photo-box").src = smallImage
 }
 
 //map
@@ -364,5 +388,4 @@ document.getElementById('large-map-object-button').onclick = () => {
 // const nextObjCatNumber = allObject[objIndex + 1].catalogNumber
 // console.log(nextObjCatNumber)
 // document.getElementById('nextObjectCell').innerHTML = `<a id="next-object-link" href="${urlPath}/object/?id=${nextObjCatNumber}">Neste objekt ${nextObjCatNumber} </a>`
-
 

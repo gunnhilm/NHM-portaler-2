@@ -324,8 +324,8 @@ const drawMapObject = (object) => {
         }
         document.getElementById('large-map-object-button').style.display = "none"
         document.getElementById('zoom-button').style.display = "none"
-        document.getElementById('export-png').style.display = "none"
-        document.getElementById('checkedInMap').style.display = "none"
+        //document.getElementById('export-png').style.display = "none"
+        //document.getElementById('checkedInMap').style.display = "none"
 
     }
 

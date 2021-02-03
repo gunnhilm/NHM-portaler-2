@@ -136,6 +136,8 @@ function forceDownload(url, fileName){
     searchFailed = false
     resetSortedBoolean() // set all booleans in propsSorted-array in PaginateAndRender.js to false
     const searchTerm = search.value
+    console.log(search.value)
+    console.log('p')
     const chosenCollection = collection.value
     searchLineNumber = limit
  
@@ -153,6 +155,8 @@ function forceDownload(url, fileName){
     document.getElementById("head-nb-hits").innerHTML = ""
     document.getElementById("zoom-button").style.display = "none"
     document.getElementById("large-map-button").style.display = "none"
+    document.getElementById("export-png").style.display = "none"
+    document.getElementById("checkedInMap").style.display = "none"
     document.getElementById("empty-search-button").style.display = "none"
     document.getElementById("first").style.display = "none"
     document.getElementById("previous").style.display = "none"

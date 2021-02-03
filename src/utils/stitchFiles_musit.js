@@ -71,23 +71,185 @@ const readDumpFile = (filename, callback) => {
     })
 }
 
+function readDumpFilePromise (filename, type) {
+    let dumpResults = ''
+    const readInterface = readline.createInterface({
+        input: fs.createReadStream(filename),
+        console: false
+    })
+    return readInterface
+    // let count = 0
+    // readInterface.on('line', function(line) {
+    //     count ++
+    //     if (count === 1 ) {
+    //         // header row
+    //         dumpResults = line
+    //     } else {
+    //         dumpResults = dumpResults + '\n' + line
+    //     }
+    // })
+    // return fs.promises.readFile(filename, {encoding: type})
+}
+
+const rlp = require('readline');
+
+const rl = rlp.createInterface({
+        input: process.stdin,
+        output: process.stdout
+
+});
+
+function ask() {
+    return new Promise((resolve, reject) => {
+        rl.question('Enter input: ', (input) => resolve(input) );
+    });
+}
+
+function GMask(filename) {
+    return new Promise((resolve, reject) => {
+        readDumpFilePromise(filename)
+    })
+}
+
+GMask()
+ask()
+.then((result) => { console.log(result); return ask(); })
+.then((result) => { console.log(result); return ask(); })
+.then(result => { console.log(result); rl.close() });
+
+
+
+readDumpFilePromise(entDnaOccurrenceFile, 'utf8')
+.then(function(result) {
+    let dumpResults
+    result.forEach((line, index) => {
+        count ++
+        if (count === 1 ) {
+            // header row
+            dumpResults = line
+        } else {
+            dumpResults = dumpResults + '\n' + line
+        }
+    })
+    console.log(dumpResults)
+})
+.catch(function(error) {
+    console.log(error)
+})
+
+
+
+// const allCoremaDataArray = []
+// const stitchCoremaFiles = (dnaOccurrenceFile, relationshipFile, preparationFile, amplificationFile, materialsampleFile, preservationFile, collSpecTextToReplace, collSpecPlacement) => {
+//     console.log('stitchCoremaFiles has started')
+//     readDumpFile (dnaOccurrenceFile, (error, dnaOccurrenceResults) => {
+//         dnaOccurrenceResults.forEach(element => {
+//             allCoremaDataArray.push(element)
+//         })
+//     })
+
+
+
+//     readDumpFile (preparationFile, (error, preparationResult) => {
+//         readDumpFile (amplificationFile, (error, amplResult) => {
+//             readDumpFile (materialsampleFile, (error, materialResult) => {
+//                 readDumpFile (preservationFile, (error, presResult) => {
+//                     readDumpFile(relationshipFile, (error, relationshipResults) => {
+//                         //there might be several relations for one itemUUIDs
+//                         const relationIDs = []
+//                         relationshipResults.forEach(element => relationIDs.push(element.id))        
+//                         const uniqueRelationIDs = Array.from(new Set(relationIDs)) // remove duplicates
+//                         //make these objects
+//                         const uniqueRelationObjects = []
+//                         uniqueRelationIDs.forEach (element => uniqueRelationObjects.push({id: element}))
+//                         // add relations.. 
+//                         relationshipResults.forEach(element => {
+//                             relationEl = uniqueRelationObjects.find(el => el.id === element.id)
+//                             if (element.relatedResourceID.includes('urn:catalog:O:') || element.relatedResourceID.includes('urn:catalog:NHMO:') && !element.relatedResourceID.includes('DAR'))  {
+//                                 relationEl.musitNo = element.relatedResourceID.replace(collSpecTextToReplace, collSpecPlacement)
+//                             }
+//                         })
+//                         //console.log(uniqueRelation)
+//                         dnaOccurrenceResults.forEach(element => {
+//                             const prepEl = preparationResult.find(el => el.id === element.id)
+//                             if (prepEl) {
+//                                 element.preparationDate = prepEl.preparationDate
+//                             }
+//                             const amplEl = amplResult.find(el => el.id === element.id)
+//                             if (amplEl) {
+//                                 element.geneticAccessionNumber = amplEl.geneticAccessionNumber
+//                             }
+//                             const matEl = materialResult.find(el => el.id === element.id)
+//                             if (matEl) {
+//                                 element.concentration = matEl.concentration
+//                             }
+//                             const presEl = presResult.find(el => el.id === element.id)
+//                             if (presEl) {
+//                                 element.preservationType = presEl.preservationType
+//                             }
+//                             const relationObject = uniqueRelationObjects.find(el => el.id === element.id)
+//                             if (relationObject) {
+//                                 element.musitNo = relationObject.musitNo
+//                             } else {
+//                                 element.musitNo = '#N/A'
+//                             }
+                
+//                             allCoremaDataArray.push(element)
+                
+//                         })
+//                         console.log(allCoremaDataArray[308])
+//                         // 1) create orgArray with all organisms from musit-file and add property musitNo (same as catalogNumber, with prefix) and other empty properties
+//                         const orgArray = []
+//                         occurrenceResults.forEach( element => orgArray.push(element))  
+//                         console.log('orgarray is made')
+//                         orgArray.forEach(el => {
+//                             el.musitNo = el.institutionCode + '-' + el.collectionCode + '-' + el.catalogNumber  // redundancy with new catalogNumber, see below, musitno should go, but uncertain of consequences
+//                             el.organismID = ''
+//                             el.itemUUIDs = 'dummyUUID' // to be able to list 'Voucher' as an item
+//                             el.items = 'Preserved specimen'
+//                             el.itemNumbers = el.musitNo
+//                             if (el.recordedBy) { el.recordedBy = el.recordedBy.trim() } // to clean up collectors field in entomology
+//                             if (el.identifiedBy) { el.identifiedBy = el.identifiedBy.trim() }
+//                             el.catalogNumber = el.institutionCode + '-' + el.collectionCode + '-' + el.catalogNumber    // redundancy with musitNo, musitno should go, but uncertain of consequences
+//                         })
+//                         console.log('musit no added to orgarray')
+
+//                     })    
+//                 })
+//             })
+//         })
+        
+        
+//                 // if (dnaEl.preparationDate) {
+//                 // if (dnaEl.preparationMaterials) {
+//                 // if (dnaEl.preparedBy) {
+        
+
+//     })
+    
+// }
+
+//stitchCoremaFiles(entDnaOccurrenceFile, entRelationshipFile, entPreparationFile, entAmplificationFile, entMaterialsampleFile, entPreservationFile, 'urn:catalog:NHMO:ENT:','NHMO-ENT-')
+
 const stitchMusitCoremaFiles = (occurrenceFile, dnaOccurrenceFile, relationshipFile, preparationFile, amplificationFile, materialsampleFile, preservationFile, collSpecTextToReplace, collSpecPlacement, outfileName) => {
     // read musit-occurrence-file and store each accession as an object in an array [orgArray]
+    console.log('stitchmusitcoremafiles has started')
     readDumpFile(occurrenceFile, (error, occurrenceResults) => {
         // 1) create orgArray with all organisms from musit-file and add property musitNo (same as catalogNumber, with prefix) and other empty properties
         const orgArray = []
         occurrenceResults.forEach( element => orgArray.push(element))  
+        console.log('orgarray is made')
         orgArray.forEach(el => {
             el.musitNo = el.institutionCode + '-' + el.collectionCode + '-' + el.catalogNumber  // redundancy with new catalogNumber, see below, musitno should go, but uncertain of consequences
             el.organismID = ''
             el.itemUUIDs = 'dummyUUID' // to be able to list 'Voucher' as an item
-            el.items = 'Voucher'
+            el.items = 'Preserved specimen'
             el.itemNumbers = el.musitNo
             if (el.recordedBy) { el.recordedBy = el.recordedBy.trim() } // to clean up collectors field in entomology
             if (el.identifiedBy) { el.identifiedBy = el.identifiedBy.trim() }
             el.catalogNumber = el.institutionCode + '-' + el.collectionCode + '-' + el.catalogNumber    // redundancy with musitNo, musitno should go, but uncertain of consequences
         })
-        
+        console.log('musit no added to orgarray')
         // 2) create array uniqueRelationObjects with all itemUUIDs from corema, all relations from relation-file, and musitNo
         readDumpFile(relationshipFile, (error, relationshipResults) => {
             //there might be several relations for one itemUUIDs
@@ -113,11 +275,13 @@ const stitchMusitCoremaFiles = (occurrenceFile, dnaOccurrenceFile, relationshipF
                     relationEl.musitNo = element.relatedResourceID.replace(collSpecTextToReplace, collSpecPlacement)
                 }
             })
-
+            console.log('uniquerelationobject is made')
             // 3) read corema-occ-file and 4) add musitNo to this, and 5) add item-info to orgArray
             readDumpFile(dnaOccurrenceFile,(error, coremaResults) => {
+                
                 const coremaIDs = []    // for those corema-records that are not in musit
                 coremaResults.forEach(element => {
+                    console.log(element.catalogNumber)
                     // add musitNo to coremaOccurrenceData
                     const relationObject = uniqueRelationObjects.find(el => el.id === element.id)
                     if (relationObject) {
@@ -144,27 +308,52 @@ const stitchMusitCoremaFiles = (occurrenceFile, dnaOccurrenceFile, relationshipF
                         }
                     }    
                     // 5) add item-info to orgArray-objects from musit
-                    const org = orgArray.find(el => el.musitNo === element.musitNo)
-                    if (org) {
+                    // const org = orgArray.find(el => el.musitNo === element.musitNo)
+                    // if (org) {
+                    //     if (org.items === '') {
+                    //         org.items = element.preparations
+                    //         org.itemNumbers = element.catalogNumber
+                    //         org.itemUUIDs = element.id
+                    //     } else {
+                    //         org.items = fillProperty(org.items, element.preparations)
+                    //         org.items = org.items.replace(/,/g, ", ")
+                    //         org.itemNumbers = fillProperty(org.itemNumbers, element.catalogNumber)
+                    //         org.itemUUIDs = fillProperty(org.itemUUIDs, element.id)
+                    //     }
+                    // }
+                    // console.log('5 item-info  added')
+                })
+
+                // 5b) add item-info to orgArray-objects
+                //      only for those that are in corema...
+                //      A) loop through orgArray and i) check if musitno is in corema-dump (make array with musitno that is in corema?)
+                //  and ii) add info from corema
+                orgArray.forEach(element => {
+                    console.log(element.musitNo)
+                    coremaEl2 = coremaResults.find(el => el.musitNo === element.musitNo)
+                    if (coremaEl2) {
                         if (org.items === '') {
-                            org.items = element.preparations
-                            org.itemNumbers = element.catalogNumber
-                            org.itemUUIDs = element.id
+                            org.items = coremaEl2.preparations
+                            org.itemNumbers = coremaEl2.catalogNumber
+                            org.itemUUIDs = coremaEl2.id
                         } else {
-                            org.items = fillProperty(org.items, element.preparations)
+                            org.items = fillProperty(org.items, coremaEl2.preparations)
                             org.items = org.items.replace(/,/g, ", ")
-                            org.itemNumbers = fillProperty(org.itemNumbers, element.catalogNumber)
-                            org.itemUUIDs = fillProperty(org.itemUUIDs, element.id)
+                            org.itemNumbers = fillProperty(org.itemNumbers, coremaEl2.catalogNumber)
+                            org.itemUUIDs = fillProperty(org.itemUUIDs, coremaEl2.id)
                         }
                     }
                 })
 
+                // 
                 // 7) add [coremaEl], which contains records from corema with no counterpart in musit, to [orgArray]; records from musit
                 orgArray.push(...coremaIDs)
                
                 // 8) add info about items from four different dump-files
                 readDumpFile(preparationFile,(error, dnaResults) => {
                     orgArray.forEach(element => {
+                        console.log('preparationFile')
+                        console.log(element.musitNo)
                         if (element.accessRights) {
                             delete element.accessRights // very long text that we don't think we need 
                         }
@@ -204,6 +393,8 @@ const stitchMusitCoremaFiles = (occurrenceFile, dnaOccurrenceFile, relationshipF
                     
                     readDumpFile(amplificationFile,(error,sequenceResults) => {
                         orgArray.forEach(element => {
+                            console.log('ampl')
+                            console.log('element.musitNo')
                             tarray = element.itemUUIDs.split(",")
                             genArray = []
                             boldArray = []
@@ -299,5 +490,5 @@ const stitchMusitCoremaFiles = (occurrenceFile, dnaOccurrenceFile, relationshipF
 
 //stitchMusitCoremaFiles(fungiOccurrenceFile,funLichDnaOccurrenceFile,funLichRelationshipFile,funLichPreparationFile,funLichAmplificationFile,funLichMaterialsampleFile,funLichPreservationFile, 'urn:catalog:O:F:','O-F-', '../data/sopp_stitched_file.txt')
 //stitchMusitCoremaFiles(lichenOccurrenceFile,funLichDnaOccurrenceFile,funLichRelationshipFile,funLichPreparationFile,funLichAmplificationFile,funLichMaterialsampleFile,funLichPreservationFile, 'urn:catalog:O:L:','O-L-','../data/lav_stitched_file.txt')
-stitchMusitCoremaFiles(entOccurrenceFile,entDnaOccurrenceFile,entRelationshipFile,entPreparationFile,entAmplificationFile,entMaterialsampleFile,entPreservationFile, 'urn:catalog:NHMO:ENT:','NHMO-ENT-','../data/entomologi_stitched_file.txt')
+//stitchMusitCoremaFiles(entOccurrenceFile,entDnaOccurrenceFile,entRelationshipFile,entPreparationFile,entAmplificationFile,entMaterialsampleFile,entPreservationFile, 'urn:catalog:NHMO:ENT:','NHMO-ENT-','../data/entomologi_stitched_file.txt')
 //stitchMusitCoremaFiles(plantOccurrenceFile,plantDnaOccurrenceFile,plantRelationshipFile,plantPreparationFile,plantAmplificationFile,plantMaterialsampleFile,plantPreservationFile, 'urn:catalog:O:V:','O-V-','../data/karplanter_stitched_file.txt')

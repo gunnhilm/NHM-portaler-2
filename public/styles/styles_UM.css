@@ -1,0 +1,57 @@
+header {
+    background-color: #cf3c3a;
+}
+
+
+/* footer.hbs */
+footer {
+    background-color: #cf3c3a;
+} 
+
+#language {
+    background-color: #cf3c3a;
+    color: white;
+} 
+
+.headerLink {
+    color: white;
+}
+
+.headerLink:hover {
+    background-color: #d46866
+}
+
+/* Dropdown Button */
+.dropbtn {
+    background-color: #cf3c3a;
+    color: white;
+  }
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    background-color:#cf3c3a;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: white;
+  }
+
+  /* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #d46866}
+
+
+
+@media only screen and (max-width: 974px) {
+    .header-right {
+        background-color: white;
+    }
+}
+
+@media only screen and (max-width: 670px) {
+
+    #logo {
+        position: absolute;
+        clip: rect(0px,48px,200px,0px)
+    }
+}

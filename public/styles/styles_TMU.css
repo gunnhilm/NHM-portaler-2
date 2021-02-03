@@ -1,0 +1,61 @@
+header {
+    background-color:white;
+    border: solid;
+    border-width: thin;
+    border-left: 0;
+    border-right: 0;
+}
+
+
+/* footer.hbs */
+footer {
+    background-color: white;
+    border: solid;
+    border-width: thin;
+    border-left: 0;
+    border-right: 0;
+} 
+
+#language {
+    background-color: white;
+    color: #023349;
+} 
+
+.headerLink {
+    color: #023349;
+}
+
+.headerLink:hover {
+    background-color: #ddd;
+}
+
+/* Dropdown Button */
+.dropbtn {
+    background-color:  white;
+    color: #023349;
+  }
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    background-color: white;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color:  #023349;
+  }
+
+  /* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #ddd;}
+
+@media only screen and (max-width: 670px) {
+
+    #logo {
+        position: absolute;
+        clip: rect(0px,50px,200px,0px)
+    }
+}
+
+
+
+

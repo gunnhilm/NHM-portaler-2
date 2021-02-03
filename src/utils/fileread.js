@@ -13,7 +13,12 @@ const setCollection = (samling) => {
     } else {
         fileList.forEach(element => {
             if (element.name === samling){
-                musitFile = './src/data/' + element.name + '_stitched_file.txt'
+                console.log(element.name)
+                if (element.name === 'karplanter') {
+                    musitFile = './src/data/' + element.name + '_occurrence_dummy.txt'    
+                } else {
+                    musitFile = './src/data/' + element.name + '_occurrence.txt'
+                }
             }
         })
     

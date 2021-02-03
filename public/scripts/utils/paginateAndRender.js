@@ -1,3 +1,10 @@
+// show collections in select dependent on museum
+if(!window.location.href.includes('nhm')) {
+    document.querySelector('#coremaopt').style.display = 'none'
+    document.querySelector('#DNAopt').style.display = 'none'
+    document.querySelector('#alger').style.display = 'none'
+}
+
 // rendered with result table (used in function resultTable())
 const table = document.getElementById("myTable")
 const hitsPerPage = document.querySelector('#number-per-page')
@@ -34,7 +41,10 @@ if (!sessionStorage.getItem('propsSorted')) {
         {id: 'decimalLongitude',
         sortedOnce: false,
         sortedTwice: false},
-        {id: 'items',
+        {id: 'coremaNo',
+        sortedOnce: false,
+        sortedTwice: false},
+        {id: 'sampleType',
         sortedOnce: false,
         sortedTwice: false},
         {id: 'processID',
@@ -48,12 +58,26 @@ if (!sessionStorage.getItem('propsSorted')) {
     propsSorted = JSON.parse(sessionStorage.getItem('propsSorted'))
 }
 
-    
+
+
 function resetSortedBoolean () {
     for(i = 0; i < propsSorted.length; i++) {
         propsSorted[i].sortedOnce = false
         propsSorted[i].sortedTwice = false
     }
+}
+
+function itemType (catalogNumber) {
+    const s = catalogNumber.charAt(catalogNumber.length-1)
+    let itemType = (s === 'B') ? textItems.b[index] : (s === 'D') ? 'DNA' : (s === 'P') ? textItems.p[index] : 
+        (s === 'E') ? 'Egg' : (s === 'S') ? 'Sperm' : (s === 'O') ? textItems.o[index] : (s === 'OB') ? textItems.ob[index] :
+        (s === 'F') ? textItems.f[index] : (s === 'O') ? textItems.o[index] : (s === 'N') ? textItems.n[index] :
+        (s === 'PE') ? 'Pellet' : (s === 'OT') ? textItems.ot[index] : (s === 'SS') ? 'Sperm slide' : (s === 'SR') ? textItems.sr[index] :
+        (s === 'SI') ? textItems.si[index] : (s === 'T') ? textItems.t[index] : (s === 'TS') ? textItems.ts[index] :
+        (s === 'EP') ? textItems.ep[index] : (s === 'SG') ? 'Seminal glomera' : (s === 'BS') ? textItems.bs[index] :
+        (s === 'FA') ? 'Faeces' : (s === 'CF') ? textItems.cf[index] : (s === 'U') ? textItems.u[index] : ""
+
+    return itemType
 }
 
 
@@ -138,6 +162,14 @@ function addSortingText(id, n, prop, musitData) { // her er musitData alle
     }
 }
 
+// hide column (for museums without genetic database)
+function hide_column(col_no) {
+    const rows = table.getElementsByTagName('tr')
+    for (var row=0; row<rows.length;row++) {
+        var cells = rows[row].getElementsByTagName('td')
+        cells[col_no].style.display = 'none'
+    }
+}
 
 // render result table
 const resultTable = (subMusitData, musitData) => {    
@@ -160,6 +192,7 @@ const resultTable = (subMusitData, musitData) => {
             const cell10 = row.insertCell(9)
             cell10.className += "cell10";
             const cell11 = row.insertCell(10)
+            
             if (i === -1) {     // her kommer tittellinjen
                 cell1.innerHTML = `<button id='musitIDButton' class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>` 
                 cell2.innerHTML = `<button id='scientificNameButton' class='sort'>${textItems.headerTaxon[index].bold()} ${getArrows('scientificName')} </button>`
@@ -171,7 +204,21 @@ const resultTable = (subMusitData, musitData) => {
                 cell8.innerHTML = `<button id='photoButton' class='sort'><span class="fas fa-camera"></span>${getArrows('associatedMedia')}</button>`
                 cell9.innerHTML = `<button id='coordinateButton' class='sort'><span class="fas fa-compass"></span>${getArrows('decimalLongitude')}</button>`
                 //cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} </button>`
-                cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} ${getArrows('items')}</button>`
+                // console.log(window.location.href)
+                // if (!window.location.href.includes('nhm')) {
+                    if (document.querySelector('#collection-select option:checked').parentElement.label === 'Specimens') {
+                    
+                         cell10.innerHTML = `<button id='coremaNoButton' class='sort'>${textItems.headerCoremaNo[index].bold()} ${getArrows('coremaNo')}</button>`
+                    } else {
+                        cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} ${getArrows('sampleType')}</button>`
+                    }
+                    
+                // } else {
+                    
+                //     cell10.innerHTML = "test"
+                // }
+                
+
                 cell11.innerHTML = `<select id='checkboxSelect' class='sort'>
                     <option value="select" id="select">${textItems.select[index].bold()}</option>
                     <option value="all" id="selectAll">${textItems.selectAll[index]}</option>
@@ -179,7 +226,6 @@ const resultTable = (subMusitData, musitData) => {
                     <option value="none" id="selectNone">${ textItems.selectNone[index]}</option>
                 </select>`
                 //investigateChecked()
-                
                 // lag overskriftene klikk og sorterbare
                 addSortingText('musitIDButton', 1, 'catalogNumber', musitData)  // Tabellen blir sortert på nummer
                 addSortingText('scientificNameButton', 2, 'scientificName', musitData)
@@ -190,7 +236,14 @@ const resultTable = (subMusitData, musitData) => {
                 addSortingText('localityButton', 7, 'locality', musitData)
                 addSortingText('photoButton', 8, 'associatedMedia', musitData)
                 addSortingText('coordinateButton', 9, 'decimalLongitude', musitData)
-                addSortingText('sampleTypeButton', 10, 'items', musitData)         
+                
+
+                if (document.querySelector('#collection-select option:checked').parentElement.label === 'Specimens') {
+                    addSortingText('coremaNoButton', 10, 'coremaNo', musitData)
+                } else {
+                    addSortingText('sampleTypeButton', 10, 'sampleType', musitData)         
+                }
+
                 //addSortingText('processIDButton', 11, 'processID', musitData)
                 
             } else {        // Her kommer innmaten i tabellen, selve resultatene
@@ -217,7 +270,18 @@ const resultTable = (subMusitData, musitData) => {
                     cell9.innerHTML = '<span class="fas fa-compass"></span>'
                 }
                 
-                cell10.innerHTML = subMusitData[i].items
+                if (window.location.href.includes('nhm')) {
+                    cell10.innerHTML = 'test'
+                } else {
+                    if (document.querySelector('#collection-select  option:checked').parentElement.label === 'Specimens') {
+                        cell10.innerHTML = subMusitData[i].coremaNo
+                    } else {
+                        cell10.innerHTML = itemType(subMusitData[i].catalogNumber)
+                    }
+                   
+                }
+                
+                
                 cell11.innerHTML = `<input type="checkbox" id=checkbox${i} onclick="registerChecked(${i})" ></input>`
                 //cell11.innerHTML = `<input type="checkbox" id=checkbox${i}  ></input>`
                 
@@ -241,7 +305,14 @@ const resultTable = (subMusitData, musitData) => {
                 cell10.className = 'row-10 row-sampleType'
                 cell11.className = 'row-11 row-checkbox'
             }
+            
         }
+        
+        // hide corema-link-column for UM and TMU
+        if (window.location.href.includes('um') | window.location.href.includes('tmu')) {
+            hide_column(9)
+        }
+
         // Show download button
         downloadButton.style.display = "block"
         downloadPhotoButton.style.display = "block"
@@ -312,19 +383,21 @@ function makeList() {
     // parsing search result
     list = JSON.parse(stringData)   
     numberOfPages = getNumberOfPages(numberPerPage);
-    console.log(numberOfPages)
 }
 
 function getNumberOfPages(numberPerPage) {
-    console.log(numberPerPage)
     return Math.ceil(list.length / numberPerPage);
 }
 
 function nextPage() {
-    currentPage += 1;
-    sessionStorage.setItem('currentPage', currentPage)
-    //loadList();
-    load()
+    if (currentPage < numberOfPages) {
+        currentPage += 1    
+        sessionStorage.setItem('currentPage', currentPage)
+        //loadList();
+        load()
+    } else {
+        document.getElementById("resultPageAlert").innerHTML = textItems.lastPageAlert[index]
+    }
 }
 
 function previousPage() {

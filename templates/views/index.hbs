@@ -29,6 +29,28 @@
                                             <label for="collection-select" id="select-collection-label" ></label>
                                             <select id="collection-select" style=" height:30px; border-radius:4px;" >
                                                 <option value="" id="vennligst" ></option>
+
+                                            
+                                            <optgroup label="Specimens">
+                                                <option value="karplanter" id="karplanter"></option>
+                                                <option value="sopp" id="sopp"></option>
+                                                <option value="moser" id="moser"></option>
+                                                <option value="lav" id="lav"></option>
+                                                <option value="alger" id="alger"></option>
+                                                <option value="entomologi" id="insekter"></option>
+                                            </optgroup>
+                                            <optgroup label ="Specimens og DNA" id ='coremaopt'>
+                                                <option value="birds" id="fugler"></option>
+                                                <option value="mammals" id="pattedyr"></option>
+                                            </optgroup>
+                                            <optgroup label="DNA" id="DNAopt">
+                                                <option value="dna_karplanter" id="dna_karplanter"></option>
+                                                <option value="dna_entomologi" id="dna_insekter"></option>
+                                                <option value="dna_fish_herptiles" id="dna_fish_herptiles"></option>
+                                                <option value="dna_fungi_lichens" id="dna_fungi_lichens"></option>
+                                                <option value="dna_other" id="dna_other"></option>
+                                            </optgroup>
+                                            {{!-- <option value="" id="vennligst" ></option>
                                                     <option value="karplanter" id="karplanter"></option>
                                                     <option value="sopp" id="sopp"></option>
                                                     <option value="moser" id="moser"></option>
@@ -38,7 +60,7 @@
                                                     <option value="birds" id="fugler"></option>
                                                     <option value="mammals" id="pattedyr"></option>
                                                     <option value="dna_fish_herptiles" id="dna_fish_herptiles"></option>
-                                                    <option value="dna_other" id="dna_other"></option>
+                                                    <option value="dna_other" id="dna_other"></option> --}}
                                             </select>
                                         </td>
                                         <td  colspan="2">
@@ -178,6 +200,9 @@
         <script src="/nhm/scripts/utils/papaparse/papaparse.min.js"></script>
         <script src="/nhm/scripts/utils/renderLang.js"></script>
         <link rel="stylesheet" href="/nhm/styles/styles.css">
+        <link rel="stylesheet" href="/nhm/styles/styles_NHM.css">
+        {{!-- <link rel="stylesheet" href="/nhm/styles/styles_TMU.css"> --}}
+        {{!-- <link rel="stylesheet" href="/nhm/styles/styles_UM.css" --}}
         <script src="/nhm/scripts/utils/ol/ol.js"></script>
         <script src="/nhm/scripts/utils/map.js"></script>
         <script src="/nhm/scripts/utils/paginateAndRender.js"></script>
