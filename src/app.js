@@ -191,7 +191,7 @@ app.get('/object', (req, res) => {
 
 
 
-app.get('/showStat', (req, res) => {
+app.get('*/showStat', (req, res) => {
     if (!req.query.getStat) {
         return res.render('showStat', {
         })
@@ -221,7 +221,7 @@ app.get('/about', (req, res) => {
     })
 })
 
-app.get('/help', (req, res) => {
+app.get('*/help', (req, res) => {
     res.render('help', {})
 })
 

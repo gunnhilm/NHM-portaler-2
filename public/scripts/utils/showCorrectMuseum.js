@@ -1,6 +1,5 @@
 function swapStyleSheet(sheet) {
-document.getElementById('museumStyle').setAttribute('href', sheet)
-console.log('hei');
+    document.getElementById('museumStyle').setAttribute('href', sheet)
 }
 
 const getMuseumStyleSheet = () => {
@@ -14,3 +13,4 @@ const getMuseumStyleSheet = () => {
 }
 
 getMuseumStyleSheet()
+
