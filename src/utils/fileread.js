@@ -4,8 +4,10 @@ const fs = require('fs')
 const fileList = require('./fileList')
 
 
-const setCollection = (samling) => {
+const setCollection = (museum, samling) => {
     let musitFile = ''
+    const pathToMuseum = './src/data/' + museum + '/'
+    console.log('SetColl vi test her: ' + pathToMuseum);
     if (samling === 'journaler') {
         musitFile = './src/data/journaler.txt'
         console.log(musitFile);
@@ -13,12 +15,8 @@ const setCollection = (samling) => {
     } else {
         fileList.forEach(element => {
             if (element.name === samling){
-                console.log(element.name)
-                if (element.name === 'karplanter') {
-                    musitFile = './src/data/' + element.name + '_occurrence_dummy.txt'    
-                } else {
-                    musitFile = './src/data/' + element.name + '_occurrence.txt'
-                }
+                console.log('her kommer element: ' + element.name)
+                    musitFile = pathToMuseum + element.name + '_occurrence.txt'
             }
         })
     
@@ -26,10 +24,10 @@ const setCollection = (samling) => {
     return musitFile 
 }
 
-const search = (samling, searchTerm, linjeNumber = 0, limit = 20, callback) => {
+const search = (museum, samling, searchTerm, linjeNumber = 0, limit = 20, callback) => {
     // velg riktig MUSIT dump fil å lese
-      
-    musitFile = setCollection(samling)
+      console.log('her kommer search museum: ' + museum);
+    musitFile = setCollection(museum,samling)
     if (fs.existsSync(musitFile)) {
         // cleaning the searchterm before making the search so that we get a more precise
         // remove whiteSpace
@@ -88,7 +86,7 @@ const search = (samling, searchTerm, linjeNumber = 0, limit = 20, callback) => {
         })
        
     } else {
-        throw new Error ('File not found' + musitFile)
+        throw new Error ('File not found ')
     }
 }
 

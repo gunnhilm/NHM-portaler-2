@@ -3,7 +3,7 @@ document.getElementById('museumStyle').setAttribute('href', sheet)
 console.log('hei');
 }
 
-const getMuseum = () => {
+const getMuseumStyleSheet = () => {
     if (window.location.href.includes('um')) {
         swapStyleSheet('/nhm/styles/styles_UM.css')
     } else if (window.location.href.includes('tmu')){
@@ -13,4 +13,4 @@ const getMuseum = () => {
     }
 }
 
-getMuseum()
+getMuseumStyleSheet()

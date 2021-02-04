@@ -6,8 +6,8 @@ const getStatFile = require('./utils/getStatFile')
 const footerDate = require('./utils/footerDate')
 const hbs = require('hbs')
 const helmet = require('helmet')
-// const request = require('request') // move to fileread
-const fs = require ('fs') // move to fileread
+
+
 
 
 const app = express()
@@ -93,14 +93,15 @@ app.get('/search', (req, res) => {
         throw new Error ('collection not chosen') 
     } else {
         try {
-            fileRead.search(req.query.samling, req.query.search, req.query.linjeNumber,req.query.limit , (error, results) => {
+            fileRead.search(req.query.museum, req.query.samling, req.query.search, req.query.linjeNumber,req.query.limit , (error, results) => {
                 res.send({
                     unparsed: results
                 })
             })
         }
         catch(error) {
-            throw new Error ('error in fileread.js ' + error)
+            console.log('error in fileread.js ' + error)
+            throw new Error ('File not found ')
         }
     }
 })
@@ -162,7 +163,7 @@ app.get('/downloadImage', (req, res) => {
 // footer date get
 app.get('/footer-date', (req, res) => {
     if (req) {
-        footerDate.getFileUpdatedDate(req.query.samling, (error, date) => {
+        footerDate.getFileUpdatedDate(req.query.museum, req.query.samling, (error, date) => {
             if (error) {
                 return
             } else {
