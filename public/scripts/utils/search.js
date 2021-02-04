@@ -126,6 +126,7 @@ function forceDownload(url, fileName){
 const getCurrentMuseum = () => {
     // finn ut hvilket museum 
     let museum = window.location.pathname
+    console.log(window.location.pathname)
     museum = museum.slice(5)
     return museum
 }
