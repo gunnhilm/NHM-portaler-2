@@ -1,8 +1,12 @@
+// urlPath er definert i textItems.js
+
 // show collections in select dependent on museum
 if(window.location.href.includes('tmu') | window.location.href.includes('um')) {
     document.querySelector('#coremaopt').style.display = 'none'
     document.querySelector('#DNAopt').style.display = 'none'
     document.querySelector('#alger').style.display = 'none'
+} else {
+    document.querySelector('#evertebrater').style.display = 'none'
 }
 
 // rendered with result table (used in function resultTable())
@@ -247,7 +251,16 @@ const resultTable = (subMusitData, musitData) => {
                 //addSortingText('processIDButton', 11, 'processID', musitData)
                 
             } else {        // Her kommer innmaten i tabellen, selve resultatene
-                cell1.innerHTML =  `<a id="object-link" href="${urlPath}/object/?id=${subMusitData[i].catalogNumber}"> ${subMusitData[i].catalogNumber} </a>`
+                let museumURLPath
+                if (window.location.href.includes('um')) { 
+                    museumURLPath = urlPath + "/um"
+                } else if (window.location.href.includes('tmu')) {
+                    museumURLPath = urlPath + "/tmu"
+                } else {
+                    museumURLPath = urlPath + "/nhm"
+                }
+                
+                cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}"> ${subMusitData[i].catalogNumber} </a>`
                 cell2.innerHTML = subMusitData[i].scientificName
                 if (subMusitData[i].recordedBy.includes(",")) {
                     let x = subMusitData[i].recordedBy.indexOf(",")
@@ -309,7 +322,7 @@ const resultTable = (subMusitData, musitData) => {
         }
         
         // hide corema-link-column for UM and TMU
-        if (window.location.href.includes('um') | window.location.href.includes('tmu')) {
+        if (window.location.href.includes('um') || window.location.href.includes('tmu')) {
             hide_column(9)
         }
 
@@ -454,12 +467,15 @@ function load() {
 
 hitsPerPage.addEventListener('change', (e) => {
     e.preventDefault()
-    if (hitsPerPage.value < 2000){
+    console.log(hitsPerPage.value)
+    if (hitsPerPage.value < 4000){
+        console.log('hitsperpage < 4000')
         numberPerPage = hitsPerPage.value
         numberPerPage = numberPerPage - 0 // to make it a number
         numberOfPages = getNumberOfPages(numberPerPage)
     } else {
-        numberPerPage = 2000
+        numberPerPage = 4000
+        console.log('setting numberperpage to 4000')
         numberOfPages = 1
     }
     currentPage = 1

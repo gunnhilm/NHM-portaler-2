@@ -100,5 +100,13 @@
     "zipFileName": "occurrence",
     "mediaFile": "multimedia",
     "url": "https://ipt.gbif.no/archive.do?r=o_dna_plants"
+},
+
+{
+    "source": "musit",
+    "name": "evertebrater",
+    "zipFileName": "occurrence",
+    "mediaFile": "multimedia",
+    "url": "https://ipt.gbif.no/archive.do?r=dontknow"
 }
 ]

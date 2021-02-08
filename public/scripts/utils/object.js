@@ -185,17 +185,19 @@ if (!sessionStorage.getItem('collection').includes('dna') & !sessionStorage.getI
             // vent til vi har sti med samlinger - kan peke rett på
         }
     }
-} else {
-    document.querySelector("#preservedSp").innerHTML = 'basisOfRecord:'
-    document.querySelector("#corema-link").innerHTML = object.basisOfRecord
+} 
+//else if(!window.location.href.includes('tmu') && !window.location.href.includes('um')) {
 
-    document.querySelector("#head-preparation").innerHTML = 'preparation:'
-    document.querySelector("#preparation").innerHTML = object.preparations
+//     document.querySelector("#preservedSp").innerHTML = 'basisOfRecord:'
+//     document.querySelector("#corema-link").innerHTML = object.basisOfRecord
 
-    document.querySelector("#head-disposition").innerHTML = 'disposition:'
-    document.querySelector("#disposition").innerHTML = object.disposition
+//     document.querySelector("#head-preparation").innerHTML = 'preparation:'
+//     document.querySelector("#preparation").innerHTML = object.preparations
 
-}
+//     document.querySelector("#head-disposition").innerHTML = 'disposition:'
+//     document.querySelector("#disposition").innerHTML = object.disposition
+
+// }
 
 //     // put items in itemArray as objects
 //     tempItemArray = object.itemNumbers.split(",")

@@ -177,7 +177,7 @@ app.get('/footer-date', (req, res) => {
 
 
 // objektvisningen
-app.get('/object', (req, res) => {
+app.get('*/object', (req, res) => {
     if (!req.query.id) {
         return res.send({
             error: 'Du må oppgi et objekt'

@@ -1,5 +1,5 @@
 console.log('client side javascript is loaded')
-// urlPath er definert i renderLang.js fila
+// urlPath er definert i textItems.js
 // on page initially
 const collection = document.querySelector('#collection-select') 
 const searchForm = document.querySelector('form') 
@@ -186,6 +186,7 @@ const doSearch = (limit = 20) => {
     } else {
         const url = urlPath + '/search/?search=' + searchTerm + '&museum=' + museum + '&samling=' + chosenCollection + '&linjeNumber=0' + '&limit=' + limit // normal search
         fetch(url).then((response) => {
+            console.log(response)
             if (!response.ok) {
                 throw 'noe går galt med søk, respons ikke ok'
             } else {
@@ -313,6 +314,10 @@ const oldSearch = () => {
                 console.log('local storage empty');    
             }
             if (sessionStorage.getItem('numberPerPage')) {
+                console.log(sessionStorage.getItem('numberPerPage'))
+                if (sessionStorage.getItem('numberPerPage') > 100) {
+                    
+                }
                 document.getElementById('number-per-page').value = sessionStorage.getItem('numberPerPage')
             } else {
                 document.getElementById('number-per-page').value = '20'

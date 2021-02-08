@@ -1,3 +1,6 @@
+// urlPath er definert i textItems.js
+
+
 // textItems[] is in separate file textItems.js
 
 const renderText = function(lang) {
@@ -181,7 +184,10 @@ const renderText = function(lang) {
         }
         
         //document.querySelector("#itemsHeader").innerHTML = textItems.itemsHeader[index]
-        document.querySelector("#preservedSp").innerHTML = textItems.preservedSp[index]
+        if (!window.location.href.includes('um') && !window.location.href.includes('tmu')) {
+            document.querySelector("#preservedSp").innerHTML = textItems.preservedSp[index]
+        }
+        
 
 
         document.getElementById('zoom-expl-popup').innerHTML = textItems.mapHelpContent[index]

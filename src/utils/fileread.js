@@ -28,6 +28,7 @@ const search = (museum, samling, searchTerm, linjeNumber = 0, limit = 20, callba
     // velg riktig MUSIT dump fil å lese
       console.log('her kommer search museum: ' + museum);
     musitFile = setCollection(museum,samling)
+    console.log(musitFile)
     if (fs.existsSync(musitFile)) {
         // cleaning the searchterm before making the search so that we get a more precise
         // remove whiteSpace
