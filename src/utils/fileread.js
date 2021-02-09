@@ -1,10 +1,21 @@
 // https://stackabuse.com/reading-a-file-line-by-line-in-node-js/
 const readline = require('readline');
 const fs = require('fs')
-const fileList = require('./fileList')
+const fileListNhm = require('./fileListNhm')
+const fileListTmu = require('./fileListTmu')
+const fileListUm = require('./fileListUm')
 
 
 const setCollection = (museum, samling) => {
+    let fileList
+    if (museum == 'tmu') {
+        fileList = fileListTmu
+    } else if (museum == 'um') {
+        fileList = fileListUm
+    } else {
+        fileList = fileListNhm
+    }
+    
     let musitFile = ''
     const pathToMuseum = './src/data/' + museum + '/'
     console.log('SetColl vi test her: ' + pathToMuseum);
