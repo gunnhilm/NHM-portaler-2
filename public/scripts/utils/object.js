@@ -92,17 +92,9 @@ const coordinates = (obj) => {
     }
 }
 
-// to print nice musit regno
-// let justCatalogNumber = object.catalogNumber
 
-// const indexOfNumber = justCatalogNumber.search(/\d/) // sjekk hvis nummeret også inneholder instutisjonskoder og fjerne disse
-// if (indexOfNumber > 0) {
-//     justCatalogNumber = justCatalogNumber.slice(indexOfNumber)
-// }
-// const regno = `${object.institutionCode}-${object.collectionCode}-${justCatalogNumber}`
-
-//const regnoEl = `<span>${regno}` 
-const regnoEl = `<span>${object.catalogNumber}` 
+let prefix = object.institutionCode + '-' + object.collectionCode + '-'
+const regnoEl = `<span>${prefix}${object.catalogNumber}` 
 
 
 // data only displayed if existing
