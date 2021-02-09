@@ -55,14 +55,10 @@ if (!sessionStorage.getItem('propsSorted')) {
         sortedOnce: false,
         sortedTwice: false}
     ]
-
     sessionStorage.setItem('propsSorted', JSON.stringify(propsSorted))
-
 } else { 
     propsSorted = JSON.parse(sessionStorage.getItem('propsSorted'))
 }
-
-
 
 function resetSortedBoolean () {
     for(i = 0; i < propsSorted.length; i++) {
@@ -84,8 +80,7 @@ function itemType (catalogNumber) {
     return itemType
 }
 
-
-// funksjnalitet for å bytte ut pilene  opp og ned
+// funksjonalitet for å bytte ut pilene  opp og ned
 const arrowUp = `<img id='uio-arrow-up' src='${urlPath}/images/icon-up.svg' width="10" height="10"></img>`
 const arrowDown =  `<img id='uio-arrow-down' src='${urlPath}/images/icon-down.svg' width="10" height="10"></img>`
 const arrows = arrowUp + arrowDown
@@ -99,7 +94,6 @@ function getArrows(prop) {
         return arrowUp
     }
 }
-
 
 // add sorting function to buttons in table
 function addSortingText(id, n, prop, musitData) { // her er musitData alle
@@ -146,8 +140,6 @@ function addSortingText(id, n, prop, musitData) { // her er musitData alle
         resultTable(subMusitData, musitData) 
      })
 }
-
-
 
 // sort search-result when header button in table is clicked 
  sort_by = (prop, reverse, primer) => {
@@ -216,13 +208,7 @@ const resultTable = (subMusitData, musitData) => {
                     } else {
                         cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} ${getArrows('sampleType')}</button>`
                     }
-                    
-                // } else {
-                    
-                //     cell10.innerHTML = "test"
-                // }
                 
-
                 cell11.innerHTML = `<select id='checkboxSelect' class='sort'>
                     <option value="select" id="select">${textItems.select[index].bold()}</option>
                     <option value="all" id="selectAll">${textItems.selectAll[index]}</option>
@@ -260,7 +246,9 @@ const resultTable = (subMusitData, musitData) => {
                     museumURLPath = urlPath + "/nhm"
                 }
                 
-                cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}"> ${subMusitData[i].catalogNumber} </a>`
+                let prefix = subMusitData[i].institutionCode + '-' + subMusitData[i].collectionCode + '-'
+                
+                cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}"> ${prefix}${subMusitData[i].catalogNumber} </a>`
                 cell2.innerHTML = subMusitData[i].scientificName
                 if (subMusitData[i].recordedBy.includes(",")) {
                     let x = subMusitData[i].recordedBy.indexOf(",")
@@ -294,17 +282,13 @@ const resultTable = (subMusitData, musitData) => {
                    
                 }
                 
-                
                 cell11.innerHTML = `<input type="checkbox" id=checkbox${i} onclick="registerChecked(${i})" ></input>`
-                //cell11.innerHTML = `<input type="checkbox" id=checkbox${i}  ></input>`
                 
                 if (investigateChecked(i)) {
                     document.getElementById(`checkbox${i}`).checked = true
                 } else {
                     document.getElementById(`checkbox${i}`).checked = false
                 }
-                
-                
                 
                 cell1.className = 'row-1 row-ID'
                 cell2.className = 'row-2 row-name'
@@ -318,7 +302,6 @@ const resultTable = (subMusitData, musitData) => {
                 cell10.className = 'row-10 row-sampleType'
                 cell11.className = 'row-11 row-checkbox'
             }
-            
         }
         
         // hide corema-link-column for UM and TMU

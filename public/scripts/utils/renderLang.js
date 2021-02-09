@@ -114,12 +114,7 @@ const renderText = function(lang) {
         if(document.getElementById("resultPageAlert1").innerHTML) {
             document.getElementById("resultPageAlert1").innerHTML = textItems.lastPageAlert[index]
         }
-        // what did we mean here?
-        // kutt
-        // if(!document.querySelector("#map-search").innerHTML) {
-        //     document.querySelector("#map-search").innerHTML = textItems.mapSearchAlt[index]
-        // }
-    }
+        
 
     // object page
     if (location.href.includes('object')) {
@@ -140,10 +135,7 @@ const renderText = function(lang) {
         // get the id from the url
         const urlParams = new URLSearchParams(window.location.search)
         const id = urlParams.get('id')
-
         const object = allObject.find(x => x.catalogNumber === id)
-        
-
         
         document.querySelector("#head-species-name").innerHTML = textItems.headSpeciesName[index]
         document.querySelector("#head-det").innerHTML = textItems.headDet[index]

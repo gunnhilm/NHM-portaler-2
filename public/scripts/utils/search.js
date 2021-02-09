@@ -132,7 +132,7 @@ const getCurrentMuseum = () => {
 }
 
 const doSearch = (limit = 20) => {
-     console.log('vi søker');
+    console.log('vi søker');
      
     // delete the previous search results
     sessionStorage.removeItem('string')
@@ -244,10 +244,8 @@ const doSearch = (limit = 20) => {
 // when somebody clicks search-button
 searchForm.addEventListener('submit', (e) => {
     e.preventDefault()
-    doSearch(2000) // vi skal få tilbake maks 4000 linjer med svar
+    doSearch(4000) // vi skal få tilbake maks 4000 linjer med svar
 })  
-
-
 
 collection.addEventListener('change', (e) => {
     e.preventDefault()
@@ -321,8 +319,6 @@ const oldSearch = () => {
             updateFooter()                
             // sends the data to the functions that show the results
             load()
-            
-            
         }
     } 
 }
