@@ -179,13 +179,23 @@ const drawMap = (parsedData) => {
                         let cfeatures = feature.get('features')
                         
                         try {
+                            let museumURLPath
+                            if (window.location.href.includes('um')) { 
+                                museumURLPath = urlPath + "/um"
+                            } else if (window.location.href.includes('tmu')) {
+                                museumURLPath = urlPath + "/tmu"
+                            } else {
+                                museumURLPath = urlPath + "/nhm"
+                            }
+
+                            
                             if (cfeatures.length > 1) {
                                 for (i=0; i < cfeatures.length; i++) {
-                                    popup_content.innerHTML += `<a id="object-link" style="white-space: nowrap" href="${urlPath}/object/?id=${cfeatures[i].get('catalogNumber')}"> ${cfeatures[i].get('catalogNumber')}</a>`
+                                    popup_content.innerHTML += `<a id="object-link" style="white-space: nowrap" href="${museumURLPath}/object/?id=${cfeatures[i].get('catalogNumber')}"> ${cfeatures[i].get('catalogNumber')}</a>`
                                 }
                             }
                             if (cfeatures.length == 1) {
-                                popup_content.innerHTML =  `<a id="object-link" style="white-space: nowrap" href="${urlPath}/object/?id=${cfeatures[0].get('catalogNumber')}"> ${cfeatures[0].get('catalogNumber')} </a>`
+                                popup_content.innerHTML =  `<a id="object-link" style="white-space: nowrap" href="${museumURLPath}/object/?id=${cfeatures[0].get('catalogNumber')}"> ${cfeatures[0].get('catalogNumber')} </a>`
                             }
                             popup.setPosition(coordinates)
                         } catch (error) {
@@ -206,6 +216,7 @@ const drawMap = (parsedData) => {
                
 
             } else {
+                
                 document.querySelector("#map-search").innerHTML = textItems.mapSearchAlt[index]
             }
         }  
@@ -271,7 +282,6 @@ const drawMapObject = (object) => {
             })
         })
     }
-
 
     if (object.decimalLatitude & object.decimalLongitude) {
 

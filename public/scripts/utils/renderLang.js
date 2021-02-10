@@ -62,11 +62,12 @@ const renderText = function(lang) {
         document.querySelector('#lav').innerHTML = textItems.lav[index]
         document.querySelector('#alger').innerHTML = textItems.alger[index]
         document.querySelector('#insekter').innerHTML = textItems.insekter[index]
+        document.querySelector('#evertebrater').innerHTML = textItems.evertebrater[index]
         // document.querySelector('#coremaopt').innerHTML = textItems.coremaopt[index]
         document.querySelector('#fugler').innerHTML = textItems.fugler[index]
         document.querySelector('#pattedyr').innerHTML = textItems.pattedyr[index]
-        document.querySelector('#dna_karplanter').innerHTML = textItems.karplanter[index]
-        document.querySelector('#dna_insekter').innerHTML = textItems.insekter[index]
+        document.querySelector('#dna_karplanter').innerHTML = textItems.dna_karplanter[index]
+        document.querySelector('#dna_insekter').innerHTML = textItems.dna_insekter[index]
         document.querySelector('#dna_fish_herptiles').innerHTML = textItems.fishHerp[index]
         document.querySelector('#dna_fungi_lichens').innerHTML = textItems.fungiLichens[index]
         document.querySelector('#dna_other').innerHTML = textItems.other[index]
@@ -114,7 +115,11 @@ const renderText = function(lang) {
         if(document.getElementById("resultPageAlert1").innerHTML) {
             document.getElementById("resultPageAlert1").innerHTML = textItems.lastPageAlert[index]
         }
+<<<<<<< HEAD
     }
+=======
+    }    
+>>>>>>> 3201d475474c89bd43f641dbc4606f341e229c24
 
     // object page
     if (location.href.includes('object')) {
@@ -203,6 +208,7 @@ const renderText = function(lang) {
         document.querySelector('#Insects_header').innerHTML = textItems.insekter[index]
         document.querySelector('#Birds_header').innerHTML = textItems.fugler[index]
         document.querySelector('#Mammals_header').innerHTML = textItems.pattedyr[index]
+        document.querySelector('#Evertebrates_header').innerHTML = textItems.evertebrater[index]
         
     }
 

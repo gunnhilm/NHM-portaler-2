@@ -1,9 +1,9 @@
 const fs = require('fs')
 
-const getStatData = (samling, callback) => {
-fs.readFile('./src/data/statData.json',  'utf8', (err, data) => {
+const getStatData = (samling, museum, callback) => {
+fs.readFile('./src/data/' + museum + '/statData.json',  'utf8', (err, data) => {
     if (err) {
-    console.log('File read error');
+    console.log('File read error i getstatfile');
     }
     callback(undefined, data)
   });

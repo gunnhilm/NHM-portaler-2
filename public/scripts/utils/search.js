@@ -209,9 +209,9 @@ const doSearch = (limit = 20) => {
                                 nbHitsElement.innerHTML = textItems.noHits[index]
                             } else {
                                 try {
-                                    // hvis vi får flere enn 4000 treff må vi si i fra om det
-                                    if(parsedResults.data.length > 3999){
-                                        nbHitsElement.textContent = 'mer enn 4000'
+                                    // hvis vi får flere enn 2000 treff må vi si i fra om det
+                                    if(parsedResults.data.length > 1999){
+                                        nbHitsElement.textContent = 'mer enn 2000'
                                     } else {
                                         nbHitsElement.textContent = parsedResults.data.length
                                     }
@@ -244,7 +244,7 @@ const doSearch = (limit = 20) => {
 // when somebody clicks search-button
 searchForm.addEventListener('submit', (e) => {
     e.preventDefault()
-    doSearch(4000) // vi skal få tilbake maks 4000 linjer med svar
+    doSearch(2000) // vi skal få tilbake maks 2000 linjer med svar
 })  
 
 collection.addEventListener('change', (e) => {

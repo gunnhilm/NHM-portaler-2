@@ -59,40 +59,63 @@ Number.prototype.format = function(n, x, s, c) {
   return (c ? num.replace('.', c) : num).replace(new RegExp(re, 'g'), '$&' + (s || ','));
 };
 
+// show collections in select dependent on museum
+if(window.location.href.includes('tmu') | window.location.href.includes('um')) {
+  document.querySelector('#coremaopt').style.display = 'none'
+  document.querySelector('#DNAopt').style.display = 'none'
+  document.querySelector('#alger').style.display = 'none'
+  document.querySelector('#mammal_row').style.display = 'none'
+  document.querySelector('#bird_row').style.display = 'none'
+} else {
+  document.querySelector('#evertebrater').style.display = 'none'
+  document.querySelector('#evertebrat_row').style.display = 'none'
+}
+
+
 // populate table
 // put data in to the table with key value from each collection
 // input JSON objektet me data fra samlingene
 // return -> ingen, putter data på html sia showStat.hbs
 const populateTable = (data) => {
   try {
-  // karplanter    
-  document.getElementById('Karplanter_n').textContent = data.karplanter[3].collectionSize.format(0,3,' ')
-  document.getElementById('Karplanter_foto').textContent = data.karplanter[5].media.stillImage.format(0,3,' ')
-  document.getElementById('Karplanter_koord').textContent = data.karplanter[1].geography.coordinates[0].yes.format(0,3,' ')
-  // Moser
-  document.getElementById('Moser_n').textContent = data.moser[3].collectionSize.format(0,3,' ')
-  document.getElementById('Moser_foto').textContent = data.moser[5].media.stillImage.format(0,3,' ')
-  document.getElementById('Moser_koord').textContent = data.moser[1].geography.coordinates[0].yes.format(0,3,' ')
-  // Sopp
-  document.getElementById('Sopp_n').textContent = data.sopp[3].collectionSize.format(0,3,' ')
-  document.getElementById('Sopp_foto').textContent = data.sopp[5].media.stillImage.format(0,3,' ')
-  document.getElementById('Sopp_koord').textContent = data.sopp[1].geography.coordinates[0].yes.format(0,3,' ')
-  // Lav
-  document.getElementById('Lav_n').textContent = data.lav[3].collectionSize.format(0,3,' ')
-  document.getElementById('Lav_foto').textContent = data.lav[5].media.stillImage.format(0,3,' ')
-  document.getElementById('Lav_koord').textContent = data.lav[1].geography.coordinates[0].yes.format(0,3,' ')
-  // Insekter
-  document.getElementById('Insekter_n').textContent = data.entomologi[3].collectionSize.format(0,3,' ')
-  document.getElementById('Insekter_foto').textContent = data.entomologi[5].media.stillImage.format(0,3,' ')
-  document.getElementById('Insekter_koord').textContent = data.entomologi[1].geography.coordinates[0].yes.format(0,3,' ')
-  // Fugler
-  document.getElementById('Fugler_n').textContent = data.birds[3].collectionSize.format(0,3,' ')
-  document.getElementById('Fugler_foto').textContent = data.birds[5].media.stillImage.format(0,3,' ')
-  document.getElementById('Fugler_koord').textContent = data.birds[1].geography.coordinates[0].yes.format(0,3,' ')
-  // Pattedyr
-  document.getElementById('Pattedyr_n').textContent = data.mammals[3].collectionSize.format(0,3,' ')
-  document.getElementById('Pattedyr_foto').textContent = data.mammals[5].media.stillImage.format(0,3,' ')
-  document.getElementById('Pattedyr_koord').textContent = data.mammals[1].geography.coordinates[0].yes.format(0,3,' ')
+    // karplanter    
+    document.getElementById('Karplanter_n').textContent = data.karplanter[3].collectionSize.format(0,3,' ')
+    document.getElementById('Karplanter_foto').textContent = data.karplanter[5].media.stillImage.format(0,3,' ')
+    document.getElementById('Karplanter_koord').textContent = data.karplanter[1].geography.coordinates[0].yes.format(0,3,' ')
+    // Moser
+    document.getElementById('Moser_n').textContent = data.moser[3].collectionSize.format(0,3,' ')
+    document.getElementById('Moser_foto').textContent = data.moser[5].media.stillImage.format(0,3,' ')
+    document.getElementById('Moser_koord').textContent = data.moser[1].geography.coordinates[0].yes.format(0,3,' ')
+    // Sopp
+    document.getElementById('Sopp_n').textContent = data.sopp[3].collectionSize.format(0,3,' ')
+    document.getElementById('Sopp_foto').textContent = data.sopp[5].media.stillImage.format(0,3,' ')
+    document.getElementById('Sopp_koord').textContent = data.sopp[1].geography.coordinates[0].yes.format(0,3,' ')
+    // Lav
+    document.getElementById('Lav_n').textContent = data.lav[3].collectionSize.format(0,3,' ')
+    document.getElementById('Lav_foto').textContent = data.lav[5].media.stillImage.format(0,3,' ')
+    document.getElementById('Lav_koord').textContent = data.lav[1].geography.coordinates[0].yes.format(0,3,' ')
+    // Insekter
+    document.getElementById('Insekter_n').textContent = data.entomologi[3].collectionSize.format(0,3,' ')
+    document.getElementById('Insekter_foto').textContent = data.entomologi[5].media.stillImage.format(0,3,' ')
+    document.getElementById('Insekter_koord').textContent = data.entomologi[1].geography.coordinates[0].yes.format(0,3,' ')
+    
+    if (!window.location.href.includes('um') && !window.location.href.includes('tmu')) {
+      // Fugler
+      document.getElementById('Fugler_n').textContent = data.birds[3].collectionSize.format(0,3,' ')
+      document.getElementById('Fugler_foto').textContent = data.birds[5].media.stillImage.format(0,3,' ')
+      document.getElementById('Fugler_koord').textContent = data.birds[1].geography.coordinates[0].yes.format(0,3,' ')
+      // Pattedyr
+      document.getElementById('Pattedyr_n').textContent = data.mammals[3].collectionSize.format(0,3,' ')
+      document.getElementById('Pattedyr_foto').textContent = data.mammals[5].media.stillImage.format(0,3,' ')
+      document.getElementById('Pattedyr_koord').textContent = data.mammals[1].geography.coordinates[0].yes.format(0,3,' ')
+    } else {
+      // Evertebrater
+      document.getElementById('Evertebrater_n').textContent = data.evertebrater[3].collectionSize.format(0,3,' ')
+      document.getElementById('Evertebrater_foto').textContent = data.evertebrater[5].media.stillImage.format(0,3,' ')
+      document.getElementById('Evertebrater_koord').textContent = data.evertebrater[1].geography.coordinates[0].yes.format(0,3,' ')
+    }
+    
+    
   } catch (error) {
     console.log(error);
   }
@@ -201,6 +224,7 @@ const fraNorge = (data, currentCollection) => {
 // Download data from the server and parse it
 const getData = () => {
   return new Promise(resolve => {
+<<<<<<< HEAD
   const url = urlPath + '/tmu/showStat?getStat=true'
   fetch(url).then((response) => { 
     response.text().then((data) => {
@@ -216,9 +240,37 @@ const getData = () => {
         } catch (error) {
           console.log(error);
         }
+=======
+    let museumURLPath
+      if (window.location.href.includes('um')) { 
+          museum =  "um"
+      } else if (window.location.href.includes('tmu')) {
+          museum =  "tmu"
+      } else {
+          museum = "nhm"
+>>>>>>> 3201d475474c89bd43f641dbc4606f341e229c24
       }
+                
+    //const url = urlPath + '/search/?search=' + searchTerm + '&museum=' + museum + '&samling=' + chosenCollection + '&linjeNumber=0' + '&limit=' + limit // normal search
+    const url =  urlPath + '/showStat/?getStat=true&museum=' + museum
+    
+    fetch(url).then((response) => { 
+      response.text().then((data) => {
+        if(data.error) {
+            return console.log(data.error)
+        } 
+        else {          
+          try {
+            // statData.json er dobbelt stringified så derfor dobbel parse
+            data = JSON.parse(data)
+            data = JSON.parse(data.unparsed)
+            resolve(data)
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      })
     })
-  })
   
   })
 }

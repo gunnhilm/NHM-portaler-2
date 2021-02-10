@@ -250,13 +250,14 @@ const resultTable = (subMusitData, musitData) => {
                 
                 cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}"> ${prefix}${subMusitData[i].catalogNumber} </a>`
                 cell2.innerHTML = subMusitData[i].scientificName
-                if (subMusitData[i].recordedBy.includes(",")) {
-                    let x = subMusitData[i].recordedBy.indexOf(",")
-                    let y = subMusitData[i].recordedBy.substr(0,x)
-                    cell3.innerHTML = y + " et al."    
-                } else {
+                // // to avoid lots of text in collector-field I tried to cut it down to one name et al. but in corema collector is often "Johannessen, Lars Erik", so looking for comma does not work
+                // if (subMusitData[i].recordedBy.includes(",")) {
+                //     let x = subMusitData[i].recordedBy.indexOf(",")
+                //     let y = subMusitData[i].recordedBy.substr(0,x)
+                //     cell3.innerHTML = y + " et al."    
+                // } else {
                     cell3.innerHTML = subMusitData[i].recordedBy
-                }
+                //}
                 
                 cell4.innerHTML = subMusitData[i].eventDate
                 cell5.innerHTML = subMusitData[i].country
@@ -451,14 +452,14 @@ function load() {
 hitsPerPage.addEventListener('change', (e) => {
     e.preventDefault()
     console.log(hitsPerPage.value)
-    if (hitsPerPage.value < 4000){
-        console.log('hitsperpage < 4000')
+    if (hitsPerPage.value < 2000){
+        console.log('hitsperpage < 2000')
         numberPerPage = hitsPerPage.value
         numberPerPage = numberPerPage - 0 // to make it a number
         numberOfPages = getNumberOfPages(numberPerPage)
     } else {
-        numberPerPage = 4000
-        console.log('setting numberperpage to 4000')
+        numberPerPage = 2000
+        console.log('setting numberperpage to 2000')
         numberOfPages = 1
     }
     currentPage = 1
