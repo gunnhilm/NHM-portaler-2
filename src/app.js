@@ -193,19 +193,19 @@ app.get('*/object', (req, res) => {
 
 app.get('*/showStat', (req, res) => {
     if (!req.query.getStat) {
-        return res.render('showStat', {
+            return res.render('showStat', {
         })
     } else {
-    getStatFile.getStatData('dummy', (error, results) => {
-        if (results){
-            res.send({
-                unparsed: results
-            }) 
-          
-        } else {
-            console.log('Error: cold not read statdata file')
-        }
-    })
+        getStatFile.getStatData('dummy', req.query.museum, (error, results) => {
+            if (results){
+                res.send({
+                    unparsed: results
+                }) 
+            
+            } else {
+                console.log('Error: cold not read statdata file')
+            }
+        })
     }
 })
  
