@@ -201,7 +201,7 @@ const fraNorge = (data, currentCollection) => {
 // Download data from the server and parse it
 const getData = () => {
   return new Promise(resolve => {
-  const url = urlPath + '/showStat?getStat=true'
+  const url = urlPath + '/tmu/showStat?getStat=true'
   fetch(url).then((response) => { 
     response.text().then((data) => {
       if(data.error) {

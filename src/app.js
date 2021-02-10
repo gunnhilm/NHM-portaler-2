@@ -233,7 +233,7 @@ app.get('/mapObject', (req, res) => {
     res.render('mapObject', {})
 })
 
-app.get('/getDOI', (req, res) => {
+app.get('*/getDOI', (req, res) => {
     res.render('getDOI', {})
 })
 

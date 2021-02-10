@@ -114,7 +114,7 @@ const renderText = function(lang) {
         if(document.getElementById("resultPageAlert1").innerHTML) {
             document.getElementById("resultPageAlert1").innerHTML = textItems.lastPageAlert[index]
         }
-        
+    }
 
     // object page
     if (location.href.includes('object')) {
@@ -246,6 +246,7 @@ if (sessionStorage.language) {
     language = document.querySelector('#language').value
     sessionStorage.setItem('language', language)
 }
+
 
 renderText(language)
 
