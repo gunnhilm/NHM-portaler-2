@@ -177,9 +177,11 @@ const renderText = function(lang) {
         }
         
         //document.querySelector("#itemsHeader").innerHTML = textItems.itemsHeader[index]
-        if (!window.location.href.includes('um') && !window.location.href.includes('tmu')) {
-            document.querySelector("#preservedSp").innerHTML = textItems.preservedSp[index]
-        }
+
+        ////////////endre dette med stiched files
+        // if (!window.location.href.includes('um') && !window.location.href.includes('tmu')) {
+        //     document.querySelector("#preservedSp").innerHTML = textItems.preservedSp[index]
+        // }
         
 
 

@@ -82,13 +82,11 @@ downloadPhotoButton.addEventListener('click', (e) => {
         
         
     const searchResult = JSON.parse(sessionStorage.getItem('string'))
-    // loop through - put those wich checked in new array
+    // loop through - put those which checked in new array
     const newArray = []
     searchResult.forEach(el => {
         if (el.checked) {newArray.push(el)}
     })
-    console.log(newArray)
-    // legger til kode her
     if (newArray.length == 0) {
         console.log('velg bilder å laste ned')
         zoomModal.style.display = "block";
@@ -96,11 +94,17 @@ downloadPhotoButton.addEventListener('click', (e) => {
 
         
     } else {
-        newArray.forEach( el => {
-            const photoToDownload = el.associatedMedia    
-            console.log(photoToDownload)
-            forceDownload(photoToDownload, `image${el.catalogNumber}.jpg`)
-        })
+        if (newArray.some(el => el.associatedMedia)) {
+            newArray.forEach( el => {
+                const photoToDownload = el.associatedMedia    
+                if (photoToDownload) {
+                    forceDownload(photoToDownload, `image${el.catalogNumber}.jpg`)
+                }
+            })
+        } else {
+            zoomModal.style.display = "block";
+            zoomModalContent.innerHTML = textItems.noPhotoMessage[index]
+        }
     }
 })
 
@@ -120,8 +124,10 @@ function forceDownload(url, fileName){
         tag.click();
         document.body.removeChild(tag);
     }
-    xhr.send();
+    xhr.send()
 }
+
+
 
 const getCurrentMuseum = () => {
     // finn ut hvilket museum 
@@ -136,6 +142,9 @@ const doSearch = (limit = 20) => {
      
     // delete the previous search results
     sessionStorage.removeItem('string')
+    sessionStorage.removeItem('currentPage')
+    sessionStorage.removeItem('numberPerPage')
+    sessionStorage.removeItem('propsSorted')
     document.getElementById("map-search").innerHTML = ""  
     // reset searchFailed value
     searchFailed = false
@@ -237,7 +246,6 @@ const doSearch = (limit = 20) => {
             errorMessage.innerHTML = textItems.serverError[index]
             document.getElementById("please-wait").style.display = "none"
         })
-        
     }
 }                  
 
@@ -438,47 +446,56 @@ document.getElementById('checkedInMap').addEventListener('click', function() {
     
 })
 
-
-const select = document.getElementById('checkboxSelect')
-if(select) {
-    select.onchange =() => {
-        const nbHitsOnPage = document.getElementById('number-per-page').value
-        let max
-        if (currentPage == numberOfPages) {
-            max = list.length - ((numberOfPages-1) * numberPerPage)
-        } else {
-            max = nbHitsOnPage
+const checkSeveralBoxes = (subMusitData) => {
+    const nbHitsOnPage = document.getElementById('number-per-page').value
+    const select = document.getElementById('checkboxSelect')
+    let max
+    if (currentPage == numberOfPages) {
+        max = list.length - ((numberOfPages-1) * numberPerPage)
+    } else {
+        max = nbHitsOnPage
+    }
+    if (select.value == "all") {
+        for (i = 0; i < max; i++) {
+            document.getElementById(`checkbox${i}`).checked = true
         }
-        if (select.value == "all") {
-            for (i = 0; i < max; i++) {
-                document.getElementById(`checkbox${i}`).checked = true
-            }
-            let searchResult = JSON.parse(sessionStorage.getItem('string'))
-            searchResult.forEach(el => el.checked = true)
-            sessionStorage.setItem('string', JSON.stringify(searchResult))
-        } else if (select.value == "all_on_page") {
-            // keep all on other pages that are checked
-            // find those in subMusitData in searchResult and check them, and save searchresult
-            for (i = 0; i < max; i++) {
-                document.getElementById(`checkbox${i}`).checked = true
-            }
-            let searchResult = JSON.parse(sessionStorage.getItem('string'))
-            let subArray = []
-            subMusitData.forEach(el => subArray.push(el.catalogNumber))
-            searchResult.forEach(el => {
-                if (subArray.includes(el.catalogNumber)) {
-                    el.checked = true
-                }
-            })
-            sessionStorage.setItem('string', JSON.stringify(searchResult))
-        } else if (select.value == "none") {
-            for (i = 0; i < max; i++) {
-                document.getElementById(`checkbox${i}`).checked = false
-            }
-            let searchResult = JSON.parse(sessionStorage.getItem('string'))
-            searchResult.forEach(el => el.checked = false)
-            sessionStorage.setItem('string', JSON.stringify(searchResult))
+        let searchResult = JSON.parse(sessionStorage.getItem('string'))
+        searchResult.forEach(el => el.checked = true)
+        console.log(searchResult[0])
+        sessionStorage.setItem('string', JSON.stringify(searchResult))
+        console.log(searchResult[0].checked)
+    } else if (select.value == "all_on_page") {
+        // keep all on other pages that are checked
+        // find those in subMusitData in searchResult and check them, and save searchresult
+        for (i = 0; i < max; i++) {
+            document.getElementById(`checkbox${i}`).checked = true
         }
+        let searchResult = JSON.parse(sessionStorage.getItem('string'))
+        let subArray = []
+        subMusitData.forEach(el => subArray.push(el.catalogNumber))
+        searchResult.forEach(el => {
+            if (subArray.includes(el.catalogNumber)) {
+                el.checked = true
+            }
+        })
+        console.log(searchResult[0])
+        sessionStorage.setItem('string', JSON.stringify(searchResult))
+        
+        console.log(searchResult[0].checked)
+    } else if (select.value == "none") {
+        for (i = 0; i < max; i++) {
+            document.getElementById(`checkbox${i}`).checked = false
+        }
+        let searchResult = JSON.parse(sessionStorage.getItem('string'))
+        searchResult.forEach(el => el.checked = false)
+        sessionStorage.setItem('string', JSON.stringify(searchResult))
     }
 }
 
+const select = document.getElementById('checkboxSelect')
+dummyData = []
+if(select) {
+    select.onchange =() => {
+        checkSeveralBoxes(dummyData)
+    }
+}

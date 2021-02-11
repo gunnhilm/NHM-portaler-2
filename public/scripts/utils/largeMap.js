@@ -1,15 +1,24 @@
 const loadString = () => {
-    let objectJSON = ''
-    //if( sessionStorage.getItem('databaseSearch') === 'musit' ) {
-        objectJSON = sessionStorage.getItem('string')
-    //} else if (sessionStorage.getItem('databaseSearch') === 'corema') {
-    //    objectJSON = sessionStorage.getItem('coremaString')
-    //}
     try {
-        return objectJSON ? JSON.parse(objectJSON) : []
+        const searchResult = JSON.parse(sessionStorage.getItem('string'))
+        if (searchResult) {
+            // loop through - put those which are checked in new array
+            const newArray = []
+            searchResult.forEach(el => {
+                if (el.checked) {newArray.push(el)}
+            })
+            return newArray
+        } else {
+            return []
+        }
+        
     } catch (e) {
         return []
     }
+    
+    
+    
+    
 }
 
 const allObject = loadString()

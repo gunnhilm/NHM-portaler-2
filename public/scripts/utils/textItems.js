@@ -67,6 +67,7 @@ const textItems = {
     mapHelpContent: ["Bruk mushjul, eller dobbelklikk for å zoome inn, Shift + dobbelklikk  for å zoome ut. Klikk og dra for å flytte kartutsnitt. <br><br> Bare treff som er listet på sida vises i kartet. For å se alle resultater i kart, velg 'All' i Treff per side.",
     "Use mouse-wheel, or double click to zoom in, Shift + double click to zoom out. Click and drag to move map. <br><br> Only results listed on page are shown in map. To see all hits in map, choose 'All' in Hits per page."],
     mapCheckedMessage: ["Velg post(er) fra listen", "Select record(s) from list"],
+    noPhotoMessage: ["Ingen av de valge postene har bilde", "None of the selected posts have photo"],
     mapHelpContentObjPage: ["Bruk mushjul, eller dobbelklikk for å zoome inn, Shift + dobbelklikk  for å zoome ut. Klikk og dra for å flytte kartutsnitt.", "Use mouse-wheel, or double click to zoom in, Shift + double click to zoom out. Click and drag to move map."],
     zoomToClickText: ["Zoom in og klikk igjen", "Zoom in and click again"],
     largeMapButton: ["Større kart", "Larger map"],

@@ -106,7 +106,6 @@ function addSortingText(id, n, prop, musitData) { // her er musitData alle
         if (propsSorted.find(x => x.id === prop).sortedOnce) { reverse = true }
         if (id === 'musitIDButton' ) { 
             musitData.sort(sort_by(prop,reverse, parseInt))
-            //musitData.sort()
         } 
         
         // else if (id === 'sampleTypeButton'){
@@ -206,11 +205,10 @@ const resultTable = (subMusitData, musitData) => {
                 //cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} </button>`
                 
                 if (document.querySelector('#collection-select option:checked').parentElement.label === 'Specimens') {
-                    
-                         cell10.innerHTML = `<button id='coremaNoButton' class='sort'>${textItems.headerCoremaNo[index].bold()} ${getArrows('coremaNo')}</button>`
-                    } else {
-                        cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} ${getArrows('sampleType')}</button>`
-                    }
+                    cell10.innerHTML = `<button id='coremaNoButton' class='sort'>${textItems.headerCoremaNo[index].bold()} ${getArrows('coremaNo')}</button>`
+                } else {
+                    cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} ${getArrows('sampleType')}</button>`
+                }
                 
                 cell11.innerHTML = `<select id='checkboxSelect' class='sort'>
                     <option value="select" id="select">${textItems.select[index].bold()}</option>
@@ -249,7 +247,15 @@ const resultTable = (subMusitData, musitData) => {
                     museumURLPath = urlPath + "/nhm"
                 }
                 
-                let prefix = subMusitData[i].institutionCode + '-' + subMusitData[i].collectionCode + '-'
+                let prefix
+                collectionCodes = ['V','F','L','B','A','ENT']
+                if ( !window.location.href.includes('um') && !window.location.href.includes('tmu')) {
+                    if( !collectionCodes.includes(subMusitData[i].collectionCode) )  {
+                        prefix = ''
+                    } else {
+                        prefix = subMusitData[i].institutionCode + '-' + subMusitData[i].collectionCode + '-'
+                    }
+                }
                 
                 cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}"> ${prefix}${subMusitData[i].catalogNumber} </a>`
                 cell2.innerHTML = subMusitData[i].scientificName
@@ -356,6 +362,14 @@ const resultTable = (subMusitData, musitData) => {
         errorMessage.innerHTML = textItems.errorRenderResult[index]
         searchFailed = true // is checked when map is drawn 
     }
+
+    const select = document.getElementById('checkboxSelect')
+    if(select) {
+        select.onchange =() => {
+            checkSeveralBoxes(subMusitData)
+        }
+    }
+
 }
 
 
@@ -459,7 +473,6 @@ function load() {
 
 hitsPerPage.addEventListener('change', (e) => {
     e.preventDefault()
-    console.log(hitsPerPage.value)
     if (hitsPerPage.value < 2000){
         console.log('hitsperpage < 2000')
         numberPerPage = hitsPerPage.value
@@ -490,8 +503,8 @@ const investigateChecked = (i) => {
 
 // when checking off a checkbox
 const registerChecked = (i) => {
+    document.getElementById('checkboxSelect').value = 'select'
     let searchResult = JSON.parse(sessionStorage.getItem('string'))
-    
     let searchResultIndex = i + ((currentPage -1 ) * numberPerPage)
         if (searchResult[searchResultIndex].checked) {
             searchResult[searchResultIndex].checked = false
