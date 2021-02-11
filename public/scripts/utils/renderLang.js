@@ -115,11 +115,7 @@ const renderText = function(lang) {
         if(document.getElementById("resultPageAlert1").innerHTML) {
             document.getElementById("resultPageAlert1").innerHTML = textItems.lastPageAlert[index]
         }
-<<<<<<< HEAD
     }
-=======
-    }    
->>>>>>> 3201d475474c89bd43f641dbc4606f341e229c24
 
     // object page
     if (location.href.includes('object')) {
@@ -233,6 +229,9 @@ const renderText = function(lang) {
     // getDOI page
     if (location.href.includes('getDOI')) {
         document.querySelector('#getDOIHeader').innerHTML = textItems.getDOIHeader[index]
+        //document.querySelector('#museum-select').innerHTML = textItems.selectMuseum[index] 
+        //document.querySelector('#collection-select').innerHTML = textItems.selectCollection[index] 
+        document.querySelector('#selectMuseum').innerHTML = textItems.selectMuseum[index] 
         document.querySelector('#selectCollection').innerHTML = textItems.selectCollection[index] 
         document.querySelector('#onloggingData').innerHTML = textItems.onloggingData[index]
         document.querySelector('#emailRequest').innerHTML = textItems.emailRequest[index]

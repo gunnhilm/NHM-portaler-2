@@ -14,7 +14,6 @@ const papaParseConfig = {
 }
 
 
-
 const getInput = () => {
     let museumsNumbers = document.getElementById('museums-Numbers').value
     // replace all lineshifts with comma
@@ -24,12 +23,10 @@ const getInput = () => {
 
     let flatNumbers = arrayOfNumbers.data.flat()
     arrayOfNumbers.length = 0
-    console.log(flatNumbers);
     // Remove prefix from numbers
     // flatNumbers = flatNumbers.map(function (el) {
     //     return el.replace(/\D/g,'');
     // });
-    console.log(flatNumbers);
     // Fjern tomme felter i array
     flatNumbers = flatNumbers.filter(Boolean)
     console.log(flatNumbers);
@@ -93,16 +90,23 @@ async function sendRequest(request) {
         if(xhr.status < 399 ){
        getDOI(this.responseText)
         } else {
-            if(xhr.status === 401){
-                alert('Feil bruker navn eller passord')
+            language = sessionStorage.getItem('language')
+            if (language === "English") {
+                index = 1
             } else {
-            alert('Noe gikk galt. GBif serveren svarte: \n\n' + xhr.status + ': ' + xhr.statusText)   
+                index = 0
+            }
+            if(xhr.status === 401){
+                alert(textItems.errorLogin[index])
+            } else {
+            alert(textItems.errorServer[index] + xhr.status + ': ' + xhr.statusText)   
             }
         document.getElementById("please-wait").style.display = "none"
         return
         }
     };
 }
+
 
 // When sombody selct a museum -> update the collections available
 document.getElementById('museum-select').addEventListener('change',function(){
@@ -116,9 +120,8 @@ document.getElementById('museum-select').addEventListener('change',function(){
         document.getElementById("collection-key").disabled = false;
         document.getElementById("collection-key").focus();
     } else {
-        // tøm list
-        select.options.length = 0
-        // første linje
+        // tøm list bortsett fra første linje
+        select.options.length = 1
         let language
         language = sessionStorage.getItem('language')
         if (language === "English") {
@@ -126,7 +129,8 @@ document.getElementById('museum-select').addEventListener('change',function(){
         } else {
             index = 0
         }
-        select.options[select.options.length] = new Option(textItems.selectCollection[index] , 0);
+        // første linje
+        //select.options[select.options.length - 1] = new Option(textItems.selectCollection[index] , 0);
         select.options[0].disabled = true
         let i=1
         for (const [index] of Object.entries(GBifIdentifiers[valgtMuseum])) {
@@ -141,7 +145,15 @@ searchForm.addEventListener('submit', (e) => {
     e.preventDefault()
     document.getElementById("DOI-result").textContent = ''
     document.getElementById("Download-link").textContent = ''
-    if (confirm("Er du sikker på at du vil opprette et datasett på disse dataene. Dette kan ta litt tid, være tolmodig. \n\n museum: " + document.getElementById('museum-select').value + '\n\n samling: ' + document.getElementById('collection-select').options[document.getElementById('collection-select').selectedIndex].text + '\n\n museumsnummer: \n' +document.getElementById('museums-Numbers').value)) {
+    
+    language = sessionStorage.getItem('language')
+    if (language === "English") {
+        langIndex = 1
+    } else {
+        langIndex = 0
+    }
+    
+    if (confirm( textItems.areYouSure[langIndex] + "\n\n Museum: " + document.getElementById('museum-select').value + '\n\n' + textItems.collection[langIndex] + document.getElementById('collection-select').options[document.getElementById('collection-select').selectedIndex].text + '\n\n' + textItems.catNumbers[langIndex] + '\n' + document.getElementById('museums-Numbers').value)) {
         // Show please wait
         document.getElementById("please-wait").style.display = "block"
         museumNumbers = getInput() 
@@ -153,11 +165,13 @@ searchForm.addEventListener('submit', (e) => {
       }
 })  
 
+
+
 // when somebody chooses a collection submit-button
 document.getElementById('collection-select').addEventListener('change',function(){
     const valgtSamling = document.getElementById('collection-select').options[document.getElementById('collection-select').selectedIndex].text
     const valgtMuseum = document.getElementById('museum-select').value
-    console.log(valgtSamling);
+    console.log(valgtSamling)
     try {
         if (valgtSamling === 'other') {
             document.getElementById('collection-key').value = ''
@@ -169,7 +183,13 @@ document.getElementById('collection-select').addEventListener('change',function(
             console.log(GBifIdentifiers[valgtMuseum][valgtSamling].key);
         }
     } catch (error) {
-        alert('fant ikke uuiden til samlingen, velg "Other" på museum og skriv inn key manuelt')
+        language = sessionStorage.getItem('language')
+        if (language === "English") {
+            index = 1
+        } else {
+            index = 0
+        }
+        alert(textItems.noUUID[index])
             
     }
 });

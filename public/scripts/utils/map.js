@@ -74,7 +74,11 @@ const drawMap = (parsedData) => {
         
                 // add this object to a new layer
                 const vectorLayer = new ol.layer.Vector({
-                    source: vectorSource
+                    source: vectorSource,
+                    wrapDateLine: false,
+                    sphericalMercator: true,
+                    minZoomLevel: 1, 
+                    maxZoomLevel: 8
                 })
                 
                 
@@ -132,6 +136,7 @@ const drawMap = (parsedData) => {
                     }
                 })
 
+
                 map = new ol.Map({
                     target: 'map-search',
                     layers: [
@@ -146,10 +151,14 @@ const drawMap = (parsedData) => {
                         ({
                             collapsible: false
                         })
-                    })    
+                    }),
                 })    
                 
                 
+
+
+
+
                 const extent = vectorSource.getExtent()
                 
                 // // to make extent of map larger than exactly where  the points are
@@ -321,7 +330,7 @@ const drawMapObject = (object) => {
 
         // add this object to a new layer
         const vectorLayer = new ol.layer.Vector({
-            source: vectorSource
+            source: vectorSource,
         })
 
         // add this new layer over the map

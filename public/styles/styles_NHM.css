@@ -2,6 +2,10 @@ header {
     background-color: #57AD3E;
     
 }
+#logo {
+    height: 30px;
+    padding: 15px;
+}
 
 /* footer.hbs */
 footer {
@@ -59,6 +63,7 @@ footer {
 
     #logo {
         position: absolute;
-        clip: rect(0px,60px,200px,0px)
+        clip: rect(0px,60px,200px,0px);
+        
     }
 }

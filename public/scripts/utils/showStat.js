@@ -224,31 +224,28 @@ const fraNorge = (data, currentCollection) => {
 // Download data from the server and parse it
 const getData = () => {
   return new Promise(resolve => {
-<<<<<<< HEAD
-  const url = urlPath + '/tmu/showStat?getStat=true'
-  fetch(url).then((response) => { 
-    response.text().then((data) => {
-      if(data.error) {
-          return console.log(data.error)
-      } 
-      else {          
-        try {
-          // statData.json er dobbelt strigifyed så derfor dobbel parse
-          data = JSON.parse(data)
-          data = JSON.parse(data.unparsed)
-          resolve(data)
-        } catch (error) {
-          console.log(error);
-        }
-=======
-    let museumURLPath
+  // const url = urlPath + '/tmu/showStat?getStat=true'
+  // fetch(url).then((response) => { 
+  //   response.text().then((data) => {
+  //     if(data.error) {
+  //         return console.log(data.error)
+  //     } 
+  //     else {          
+  //       try {
+  //         // statData.json er dobbelt strigifyed så derfor dobbel parse
+  //         data = JSON.parse(data)
+  //         data = JSON.parse(data.unparsed)
+  //         resolve(data)
+  //       } catch (error) {
+  //         console.log(error);
+  //       }
+   // let museumURLPath
       if (window.location.href.includes('um')) { 
           museum =  "um"
       } else if (window.location.href.includes('tmu')) {
           museum =  "tmu"
       } else {
           museum = "nhm"
->>>>>>> 3201d475474c89bd43f641dbc4606f341e229c24
       }
                 
     //const url = urlPath + '/search/?search=' + searchTerm + '&museum=' + museum + '&samling=' + chosenCollection + '&linjeNumber=0' + '&limit=' + limit // normal search

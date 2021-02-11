@@ -98,6 +98,9 @@ function getArrows(prop) {
 // add sorting function to buttons in table
 function addSortingText(id, n, prop, musitData) { // her er musitData alle
     document.getElementById(id).addEventListener("click", function() {
+        // Show please wait
+        document.getElementById("please-wait").style.display = "block"
+
         let reverse = false
 
         if (propsSorted.find(x => x.id === prop).sortedOnce) { reverse = true }
@@ -138,7 +141,8 @@ function addSortingText(id, n, prop, musitData) { // her er musitData alle
         sessionStorage.setItem('string', JSON.stringify(musitData))
         sessionStorage.setItem('propsSorted', JSON.stringify(propsSorted))
         resultTable(subMusitData, musitData) 
-     })
+        document.getElementById("please-wait").style.display = "none"
+    })
 }
 
 // sort search-result when header button in table is clicked 
@@ -200,9 +204,8 @@ const resultTable = (subMusitData, musitData) => {
                 cell8.innerHTML = `<button id='photoButton' class='sort'><span class="fas fa-camera"></span>${getArrows('associatedMedia')}</button>`
                 cell9.innerHTML = `<button id='coordinateButton' class='sort'><span class="fas fa-compass"></span>${getArrows('decimalLongitude')}</button>`
                 //cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} </button>`
-                // console.log(window.location.href)
-                // if (!window.location.href.includes('nhm')) {
-                    if (document.querySelector('#collection-select option:checked').parentElement.label === 'Specimens') {
+                
+                if (document.querySelector('#collection-select option:checked').parentElement.label === 'Specimens') {
                     
                          cell10.innerHTML = `<button id='coremaNoButton' class='sort'>${textItems.headerCoremaNo[index].bold()} ${getArrows('coremaNo')}</button>`
                     } else {
@@ -307,6 +310,11 @@ const resultTable = (subMusitData, musitData) => {
         
         // hide corema-link-column for UM and TMU
         if (window.location.href.includes('um') || window.location.href.includes('tmu')) {
+            hide_column(9)
+        }
+
+        ////////////// remove when stiched files are in place
+        if (window.location.href.includes('nhm')) {
             hide_column(9)
         }
 

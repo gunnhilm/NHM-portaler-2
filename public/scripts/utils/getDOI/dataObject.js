@@ -86,94 +86,94 @@ const GBifIdentifiers = {
         }
     },
     tmu: {
-        entomologi: {
+        Entomology: {
             source: 'musit',
             OccurrenceID: 'urn:catalog:TSZ:ENT:',
             key: 'f2a77c80-1e74-4c23-a3c9-c52cede89434'
         },
-        moser: {
+        Mosses: {
             source: 'musit',
             OccurrenceID: 'urn:catalog:TROM:B:',
             key: '0f061eff-6854-4bb3-abe2-acb184ea3ab7'
         },
-        lav: {
+        Lichens: {
             source: 'musit',
             OccurrenceID: 'urn:catalog:TROM:L:',
             key: 'e87a12af-fc4c-4315-bff7-c7b827379aca'
         },
-        karplanter: {
+        Vascular_plants: {
             source: 'musit',
             OccurrenceID: 'urn:catalog:TROM:V:',
             key: 'd0aa984e-c6d3-45ee-8fc0-df1df8f4126b'
         },
-        sopp: {
+        Fungi: {
             source: 'musit',
             OccurrenceID: 'urn:catalog:TROM:F:',
             key: '374e0d4c-cf9f-4e1a-97a4-14123ee1bb7e'
         },
-        arthropod: {
+        Arthropoda: {
             source: 'musit',
             OccurrenceID: '	urn:catalog:TS:ZL:',
             key: 'ed527c71-23aa-40cf-b16b-1a5b8ec6770a'
         },
-        Marine_invertebrate: {
+        Marine_invertebrates: {
             source: 'musit',
             OccurrenceID: 'urn:catalog:TSZ:EVERT:',
             key: 'b5a4d944-8a51-4104-a4a7-c3637128bcc7'
         }
     },
     vm: {
-        alger: {
+        Algae: {
             source: 'musit',
             OccurrenceID: 'urn:catalog:TRH:A:',
             key: 'fb716825-2962-4375-8532-3ac7429aa86d'
         },
-         moser: {
+         Mosses: {
             source: 'musit',
             OccurrenceID: 'urn:catalog:TRH:B:',
             key: '6728c42d-c4b6-4fda-a211-5ad1bb59cda4'
         },
-        lav: {
+        Lichens: {
             source: 'musit',
             OccurrenceID: 'urn:catalog:TRH:L:',
             key: '78c1a71e-abb2-49cf-abc8-efafb981b0e4'
         },
-        karplanter: {
+        Vascular_plants: {
             source: 'musit',
             OccurrenceID: 'urn:catalog:TRH:V:',
             key: 'd29d79fd-2dc4-4ef5-89b8-cdf66994de0d'
         },
-        sopp: {
+        Fungi: {
             source: 'musit',
             OccurrenceID: 'urn:catalog:TRH:F:',
             key: '7eb54e10-fd36-4139-8764-1fd8abc2bd67'
         },
-        Terrestrial_invertebrate: {
+        Terrestrial_invertebrates: {
             source: 'musit',
             OccurrenceID: 'urn:uuid:',
             key: '1bec5de3-758c-4ed2-ab13-1597601ad07a'
         },
-        Marine_invertebrate: {
+        Marine_invertebrates: {
             source: 'musit',
             OccurrenceID: 'urn:uuid:',
             key: 'ead6339f-39f8-46be-b059-d1c48d88ab29'
         },
-        bird: {
+        Birds: {
             source: 'musit',
             OccurrenceID: 'urn:uuid:',
             key: 'c6a2ecf7-f9d2-4443-91b6-199f00aa01a2'
         },
-        Fisk: {
+        Fish: {
             source: 'musit',
             OccurrenceID: 'urn:uuid:',
             key: '81ccd65e-1832-4d4c-aaaa-56541b71ae1b'
         },
-        pattedyr: {
+        Mammals: {
             source: 'musit',
             OccurrenceID: 'urn:uuid:',
             key: '44ff990f-945e-4b37-9060-fc7de856b1ea'
         },
-        Herpetile: {
+        Herpetiles: {
             source: 'musit',
             OccurrenceID: 'urn:uuid:',
             key: 'fcb19622-6d6d-470f-9371-86e1210f9ee3'

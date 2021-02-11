@@ -348,7 +348,7 @@ const emptySearch = () => {
     document.getElementById("map-search").innerHTML = "" 
     // hide buttons rendered with search result
     document.getElementById("download-button").style.display = "none"
-   // document.getElementById("download-photo-button").style.display = "none"
+    document.getElementById("download-photo-button").style.display = "none"
     document.getElementById("head-nb-hits").innerHTML = ""
     document.getElementById("empty-search-button").style.display = "none"
     document.getElementById("zoom-button").style.display = "none"

@@ -9,8 +9,8 @@ const textItems = {
     journalLink: ["Journalsøk", "Journal search"],
     mobileMenuBtn: ["Meny", "Menu"],
     logoNHM: [urlPath + "/images/UiO NHM SH V2 RGB.png", urlPath + "/images/uio_nhm_a_eng_cmyk_2.png"],
-    logoTMU: [urlPath + "/images/Tromso_museum_Logo_Bokmal_2l_HVIT.png", urlPath + "/images/Universitetsmuseet_Logo_Engelsk_2l_HVIT.png"],
-    logoUM: [urlPath + "/images/UiBlogoUM_white_v.png", urlPath + "/images/UiBlogo_Eng_white_left.png"],
+    logoTMU: [urlPath + "/images/Tromsø_museum_Logo_Bokmal_2l_Hvit.png", urlPath + "/images/Tromsø_museum_Logo_Bokmal_2l_Hvit.png"],
+    logoUM: [urlPath + "/images/UiBlogoUM_white_v.png", urlPath + "/images/UiBlogoUM_white_v.png"],
     
     
     // index page
