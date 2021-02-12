@@ -63,7 +63,7 @@ const renderText = function(lang) {
         document.querySelector('#alger').innerHTML = textItems.alger[index]
         document.querySelector('#insekter').innerHTML = textItems.insekter[index]
         document.querySelector('#evertebrater').innerHTML = textItems.evertebrater[index]
-        // document.querySelector('#coremaopt').innerHTML = textItems.coremaopt[index]
+        document.querySelector('#coremaopt').label = textItems.coremaopt[index]
         document.querySelector('#fugler').innerHTML = textItems.fugler[index]
         document.querySelector('#pattedyr').innerHTML = textItems.pattedyr[index]
         document.querySelector('#dna_karplanter').innerHTML = textItems.dna_karplanter[index]
@@ -71,6 +71,10 @@ const renderText = function(lang) {
         document.querySelector('#dna_fish_herptiles').innerHTML = textItems.fishHerp[index]
         document.querySelector('#dna_fungi_lichens').innerHTML = textItems.fungiLichens[index]
         document.querySelector('#dna_other').innerHTML = textItems.other[index]
+        document.querySelector('#malmer').innerHTML = textItems.malmer[index]
+        document.querySelector('#oslofeltet').innerHTML = textItems.oslofeltet[index]
+        document.querySelector('#utenlandskeBergarter').innerHTML = textItems.utenlandskeBA[index]
+        document.querySelector('#GeoPalOpt').label = textItems.GeoPal[index]
         
     }
 

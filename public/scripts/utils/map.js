@@ -33,6 +33,7 @@ const drawMap = (parsedData) => {
         
         if (coordinateArray.length === 0) {
             document.querySelector("#map-search").innerHTML = textItems.mapSearchAlt[index]
+            console.log('her')
         } else {
             const newArray = []
             coordinateArray.forEach(function(item) {
@@ -154,11 +155,6 @@ const drawMap = (parsedData) => {
                     }),
                 })    
                 
-                
-
-
-
-
                 const extent = vectorSource.getExtent()
                 
                 // // to make extent of map larger than exactly where  the points are
@@ -221,11 +217,7 @@ const drawMap = (parsedData) => {
                     popup_closer.blur();
                     return false;
                 }
-
-               
-
             } else {
-                
                 document.querySelector("#map-search").innerHTML = textItems.mapSearchAlt[index]
             }
         }  
@@ -295,7 +287,9 @@ const drawMapObject = (object) => {
     if (object.decimalLatitude & object.decimalLongitude) {
 
         initialize_map()
-        if (!location.href.includes('mapObject')) {
+        
+        if (!location.href.includes('mapObject') && map) {
+            console.log('her da')
             document.getElementById('zoom-button').style.display = "inline-block"
             document.getElementById('large-map-object-button').style.display = "inline-block"
             // document.getElementById('export-png').style.display = "inline-block"
