@@ -34,7 +34,6 @@ if (sessionStorage.language) {
 
 // download search-result to file
 function download(filename, text) {
-    console.log("nå er vi i search.js; download")
     const element = document.createElement('a')
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
     element.setAttribute('download', filename)
@@ -494,9 +493,7 @@ const checkSeveralBoxes = (subMusitData) => {
 const select = document.getElementById('checkboxSelect')
 pageList = JSON.parse(sessionStorage.getItem('pageList'))
 if(select) {
-    console.log('we are in search.js')
     select.onchange =() => {
-        console.log('we are in search.js')
         checkSeveralBoxes(pageList)
     }
 }

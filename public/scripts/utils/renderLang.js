@@ -11,6 +11,15 @@ const renderText = function(lang) {
     }
     
     //header
+    let logo = document.querySelector('#logo')
+    if (window.location.href.includes('tmu')) {
+        logo.src = textItems.logoTMU[index]
+    } else if (window.location.href.includes('um')) {
+        logo.src = textItems.logoUM[index]
+    } else {
+        logo.src = textItems.logoNHM[index]
+    }
+    
     document.querySelector('#help-link').innerHTML = textItems.helpButton[index]
     document.querySelector('#statistikk-link').innerHTML = textItems.statistikkButton[index]
     document.querySelector('#search-page-link').innerHTML = textItems.searchPageLink[index]
@@ -21,14 +30,6 @@ const renderText = function(lang) {
     document.querySelector('#menu_journal-link').innerHTML = textItems.journalLink[index]
     document.querySelector('#mobileMenuBtn').innerHTML = textItems.mobileMenuBtn[index]
 
-    let logo = document.querySelector('#logo')
-    if (window.location.href.includes('tmu')) {
-        logo.src = textItems.logoTMU[index]
-    } else if (window.location.href.includes('um')) {
-        logo.src = textItems.logoUM[index]
-    } else {
-        logo.src = textItems.logoNHM[index]
-    }
     
     
 
@@ -347,9 +348,7 @@ document.querySelector('#language').addEventListener('change', (e) => {
             const select = document.getElementById('checkboxSelect')
             pageList = JSON.parse(sessionStorage.getItem('pageList'))
             if(select) {
-                console.log('we are in renderlang.js')
                 select.onchange =() => {
-                    console.log(pageList)
                     checkSeveralBoxes(pageList)
                 }
             }

@@ -107,11 +107,19 @@
     "akronym": "O-DP"
 },
 {
-    "source": "musit",
+    "source": "access",
     "name": "malmer",
     "zipFileName": "occurrence",
-    "mediaFile": "_multimedia",
-    "url": "https://ipt.gbif.no/archive.do?r=o_dna_plants",
-    "akronym": "GMO-MA"
+    "mediaFile": "",
+    "url": "",
+    "akronym": "GMO-M"
+},
+{
+    "source": "access",
+    "name": "bergarterUtl",
+    "zipFileName": "occurrence",
+    "mediaFile": "",
+    "url": "",
+    "akronym": "GMO-BU"
 }
 ]
