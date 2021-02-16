@@ -116,10 +116,18 @@
 },
 {
     "source": "access",
-    "name": "bergarterUtl",
+    "name": "utenlandskeBergarter",
     "zipFileName": "occurrence",
     "mediaFile": "",
     "url": "",
     "akronym": "GMO-BU"
+},
+{
+    "source": "access",
+    "name": "oslofeltet",
+    "zipFileName": "occurrence",
+    "mediaFile": "",
+    "url": "",
+    "akronym": "GMO-BO"
 }
 ]

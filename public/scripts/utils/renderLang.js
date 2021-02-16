@@ -14,9 +14,9 @@ const renderText = function(lang) {
     let logo = document.querySelector('#logo')
     if (window.location.href.includes('tmu')) {
         logo.src = textItems.logoTMU[index]
-    } else if (window.location.href.includes('um')) {
+    } else if (window.location.href.includes('/um')) {
         logo.src = textItems.logoUM[index]
-    } else {
+    } else if (window.location.href.includes('nhm')) {
         logo.src = textItems.logoNHM[index]
     }
     
@@ -184,7 +184,7 @@ const renderText = function(lang) {
         //document.querySelector("#itemsHeader").innerHTML = textItems.itemsHeader[index]
 
         ////////////endre dette med stiched files
-        // if (!window.location.href.includes('um') && !window.location.href.includes('tmu')) {
+        // if (!window.location.href.includes('/um') && !window.location.href.includes('tmu')) {
         //     document.querySelector("#preservedSp").innerHTML = textItems.preservedSp[index]
         // }
         

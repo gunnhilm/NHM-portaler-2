@@ -178,7 +178,7 @@ if (!sessionStorage.getItem('collection').includes('dna') & !sessionStorage.getI
         }
     }
 } 
-//else if(!window.location.href.includes('tmu') && !window.location.href.includes('um')) {
+//else if(!window.location.href.includes('tmu') && !window.location.href.includes('/um')) {
 
 //     document.querySelector("#preservedSp").innerHTML = 'basisOfRecord:'
 //     document.querySelector("#corema-link").innerHTML = object.basisOfRecord

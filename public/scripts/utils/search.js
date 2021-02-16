@@ -130,8 +130,9 @@ function forceDownload(url, fileName){
 
 const getCurrentMuseum = () => {
     // finn ut hvilket museum 
+    console.log(window.location.pathname)
     let museum = window.location.pathname
-    museum = museum.slice(5)
+    museum = museum.slice(8)
     return museum
 }
 
@@ -459,9 +460,7 @@ const checkSeveralBoxes = (subMusitData) => {
         }
         let searchResult = JSON.parse(sessionStorage.getItem('string'))
         searchResult.forEach(el => el.checked = true)
-        console.log(searchResult[0])
         sessionStorage.setItem('string', JSON.stringify(searchResult))
-        console.log(searchResult[0].checked)
     } else if (select.value == "all_on_page") {
         // keep all on other pages that are checked
         // find those in subMusitData in searchResult and check them, and save searchresult

@@ -1,7 +1,7 @@
 // urlPath er definert i textItems.js
 
 // show collections in select dependent on museum
-if(window.location.href.includes('tmu') | window.location.href.includes('um')) {
+if(window.location.href.includes('tmu') | window.location.href.includes('/um')) {
     document.querySelector('#coremaopt').style.display = 'none'
     document.querySelector('#DNAopt').style.display = 'none'
     document.querySelector('#GeoPalOpt').style.display = 'none'
@@ -174,7 +174,6 @@ function hide_column(col_no) {
 // render result table
 const resultTable = (subMusitData, musitData) => {    
     try {
-        
         table.innerHTML = "";
         for (let i = -1; i < pageList.length; i++) { // vis en tabell med resultater som er like lang som det vi ba om pageList.length; 
             const row = table.insertRow(-1)
@@ -192,7 +191,6 @@ const resultTable = (subMusitData, musitData) => {
             const cell10 = row.insertCell(9)
             cell10.className += "cell10";
             const cell11 = row.insertCell(10)
-            
             if (i === -1) {     // her kommer tittellinjen
                 cell1.innerHTML = `<button id='musitIDButton' class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>` 
                 cell2.innerHTML = `<button id='scientificNameButton' class='sort'>${textItems.headerTaxon[index].bold()} ${getArrows('scientificName')} </button>`
@@ -205,11 +203,11 @@ const resultTable = (subMusitData, musitData) => {
                 cell9.innerHTML = `<button id='coordinateButton' class='sort'><span class="fas fa-compass"></span>${getArrows('decimalLongitude')}</button>`
                 //cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} </button>`
                 
-                if (document.querySelector('#collection-select option:checked').parentElement.label === 'Specimens') {
-                    cell10.innerHTML = `<button id='coremaNoButton' class='sort'>${textItems.headerCoremaNo[index].bold()} ${getArrows('coremaNo')}</button>`
-                } else {
-                    cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} ${getArrows('sampleType')}</button>`
-                }
+                // if (document.querySelector('#collection-select option:checked').parentElement.label === 'Specimens') {
+                //     cell10.innerHTML = `<button id='coremaNoButton' class='sort'>${textItems.headerCoremaNo[index].bold()} ${getArrows('coremaNo')}</button>`
+                // } else {
+                //     cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} ${getArrows('sampleType')}</button>`
+                // }
                 
                 cell11.innerHTML = `<select id='checkboxSelect' class='sort'>
                     <option value="select" id="select">${textItems.select[index].bold()}</option>
@@ -230,17 +228,18 @@ const resultTable = (subMusitData, musitData) => {
                 addSortingText('coordinateButton', 9, 'decimalLongitude', musitData)
                 
 
-                if (document.querySelector('#collection-select option:checked').parentElement.label === 'Specimens') {
-                    addSortingText('coremaNoButton', 10, 'coremaNo', musitData)
-                } else {
-                    addSortingText('sampleTypeButton', 10, 'sampleType', musitData)         
-                }
+                // if (document.querySelector('#collection-select option:checked').parentElement.label === 'Specimens') {
+                //     addSortingText('coremaNoButton', 10, 'coremaNo', musitData)
+                // } else {
+                //     addSortingText('sampleTypeButton', 10, 'sampleType', musitData)         
+                // }
 
                 //addSortingText('processIDButton', 11, 'processID', musitData)
                 
             } else {        // Her kommer innmaten i tabellen, selve resultatene
                 let museumURLPath
-                if (window.location.href.includes('um')) { 
+                
+                if (window.location.href.includes('/um')) { 
                     museumURLPath = urlPath + "/um"
                 } else if (window.location.href.includes('tmu')) {
                     museumURLPath = urlPath + "/tmu"
@@ -249,14 +248,19 @@ const resultTable = (subMusitData, musitData) => {
                 }
                 
                 let prefix
-                collectionCodes = ['V','F','L','B','A','ENT','M','BU']
-                if ( !window.location.href.includes('um') && !window.location.href.includes('tmu')) {
-                    if( !collectionCodes.includes(subMusitData[i].collectionCode) )  {
-                        prefix = ''
-                    } else {
-                        prefix = subMusitData[i].institutionCode + '-' + subMusitData[i].collectionCode + '-'
-                    }
+                if (!(/[a-zA-Z]/).test(subMusitData[i].catalogNumber.charAt(0))) {
+                    prefix = subMusitData[i].institutionCode + '-' + subMusitData[i].collectionCode + '-'
+                } else {
+                    prefix = ''
                 }
+                // collectionCodes = ['V','F','L','B','A','ENT','M','BU','GM-BU']
+                // if ( !window.location.href.includes('/um') && !window.location.href.includes('tmu')) {
+                //     if( !collectionCodes.includes(subMusitData[i].collectionCode) )  {
+                //         prefix = ''
+                //     } else {
+                //         prefix = subMusitData[i].institutionCode + '-' + subMusitData[i].collectionCode + '-'
+                //     }
+                // }
                 
                 cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}"> ${prefix}${subMusitData[i].catalogNumber} </a>`
                 cell2.innerHTML = subMusitData[i].scientificName
@@ -316,7 +320,7 @@ const resultTable = (subMusitData, musitData) => {
         }
         
         // hide corema-link-column for UM and TMU
-        if (window.location.href.includes('um') || window.location.href.includes('tmu')) {
+        if (window.location.href.includes('/um') || window.location.href.includes('tmu')) {
             hide_column(9)
         }
 

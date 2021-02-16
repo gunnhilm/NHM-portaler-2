@@ -1,4 +1,4 @@
-const urlPath = '/nhm'
+const urlPath = '/museum'
 
 const textItems = {
     // header

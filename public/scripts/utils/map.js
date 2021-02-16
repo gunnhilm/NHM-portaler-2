@@ -185,7 +185,7 @@ const drawMap = (parsedData) => {
                         
                         try {
                             let museumURLPath
-                            if (window.location.href.includes('um')) { 
+                            if (window.location.href.includes('/um')) { 
                                 museumURLPath = urlPath + "/um"
                             } else if (window.location.href.includes('tmu')) {
                                 museumURLPath = urlPath + "/tmu"
