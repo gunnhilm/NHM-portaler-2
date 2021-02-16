@@ -137,6 +137,9 @@ function addSortingText(id, n, prop, musitData) { // her er musitData alle
         }
 
         subMusitData = musitData.slice(0,numberPerPage)
+        console.log(subMusitData)
+        sessionStorage.setItem('pageList', JSON.stringify(subMusitData))
+        console.log('setitem pagelist')
         
         sessionStorage.setItem('string', JSON.stringify(musitData))
         sessionStorage.setItem('propsSorted', JSON.stringify(propsSorted))
@@ -257,7 +260,7 @@ const resultTable = (subMusitData, musitData) => {
                         prefix = subMusitData[i].institutionCode + '-' + subMusitData[i].collectionCode + '-'
                     }
                 }
-                
+                console.log(subMusitData[i].catalogNumber)
                 cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}"> ${prefix}${subMusitData[i].catalogNumber} </a>`
                 cell2.innerHTML = subMusitData[i].scientificName
                 // // to avoid lots of text in collector-field I tried to cut it down to one name et al. but in corema collector is often "Johannessen, Lars Erik", so looking for comma does not work
@@ -367,6 +370,7 @@ const resultTable = (subMusitData, musitData) => {
     const select = document.getElementById('checkboxSelect')
     if(select) {
         select.onchange =() => {
+            console.log('we are in resultTable() in search.js')
             checkSeveralBoxes(subMusitData)
         }
     }
@@ -445,6 +449,9 @@ function loadList() {
     const begin = ((currentPage - 1) * numberPerPage);
     const end = begin + numberPerPage;
     pageList = list.slice(begin, end);
+    console.log(pageList)
+    sessionStorage.setItem('pageList', JSON.stringify(pageList)) // pageList is the same as subMusitData other places; the part of the search result that is listed on the current page
+    console.log('setitem pagelist')
     drawList();
     check();
 }
@@ -504,7 +511,7 @@ const investigateChecked = (i) => {
 
 // when checking off a checkbox
 const registerChecked = (i) => {
-    document.getElementById('checkboxSelect').value = 'select'
+    //document.getElementById('checkboxSelect').value = 'select'
     let searchResult = JSON.parse(sessionStorage.getItem('string'))
     let searchResultIndex = i + ((currentPage -1 ) * numberPerPage)
         if (searchResult[searchResultIndex].checked) {

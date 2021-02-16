@@ -132,7 +132,6 @@ function forceDownload(url, fileName){
 const getCurrentMuseum = () => {
     // finn ut hvilket museum 
     let museum = window.location.pathname
-    console.log(window.location.pathname)
     museum = museum.slice(5)
     return museum
 }
@@ -493,9 +492,11 @@ const checkSeveralBoxes = (subMusitData) => {
 }
 
 const select = document.getElementById('checkboxSelect')
-dummyData = []
+pageList = JSON.parse(sessionStorage.getItem('pageList'))
 if(select) {
+    console.log('we are in search.js')
     select.onchange =() => {
-        checkSeveralBoxes(dummyData)
+        console.log('we are in search.js')
+        checkSeveralBoxes(pageList)
     }
 }

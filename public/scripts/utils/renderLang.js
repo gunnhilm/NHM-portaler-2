@@ -343,7 +343,16 @@ document.querySelector('#language').addEventListener('change', (e) => {
             addSortingText('localityButton', 7, 'locality', musitData)
                 // // addSortingText('sampleTypeButton', 10, 'sampleType', musitData)
                 // // addSortingText('processIDButton', 11, 'processID', musitData)
-            
+         
+            const select = document.getElementById('checkboxSelect')
+            pageList = JSON.parse(sessionStorage.getItem('pageList'))
+            if(select) {
+                console.log('we are in renderlang.js')
+                select.onchange =() => {
+                    console.log(pageList)
+                    checkSeveralBoxes(pageList)
+                }
+            }
         }
     }
 })
