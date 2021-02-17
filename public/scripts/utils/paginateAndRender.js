@@ -286,17 +286,17 @@ const resultTable = (subMusitData, musitData) => {
                     cell9.innerHTML = '<span class="fas fa-compass"></span>'
                 }
                 
-                if (window.location.href.includes('nhm')) {
-                    cell10.innerHTML = 'test'
-                } else {
-                    if (document.querySelector('#collection-select  option:checked').parentElement.label === 'Specimens') {
-                        cell10.innerHTML = subMusitData[i].coremaNo
-                    } else {
-                        cell10.innerHTML = itemType(subMusitData[i].catalogNumber)
-                    }
+                // if (window.location.href.includes('nhm')) {
+                //     cell10.innerHTML = 'test'
+                // } else {
+                //     if (document.querySelector('#collection-select  option:checked').parentElement.label === 'Specimens') {
+                //         cell10.innerHTML = subMusitData[i].coremaNo
+                //     } else {
+                //         cell10.innerHTML = itemType(subMusitData[i].catalogNumber)
+                //     }
                    
-                }
-                
+                // }
+               
                 cell11.innerHTML = `<input type="checkbox" id=checkbox${i} onclick="registerChecked(${i})" ></input>`
                 
                 if (investigateChecked(i)) {
@@ -314,7 +314,7 @@ const resultTable = (subMusitData, musitData) => {
                 cell7.className = 'row-7 row-sted'
                 cell8.className = 'row-8 row-photo'
                 cell9.className = 'row-9 row-coordinates'
-                cell10.className = 'row-10 row-sampleType'
+                //cell10.className = 'row-10 row-sampleType'
                 cell11.className = 'row-11 row-checkbox'
             }
         }
@@ -326,6 +326,7 @@ const resultTable = (subMusitData, musitData) => {
 
         ////////////// remove when stiched files are in place
         if (window.location.href.includes('nhm')) {
+         
             hide_column(9)
         }
 
@@ -391,6 +392,7 @@ if (sessionStorage.getItem('currentPage')) {
 }
 let numberPerPage
 if (sessionStorage.getItem('numberPerPage')) {
+    console.log()
     numberPerPage = sessionStorage.getItem('numberPerPage')
 } else {
     numberPerPage = 20
@@ -483,6 +485,7 @@ hitsPerPage.addEventListener('change', (e) => {
         console.log('hitsperpage < 2000')
         numberPerPage = hitsPerPage.value
         numberPerPage = numberPerPage - 0 // to make it a number
+        console.log(JSON.parse(sessionStorage.getItem('string')).length)
         numberOfPages = getNumberOfPages(numberPerPage)
     } else {
         numberPerPage = 2000

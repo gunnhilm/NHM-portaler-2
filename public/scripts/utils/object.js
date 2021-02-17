@@ -284,7 +284,7 @@ if (!sessionStorage.getItem('collection').includes('dna') & !sessionStorage.getI
 // }
 
 // photo:
-// hvis noe klikker på neste bilde
+// hvis noen klikker på neste bilde
 function changeImage(index, direction, smallImageList, imageList) {
     //index = index + direction;
     if (direction == 'f') {
@@ -357,10 +357,18 @@ if (mediaLink) {
         let smallImage = mediaLink
         smallImage = smallImage.replace('jpeg', 'small')
         document.getElementById("photo-box").src = smallImage
+        
+        console.log(imageExists(smallImage))
+        
     }
     
 }
-
+function imageExists(image_url){
+    var http = new XMLHttpRequest();
+    http.open('HEAD', image_url, false);
+    http.send();
+    return http //!= 404;
+}
 //map
 drawMapObject(object)
 

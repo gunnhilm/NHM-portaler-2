@@ -158,7 +158,7 @@ const drawMap = (parsedData) => {
                 const extent = vectorSource.getExtent()
                 
                 // // to make extent of map larger than exactly where  the points are
-                map.getView().fit(extent, {padding: [50, 50, 50, 50], minResolution: 50})
+                map.getView().fit(extent, {padding: [30, 30, 30, 30], minResolution: 30})
                 
                 // // popups
                 
@@ -166,6 +166,7 @@ const drawMap = (parsedData) => {
                 const popup = new ol.Overlay({
                     element: popup_element,
                     positioning: 'bottom-center',
+                    autoPan: true,
                     stopEvent: true, // true here enables clickable link in popup
                     offset: [0,0]
                 })
@@ -195,8 +196,15 @@ const drawMap = (parsedData) => {
 
                             
                             if (cfeatures.length > 1) {
+                                
+                                if( cfeatures.length > 10 ) {
+                                    popup_element.setAttribute("style","width:300px") // size is set 
+                                }
                                 for (i=0; i < cfeatures.length; i++) {
-                                    popup_content.innerHTML += `<a id="object-link" style="white-space: nowrap" href="${museumURLPath}/object/?id=${cfeatures[i].get('catalogNumber')}"> ${cfeatures[i].get('catalogNumber')}</a>`
+                                    popup_content.innerHTML += `<a id="object-link"  href="${museumURLPath}/object/?id=${cfeatures[i].get('catalogNumber')}"> ${cfeatures[i].get('catalogNumber')}</a>`
+                                    if (i < cfeatures.length-1) {
+                                        popup_content.innerHTML += ', '
+                                    }
                                 }
                             }
                             if (cfeatures.length == 1) {
@@ -215,6 +223,8 @@ const drawMap = (parsedData) => {
                 popup_closer.onclick = function() {
                     popup.setPosition(undefined);
                     popup_closer.blur();
+                    popup_element.setAttribute("style","width:auto"),
+                    map.getView().fit(extent, {padding: [30, 30, 30, 30], minResolution: 30})
                     return false;
                 }
             } else {
@@ -224,7 +234,7 @@ const drawMap = (parsedData) => {
     
                  
         // // Show the button that opens the modal
-        if(zoomButton) {
+        if(zoomButton && map) {
             zoomButton.style.display = "block"
             largeMapButton.style.display = "block"
             downloadMapButton.style.display = "block"
