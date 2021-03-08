@@ -189,6 +189,10 @@ app.get('*/object', (req, res) => {
     }
 })
 
+app.get('*/tools', (req, res) => {
+    res.render('tools', {
+    })
+})
 
 
 app.get('*/showStat', (req, res) => {
@@ -210,7 +214,7 @@ app.get('*/showStat', (req, res) => {
 })
  
 // journal siden
-app.get('/journaler', (req, res) => {
+app.get('/nhm/journaler', (req, res) => {
     res.render('journaler', {
      })
  })

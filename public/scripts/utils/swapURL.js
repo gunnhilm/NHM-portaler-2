@@ -6,32 +6,40 @@ function swapURL(path, link) {
 const getMuseumSpecificURL = () => {
     if (window.location.href.includes('/um')) {
         swapURL('/museum/um/help', 'help-link')
-        swapURL('/museum/um/showStat', 'statistikk-link')
+        //swapURL('/museum/um/showStat', 'statistikk-link')
+        swapURL('/museum/um/tools', 'tools-link')
         swapURL('/museum/um/', 'search-page-link')
         document.getElementById('journal-link').style.display = 'none'
         // mobile-screen-links
         swapURL('/museum/um/help', 'menu_help-link')
-        swapURL('/museum/um/showStat', 'menu_statistikk-link')
+        //swapURL('/museum/um/showStat', 'menu_statistikk-link')
+        swapURL('/museum/um/tools', 'menu_tools-link')
         swapURL('/museum/um/', 'menu_search-page-link')
         document.getElementById('menu_journal-link').style.display = 'none'
     } else if (window.location.href.includes('tmu')){
         swapURL('/museum/tmu/help','help-link')
-        swapURL('/museum/tmu/showStat', 'statistikk-link')
+        //swapURL('/museum/tmu/showStat', 'statistikk-link')
+        swapURL('/museum/tmu/tools', 'tools-link')
         swapURL('/museum/tmu/', 'search-page-link')
         document.getElementById('journal-link').style.display = 'none'
         // mobile-screen-links
         swapURL('/museum/tmu/help', 'menu_help-link')
-        swapURL('/museum/tmu/showStat', 'menu_statistikk-link')
+        //swapURL('/museum/tmu/showStat', 'menu_statistikk-link')
+        swapURL('/museum/tmu/tools', 'menu_tools-link')
         swapURL('/museum/tmu/', 'menu_search-page-link')
         document.getElementById('menu_journal-link').style.display = 'none'
     } else {
         swapURL('/museum/nhm/help', 'help-link')
-        swapURL('/museum/nhm/showStat', 'statistikk-link')
+        // swapURL('/museum/nhm/showStat', 'statistikk-link')
         swapURL('/museum/nhm/', 'search-page-link')
+        swapURL('/museum/nhm/tools', 'tools-link')
+        //swapURL('museum/nhm/journals', 'journal-link')
         // mobile-screen-links
         swapURL('/museum/nhm/help', 'menu_help-link')
-        swapURL('/museum/nhm/showStat', 'menu_statistikk-link')
+        //swapURL('/museum/nhm/showStat', 'menu_statistikk-link')
+        swapURL('/museum/nhm/tools', 'menu_tools-link')
         swapURL('/museum/nhm/', 'menu_search-page-link')
+        //swapURL('museum/nhm/journals', 'menu_journal-link')
     }
 }
 

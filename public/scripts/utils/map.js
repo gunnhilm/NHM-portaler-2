@@ -312,8 +312,6 @@ const drawMapObject = (object) => {
             geometry: new ol.geom.Point(ol.proj.fromLonLat([Number(object.decimalLongitude), Number(object.decimalLatitude)]))
         })
 
-
-
         // icon...
         var iconStyle = new ol.style.Style({
             image: new ol.style.Icon({
@@ -325,7 +323,6 @@ const drawMapObject = (object) => {
         })
 
         marker.setStyle(iconStyle)
-
 
         // source object for this feature
         const vectorSource = new ol.source.Vector({
@@ -347,21 +344,9 @@ const drawMapObject = (object) => {
         }
         document.getElementById('large-map-object-button').style.display = "none"
         document.getElementById('zoom-button').style.display = "none"
-        //document.getElementById('export-png').style.display = "none"
-        //document.getElementById('checkedInMap').style.display = "none"
-
     }
 
-
-    // modal (pop-up) with explanation for zoom in map
-    // Get the modal
-//    var zoomModal = document.getElementById("zoom-modal");
-
-    // Get the button that opens the modal
-  //  var zoomButton = document.getElementById("zoom-button");
-
-    // Get the <span> element that closes the modal
-    
+ 
     // When the user clicks on the button, open the modal
     if (zoomButton) {
         zoomButton.onclick = function () {

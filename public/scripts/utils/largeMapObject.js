@@ -1,4 +1,4 @@
-const loadString = () => {
+const loadStringObjectMapPage = () => {
     let objectJSON = ''
     //if( sessionStorage.getItem('databaseSearch') === 'musit' ) {
         objectJSON = sessionStorage.getItem('string')
@@ -15,7 +15,7 @@ const loadString = () => {
 const urlParams = new URLSearchParams(window.location.search)
 const id = urlParams.get('id')
 
-const allObject = loadString()
+const allObject = loadStringObjectMapPage()
 
 const object = allObject.find(x => x.catalogNumber === id)
 

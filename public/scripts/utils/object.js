@@ -7,7 +7,7 @@ if (sessionStorage.language) {
 }
 
 // read string and get the object from sessionStorage
-const loadString = () => {
+const loadStringObject = () => {
     let objectJSON = ''
     //if( sessionStorage.getItem('databaseSearch') === 'musit' ) {
         objectJSON = sessionStorage.getItem('string')
@@ -27,7 +27,7 @@ document.getElementById("previous-photo").style.display = "none"
 document.getElementById("nb-photos").style.display = "none"
 
 //get the object from session storage
-const allObject = loadString()
+const allObject = loadStringObject()
 
 // get the id from the url
 const urlParams = new URLSearchParams(window.location.search)
@@ -94,7 +94,7 @@ const coordinates = (obj) => {
 
 
 let prefix = object.institutionCode + '-' + object.collectionCode + '-'
-const regnoEl = `<span>${prefix}${object.catalogNumber}` 
+const regnoEl = `<span>${prefix}${object.catalogNumber}</span>` 
 
 
 // data only displayed if existing
@@ -127,10 +127,16 @@ if (object.kingdom || object.class || object.order || object.family) {
     taxonomy = `<span>${object.kingdom} ${object.class} ${object.order} ${object.family}</span>`
 }
 
-
+console.log(sessionStorage.getItem('collection'))
 // put content in html-boxes
 renderText(language)
-document.querySelector("#musit-regno").innerHTML = regnoEl
+
+if (!sessionStorage.getItem('collection').includes('dna') & !sessionStorage.getItem('collection').includes('birds') & !sessionStorage.getItem('collection').includes('mammals')) {
+    document.querySelector("#musit-regno").innerHTML = regnoEl
+} else {
+    document.querySelector("#musit-regno").innerHTML = `<span>${object.catalogNumber}</span>`
+}
+
 document.querySelector("#species-name").innerHTML = `<span class="italic">${object.scientificName}</span>`
 document.querySelector("#det").innerHTML =  `<span>${object.identifiedBy}</span>`
 document.querySelector("#det-date").innerHTML = `<span>${object.dateIdentified}</span>`
@@ -155,20 +161,13 @@ document.querySelector('#typeStatus').innerHTML = typeStatus
 // items
 
 function addRow() {
-    //for (i=1; i<x; i++) {
         row = document.getElementById("object-table").insertRow(-1)
         cell1 = row.insertCell(0)
         cell1.style.fontWeight = "bold"
         cell2 = row.insertCell(1)
-        //`cell${i}_1` = row.insertCell(0)
-        //`cell${i}_2` = row.insertCell(1)
-   // }
-    
 }
-//document.querySelector("#itemsHeader").innerHTML = textItems.itemsHeader[index]
-console.log(sessionStorage.getItem('collection'))
 
-if (!sessionStorage.getItem('collection').includes('dna') & !sessionStorage.getItem('collection') === 'birds' & !sessionStorage.getItem('collection') === 'mammals') {
+if (!sessionStorage.getItem('collection').includes('dna') & !sessionStorage.getItem('collection').includes('birds') & !sessionStorage.getItem('collection').includes('mammals')) {
     if(object.coremaUUID) {
         document.querySelector("#preservedSp").innerHTML = textItems.preservedSp[index]
         document.querySelector("#corema-link").innerHTML = `<a id="object-link" href="#" onclick="searchInCorema(object.coremaNo);return false;"> ${object.coremaNo} </a>`

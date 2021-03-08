@@ -14,59 +14,7 @@ if(window.location.href.includes('tmu') | window.location.href.includes('/um')) 
 const table = document.getElementById("myTable")
 const hitsPerPage = document.querySelector('#number-per-page')
 
-// array with booleans that keeps track of sorting for page rendering
-let propsSorted
 
-if (!sessionStorage.getItem('propsSorted')) {
-    propsSorted = [
-        {id: 'catalogNumber',
-        sortedOnce: false,
-        sortedTwice: false},
-        {id: 'scientificName',
-        sortedOnce: false,
-        sortedTwice: false},
-        {id: 'recordedBy',
-        sortedOnce: false,
-        sortedTwice: false},
-        {id: 'eventDate',
-        sortedOnce: false,
-        sortedTwice: false},
-        {id: 'country',
-        sortedOnce: false,
-        sortedTwice: false},
-        {id: 'county',
-        sortedOnce: false,
-        sortedTwice: false},
-        {id: 'locality',
-        sortedOnce: false,
-        sortedTwice: false},
-        {id: 'associatedMedia',
-        sortedOnce: false,
-        sortedTwice: false},
-        {id: 'decimalLongitude',
-        sortedOnce: false,
-        sortedTwice: false},
-        {id: 'coremaNo',
-        sortedOnce: false,
-        sortedTwice: false},
-        {id: 'sampleType',
-        sortedOnce: false,
-        sortedTwice: false},
-        {id: 'processID',
-        sortedOnce: false,
-        sortedTwice: false}
-    ]
-    sessionStorage.setItem('propsSorted', JSON.stringify(propsSorted))
-} else { 
-    propsSorted = JSON.parse(sessionStorage.getItem('propsSorted'))
-}
-
-function resetSortedBoolean () {
-    for(i = 0; i < propsSorted.length; i++) {
-        propsSorted[i].sortedOnce = false
-        propsSorted[i].sortedTwice = false
-    }
-}
 
 function itemType (catalogNumber) {
     const s = catalogNumber.charAt(catalogNumber.length-1)
@@ -85,82 +33,6 @@ function itemType (catalogNumber) {
 const arrowUp = `<img id='uio-arrow-up' src='${urlPath}/images/icon-up.svg' width="10" height="10"></img>`
 const arrowDown =  `<img id='uio-arrow-down' src='${urlPath}/images/icon-down.svg' width="10" height="10"></img>`
 const arrows = arrowUp + arrowDown
-
-function getArrows(prop) {
-    if (!propsSorted.find(x => x.id === prop).sortedOnce  & !propsSorted.find(x => x.id === prop).sortedTwice) {
-        return arrows 
-    } else if (propsSorted.find(x => x.id === prop).sortedOnce) {
-        return arrowDown
-    } else if (propsSorted.find(x => x.id === prop).sortedTwice) {
-        return arrowUp
-    }
-}
-
-// add sorting function to buttons in table
-function addSortingText(id, n, prop, musitData) { // her er musitData alle
-    document.getElementById(id).addEventListener("click", function() {
-        // Show please wait
-        document.getElementById("please-wait").style.display = "block"
-
-        let reverse = false
-
-        if (propsSorted.find(x => x.id === prop).sortedOnce) { reverse = true }
-        if (id === 'musitIDButton' ) { 
-            musitData.sort(sort_by(prop,reverse, parseInt))
-        } 
-        
-        // else if (id === 'sampleTypeButton'){
-        //     console.log('sampeltypebutton sort')
-        // } 
-        else {
-            if (id === 'photoButton' | id === 'coordinateButton') {
-                reverse = !reverse
-            } 
-
-            musitData.sort(sort_by(prop,reverse, (a) => a.toLowerCase()))
-        } 
-
-        if (propsSorted.find(x => x.id === prop).sortedOnce === propsSorted.find(x => x.id === prop).sortedTwice) {
-            propsSorted.find(x => x.id === prop).sortedOnce = true
-            propsSorted.find(x => x.id === prop).sortedTwice = false
-        } else {
-            propsSorted.find(x => x.id === prop).sortedOnce = !propsSorted.find(x => x.id === prop).sortedOnce
-            propsSorted.find(x => x.id === prop).sortedTwice = !propsSorted.find(x => x.id === prop).sortedTwice
-        }
-        
-        currentPage = 1
-
-        for(i = 0; i < propsSorted.length; i++) {
-            if(propsSorted[i].id === prop) { continue; }
-            propsSorted[i].sortedOnce = false
-            propsSorted[i].sortedTwice = false
-        }
-
-        subMusitData = musitData.slice(0,numberPerPage)
-        sessionStorage.setItem('pageList', JSON.stringify(subMusitData))
-        sessionStorage.setItem('string', JSON.stringify(musitData))
-        sessionStorage.setItem('propsSorted', JSON.stringify(propsSorted))
-        resultTable(subMusitData, musitData) 
-        document.getElementById("please-wait").style.display = "none"
-    })
-}
-
-// sort search-result when header button in table is clicked 
- sort_by = (prop, reverse, primer) => {
-    
-    const key = primer ?
-    function(x) {
-        return primer(x[prop])
-    } :
-    function(x) {
-        return x[prop]
-    }
-    reverse = !reverse ? 1: -1
-    
-    return function(a, b) {
-        return a = key(a), b = key(b), reverse * ((a > b) - (b > a))
-    }
-}
 
 // hide column (for museums without genetic database)
 function hide_column(col_no) {
@@ -192,42 +64,8 @@ const resultTable = (subMusitData, musitData) => {
             cell10.className += "cell10";
             const cell11 = row.insertCell(10)
             if (i === -1) {     // her kommer tittellinjen
-                cell1.innerHTML = `<button id='musitIDButton' class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>` 
-                cell2.innerHTML = `<button id='scientificNameButton' class='sort'>${textItems.headerTaxon[index].bold()} ${getArrows('scientificName')} </button>`
-                cell3.innerHTML = `<button id='collectorButton' class='sort'>${textItems.headerCollector[index].bold()} ${getArrows('recordedBy')}</button>`
-                cell4.innerHTML = `<button id='dateButton' class='sort'>${textItems.headerDate[index].bold()} ${getArrows('eventDate')}</button>`
-                cell5.innerHTML = `<button id='countryButton' class='sort'>${textItems.headerCountry[index].bold()} ${getArrows('country')}</button>`
-                cell6.innerHTML = `<button id='municipalityButton' class='sort'>${textItems.headerMunicipality[index].bold()} ${getArrows('county')}</button>`
-                cell7.innerHTML = `<button id='localityButton' class='sort'>${textItems.headerLocality[index].bold()} ${getArrows('locality')}</button>`
-                cell8.innerHTML = `<button id='photoButton' class='sort'><span class="fas fa-camera"></span>${getArrows('associatedMedia')}</button>`
-                cell9.innerHTML = `<button id='coordinateButton' class='sort'><span class="fas fa-compass"></span>${getArrows('decimalLongitude')}</button>`
-                //cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} </button>`
-                
-                // if (document.querySelector('#collection-select option:checked').parentElement.label === 'Specimens') {
-                //     cell10.innerHTML = `<button id='coremaNoButton' class='sort'>${textItems.headerCoremaNo[index].bold()} ${getArrows('coremaNo')}</button>`
-                // } else {
-                //     cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} ${getArrows('sampleType')}</button>`
-                // }
-                
-                cell11.innerHTML = `<select id='checkboxSelect' class='sort'>
-                    <option value="select" id="select">${textItems.select[index].bold()}</option>
-                    <option value="all" id="selectAll">${textItems.selectAll[index]}</option>
-                    <option value="all_on_page" id="selectAllOnPage">${ textItems.selectAllOnPage[index]}</option>
-                    <option value="none" id="selectNone">${ textItems.selectNone[index]}</option>
-                </select>`
-                //investigateChecked()
-                // lag overskriftene klikk og sorterbare
-                addSortingText('musitIDButton', 1, 'catalogNumber', musitData)  // Tabellen blir sortert på nummer
-                addSortingText('scientificNameButton', 2, 'scientificName', musitData)
-                addSortingText('collectorButton', 3, 'recordedBy', musitData)
-                addSortingText('dateButton', 4, 'eventDate', musitData)
-                addSortingText('countryButton', 5, 'country', musitData)
-                addSortingText('municipalityButton', 6, 'county', musitData)
-                addSortingText('localityButton', 7, 'locality', musitData)
-                addSortingText('photoButton', 8, 'associatedMedia', musitData)
-                addSortingText('coordinateButton', 9, 'decimalLongitude', musitData)
-                
-
+                fillResultHeaders(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell10,cell11,musitData)
+               
                 // if (document.querySelector('#collection-select option:checked').parentElement.label === 'Specimens') {
                 //     addSortingText('coremaNoButton', 10, 'coremaNo', musitData)
                 // } else {
@@ -330,28 +168,9 @@ const resultTable = (subMusitData, musitData) => {
             hide_column(9)
         }
 
-        // Show download button
-        downloadButton.style.display = "block"
-        downloadPhotoButton.style.display = "block"
+        showResultElements()
         document.getElementById("empty-search-button").style.display = "inline-block"
-        document.getElementById("first").style.display = "inline-block"
-        document.getElementById("previous").style.display = "inline-block"
-        document.getElementById("next").style.display = "inline-block"
-        document.getElementById("last").style.display = "inline-block"
-        document.getElementById("first1").style.display = "inline-block"
-        document.getElementById("previous1").style.display = "inline-block"
-        document.getElementById("next1").style.display = "inline-block"
-        document.getElementById("last1").style.display = "inline-block"
-        document.getElementById("resultPageText").style.display = "inline-block"
-        document.getElementById("resultPageText").innerHTML = textItems.page[index]
-        document.getElementById("resultPageNb").style.display = "inline-block"
         numberOfPages = getNumberOfPages(numberPerPage)
-        document.getElementById("resultPageNb").innerHTML = " " + currentPage+ '/' + numberOfPages
-        document.getElementById("resultPageText1").style.display = "inline-block"
-        document.getElementById("resultPageText1").innerHTML = textItems.page[index]
-        document.getElementById("resultPageNb1").style.display = "inline-block"
-        document.getElementById("resultPageNb1").innerHTML = " " + currentPage + '/' + numberOfPages
-            
         
         if (!searchFailed) {
             try {
@@ -416,6 +235,7 @@ function getNumberOfPages(numberPerPage) {
 }
 
 function nextPage() {
+    console.log('nextpage()')
     if (currentPage < numberOfPages) {
         currentPage += 1    
         sessionStorage.setItem('currentPage', currentPage)
@@ -452,14 +272,14 @@ function loadList() {
     const end = begin + numberPerPage;
     pageList = list.slice(begin, end);
     sessionStorage.setItem('pageList', JSON.stringify(pageList)) // pageList is the same as subMusitData other places; the part of the search result that is listed on the current page
-    drawList();
+    //drawList();
+    resultTable(pageList, list)
     check();
 }
 
-function drawList() {
-    
-    resultTable(pageList, list)
-}
+// function drawList() {
+//     resultTable(pageList, list)
+// }
 
 function check() {
     document.getElementById("next").disabled = currentPage == numberOfPages ? true : false;
@@ -474,9 +294,12 @@ function check() {
 }
 
 function load() {
-    
-    makeList();
-    loadList();
+    list.length = 0 // tømme Array
+    stringData = sessionStorage.getItem('string')
+    // parsing search result
+    list = JSON.parse(stringData)   
+    numberOfPages = getNumberOfPages(numberPerPage)
+    loadList()
 }
 
 hitsPerPage.addEventListener('change', (e) => {

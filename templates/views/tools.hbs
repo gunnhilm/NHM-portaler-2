@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Verktøy</title>
+    </head>
+  
+    <body>
+        
+        <div class="wrapper">
+             {{>header}}
+            <div class="content">
+                <br><br><br><br>
+                
+                <p class="page-header" id="showToolsHeader"></p>
+                <p id="showToolsText"></p>
+                <br>
+
+                
+                <a class="toolLink" href="/museum/showStat" id="statistikk-link">Statistikk</a>
+                
+                <script src="/museum/scripts/utils/textItems.js"></script>
+                <script src="/museum/scripts/utils/renderLang.js"></script>
+                <link rel="stylesheet" href="/museum/styles/styles.css">
+                <link id="museumStyle" rel="stylesheet" type="text/css" href= "">
+                <link rel="stylesheet" href="/museum/styles/Chart.css">
+                <script src="/museum/scripts/utils/showCorrectMuseum.js"></script>
+                <script src="/museum/scripts/utils/chart/Chart.min.js"></script>
+                <script src="/museum/scripts/utils/tools.js"></script>      
+            </div>
+        
+            {{>footer}}
+        </div>
+    </body>
+</html>

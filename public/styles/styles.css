@@ -537,3 +537,8 @@ td {
 }
 
 
+/* tools-page */
+.toolLink {
+    font-size: 25px;
+    color: black
+}

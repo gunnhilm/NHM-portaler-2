@@ -15,10 +15,6 @@ const loadString = () => {
     } catch (e) {
         return []
     }
-    
-    
-    
-    
 }
 
 const allObject = loadString()

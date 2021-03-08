@@ -5,6 +5,7 @@ const textItems = {
     aboutButton: ["Om sidene", "About"],
     searchPageLink: ["Søkeside", "Search"],
     helpButton: ["Hjelp", "Help"],
+    toolsButton: ["Verktøy", "Tools"],
     statistikkButton: ["Statistikk", "Statistics"],
     journalLink: ["Journalsøk", "Journal search"],
     mobileMenuBtn: ["Meny", "Menu"],
@@ -132,6 +133,10 @@ const textItems = {
     preparedBy: ['Ekstrahert av:','Prepared by:'],
     concentration: ['DNA konsentrasjon:','DNA concentration'],
     coordPlaceholder: ['&lt;Ingen koordinater&gt;', '&lt;No coordinates&gt;'],
+
+    // Tools page
+    showToolsHeader: ["Verktøy til bruk i samlingsforvaltningen", "Tools for managing the collections"],
+    showToolsText: ["", ""],
 
     //ShowStat page
     showStatHeader: ["Statistikk over samlingene", "Statistics from the collections"],

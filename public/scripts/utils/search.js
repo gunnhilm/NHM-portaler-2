@@ -155,37 +155,12 @@ const doSearch = (limit = 20) => {
 
     let museum = getCurrentMuseum()   
  
-    // empty table
-    table.innerHTML = ""
-    nbHitsElement.textContent = ""
-    nbHitsHeader.innerHTML = ""
-    errorMessage.innerHTML = ""
+    emptyTable()
 
     // Show please wait
     document.getElementById("please-wait").style.display = "block"
     // hide download button
-    downloadButton.style.display = "none"
-    downloadPhotoButton.style.display = "none"
-    document.getElementById("head-nb-hits").innerHTML = ""
-    document.getElementById("zoom-button").style.display = "none"
-    document.getElementById("large-map-button").style.display = "none"
-    document.getElementById("export-png").style.display = "none"
-    document.getElementById("checkedInMap").style.display = "none"
-    document.getElementById("empty-search-button").style.display = "none"
-    document.getElementById("first").style.display = "none"
-    document.getElementById("previous").style.display = "none"
-    document.getElementById("next").style.display = "none"
-    document.getElementById("last").style.display = "none"
-    document.getElementById("first1").style.display = "none"
-    document.getElementById("previous1").style.display = "none"
-    document.getElementById("next1").style.display = "none"
-    document.getElementById("last1").style.display = "none"
-    document.getElementById("resultPageText").innerHTML = ""
-    document.getElementById("resultPageNb").innerHTML = ""
-    document.getElementById("resultPageAlert").innerHTML = ""
-    document.getElementById("resultPageText1").innerHTML = ""
-    document.getElementById("resultPageNb1").innerHTML = ""
-    document.getElementById("resultPageAlert1").innerHTML = ""
+    emptyResultElements()
 
     // mustChoose
     if (!chosenCollection) {
@@ -289,9 +264,6 @@ const updateFooter = () => {
             console.error('There is a problem, probably file for collection does not exist', error)
             emptySearch()
             errorMessage.innerHTML = textItems.errorFileNotExisting[index]
-            // disable search...
-            // <input id="search-text" type="text" class="input">
-                        //             <button id="search-button"></button>
             document.getElementById("search-text").style.display = "none"
             document.getElementById("search-button").style.display = "none"
         })
@@ -344,39 +316,11 @@ const emptySearch = () => {
     collection.value = "" 
     document.getElementById("search-text").value = ""
     
-    // empty table
-    table.innerHTML = ""
-    //resultHeader.innerHTML = ""
-    nbHitsElement.textContent = ""
-    nbHitsHeader.innerHTML = ""
-    errorMessage.innerHTML = ""
-
+    emptyTable()
+    
     // remove old map if any and empty array
     document.getElementById("map-search").innerHTML = "" 
-    // hide buttons rendered with search result
-    document.getElementById("download-button").style.display = "none"
-    document.getElementById("download-photo-button").style.display = "none"
-    document.getElementById("head-nb-hits").innerHTML = ""
-    document.getElementById("empty-search-button").style.display = "none"
-    document.getElementById("zoom-button").style.display = "none"
-    document.getElementById("large-map-button").style.display = "none"
-    document.getElementById("export-png").style.display = "none"
-    document.getElementById("checkedInMap").style.display = "none"
-    document.getElementById("first").style.display = "none"
-    document.getElementById("previous").style.display = "none"
-    document.getElementById("next").style.display = "none"
-    document.getElementById("last").style.display = "none"
-    document.getElementById("first1").style.display = "none"
-    document.getElementById("previous1").style.display = "none"
-    document.getElementById("next1").style.display = "none"
-    document.getElementById("last1").style.display = "none"
-    document.getElementById("resultPageText").innerHTML = ""
-    document.getElementById("resultPageNb").innerHTML = ""
-    document.getElementById("resultPageAlert").innerHTML = ""
-
-    document.getElementById("resultPageText1").innerHTML = ""
-    document.getElementById("resultPageNb1").innerHTML = ""
-    document.getElementById("resultPageAlert1").innerHTML = ""
+    emptyResultElements()
 
     // set pagination variables to default / empty
     list.length = 0;
@@ -400,18 +344,6 @@ document.getElementById('large-map-button').onclick = () => {
     window.open(href= urlPath + "/map")
 }
 
-
-// checkboxes
-// catch records that are checked
-
-const getCheckedRecords = () => {
-    searchResult.forEach(el => {
-        if (el.checked) {
-            console.log(el.catalogNumber)
-            console.log(el.checked)
-        }
-    })
-}
 
 //Download map as png-file
 document.getElementById('export-png').addEventListener('click', function() {

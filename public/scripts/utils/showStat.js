@@ -28,13 +28,6 @@ let chart5 = ""
 
 // for rendering language - not yet implemented (Aug 2020) - texts in graphs are in norwegian
 let langIndex
-// if (sessionStorage.language) {
-//     language = sessionStorage.getItem('language')
-//     document.querySelector('#language').value = language
-// } else {
-//     language = document.querySelector('#language').value
-//     sessionStorage.setItem('language', language)
-// }
 if (language === "Norwegian") {
   langIndex = 0
 } else if (language === "English") {
@@ -397,7 +390,7 @@ const makeGraphs = (data) => {
 
 
 // update graf
-function updateGraf() {
+function updateGraph() {
   currentCollection = collection.value
 
    // Tilveksten per år
@@ -434,7 +427,7 @@ function updateGraf() {
 
 // Når noen bytter samling
 collection.addEventListener('change', () => {
-  updateGraf()
+  updateGraph()
 })
 
 
