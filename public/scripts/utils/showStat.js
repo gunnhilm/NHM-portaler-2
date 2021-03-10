@@ -217,22 +217,6 @@ const fraNorge = (data, currentCollection) => {
 // Download data from the server and parse it
 const getData = () => {
   return new Promise(resolve => {
-  // const url = urlPath + '/tmu/showStat?getStat=true'
-  // fetch(url).then((response) => { 
-  //   response.text().then((data) => {
-  //     if(data.error) {
-  //         return console.log(data.error)
-  //     } 
-  //     else {          
-  //       try {
-  //         // statData.json er dobbelt strigifyed så derfor dobbel parse
-  //         data = JSON.parse(data)
-  //         data = JSON.parse(data.unparsed)
-  //         resolve(data)
-  //       } catch (error) {
-  //         console.log(error);
-  //       }
-   // let museumURLPath
       if (window.location.href.includes('/um')) { 
           museum =  "um"
       } else if (window.location.href.includes('tmu')) {

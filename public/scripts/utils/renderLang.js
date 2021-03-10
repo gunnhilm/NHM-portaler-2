@@ -56,7 +56,7 @@ const renderText = function(lang) {
     
 
     //Dropdown med valg av samlinger, index page og stat page
-    if (!location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler') & !location.href.includes('getDOI') & !location.href.includes('tools')) {
+    if (!location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler') & !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools')) {
         // document.querySelector('#specimensOptgroup').innerHTML = textItems.specimensOptgroup[index]
         document.querySelector('#karplanter').innerHTML = textItems.karplanter[index]
         document.querySelector('#sopp').innerHTML = textItems.sopp[index]
@@ -81,7 +81,7 @@ const renderText = function(lang) {
     }
 
     // index page
-    if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler')& !location.href.includes('getDOI') & !location.href.includes('tools')) {
+    if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler')& !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools')) {
         
         document.querySelector('#vennligst').innerHTML = textItems.vennligst[index] 
         
@@ -199,7 +199,8 @@ const renderText = function(lang) {
     if (location.href.includes('tools')) {
         document.querySelector('#showToolsHeader').innerHTML = textItems.showToolsHeader[index]
         document.querySelector('#showToolsText').innerHTML = textItems.showToolsText[index]
-        document.querySelector('#statistikk-link').innerHTML = textItems.statistikkButton[index]
+        document.querySelector('#statistikk-link').innerHTML = textItems.statistikkLink[index]
+        document.querySelector('#DOI-link').innerHTML = textItems.DOILink[index]
     }
 
     // Stat page
@@ -275,7 +276,7 @@ document.querySelector('#language').addEventListener('change', (e) => {
     renderText(language)
     sessionStorage.setItem('language', language)
    
-    if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler') & !location.href.includes('getDOI') & !location.href.includes('tools')) {
+    if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler') & !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools')) {
         if (document.querySelector("#head-nb-hits").innerHTML) {
 
             if (language === "Norwegian") {
@@ -283,31 +284,6 @@ document.querySelector('#language').addEventListener('change', (e) => {
             } else if (language === "English") {
                 index = 1
             }
-
-            // document.querySelector('#head-nb-hits').innerHTML = textItems.nbHitsText[index]
-            // document.querySelector('#download-button').innerHTML = textItems.downloadLink[index]
-            // document.querySelector('#download-photo-button').innerHTML = textItems.downloadPhoto[index]
-            // document.querySelector('#large-map-button').innerHTML = textItems.largeMapButton[index]
-            // document.querySelector('#export-png').innerHTML = textItems.downloadMapButton[index]
-            // document.querySelector('#checkedInMap').innerHTML = textItems.checkedInMap[index]   
-            // document.querySelector('#first').innerHTML = textItems.firstButton[index]
-            // document.querySelector('#previous').innerHTML = textItems.previousButton[index]
-            // document.querySelector('#next').innerHTML = textItems.nextButton[index]
-            // document.querySelector('#last').innerHTML = textItems.lastButton[index]
-            // document.querySelector('#first1').innerHTML = textItems.firstButton[index]
-            // document.querySelector('#previous1').innerHTML = textItems.previousButton[index]
-            // document.querySelector('#next1').innerHTML = textItems.nextButton[index]
-            // document.querySelector('#last1').innerHTML = textItems.lastButton[index]
-            // document.getElementById("resultPageText").style.display = "inline-block"
-            // document.getElementById("resultPageText").innerHTML = textItems.page[index]
-            // if(document.getElementById("resultPageAlert").innerHTML) {
-            //     document.getElementById("resultPageAlert").innerHTML = textItems.lastPageAlert[index]
-            // }
-            // document.getElementById("resultPageText1").style.display = "inline-block"
-            // document.getElementById("resultPageText1").innerHTML = textItems.page[index]
-            // if(document.getElementById("resultPageAlert1").innerHTML) {
-            //     document.getElementById("resultPageAlert1").innerHTML = textItems.lastPageAlert[index]
-            // }
 
             const headerRow = document.querySelector("#myTable").rows[0]
             cell1 = headerRow.cells[0]
@@ -326,34 +302,7 @@ document.querySelector('#language').addEventListener('change', (e) => {
             musitData = JSON.parse(stringData)      
             
             fillResultHeaders(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell10,cell11,musitData)
-            // cell1.innerHTML = `<button id='musitIDButton' class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>` 
-            // cell2.innerHTML = `<button id='scientificNameButton' class='sort'>${textItems.headerTaxon[index].bold()} ${getArrows('scientificName')} </button>`
-            // cell3.innerHTML = `<button id='collectorButton' class='sort'>${textItems.headerCollector[index].bold()} ${getArrows('recordedBy')}</button>`
-            // cell4.innerHTML = `<button id='dateButton' class='sort'>${textItems.headerDate[index].bold()} ${getArrows('eventDate')}</button>`
-            // cell5.innerHTML = `<button id='countryButton' class='sort'>${textItems.headerCountry[index].bold()} ${getArrows('country')}</button>`
-            // cell6.innerHTML = `<button id='municipalityButton' class='sort'>${textItems.headerMunicipality[index].bold()} ${getArrows('county')}</button>`
-            // cell7.innerHTML = `<button id='localityButton' class='sort'>${textItems.headerLocality[index].bold()} ${getArrows('locality')}</button>`
-            // if (document.querySelector('#collection-select option:checked').parentElement.label === 'Specimens') {
-            //     cell10.innerHTML = `<button id='coremaNoButton' class='sort'>${textItems.headerCoremaNo[index].bold()} ${getArrows('coremaNo')}</button>`
-            // } else {
-            //     cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} ${getArrows('sampleType')}</button>`
-            // }
-            // cell11.innerHTML = `<select id='checkboxSelect' class='sort'>
-            //         <option value="select" id="select">${textItems.select[index].bold()}</option>
-            //         <option value="all" id="selectAll">${textItems.selectAll[index]}</option>
-            //         <option value="all_on_page" id="selectAllOnPage">${ textItems.selectAllOnPage[index]}</option>
-            //         <option value="none" id="selectNone">${ textItems.selectNone[index]}</option>
-            //     </select>`
             
-            // addSortingText('scientificNameButton', 2, 'scientificName', musitData)
-            // addSortingText('collectorButton', 3, 'recordedBy', musitData)
-            // addSortingText('dateButton', 4, 'eventDate', musitData)
-            // addSortingText('countryButton', 5, 'country', musitData)
-            // addSortingText('municipalityButton', 6, 'county', musitData)
-            // addSortingText('localityButton', 7, 'locality', musitData)
-            //     // // addSortingText('sampleTypeButton', 10, 'sampleType', musitData)
-                // // addSortingText('processIDButton', 11, 'processID', musitData)
-         
             const select = document.getElementById('checkboxSelect')
             pageList = JSON.parse(sessionStorage.getItem('pageList'))
             if(select) {
