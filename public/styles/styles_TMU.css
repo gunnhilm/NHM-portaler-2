@@ -7,6 +7,11 @@ header {
     padding: 5px;
 }
 
+#logo {
+    height: 40px;
+    padding: 5px;
+}
+
 
 /* footer.hbs */
 footer {
