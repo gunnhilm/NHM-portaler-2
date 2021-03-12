@@ -6,8 +6,6 @@ const textItems = {
     searchPageLink: ["Søkeside", "Search"],
     helpButton: ["Hjelp", "Help"],
     toolsButton: ["Verktøy", "Tools"],
-    statistikkLink: ["Statistikk", "Statistics"],
-    DOILink: ["Lag DOI", "Get DOI"],
     journalLink: ["Journalsøk", "Journal search"],
     mobileMenuBtn: ["Meny", "Menu"],
     logoNHM: [urlPath + "/images/UiO NHM SH V2 RGB.png", urlPath + "/images/uio_nhm_a_eng_cmyk_2.png"],
@@ -41,7 +39,7 @@ const textItems = {
     GeoPal: ["Geologi og Paleontologi", "Geology and Paleontology"],
     malmer: ["Malmer", "Ores"],
     oslofeltet: ["Oslofeltet", "The Oslo field"],
-    utenlandskeBA: ["Utenlandske bergater", "Minerals from outside Norway"],
+    utenlandskeBA: ["Utenlandske bergarter", "Minerals from outside Norway"],
     hitsPerPage: ["Treff per side", "Hits per page"],
     downloadLink: ["Last ned resultat", "Download results"],
     downloadPhoto: ["Last ned bilder", "Download photos"],
@@ -138,7 +136,9 @@ const textItems = {
     // Tools page
     showToolsHeader: ["Verktøy til bruk i samlingsforvaltningen", "Tools for managing the collections"],
     showToolsText: ["", ""],
-
+    statistikkLink: ["Statistikk", "Statistics"],
+    DOILink: ["Lag DOI fra GBIF", "Get DOI from GBIF"],
+    
     //ShowStat page
     showStatHeader: ["Statistikk over samlingene", "Statistics from the collections"],
     showStatText: ["Disse tallene reflekterer hva som er registrert i museets databaser. Da kun et fåtall av samlingene har alle objektene registrert i databasene, reflekterer ikke disse tallene nødvendigvis samlingenes totale bredde.",

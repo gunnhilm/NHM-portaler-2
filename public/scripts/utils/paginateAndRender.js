@@ -115,6 +115,11 @@ const resultTable = (subMusitData, musitData) => {
                 cell5.innerHTML = subMusitData[i].country
                 cell6.innerHTML = subMusitData[i].county
                 cell7.innerHTML = subMusitData[i].locality
+                //corema-cases
+                // if (document.querySelector('#collection-select  option:checked').parentElement.label === 'Specimens og DNA') {
+                //     cell8.innerHTML = `<span class="fas fa-camera"></span>`
+                // }
+
                 if( subMusitData[i].associatedMedia ) {    
                     cell8.innerHTML = `<span class="fas fa-camera"></span>`
                 } else if( subMusitData[i].photoIdentifiers ) {   

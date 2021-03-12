@@ -57,13 +57,19 @@ if(window.location.href.includes('tmu') | window.location.href.includes('/um')) 
   document.querySelector('#coremaopt').style.display = 'none'
   document.querySelector('#DNAopt').style.display = 'none'
   document.querySelector('#alger').style.display = 'none'
+  document.querySelector('#GeoPalOpt').style.display = 'none'
+  document.querySelector('#algae_row').style.display = 'none'
   document.querySelector('#mammal_row').style.display = 'none'
   document.querySelector('#bird_row').style.display = 'none'
+  document.querySelector('#malmer_row').style.display = 'none'
+  document.querySelector('#oslofeltet_row').style.display = 'none'
+  document.querySelector('#utenlandskeBA_row').style.display = 'none'
+  
+
 } else {
   document.querySelector('#evertebrater').style.display = 'none'
   document.querySelector('#evertebrat_row').style.display = 'none'
 }
-
 
 // populate table
 // put data in to the table with key value from each collection
@@ -93,6 +99,10 @@ const populateTable = (data) => {
     document.getElementById('Insekter_koord').textContent = data.entomologi[1].geography.coordinates[0].yes.format(0,3,' ')
     
     if (!window.location.href.includes('/um') && !window.location.href.includes('tmu')) {
+      // Alger
+      document.getElementById('Algae_n').textContent = data.alger[3].collectionSize.format(0,3,' ')
+      document.getElementById('Algae_foto').textContent = data.alger[5].media.stillImage.format(0,3,' ')
+      document.getElementById('Algae_koord').textContent = data.alger[1].geography.coordinates[0].yes.format(0,3,' ')
       // Fugler
       document.getElementById('Fugler_n').textContent = data.birds[3].collectionSize.format(0,3,' ')
       document.getElementById('Fugler_foto').textContent = data.birds[5].media.stillImage.format(0,3,' ')
@@ -101,6 +111,19 @@ const populateTable = (data) => {
       document.getElementById('Pattedyr_n').textContent = data.mammals[3].collectionSize.format(0,3,' ')
       document.getElementById('Pattedyr_foto').textContent = data.mammals[5].media.stillImage.format(0,3,' ')
       document.getElementById('Pattedyr_koord').textContent = data.mammals[1].geography.coordinates[0].yes.format(0,3,' ')
+      // Pattedyr
+      document.getElementById('malmer_n').textContent = data.malmer[3].collectionSize.format(0,3,' ')
+      document.getElementById('malmer_foto').textContent = data.malmer[5].media.stillImage.format(0,3,' ')
+      document.getElementById('malmer_koord').textContent = data.malmer[1].geography.coordinates[0].yes.format(0,3,' ')
+      // Pattedyr
+      document.getElementById('oslofeltet_n').textContent = data.oslofeltet[3].collectionSize.format(0,3,' ')
+      document.getElementById('oslofeltet_foto').textContent = data.oslofeltet[5].media.stillImage.format(0,3,' ')
+      document.getElementById('oslofeltet_koord').textContent = data.oslofeltet[1].geography.coordinates[0].yes.format(0,3,' ')
+      // Pattedyr
+      document.getElementById('utenlandskeBA_n').textContent = data.utenlandskeBA[3].collectionSize.format(0,3,' ')
+      document.getElementById('utenlandskeBA_foto').textContent = data.utenlandskeBA[5].media.stillImage.format(0,3,' ')
+      document.getElementById('utenlandskeBA_koord').textContent = data.utenlandskeBA[1].geography.coordinates[0].yes.format(0,3,' ')
+
     } else {
       // Evertebrater
       document.getElementById('Evertebrater_n').textContent = data.evertebrater[3].collectionSize.format(0,3,' ')

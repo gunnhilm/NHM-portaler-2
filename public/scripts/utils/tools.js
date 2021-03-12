@@ -1,4 +1,4 @@
-console.log('Tools page javascript loaded');
+//console.log('Tools page javascript loaded');
 
 let museumURLPath
                 

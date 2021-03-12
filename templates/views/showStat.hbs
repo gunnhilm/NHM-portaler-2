@@ -18,9 +18,9 @@
 
                 
 
-            {{!-- Tabellen med nøkkel tall --}}
-            <table class ="summaryTable">
-                <tr style = >
+            {{!-- Tabellen med nøkkeltall --}}
+            <table class ="summaryTable" id = "statTable">
+                <tr style = "font-weight: bold">
                     <td id="Collection_header" style = "text-align: left"></td>
                     <td id="NbObj_header"></td>
                     <td id="NbPhoto_header"></td>
@@ -44,7 +44,7 @@
                     <td id="Sopp_foto"></td>
                     <td id="Sopp_koord"></td>
                 </tr>
-                    <tr>
+                <tr>
                     <td id="Lichen_header" style = "text-align: left"></td>
                     <td id="Lav_n"></td>
                     <td id="Lav_foto"></td>
@@ -56,6 +56,12 @@
                     <td id="Insekter_foto"></td>
                     <td id="Insekter_koord"></td>
                 </tr>                   
+                <tr id="algae_row">
+                    <td id="Algae_header" style = "text-align: left"></td>
+                    <td id="Algae_n"></td>
+                    <td id="Algae_foto"></td>
+                    <td id="Algae_koord"></td>
+                </tr>
                 <tr id="bird_row">
                     <td id="Birds_header" style = "text-align: left"></td>
                     <td id="Fugler_n"></td>
@@ -86,7 +92,7 @@
                     <td id="oslofeltet_foto"></td>
                     <td id="oslofeltet_koord"></td>
                 </tr>
-                <tr id="utenlanskeBA_row">
+                <tr id="utenlandskeBA_row">
                     <td id="utenlandskeBA_header" style = "text-align: left"></td>
                     <td id="utenlandskeBA_n"></td>
                     <td id="utenlandskeBA_foto"></td>

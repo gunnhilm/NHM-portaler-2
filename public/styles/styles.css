@@ -519,16 +519,19 @@ td {
     .summaryTable  table {
         font-family: arial, sans-serif;
         border-collapse: collapse;
+        
     }
 
    .summaryTable  td, th {
     text-align:right;
     padding: 8px;
+    background-color: #F5F5F5;
+    /* border: 1px solid black; */
     }
 
-  .summaryTable   tr:nth-child(even) {
+  /* .summaryTable   tr:nth-child(even) {
     background-color: #dddddd;
-    }
+    } */
 
 /* journal-page */
 #journal-result-table td {

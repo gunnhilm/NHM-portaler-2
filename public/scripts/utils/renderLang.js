@@ -217,8 +217,12 @@ const renderText = function(lang) {
         document.querySelector('#Fungi_header').innerHTML = textItems.sopp[index]
         document.querySelector('#Lichen_header').innerHTML = textItems.lav[index]
         document.querySelector('#Insects_header').innerHTML = textItems.insekter[index]
+        document.querySelector('#Algae_header').innerHTML = textItems.alger[index]
         document.querySelector('#Birds_header').innerHTML = textItems.fugler[index]
         document.querySelector('#Mammals_header').innerHTML = textItems.pattedyr[index]
+        document.querySelector('#malmer_header').innerHTML = textItems.malmer[index]
+        document.querySelector('#oslofeltet_header').innerHTML = textItems.oslofeltet[index]
+        document.querySelector('#utenlandskeBA_header').innerHTML = textItems.utenlandskeBA[index]
         document.querySelector('#Evertebrates_header').innerHTML = textItems.evertebrater[index]
         
     }
