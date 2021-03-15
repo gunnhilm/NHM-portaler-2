@@ -74,8 +74,8 @@ const renderText = function(lang) {
         document.querySelector('#dna_fungi_lichens').innerHTML = textItems.fungiLichens[index]
         document.querySelector('#dna_other').innerHTML = textItems.other[index]
         document.querySelector('#malmer').innerHTML = textItems.malmer[index]
-        document.querySelector('#oslofeltet').innerHTML = textItems.oslofeltet[index]
-        document.querySelector('#utenlandskeBergarter').innerHTML = textItems.utenlandskeBA[index]
+        // document.querySelector('#oslofeltet').innerHTML = textItems.oslofeltet[index]
+        // document.querySelector('#utenlandskeBergarter').innerHTML = textItems.utenlandskeBA[index]
         document.querySelector('#GeoPalOpt').label = textItems.GeoPal[index]
         
     }
@@ -221,8 +221,8 @@ const renderText = function(lang) {
         document.querySelector('#Birds_header').innerHTML = textItems.fugler[index]
         document.querySelector('#Mammals_header').innerHTML = textItems.pattedyr[index]
         document.querySelector('#malmer_header').innerHTML = textItems.malmer[index]
-        document.querySelector('#oslofeltet_header').innerHTML = textItems.oslofeltet[index]
-        document.querySelector('#utenlandskeBA_header').innerHTML = textItems.utenlandskeBA[index]
+        // document.querySelector('#oslofeltet_header').innerHTML = textItems.oslofeltet[index]
+        // document.querySelector('#utenlandskeBA_header').innerHTML = textItems.utenlandskeBA[index]
         document.querySelector('#Evertebrates_header').innerHTML = textItems.evertebrater[index]
         
     }

@@ -53,7 +53,7 @@ Number.prototype.format = function(n, x, s, c) {
 };
 
 // show collections in select dependent on museum
-if(window.location.href.includes('tmu') | window.location.href.includes('/um')) {
+if(!window.location.href.includes('nhm')) {
   document.querySelector('#coremaopt').style.display = 'none'
   document.querySelector('#DNAopt').style.display = 'none'
   document.querySelector('#alger').style.display = 'none'
@@ -62,8 +62,8 @@ if(window.location.href.includes('tmu') | window.location.href.includes('/um')) 
   document.querySelector('#mammal_row').style.display = 'none'
   document.querySelector('#bird_row').style.display = 'none'
   document.querySelector('#malmer_row').style.display = 'none'
-  document.querySelector('#oslofeltet_row').style.display = 'none'
-  document.querySelector('#utenlandskeBA_row').style.display = 'none'
+  //document.querySelector('#oslofeltet_row').style.display = 'none'
+  //document.querySelector('#utenlandskeBA_row').style.display = 'none'
   
 
 } else {
@@ -111,18 +111,18 @@ const populateTable = (data) => {
       document.getElementById('Pattedyr_n').textContent = data.mammals[3].collectionSize.format(0,3,' ')
       document.getElementById('Pattedyr_foto').textContent = data.mammals[5].media.stillImage.format(0,3,' ')
       document.getElementById('Pattedyr_koord').textContent = data.mammals[1].geography.coordinates[0].yes.format(0,3,' ')
-      // Pattedyr
+      // Malmer
       document.getElementById('malmer_n').textContent = data.malmer[3].collectionSize.format(0,3,' ')
       document.getElementById('malmer_foto').textContent = data.malmer[5].media.stillImage.format(0,3,' ')
       document.getElementById('malmer_koord').textContent = data.malmer[1].geography.coordinates[0].yes.format(0,3,' ')
-      // Pattedyr
-      document.getElementById('oslofeltet_n').textContent = data.oslofeltet[3].collectionSize.format(0,3,' ')
-      document.getElementById('oslofeltet_foto').textContent = data.oslofeltet[5].media.stillImage.format(0,3,' ')
-      document.getElementById('oslofeltet_koord').textContent = data.oslofeltet[1].geography.coordinates[0].yes.format(0,3,' ')
-      // Pattedyr
-      document.getElementById('utenlandskeBA_n').textContent = data.utenlandskeBA[3].collectionSize.format(0,3,' ')
-      document.getElementById('utenlandskeBA_foto').textContent = data.utenlandskeBA[5].media.stillImage.format(0,3,' ')
-      document.getElementById('utenlandskeBA_koord').textContent = data.utenlandskeBA[1].geography.coordinates[0].yes.format(0,3,' ')
+      // // Bergarter Oslofeltet
+      // document.getElementById('oslofeltet_n').textContent = data.oslofeltet[3].collectionSize.format(0,3,' ')
+      // document.getElementById('oslofeltet_foto').textContent = data.oslofeltet[5].media.stillImage.format(0,3,' ')
+      // document.getElementById('oslofeltet_koord').textContent = data.oslofeltet[1].geography.coordinates[0].yes.format(0,3,' ')
+      // // utenlandske bergarter
+      // document.getElementById('utenlandskeBA_n').textContent = data.utenlandskeBA[3].collectionSize.format(0,3,' ')
+      // document.getElementById('utenlandskeBA_foto').textContent = data.utenlandskeBA[5].media.stillImage.format(0,3,' ')
+      // document.getElementById('utenlandskeBA_koord').textContent = data.utenlandskeBA[1].geography.coordinates[0].yes.format(0,3,' ')
 
     } else {
       // Evertebrater
