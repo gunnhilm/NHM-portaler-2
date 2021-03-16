@@ -1,7 +1,7 @@
 // urlPath er definert i textItems.js
 
 // show collections in select dependent on museum
-if(window.location.href.includes('tmu') | window.location.href.includes('/um')) {
+if(!window.location.href.includes('/nhm')) {
     document.querySelector('#coremaopt').style.display = 'none'
     document.querySelector('#DNAopt').style.display = 'none'
     document.querySelector('#GeoPalOpt').style.display = 'none'
@@ -129,7 +129,7 @@ const resultTable = (subMusitData, musitData) => {
                     cell9.innerHTML = '<span class="fas fa-compass"></span>'
                 }
                 
-                // if (window.location.href.includes('nhm')) {
+                // if (window.location.href.includes('/nhm')) {
                 //     cell10.innerHTML = 'test'
                 // } else {
                 //     if (document.querySelector('#collection-select  option:checked').parentElement.label === 'Specimens') {
@@ -163,13 +163,12 @@ const resultTable = (subMusitData, musitData) => {
         }
         
         // hide corema-link-column for UM and TMU
-        if (window.location.href.includes('/um') || window.location.href.includes('tmu')) {
+        if (!window.location.href.includes('/nhm') ) {
             hide_column(9)
         }
 
         ////////////// remove when stiched files are in place
-        if (window.location.href.includes('nhm')) {
-         
+        if (window.location.href.includes('/nhm')) {
             hide_column(9)
         }
 

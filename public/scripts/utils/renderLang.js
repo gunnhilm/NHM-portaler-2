@@ -16,7 +16,7 @@ const renderText = function(lang) {
         logo.src = textItems.logoTMU[index]
     } else if (window.location.href.includes('/um')) {
         logo.src = textItems.logoUM[index]
-    } else if (window.location.href.includes('nhm')) {
+    } else if (window.location.href.includes('/nhm')) {
         logo.src = textItems.logoNHM[index]
     }
     
@@ -25,8 +25,7 @@ const renderText = function(lang) {
     document.querySelector('#search-page-link').innerHTML = textItems.searchPageLink[index]
     document.querySelector('#journal-link').innerHTML = textItems.journalLink[index]
     document.querySelector('#menu_help-link').innerHTML = textItems.helpButton[index]
-    document.querySelector('#menu_tools-link').innerHTML = textItems.helpButton[index]
-    //document.querySelector('#menu_statistikk-link').innerHTML = textItems.statistikkButton[index]
+    document.querySelector('#menu_tools-link').innerHTML = textItems.toolsButton[index]
     document.querySelector('#menu_search-page-link').innerHTML = textItems.searchPageLink[index]
     document.querySelector('#menu_journal-link').innerHTML = textItems.journalLink[index]
     document.querySelector('#mobileMenuBtn').innerHTML = textItems.mobileMenuBtn[index]

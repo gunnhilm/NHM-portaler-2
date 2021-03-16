@@ -53,7 +53,7 @@ Number.prototype.format = function(n, x, s, c) {
 };
 
 // show collections in select dependent on museum
-if(!window.location.href.includes('nhm')) {
+if(!window.location.href.includes('/nhm')) {
   document.querySelector('#coremaopt').style.display = 'none'
   document.querySelector('#DNAopt').style.display = 'none'
   document.querySelector('#alger').style.display = 'none'
@@ -98,7 +98,7 @@ const populateTable = (data) => {
     document.getElementById('Insekter_foto').textContent = data.entomologi[5].media.stillImage.format(0,3,' ')
     document.getElementById('Insekter_koord').textContent = data.entomologi[1].geography.coordinates[0].yes.format(0,3,' ')
     
-    if (!window.location.href.includes('/um') && !window.location.href.includes('tmu')) {
+    if (window.location.href.includes('/nhm')) {
       // Alger
       document.getElementById('Algae_n').textContent = data.alger[3].collectionSize.format(0,3,' ')
       document.getElementById('Algae_foto').textContent = data.alger[5].media.stillImage.format(0,3,' ')
