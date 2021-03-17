@@ -12,7 +12,6 @@ const textItems = {
     logoTMU: [urlPath + "/images/Tromso_museum_Logo_Bokmal_2l_HVIT.png", urlPath + "/images/Universitetsmuseet_Logo_Engelsk_2l_HVIT.png"],
     logoUM: [urlPath + "/images/UiBlogoUM_white_v.png", urlPath + "/images/UiBlogo_Eng_white_left.png"],
     
-    
     // index page
     emptySearch: ["Tøm søk", "Empty search"],
     headerSearchPage: ["Søk i samlingene", "Search the collections"],

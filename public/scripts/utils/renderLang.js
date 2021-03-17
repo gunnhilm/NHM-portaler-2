@@ -29,7 +29,7 @@ const renderText = function(lang) {
     document.querySelector('#menu_search-page-link').innerHTML = textItems.searchPageLink[index]
     document.querySelector('#menu_journal-link').innerHTML = textItems.journalLink[index]
     document.querySelector('#mobileMenuBtn').innerHTML = textItems.mobileMenuBtn[index]
-
+    
     
     
 
@@ -266,18 +266,35 @@ const renderText = function(lang) {
 let language
 if (sessionStorage.language) {
     language = sessionStorage.getItem('language')
-    document.querySelector('#language').value = language
+    //document.querySelector('#language').value = language
 } else {
     language = document.querySelector('#language').value
-    sessionStorage.setItem('language', language)
+    //sessionStorage.setItem('language', language)
 }
+console.log(language)
+if (language === "Norwegian") {
+    document.querySelector('#language').innerHTML = "English website"
+} else if (language === "English") {
+    document.querySelector('#language').innerHTML = "Norwegian website"
+}
+// document.querySelector('#NorwegianID').text = "English website"
+// document.querySelector('#EnglishID').text = "Norwegian website"
 
 
 renderText(language)
 
 
-document.querySelector('#language').addEventListener('change', (e) => {
-    language = e.target.value
+//document.querySelector('#language').addEventListener('change', (e) => {
+document.querySelector('#language').addEventListener('click', (e) => {
+    
+    //language = e.target.value
+    if (language === "Norwegian") {
+        language = "English"
+        document.querySelector('#language').innerHTML = "Norwegian website"
+    } else if (language === "English") {
+        language = "Norwegian"
+        document.querySelector('#language').innerHTML = "English website"
+    }
     renderText(language)
     sessionStorage.setItem('language', language)
    
