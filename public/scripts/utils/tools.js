@@ -1,4 +1,4 @@
-//console.log('Tools page javascript loaded');
+//Renders content in tools.hbs
 
 let museumURLPath
                 

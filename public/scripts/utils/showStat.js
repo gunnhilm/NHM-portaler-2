@@ -1,4 +1,4 @@
-console.log('Stat page javascript loaded');
+// Renders content in journaler.js
 
 const collection = document.querySelector('#collection-select') 
 
@@ -35,22 +35,16 @@ if (language === "Norwegian") {
 }
 
 // formate numbers
-/**
- * Number.prototype.format(n, x, s, c)
- * 
- * @param integer n: length of decimal
- * @param integer x: length of whole part
- * @param mixed   s: sections delimiter
- * @param mixed   c: decimal delimiter
- * 12345678.9.format(2, 3, '.', ',');  // "12.345.678,90"
- * 123456.789.format(4, 4, ' ', ':');  // "12 3456:7890"
- * 12345678.9.format(0, 3, '-');       // "12-345-679"
- */
+// in: integer n: length of decimal
+// in: integer x: length of whole part
+// in: mixed s: sections delimiter
+// in: mixed c: decimal delimiter
+// is called in populateTable(..)
 Number.prototype.format = function(n, x, s, c) {
   var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\D' : '$') + ')',
       num = this.toFixed(Math.max(0, ~~n));
   return (c ? num.replace('.', c) : num).replace(new RegExp(re, 'g'), '$&' + (s || ','));
-};
+}
 
 // show collections in select dependent on museum
 if(!window.location.href.includes('/nhm')) {
@@ -71,10 +65,8 @@ if(!window.location.href.includes('/nhm')) {
   document.querySelector('#evertebrat_row').style.display = 'none'
 }
 
-// populate table
-// put data in to the table with key value from each collection
-// input JSON objektet me data fra samlingene
-// return -> ingen, putter data på html sia showStat.hbs
+//puts data into the statistics-table with key value from each collection
+// in: data (JSON object with data from the collections)
 const populateTable = (data) => {
   try {
     // karplanter    
@@ -137,10 +129,14 @@ const populateTable = (data) => {
   }
 }
 
-// Sort the data 
-// input Array [{label:value, data:value}, {label:value, data:value}], label or data (for what will be sorted by),  asc (for ascending sort, smalletst to largest) or des (descending sort) < eller >
-// eg. year = sortData(data.total[0].collectionEvent.year, 'year', 'asc')
-// output: Array sort
+// sorts array with data
+// in: arrayData (array [{label:value, data:value}, {label:value, data:value}]
+// in: by (string, label or data (for what will be sorted by))
+// in:  ascOrDes (string, ‘asc’, for ascending sort, smalletst to largest) or ‘des’ for descending sort) 
+// out: sorted Array 
+// is called by tilvekstData(..)
+//    accumulativeCollectionsSize(…)
+//    top20Land(..)
 const sortData = (arrayData, by, ascOrDes) => {
   if (ascOrDes === 'asc'){
   arrayData.sort((a,b) => (a[by] > b[by]) ? 1 : ((b[by] > a[by]) ? -1 : 0)); 
@@ -150,9 +146,12 @@ const sortData = (arrayData, by, ascOrDes) => {
   return arrayData
 }
 
-// Data & labels til de forskjellige grafene
-// input JSON fila med samlingsdataene, hvilken samling som skal vises (fra dropdown)
-// output en Array med labels og data, e.g aarligTilvekst[0] = labels og  aarligTilvekst[1]= data
+// returns labels and data for yearly growth to the different graphs
+// in: data (JSON file with collection data)
+// in: currentCollection (string, which collection to be shown (from dropdown-menu))
+// out: an array with labels and data for yearly growth, e.g aarligTilvekst[0] = labels og  aarligTilvekst[1]= data
+// calls sortData(..)
+// is called by o	makeGraphs(..) and updateGraph()
 const tilvekstData = (data, currentCollection) =>  {
   // https://stackoverflow.com/questions/44990517/displaying-json-data-in-chartjs
   year = sortData(data[currentCollection][0].collectionEvent.year, 'year', 'asc')
@@ -165,9 +164,12 @@ const tilvekstData = (data, currentCollection) =>  {
   return [yearLabels, yearData]
 }
 
-// CollSize akkumulativt fra eldst til i dag
-// Input input JSON fila med samlingsdataene, hvilken samling som skal vises (fra dropdown)
-// output en Array med labels og data, e.g aarligTilvekst[0] = labels og  aarligTilvekst[1]= data
+// returns label and data for accumulative numbers
+// in: data (JSON file with collection data)
+// in: currentCollection (string, which collection to be shown (from dropdown-menu))
+// out: an array with labels and data for accumulative data
+// calls sortData(..)
+// is called by makeGraphs(..) and updateGraph()
 const accumulativeCollectionSize = (data, currentCollection) => {
   accumulativeSize = sortData(data[currentCollection][3].accumulativeSize.filter(Boolean), 'year', 'asc') // fjerner tomme verdier
   const accumulativeSizeLabels = accumulativeSize.map(function(e) {
@@ -180,7 +182,12 @@ const accumulativeCollectionSize = (data, currentCollection) => {
 }
 
 
-// bar chart over top 20 land med innsamlinger
+// returns label and data for top 20 countires except Norway
+// in: data (JSON file with collection data)
+// in: currentCollection (string, which collection to be shown (from dropdown-menu))
+// out: an array with labels and data for top 20 countires except Norway
+// calls sortData()
+// is called by makeGraphs(..) and updateGraph()
 const top20Land = (data, currentCollection) => {
   // make deep copy
   country = data[currentCollection][1].geography.country
@@ -217,14 +224,22 @@ const top20Land = (data, currentCollection) => {
   return [countryLabels,countryData ]
 }
 
-// Med eller uten koordinater Pie chart
+// returns label and data for coordinate pie?
+// in: data (JSON file with collection data)
+// in: currentCollection (string, which collection to be shown (from dropdown-menu))
+// out: an array with labels and data for coordinate pie?
+// is called by makeGraphs(..) updateGraph()
 const harKoordinater = (data, currentCollection) => {
   let koordintLabels = ['Yes', 'No']
   let koordinatData = [data[currentCollection][1].geography.coordinates[0].yes,data[currentCollection][1].geography.coordinates[1].no]
   return [koordintLabels, koordinatData]
 }
 
-// Poster fra Norge 
+// returns label and data for Norwegian data
+// in: data (JSON file with collection data)
+// in: currentCollection (string, which collection to be shown (from dropdown-menu))
+// out: an array with labels and data for Norwegian data
+// is called by makeGraphs(..) and updateGraph()
 const fraNorge = (data, currentCollection) => {
   for (let index = 0; index < data[currentCollection][1].geography.country.length; index++) {
     if (data[currentCollection][1].geography.country[index].country === 'Norway')
@@ -237,7 +252,8 @@ const fraNorge = (data, currentCollection) => {
   return [andelNorgelabels, andelNorgedata]
 }
 
-// Download data from the server and parse it
+// sends request to backend to fetch data
+// is called by main()
 const getData = () => {
   return new Promise(resolve => {
       if (window.location.href.includes('/um')) { 
@@ -272,7 +288,14 @@ const getData = () => {
   })
 }
 
-//Lag grafene
+// makes the graphs
+// in: data (JSON file)
+// calls tilvekstData(..)
+//    accumulativeCollectionSize(..)
+//    harKoordinater(..)
+//    fraNorge(..)
+//    top20Land(..)
+// is called by main()
 const makeGraphs = (data) => {
 // ------ Neste graf -----
   // Tilveksten per år
@@ -396,7 +419,13 @@ const makeGraphs = (data) => {
 }
 
 
-// update graf
+// make new graphs when new collection is chosen
+// calls tilvekstData(..)
+//    accumulativeCollectionSize(..)
+//    harKoordinater(..)
+//    fraNorge(..)
+//    top20Land(..)
+// is called by collection-select.eventlistener
 function updateGraph() {
   currentCollection = collection.value
 
@@ -438,7 +467,9 @@ collection.addEventListener('change', () => {
 })
 
 
-// lag siden for første gang
+// async function; renders the page the first time
+// calls makeGraphs(..) and	populateTable(..)
+// is called in this file (showStat.js)
 async function main() {
   data = await getData() //Gjør en request til server omå få JSON datafila
   makeGraphs(data)  // Tegn opp grafene for første gang

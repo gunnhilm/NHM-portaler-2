@@ -1,8 +1,12 @@
+// renderLang.js: Renders text in relevant language (Norwegian or English) when page is rendered, and when language is changed
+
 // urlPath er definert i textItems.js
-
-
 // textItems[] is in separate file textItems.js
 
+// renders text and images in html-elements
+// in: lang (string, «Norwegian» or «English»)
+// out: text or images in relevant HTML-elements
+// is called in renderLang.js
 const renderText = function(lang) {
     if (lang === "English") {
         index = 1
@@ -266,28 +270,21 @@ const renderText = function(lang) {
 let language
 if (sessionStorage.language) {
     language = sessionStorage.getItem('language')
-    //document.querySelector('#language').value = language
 } else {
     language = document.querySelector('#language').value
-    //sessionStorage.setItem('language', language)
 }
-console.log(language)
 if (language === "Norwegian") {
     document.querySelector('#language').innerHTML = "English website"
 } else if (language === "English") {
     document.querySelector('#language').innerHTML = "Norwegian website"
 }
-// document.querySelector('#NorwegianID').text = "English website"
-// document.querySelector('#EnglishID').text = "Norwegian website"
 
 
 renderText(language)
 
 
-//document.querySelector('#language').addEventListener('change', (e) => {
 document.querySelector('#language').addEventListener('click', (e) => {
     
-    //language = e.target.value
     if (language === "Norwegian") {
         language = "English"
         document.querySelector('#language').innerHTML = "Norwegian website"

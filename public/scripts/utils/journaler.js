@@ -1,10 +1,17 @@
+// Renders content in journaler.hbs
+
 const journalSearch = document.getElementById('journal-search-text')
 const journalSearchForm = document.getElementById('search-button') 
 const errorMessage = document.getElementById('head-nb-hits')
 const nbHitsElement = document.getElementById('nb-hits') 
 const columnsToShow = 13
+
 // resultattabell
-// Lag overskriftraden
+
+// creates the headers in the table
+// in: table (html-table, to show on the page)
+// in: keys (array?, source of header titles)
+// is called in journalResultTable(..)
 function addHeaders(table, keys) {
 //   var row = table.insertRow();
   const tr = document.createElement('tr'); // Header row
@@ -19,7 +26,10 @@ function addHeaders(table, keys) {
 }
 
 
-// lag innmaten
+// creates table for the journals and fills it
+// in: children (array, containing content to table, i.e. data on journals) 
+// calls addHeaders(..)
+// is called in dorournalSearch(..)
 const journalResultTable = (children) => {
     const table = document.createElement('table');
     table.setAttribute('id', 'journal-result-table')
@@ -58,9 +68,11 @@ const journalResultTable = (children) => {
 }
 
 
-// hent ut søkeresultater
+// performs search and fetches data
+// in: limit (integer; maximum number of records to display)
+// calls journalResultTable(..)
+// is called in journalSearchForm.eventlistener
 const doJournalSearch = (limit = 2000) => {
-
     //slett resultattabellen før vi lager en ny
     const elem = document.getElementById('journal-result-table');
     if (elem)
@@ -117,7 +129,8 @@ journalSearchForm.addEventListener('click', (e) => {
     
 })  
 
-// when a collection is chosen a request is sent to the server about date of last change of the journaler file
+// sends request to server for date of last change of the journal-datafile
+// is called in this file (journaler.js)
 const updateFooter = () => {
         const url = urlPath + '/footer-date/?&samling=journaler' 
         fetch(url).then((response) => {

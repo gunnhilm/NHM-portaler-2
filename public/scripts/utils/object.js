@@ -1,3 +1,5 @@
+// Description of file: Renders text on object.hbs
+
 // decides which language is rendered
 if (sessionStorage.language) {
     language = sessionStorage.getItem('language')
@@ -6,7 +8,9 @@ if (sessionStorage.language) {
     sessionStorage.setItem('language', language)
 }
 
-// read string and get the object from sessionStorage
+// reads last search-result from sessionStorage and puts it in an array
+// out: an array with JSON-objects that represents museumobjects in the last search result. Empty array if there is no search result in sessionStorage
+// is called in this file (object.js)
 const loadStringObject = () => {
     let objectJSON = ''
     //if( sessionStorage.getItem('databaseSearch') === 'musit' ) {
@@ -35,7 +39,9 @@ const id = urlParams.get('id')
 
 const object = allObject.find(x => x.catalogNumber === id)
 
-// to print nice locality-string:
+// facilitates correctly formatted locality information for a museum object
+// in: obj (a JSON-object that rerpresens the museum object that is to be shown)
+// out: string representing the collection-country followed by comma, or empty string
 const country = (obj) => {
     if (obj.country === '') {
         return ''
@@ -44,6 +50,9 @@ const country = (obj) => {
     }
 }
 
+// facilitates correctly formatted locality information for a museum object
+// in: obj (a JSON-object that represents the museum object that is to be shown)
+//out: string representing the collection-county followed by comma, or empty string
 const stateProvince = (obj) => {
     if (obj.stateProvince === '') {
         return ''
@@ -52,6 +61,9 @@ const stateProvince = (obj) => {
     }
 }
 
+// facilitates correctly formatted locality information for a museum object
+// in: obj (a JSON-object that represents the museum object that is to be shown)
+// out: string representing the collection-municipality followed by comma, or empty string
 const county = (obj) => {
     if (obj.county === '') {
         return ''
@@ -60,6 +72,9 @@ const county = (obj) => {
     }
 }
     
+// facilitates correctly formatted locality information for a museum object
+// in: obj (a JSON-object that represents the museum object that is to be shown)
+// out: string representing the collection-locality followed by comma, or empty string
 const locality = (obj) => {
     if (obj.locality === '') {
         return ''
@@ -70,7 +85,9 @@ const locality = (obj) => {
 
 const concatLocality = country(object) + stateProvince(object) + county(object) + locality(object)
 
-// to print nice coordinates:
+// formats coordinates to nice readable format
+// in: obj (JSON-object that represents the museum object that is to be shown)
+// out: string with the object’s coordinates
 const coordinates = (obj) => {
     if (obj.decimalLongitude === '' | obj.decimalLatitude === '') {
         return textItems.coordPlaceholder[index]
@@ -160,6 +177,8 @@ document.querySelector('#typeStatus').innerHTML = typeStatus
 
 // items
 
+//adds row to table that lists object’s data on the fly – number of rows necessary varies between objects
+// will be called in the future when stitched data is in place
 function addRow() {
         row = document.getElementById("object-table").insertRow(-1)
         cell1 = row.insertCell(0)
@@ -283,7 +302,12 @@ if (!sessionStorage.getItem('collection').includes('dna') & !sessionStorage.getI
 // }
 
 // photo:
-// hvis noen klikker på neste bilde
+// shows next image when nextImage-button is clicked, if there are more images for object
+// in: index (number, points to image)
+// in: direction (string, ‘f’ or ‘r’ for ‘forward’ and ‘reverse’; dependent on which button is clicked; next or previous image)
+// in: smallImageList (array with strings; names of small images)
+// in: imageList (array with strings; names of large images)
+// is called in next-photo-button.onclick and previous.photo.onclick
 function changeImage(index, direction, smallImageList, imageList) {
     //index = index + direction;
     if (direction == 'f') {
@@ -303,7 +327,11 @@ function changeImage(index, direction, smallImageList, imageList) {
     document.getElementById("photo-box").src = smallImageList[index]
     return index
 }
-// lager smallImageList
+
+// returns small version of photo
+// in: photo (string, name of large photo)
+// out: photo (string, name of small photo)
+// is called by this file (object.js)
 function reducePhoto(photo) {
     return photo.replace('jpeg', 'small')
 }
@@ -362,6 +390,10 @@ if (mediaLink) {
     }
     
 }
+
+// http-request to check if an image exists
+// in: image_url (string; name of photo)
+// is called only by a console.log in this file (?)
 function imageExists(image_url){
     var http = new XMLHttpRequest();
     http.open('HEAD', image_url, false);

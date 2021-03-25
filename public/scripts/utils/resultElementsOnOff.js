@@ -1,6 +1,8 @@
+//resultElementsOnOff.js: Toggles buttons and other elements related to rendering of search–result on and off (displays, or removes), 
+// creates an array propsSorted[] with Boolean values that keeps track of on which field the result table is sorted on.
+
 // array with booleans that keeps track of sorting for page rendering
 let propsSorted
-
 if (!sessionStorage.getItem('propsSorted')) {
     propsSorted = [
         {id: 'catalogNumber',
@@ -45,6 +47,8 @@ if (!sessionStorage.getItem('propsSorted')) {
     propsSorted = JSON.parse(sessionStorage.getItem('propsSorted'))
 }
 
+// resets the Boolean sorting values for the resultTable
+// is called by doSearch(limit) in search.js
 function resetSortedBoolean () {
     for(i = 0; i < propsSorted.length; i++) {
         propsSorted[i].sortedOnce = false
@@ -52,6 +56,9 @@ function resetSortedBoolean () {
     }
 }
 
+// empties table and result-related text-elements
+// is called by doSearch(..) in search.js
+//      emptySearch(..) in search.js
 emptyTable = () => {
     table.innerHTML = ""
     nbHitsElement.textContent = ""
@@ -59,8 +66,10 @@ emptyTable = () => {
     errorMessage.innerHTML = ""
 }
 
+// hide buttons rendered with search result
+// is called by doSearch(..) in search.js
+//  emptySearch() in search.js
 emptyResultElements = () => {
-    // hide buttons rendered with search result
     document.getElementById("download-button").style.display = "none"
     document.getElementById("download-photo-button").style.display = "none"
     document.getElementById("head-nb-hits").innerHTML = ""
@@ -85,6 +94,8 @@ emptyResultElements = () => {
     document.getElementById("resultPageAlert1").innerHTML = ""
 }
 
+// display buttons rendered with search result
+// is called by resultTable() in paginateAndRender.js
 showResultElements = () => {
     //document.querySelector('#head-nb-hits').innerHTML = textItems.nbHitsText[index]
     document.querySelector('#download-button').style.display = "block"
@@ -112,7 +123,12 @@ showResultElements = () => {
     
 }
 
-// sort search-result when header button in table is clicked 
+// aids in sorting search-result when header-button in tabel is clicked
+// in: prop (number; to find the correct property to sort on, from the propsSorted-array)
+// in: reverse (boolean, decides which way data are being sorted)
+// in: primer (function; e.g. parseInt that will turn a propety into an integer?)
+// out: sorting order of two elements (?)
+// is called by addSortingText(…)
 sort_by = (prop, reverse, primer) => {
     const key = primer ?
     function(x) {
@@ -128,7 +144,13 @@ sort_by = (prop, reverse, primer) => {
     }
 }
 
-// add sorting function to buttons in table
+// adds sorting-function to buttons that are table-headings in result-table; and contains the sorting-function; search-result is sorted and result re-rendered 
+// in: id (string; id of button)
+// in: prop (number; to find the correct property to sort on, from the propsSorted-array)
+// in: musitData (JSON; searchResult, all of it)
+// calls sort_by(prop,reverse,primer)
+//  	resultTable(subMusitData, musitData)
+// is called by fillResultHeaders(…)
 function addSortingText(id, prop, musitData) { // her er musitData alle
     document.getElementById(id).addEventListener("click", function() {
         // Show please wait
@@ -178,6 +200,10 @@ function addSortingText(id, prop, musitData) { // her er musitData alle
     })
 }
 
+// renders image of arrow-up or arrow-down in table –header when result-table is being sorted
+// in: prop (string; property of a record in the search result)
+// out: image(s)
+// is called by fillResultHeaders(…)
 function getArrows(prop) {
     if (!propsSorted.find(x => x.id === prop).sortedOnce  & !propsSorted.find(x => x.id === prop).sortedTwice) {
         return arrows 
@@ -188,6 +214,9 @@ function getArrows(prop) {
     }
 }
 
+// puts content in headerbuttons in result-table
+// calls getArrows(..) for table-header-buttons
+// addSortingText(..) for tabel-header-buttons
 fillResultHeaders = (cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell10,cell11,musitData) => {
     cell1.innerHTML = `<button id='musitIDButton' class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>` 
     cell2.innerHTML = `<button id='scientificNameButton' class='sort'>${textItems.headerTaxon[index].bold()} ${getArrows('scientificName')} </button>`

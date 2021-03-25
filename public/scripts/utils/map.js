@@ -1,3 +1,5 @@
+// Contains functions for drawing maps that are embedded in search-page or object-page
+
 let coordinateArray = []
 let map
 const popup_element = document.getElementById('popup')
@@ -12,7 +14,10 @@ const downloadMapButton = document.getElementById("export-png")
 const checkedInMap = document.getElementById("checkedInMap")
 const span = document.getElementsByClassName("close")[0];
 
-// render map
+// draws map with clickable red markes for all records in search result with coordinates
+// in: parsedData (JSON, search result)
+// out: map with markers
+// is called by resultTable(..) in paginateAndRender.js
 const drawMap = (parsedData) => {
     // remove old map if any and empty array
     document.getElementById("map-search").innerHTML = "" 
@@ -275,7 +280,10 @@ const drawMap = (parsedData) => {
 
 
 ////// map object page
-
+// draws map with red marker for single record in object.hbs
+// in: object (JSON object)
+// out: map with marker
+// is called by object.js
 const drawMapObject = (object) => {
     const coordinatesView = [Number(object.decimalLongitude), Number(object.decimalLatitude)]
 

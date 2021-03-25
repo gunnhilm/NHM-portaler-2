@@ -1,3 +1,6 @@
+// textItems.js: Contains a part of the generic urlPath that is common for all museums, and an array with strings to be rendered in html-elements, in Norwegian and English
+// Both elements are used in pagingateAndRender.js
+
 const urlPath = '/museum'
 
 const textItems = {

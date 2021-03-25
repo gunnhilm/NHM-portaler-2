@@ -1,4 +1,6 @@
-console.log('client side javascript is loaded')
+// search.js: performs searches and add functionality to buttons and selects etc.
+
+
 // urlPath er definert i textItems.js
 // on page initially
 const collection = document.querySelector('#collection-select') 
@@ -33,6 +35,9 @@ if (sessionStorage.language) {
 }
 
 // download search-result to file
+// in: filename(string, name of outputfile)
+// in: text (string, the text that goes into the file, that is, the search result)
+// out: downloaded tab-separated txt-file
 function download(filename, text) {
     const element = document.createElement('a')
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
@@ -108,7 +113,10 @@ downloadPhotoButton.addEventListener('click', (e) => {
 })
 
 
-
+// downloads photo
+// in: url (url to photo on server)
+// in: filename (string, name to be given to downloaded photo)
+// is called by downloadPhotoButton.eventlistener
 function forceDownload(url, fileName){
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url, true);
@@ -127,18 +135,23 @@ function forceDownload(url, fileName){
 }
 
 
-
+// figures out which museum we are in
+// out: string, abbreviation for museum
+// is called by doSearch() and updateFooter()
 const getCurrentMuseum = () => {
-    // finn ut hvilket museum 
     console.log(window.location.pathname)
     let museum = window.location.pathname
     museum = museum.slice(8)
     return museum
 }
 
+// deletes previous search results, resets value that says if search failed, resets Boolean sorting-values for result, hides buttons, performs search
+// in: limit (number, line number of search result where search stops)
+// calls resetSortedBoolean in paginateAndRender.js
+//      emptyTable() in resultElementsOnOff.js
+//      emptyResultElements() in resultElementOnOff.js
+// is called by searchForm.eventlistener
 const doSearch = (limit = 20) => {
-    console.log('vi søker');
-     
     // delete the previous search results
     sessionStorage.removeItem('string')
     sessionStorage.removeItem('currentPage')
@@ -243,6 +256,8 @@ collection.addEventListener('change', (e) => {
 })
 
 // when a collection is chosen a request is sent to the server about date of last change of the MUSIT-dump file
+// string (date)
+// is called in oldSearch() and collection-select-eventlistener 
 const updateFooter = () => {
     let museum = getCurrentMuseum()  
     const chosenCollection = collection.value
@@ -270,7 +285,9 @@ const updateFooter = () => {
     }
 }
 
-// show previous search-result
+// shows previous search-result when returning to main-page, if it exists in this session
+// calls renderText(language), updateFooter(), load()
+// is called in search.js, that is, every time main page is rendered
 const oldSearch = () => {
     if (sessionStorage.getItem('collection')) {
         if (sessionStorage.getItem('string')) { //hvis det er søkeresultater i sesion storage, så skal disse vises
@@ -305,6 +322,10 @@ const oldSearch = () => {
 //run the function
 oldSearch() 
 
+// empties session’s search-result (sessionStorage), removes elements from page, resets pagination variables
+// calls emptyTable() in resultElementsOnOff.js
+//      emptyResultElements() in resultElementsOnOff.js
+// is called by emptySearchButton.eventlistener, upateFooter() when error
 const emptySearch = () => {
     sessionStorage.removeItem('string')
     sessionStorage.removeItem('collection')
@@ -329,16 +350,13 @@ const emptySearch = () => {
     numberPerPage = 20;
     numberOfPages = 0; // calculates the total number of pages
     document.getElementById('number-per-page').value = '20'
-    
 }
-
 
 emptySearchButton.addEventListener('click', (e) => {
     e.preventDefault()
     // erase the last search result
     emptySearch()
 })
-
 
 document.getElementById('large-map-button').onclick = () => {
     window.open(href= urlPath + "/map")
@@ -377,6 +395,9 @@ document.getElementById('checkedInMap').addEventListener('click', function() {
     
 })
 
+// checks or unchecks several check-boxes and updates searchresult in sessionStorage with this information
+// in:data (JSON; part of search result that is rendered on page)
+// is called by dropdown-menu with checkbox-options in searchresult-table
 const checkSeveralBoxes = (subMusitData) => {
     const nbHitsOnPage = document.getElementById('number-per-page').value
     const select = document.getElementById('checkboxSelect')

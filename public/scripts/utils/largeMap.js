@@ -1,3 +1,8 @@
+// description: Calls function that draw map for all or chosen objects from search result.
+
+// picks out checked records from search result to array
+// is called in this file (largeMap.js)
+
 const loadString = () => {
     try {
         const searchResult = JSON.parse(sessionStorage.getItem('string'))
@@ -21,5 +26,3 @@ const allObject = loadString()
 
 drawMap(allObject)
 
-// var zoomButton = document.getElementById("zoom-button")
-//     zoomButton.style.display = "block"

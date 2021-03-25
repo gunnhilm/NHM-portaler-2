@@ -1,4 +1,6 @@
-// urlPath er definert i textItems.js
+//paginateAndRender.js: Renders result table and contains functionality related to this, e.g. sorting of table and splitting of result into pages.
+
+// urlPath is defined in textItems.js
 
 // show collections in select dependent on museum
 if(!window.location.href.includes('/nhm')) {
@@ -15,7 +17,10 @@ const table = document.getElementById("myTable")
 const hitsPerPage = document.querySelector('#number-per-page')
 
 
-
+// returns itemType for a record, e.g. tissue, egg, sperm, skin etc.
+// in: catalogNumber (string, catalogNumber)
+//out: itemType (string, e.g. ‘tissue’, ‘egg’)
+// is called in resultTable(..) (in the future, when stitching of files is done)
 function itemType (catalogNumber) {
     const s = catalogNumber.charAt(catalogNumber.length-1)
     let itemType = (s === 'B') ? textItems.b[index] : (s === 'D') ? 'DNA' : (s === 'P') ? textItems.p[index] : 
@@ -25,16 +30,17 @@ function itemType (catalogNumber) {
         (s === 'SI') ? textItems.si[index] : (s === 'T') ? textItems.t[index] : (s === 'TS') ? textItems.ts[index] :
         (s === 'EP') ? textItems.ep[index] : (s === 'SG') ? 'Seminal glomera' : (s === 'BS') ? textItems.bs[index] :
         (s === 'FA') ? 'Faeces' : (s === 'CF') ? textItems.cf[index] : (s === 'U') ? textItems.u[index] : ""
-
     return itemType
 }
 
-// funksjonalitet for å bytte ut pilene  opp og ned
+// functionality to switch arrows up and down accordint to sorting, in head-buttons in result-table
 const arrowUp = `<img id='uio-arrow-up' src='${urlPath}/images/icon-up.svg' width="10" height="10"></img>`
 const arrowDown =  `<img id='uio-arrow-down' src='${urlPath}/images/icon-down.svg' width="10" height="10"></img>`
 const arrows = arrowUp + arrowDown
 
-// hide column (for museums without genetic database)
+// hides column with genetic data in result-table for bergen and tromsø (museums without genetic database (corema))
+// in: col_no(number, index of column in result-table)
+// is called by resultTable(…)
 function hide_column(col_no) {
     const rows = table.getElementsByTagName('tr')
     for (var row=0; row<rows.length;row++) {
@@ -43,7 +49,18 @@ function hide_column(col_no) {
     }
 }
 
-// render result table
+// renders result table
+// in: subMusitData (JSON; part of search result that is rendered on page)
+// in: musitData (JSON; searchResult, all of it)
+// calls fillResultHeaders(…) in resultElementOnOff.js
+//  investigateChecked(i), to check if boxes should appear as checked
+//	hide_column(number) to hide corema-columns when necessary
+//	showResultElement() in resultElementOnOff.js
+//	drawMap(data) from map.js
+//	checkSeveralBoxes(data) to add function to dropdown for checkboxes
+//	is called by 
+//	drawList()
+//	addSortingText(…)
 const resultTable = (subMusitData, musitData) => {    
     try {
         table.innerHTML = "";
@@ -225,8 +242,8 @@ if (sessionStorage.getItem('numberPerPage')) {
 sessionStorage.setItem('numberPerPage',numberPerPage)
 var numberOfPages = 0; // calculates the total number of pages
 
+// fetches search result from session storage, parse it and calculates number of pages to render
 function makeList() {
-    
     list.length = 0; // tømme Array
     stringData = sessionStorage.getItem('string')
     // parsing search result
@@ -234,57 +251,73 @@ function makeList() {
     numberOfPages = getNumberOfPages(numberPerPage);
 }
 
+// returns numberOfPages for rendering results
+// out: numberOfPages (number, numberOfPages for rendering results)
+// is called by makeList()
+//	hitsPerPage-select.eventlistener
+//	resultTable(..)
 function getNumberOfPages(numberPerPage) {
     return Math.ceil(list.length / numberPerPage);
 }
 
+// increases counter for currentPage for rendering results, if necessary puts text in html-element lastPageAlert
+// calls load()
+// is called in index.hbs when nextPage-button is created
 function nextPage() {
     console.log('nextpage()')
     if (currentPage < numberOfPages) {
         currentPage += 1    
         sessionStorage.setItem('currentPage', currentPage)
-        //loadList();
         load()
     } else {
         document.getElementById("resultPageAlert").innerHTML = textItems.lastPageAlert[index]
     }
 }
 
+// decreases counter for currentPage for for rendering results
+// calls load()
+// is called in index.hbs when previousPage-button is created
 function previousPage() {
     currentPage -= 1;
     sessionStorage.setItem('currentPage', currentPage)
-    //loadList();
     load()
 }
 
+// sets currentPage for rendering results
+// calls load()
+// is called in index.hbs when firstPage-button is created
 function firstPage() {
     currentPage = 1;
     sessionStorage.setItem('currentPage', currentPage)
-    //loadList();
     load()
 }
 
+// sets currentPage for rendering results
+// calls load()
+// is called in index.hbs when lastPage-button is created
 function lastPage() {
     currentPage = numberOfPages;
     sessionStorage.setItem('currentPage', currentPage)
-    //loadList();
     load()
 }
 
+// sets sessionStorage’s pageList (part of result that is to be rendered on page) and calls function(s) that render resultTable
+// calls check()
+//  resultTable(pageList, list)
+// is called by
+//  hitsPerPage eventlistener
+//  load()
 function loadList() {
     const begin = ((currentPage - 1) * numberPerPage);
     const end = begin + numberPerPage;
     pageList = list.slice(begin, end);
     sessionStorage.setItem('pageList', JSON.stringify(pageList)) // pageList is the same as subMusitData other places; the part of the search result that is listed on the current page
-    //drawList();
     resultTable(pageList, list)
     check();
 }
 
-// function drawList() {
-//     resultTable(pageList, list)
-// }
-
+// disables page-buttons if necesary
+// is called by loadList()
 function check() {
     document.getElementById("next").disabled = currentPage == numberOfPages ? true : false;
     document.getElementById("previous").disabled = currentPage == 1 ? true : false;
@@ -297,6 +330,10 @@ function check() {
 
 }
 
+// empties search-result, fetches search result from sessionStorage, sets numberOfPages for rendering of results, calls function that call resultTable and sets sessionStorage’s pagelist (what to rendered on page)
+// calls getNumberOfPages(..)
+//	loadList()
+//	is called by nextPage(), previousPage(), firstPage(), lastPage()
 function load() {
     list.length = 0 // tømme Array
     stringData = sessionStorage.getItem('string')
@@ -326,9 +363,11 @@ hitsPerPage.addEventListener('change', (e) => {
 })  
 
 // check if checkbox should be checked when rendering result (i.e. navigating between pages in search result)
+// in: i (number; index for searchresult-array)
+// out: boolean (true if box should be checked)
+// is called by resultTable()
 const investigateChecked = (i) => {
     let searchResult = JSON.parse(sessionStorage.getItem('string'))
-    
         let searchResultIndex = i + ((currentPage -1 ) * numberPerPage)
             if (searchResult[searchResultIndex].checked) {
                 return true
@@ -337,7 +376,11 @@ const investigateChecked = (i) => {
             }
 }
 
-// when checking off a checkbox
+// when checking off a checkbox:
+// registers that a (single) checkbox is checked or unchecked
+// in: i (number, index for searchresult-array)
+// out: boolean (true if box should be checked)
+// is called by resultTable() for each record
 const registerChecked = (i) => {
     //document.getElementById('checkboxSelect').value = 'select'
     let searchResult = JSON.parse(sessionStorage.getItem('string'))

@@ -1,10 +1,10 @@
+// Calls function that draw map for a single object.
+
+// fetches JSON-version of search-result from session Storage
+// is called in this file (largeMapObject.js)
 const loadStringObjectMapPage = () => {
     let objectJSON = ''
-    //if( sessionStorage.getItem('databaseSearch') === 'musit' ) {
         objectJSON = sessionStorage.getItem('string')
-    //} else if (sessionStorage.getItem('databaseSearch') === 'corema') {
-    //    objectJSON = sessionStorage.getItem('coremaString')
-    //}
     try {
         return objectJSON ? JSON.parse(objectJSON) : []
     } catch (e) {
@@ -21,5 +21,3 @@ const object = allObject.find(x => x.catalogNumber === id)
 
 drawMapObject(object)
 
-// var zoomButton = document.getElementById("zoom-button")
-//     zoomButton.style.display = "block"
