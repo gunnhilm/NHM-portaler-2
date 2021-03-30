@@ -61,7 +61,7 @@ return data
 
 const getDOI = (downloadKey) => {
     console.log('start på andre nedlstning');
-    const metaDataUrl = 'http://api.gbif.org/v1/occurrence/download/' + downloadKey
+    const metaDataUrl = 'https://api.gbif.org/v1/occurrence/download/' + downloadKey
     fetch(metaDataUrl)
     .then(response => response.json())
     .then(function(result) { 
@@ -77,7 +77,7 @@ const getDOI = (downloadKey) => {
 async function sendRequest(request) {
     const brukerNavn = document.getElementById('username').value
     const password = document.getElementById('current-password').value
-    const url = 'http://api.gbif.org/v1/occurrence/download/request'
+    const url = 'https://api.gbif.org/v1/occurrence/download/request'
     const xhr = new XMLHttpRequest();
     const passstring = brukerNavn + ':' + password;
     const base64Credentials = btoa(passstring)
