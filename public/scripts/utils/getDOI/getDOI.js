@@ -137,6 +137,8 @@ document.getElementById('museum-select').addEventListener('change',function(){
             select.options[select.options.length] = new Option([index], i);
             i += 1
         }
+        // oppdater UUID til å matche collection
+        updateCollectionUUID(true)
     }
 })
 
@@ -165,10 +167,11 @@ searchForm.addEventListener('submit', (e) => {
       }
 })  
 
+const showHelpText = () => {
 
+}
 
-// when somebody chooses a collection submit-button
-document.getElementById('collection-select').addEventListener('change',function(){
+const updateCollectionUUID = (firstTime) => {
     const valgtSamling = document.getElementById('collection-select').options[document.getElementById('collection-select').selectedIndex].text
     const valgtMuseum = document.getElementById('museum-select').value
     console.log(valgtSamling)
@@ -180,6 +183,7 @@ document.getElementById('collection-select').addEventListener('change',function(
         } else {
             document.getElementById('collection-key').value = GBifIdentifiers[valgtMuseum][valgtSamling].key;
             document.getElementById("collection-key").disabled = true;
+            document.getElementById('museums-Numbers').value = GBifIdentifiers[valgtMuseum][valgtSamling].CatalogueNumber;
             console.log(GBifIdentifiers[valgtMuseum][valgtSamling].key);
         }
     } catch (error) {
@@ -189,7 +193,14 @@ document.getElementById('collection-select').addEventListener('change',function(
         } else {
             index = 0
         }
+        if(firstTime == false) {
         alert(textItems.noUUID[index])
-            
+        }
     }
+}
+
+// when somebody chooses a collection dropdown
+document.getElementById('collection-select').addEventListener('change',function(){
+    updateCollectionUUID(false)
+    showHelpText()
 });

@@ -16,76 +16,79 @@
                 <br>
 
             <form  method="post">
-                <table>
-                <tr>
-                    <label for="museum-select" id="select-museum-label"></label>
-                    <select id="museum-select" style="height:30px; border-radius:4px;">
-                        <option value="" id="selectMuseum"></option>
-                        <option value="nhm" id="nhm">NHM</option>
-                        <option value="um" id="um">UM</option>
-                        <option value="vm" id="vm">VM</option>
-                        <option value="tmu" id="tmu">TMU</option>
-                        <option value="other-museum" id="other-museum">other</option>
-                    </select>
-                </tr>
-                &nbsp
-                &nbsp
-                <tr>
-                                  
-                    <label for="collection-select" id="select-collection-label"></label>
-                    <select id="collection-select" style="height:30px; border-radius:4px;">
-                        <option value="" id="selectCollection"></option>
-                    </select>
+
+                    <table>
+                    <tr>
+                        <label for="museum-select" id="select-museum-label"></label>
+                        <select id="museum-select" style="height:30px; border-radius:4px;">
+                            <option value="" id="selectMuseum"></option>
+                            <option value="nhm" id="nhm">NHM</option>
+                            <option value="um" id="um">UM</option>
+                            <option value="vm" id="vm">VM</option>
+                            <option value="tmu" id="tmu">TMU</option>
+                            <option value="other-museum" id="other-museum">other</option>
+                        </select>
+                    </tr>
+                    &nbsp
+                    &nbsp
+                    <tr>
+                                    
+                        <label for="collection-select" id="select-collection-label"></label>
+                        <select id="collection-select" style="height:30px; border-radius:4px;">
+                            <option value="" id="selectCollection"></option>
+                        </select>
+                        
+                    </tr>
                     
-                </tr>
-                
-                <tr>
-                   <td><br>
-                        <label for="collection-key">Collection-key:</label>
-                        <input type="text" id="collection-key" name="collection-key" required><br><br>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <br>
-                         <fieldset style="background-color:#E8E8E8;">
-                            <legend id="onloggingData"></legend>
-                            <table >
-                                <tr>
-                                    <td>
-                                        <label for="email" id="emailRequest"></label>
-                                    </td>
-                                    <td>
-                                        <input type="email" id="email" name="email" required>
-                                    </td>
-                                </tr>
-                                <tr >
-                                    <td>
-                                        <label for="username" id="usernameRequest"></label>
-                                    </td>
-                                    <td>
-                                        <input type="text" id="username" name="username" required>
-                                    </td>
-                                </tr> 
-                                <tr>
-                                    <td>
-                                        <label for="pwd" id="passwordRequest"></label>
-                                    </td>                          
-                                    <td>
-                                        <input type="password" id="current-password" name="pwd" required>
-                                    </td>
-                                </tr>
-                            </table>
-                         </fieldset>
-                    </td>
-                </tr>
-                    <td>  <br>              
-                        <label for="museums-Numbers" id="pasteRequest"></label>
-                        <br>
-                        <textarea id="museums-Numbers" name="museums-Numbers" rows="10" cols="50"></textarea>
-                        <br><br>
-                    </td>
-                </table>
+                    <tr>
+                    <td><br>
+                            <label for="collection-key">Collection-key:</label>
+                            <br>
+                            <input type="text" id="collection-key" name="collection-key" size="34" required><br><br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <br>
+                            <fieldset style="background-color:#E8E8E8;">
+                                <legend id="onloggingData"></legend>
+                                <table >
+                                    <tr>
+                                        <td>
+                                            <label for="email" id="emailRequest"></label>
+                                        </td>
+                                        <td>
+                                            <input type="email" id="email" name="email" required>
+                                        </td>
+                                    </tr>
+                                    <tr >
+                                        <td>
+                                            <label for="username" id="usernameRequest"></label>
+                                        </td>
+                                        <td>
+                                            <input type="text" id="username" name="username" required>
+                                        </td>
+                                    </tr> 
+                                    <tr>
+                                        <td>
+                                            <label for="pwd" id="passwordRequest"></label>
+                                        </td>                          
+                                        <td>
+                                            <input type="password" id="current-password" name="pwd" required>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </fieldset>
+                        </td>
+                    </tr>
+                        <td>  <br>              
+                            <label for="museums-Numbers" id="pasteRequest"></label>
+                            <br>
+                            <textarea id="museums-Numbers" name="museums-Numbers" rows="10" cols="50"></textarea>
+                            <br><br>
+                        </td>
+                        <td></td>
+                    </table>
 
                 <input type="submit" value="Submit" style="padding:6px; font-size:16px"> &nbsp
                 <input type="reset" style="padding:6px; font-size:16px" id="resetButton">
@@ -96,7 +99,7 @@
                     <p id="DOI-result"></p>
                     <p id="Download-link"></p>
                 </fieldset>
-
+                <br>
 
             </form>
             </div>
