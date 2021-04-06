@@ -107,6 +107,78 @@ async function sendRequest(request) {
     };
 }
 
+//*********************************
+
+// Set up a help table that showshow the catalouge numbers should be formatted
+const columnsToShow = 2
+
+// resultattabell
+
+// creates the headers in the table
+// in: table (html-table, to show on the page)
+// in: keys (array?, source of header titles)
+// is called in journalResultTable(..)
+function addHeaders(table, item1, item2) {
+    let text = ''
+  const tr = document.createElement('tr'); // Header row
+    for( let i = 0; i < columnsToShow; i++ ) {
+        const th = document.createElement('th'); //column
+        if (i === 0){
+            text = document.createTextNode(item1); //cell
+        } else if (i === 1){
+            text = document.createTextNode(item2); //cell 
+        }
+        th.appendChild(text);
+        tr.appendChild(th);
+        table.appendChild(tr);
+    }
+}
+
+
+// creates table for the journals and fills it
+// in: children (array, containing content to table, i.e. data on journals) 
+// calls addHeaders(..)
+// is called in dorournalSearch(..)
+const catalougeHelpTable = (children) => {
+
+    const elem = document.getElementById('catalouge-number-help-table');
+    if (elem)
+    {
+        document.getElementById('container').removeChild(elem);
+    }
+
+    const table = document.createElement('table');
+    table.setAttribute('id', 'catalouge-number-help-table')
+    table.setAttribute('class', 'result-table')
+    addHeaders(table, 'Collection', 'Catalouge number style');
+let i = 0
+    for (const [key, value] of Object.entries(children)) {
+        let child = value;
+        const row = table.insertRow();
+        Object.entries(child).forEach(function(k) {
+                const cell = row.insertCell()
+                if (i === 0) {
+                    cell.appendChild(document.createTextNode(key))
+                    cell.className = 'nowrap'
+                } else if(k.includes('CatalogueNumber')) {
+                    cell.appendChild(document.createTextNode(''));
+                    cell.innerHTML = k[1] 
+                }
+            ++i
+        })
+    i=0    
+    }
+    // send tabellen til frontend
+    document.getElementById('container').appendChild(table);
+}
+
+
+
+//************************************* */
+
+
+
+
 
 // When sombody selct a museum -> update the collections available
 document.getElementById('museum-select').addEventListener('change',function(){
@@ -139,6 +211,9 @@ document.getElementById('museum-select').addEventListener('change',function(){
         }
         // oppdater UUID til å matche collection
         updateCollectionUUID(true)
+        // opdater hjelpe tabell
+        const helpobject  = GBifIdentifiers[valgtMuseum]
+        catalougeHelpTable(helpobject)
     }
 })
 
@@ -167,13 +242,12 @@ searchForm.addEventListener('submit', (e) => {
       }
 })  
 
-const showHelpText = () => {
 
-}
 
 const updateCollectionUUID = (firstTime) => {
     const valgtSamling = document.getElementById('collection-select').options[document.getElementById('collection-select').selectedIndex].text
     const valgtMuseum = document.getElementById('museum-select').value
+    let gbifLink = 'https://www.gbif.org/occurrence/search?dataset_key='
     console.log(valgtSamling)
     try {
         if (valgtSamling === 'other') {
@@ -184,7 +258,8 @@ const updateCollectionUUID = (firstTime) => {
             document.getElementById('collection-key').value = GBifIdentifiers[valgtMuseum][valgtSamling].key;
             document.getElementById("collection-key").disabled = true;
             document.getElementById('museums-Numbers').value = GBifIdentifiers[valgtMuseum][valgtSamling].CatalogueNumber;
-            console.log(GBifIdentifiers[valgtMuseum][valgtSamling].key);
+            gbifLink = gbifLink + GBifIdentifiers[valgtMuseum][valgtSamling].key
+            document.getElementById('gbif-Link').setAttribute('href', gbifLink)
         }
     } catch (error) {
         language = sessionStorage.getItem('language')
@@ -202,5 +277,4 @@ const updateCollectionUUID = (firstTime) => {
 // when somebody chooses a collection dropdown
 document.getElementById('collection-select').addEventListener('change',function(){
     updateCollectionUUID(false)
-    showHelpText()
 });

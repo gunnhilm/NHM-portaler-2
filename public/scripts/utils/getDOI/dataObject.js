@@ -3,7 +3,7 @@ const GBifIdentifiers = {
     nhm: {
         Mammals : {
             source: 'corema',
-            CatalogueNumber: 'NHMO-DMA-xxxxxx/1-T',
+            CatalogueNumber: 'NHMO-DMA-xxxxxx/x-T',
             OccurrenceID: 'urn:uuid:xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
             key: '609217ee-054d-441d-a850-356cbc2fb385'
         },
@@ -21,7 +21,7 @@ const GBifIdentifiers = {
         },
         Birds: {
             source: 'corema',
-            CatalogueNumber: 'NHMO-BI-102704/1-T | NHMO-BI-103661/1-E',
+            CatalogueNumber: 'NHMO-BI-xxxxx/x-T | NHMO-BI-xxxxxx/x-E',
             OccurrenceID: 'urn:uuid:xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
             key: '264e6a66-9c9e-4115-9aec-29d694c68097'
         },
