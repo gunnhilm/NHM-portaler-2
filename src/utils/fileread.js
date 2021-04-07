@@ -102,7 +102,25 @@ const search = (museum, samling, searchTerm, linjeNumber = 0, limit = 20, callba
     }
 }
 
+const request = require('request')
+
+const checkRegion = (region, lat, long, callback) => {
+    const url = 'https://ws.geonorge.no/' + region + 'info/v1/punkt?ost=' + long + '&nord=' + lat + '&koordsys=4258'
+    request({ url, json: true }, (error, {body}) => {
+        if (error) {
+            callback('Unable to connect to geonorge.', undefined)
+        } else if (body.error) {
+            callback('Unable to find location.', undefined)
+        } else {
+            callback(undefined, body.kommunenavn)
+        }
+    })
+}
+
+ 
 module.exports = { 
     search,
-    setCollection
+    setCollection,
+    checkRegion
  } 
+

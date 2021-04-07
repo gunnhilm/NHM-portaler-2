@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Check if coordinates are correct</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        
+    </head>
+    <body>
+        <div class="wrapper">
+            {{>header}}
+            
+            <div class="content">
+                <br><br><br><br>
+                <p class="page-header" id="checkCoordHeader"></p>
+                
+                <br>
+                    <label for="coord-select" id="select-coord-label"></label>
+                    <select id="coord-select" style="height:30px; border-radius:4px;">
+                        <option value="" id="selectCoordOption"></option>
+                        <option value="searchStorage" id="searchStorage">Siste søk</option>
+                        {{!-- <option value="um" id="um">UM</option>
+                        <option value="vm" id="vm">VM</option>
+                        <option value="tmu" id="tmu">TMU</option>
+                        <option value="other-museum" id="other-museum">other</option> --}}
+                    </select>
+                    <br><br>
+                    <p class="neutral" id="coordResult"></p>
+            </div>
+            {{>footer}}
+        </div>
+        <link rel="stylesheet" href="/museum/styles/styles.css">
+        <link id="museumStyle" rel="stylesheet" type="text/css" href= "">
+        <script src="/museum/scripts/utils/showCorrectMuseum.js"></script>
+        <script src="/museum/scripts/utils/textItems.js"></script>
+        <script src="/museum/scripts/utils/renderLang.js"></script>
+        <script src="/museum/scripts/utils/papaparse/papaparse.min.js"></script>
+        <script src="/museum/scripts/utils/checkCoordinates.js"></script>
+
+    </body>
+
+
+</html>

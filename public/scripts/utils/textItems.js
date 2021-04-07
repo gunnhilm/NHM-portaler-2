@@ -140,6 +140,7 @@ const textItems = {
     showToolsText: ["", ""],
     statistikkLink: ["Statistikk", "Statistics"],
     DOILink: ["Lag DOI fra GBIF", "Get DOI from GBIF"],
+    coordinateLink: ["Sjekk koordinater", "Check coordinates"],
     
     //ShowStat page
     showStatHeader: ["Statistikk over samlingene", "Statistics from the collections"],
@@ -180,5 +181,8 @@ const textItems = {
     areYouSure: ['Er du sikker på at du vil opprette et datasett på disse dataene? Dette kan ta litt tid, vær tålmodig.', 'Are you sure you want to create a dataset with these data? It may take some time, be patient.'],
     collection: ['Samling: ', 'Collection: '],
     catNumbers: ['Museumsnumre: ', 'Catalog numbers: '],
-    noUUID: ['Fant ikke UUIDen til samlingen, velg "Other" på museum og skriv inn key manuelt', 'Did not find the UUID to the collection, choose "Other" in musuem and enter key manually']
+    noUUID: ['Fant ikke UUIDen til samlingen, velg "Other" på museum og skriv inn key manuelt', 'Did not find the UUID to the collection, choose "Other" in musuem and enter key manually'],
+    
+    // checkCoord page
+    checkCoordHeader: ['Sjekk koordinater', 'Check coordinates']
 }

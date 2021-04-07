@@ -57,10 +57,11 @@ const renderText = function(lang) {
         }
     }
     
-
     //Dropdown med valg av samlinger, index page og stat page
-    if (!location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler') & !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools')) {
-        // document.querySelector('#specimensOptgroup').innerHTML = textItems.specimensOptgroup[index]
+    if (!location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler') & !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools') & !location.href.includes('checkCoord')) {
+    //if (location.href.substring(location.href.split('/',3).join('/').length).lengt === 12) { 
+    
+    // document.querySelector('#specimensOptgroup').innerHTML = textItems.specimensOptgroup[index]
         document.querySelector('#karplanter').innerHTML = textItems.karplanter[index]
         document.querySelector('#sopp').innerHTML = textItems.sopp[index]
         document.querySelector('#moser').innerHTML = textItems.moser[index]
@@ -84,8 +85,9 @@ const renderText = function(lang) {
     }
 
     // index page
-    if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler')& !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools')) {
-        
+    if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler')& !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools') & !location.href.includes('checkCoord')) {
+    //if (location.href.substring(location.href.split('/',3).join('/').length).length === 12) { 
+
         document.querySelector('#vennligst').innerHTML = textItems.vennligst[index] 
         
         document.querySelector('#search-button').innerHTML = textItems.searchButton[index]
@@ -204,6 +206,7 @@ const renderText = function(lang) {
         document.querySelector('#showToolsText').innerHTML = textItems.showToolsText[index]
         document.querySelector('#statistikk-link').innerHTML = textItems.statistikkLink[index]
         document.querySelector('#DOI-link').innerHTML = textItems.DOILink[index]
+        document.querySelector('#coordinate-link').innerHTML = textItems.coordinateLink[index]
     }
 
     // Stat page
@@ -265,13 +268,21 @@ const renderText = function(lang) {
         document.querySelector('#resetButton').innerHTML = textItems.resetButton[index]
         document.querySelector('#results').innerHTML = textItems.results[index]
     }
+
+    if (location.href.includes('checkCoord')) {
+        document.querySelector('#checkCoordHeader').innerHTML = textItems.checkCoordHeader[index]
+        
+    }
 }
 
 let language
 if (sessionStorage.language) {
     language = sessionStorage.getItem('language')
-} else {
+} else if (document.querySelector('#language').value) {
     language = document.querySelector('#language').value
+} else {
+    document.querySelector('#language').value = "Norwegian"
+    language = "Norwegian"
 }
 if (language === "Norwegian") {
     document.querySelector('#language').innerHTML = "English website"
@@ -284,7 +295,6 @@ renderText(language)
 
 
 document.querySelector('#language').addEventListener('click', (e) => {
-    
     if (language === "Norwegian") {
         language = "English"
         document.querySelector('#language').innerHTML = "Norwegian website"
@@ -295,7 +305,7 @@ document.querySelector('#language').addEventListener('click', (e) => {
     renderText(language)
     sessionStorage.setItem('language', language)
    
-    if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler') & !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools')) {
+    if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler') & !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools') & !location.href.includes('checkCoord')) {
         if (document.querySelector("#head-nb-hits").innerHTML) {
 
             if (language === "Norwegian") {

@@ -10,6 +10,7 @@ const helmet = require('helmet')
 
 
 
+
 const app = express()
 
 // Sikkerhets app som beskytter mot uønskede headers osv.
@@ -241,6 +242,33 @@ app.get('*/getDOI', (req, res) => {
     res.render('getDOI', {})
 })
 
+// tool-page for checking if coordinates are within correct region
+app.get('*/checkCoord', (req, res) => {
+    console.log('checkCoord')
+    res.render('checkCoord', {})
+})
+
+// functionality to check if coordinates are within correct region
+app.get('/checkRegion', (req, res) => {
+    if (!req.query.regionType) {
+        console.log('checkRegion-error')
+        throw new Error ('regiontype not chosen')
+    } else {
+        try {
+            fileRead.checkRegion(req.query.regionType, req.query.lat, req.query.long, (error, results) => {
+                res.send({
+                    unparsed: results
+                })
+            })
+        }
+        catch(error) {
+            console.log('error in checkregion.js' + error)
+            throw new Error ('something is wrong')
+        }
+    }
+})
+    
+    
 app.get('*', (req, res) => {
     res.render('404', {})
 })
