@@ -109,7 +109,7 @@ async function sendRequest(request) {
 
 //*********************************
 
-// Set up a help table that showshow the catalouge numbers should be formatted
+// Set up a help table that show how the catalouge numbers should be formatted
 const columnsToShow = 2
 
 // resultattabell
