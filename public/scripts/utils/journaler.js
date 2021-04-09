@@ -6,6 +6,15 @@ const errorMessage = document.getElementById('head-nb-hits')
 const nbHitsElement = document.getElementById('nb-hits') 
 const columnsToShow = 13
 
+// figures out which museum we are in
+// out: string, abbreviation for museum
+// is called by doSearch() and updateFooter()
+const getCurrentMuseum = () => {
+    let museum = window.location.pathname
+    museum = museum.split('/')
+    return museum[2]
+}
+
 // resultattabell
 
 // creates the headers in the table
@@ -79,9 +88,10 @@ const doJournalSearch = (limit = 2000) => {
     {
         document.getElementById('container').removeChild(elem);
     }
-    
+    let museum = getCurrentMuseum() 
     const searchTerm = journalSearch.value
-    const url = urlPath + '/search/?search=' + searchTerm +'&samling=journaler&linjeNumber=0&limit=' + limit // normal search
+ 
+    const url = urlPath + '/search/?search=' + searchTerm + '&museum=' + museum + '&samling=journaler&linjeNumber=0&limit=' + limit // normal search
         fetch(url).then((response) => {
             if (!response.ok) {
                 // throw 'noe går galt med søk, respons ikke ok' + response

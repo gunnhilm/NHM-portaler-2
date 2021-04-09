@@ -18,10 +18,9 @@ const setCollection = (museum, samling) => {
     
     let musitFile = ''
     const pathToMuseum = './src/data/' + museum + '/'
-    console.log('SetColl vi test her: ' + pathToMuseum);
     if (samling === 'journaler') {
-        musitFile = './src/data/journaler.txt'
-        console.log(musitFile);
+        musitFile = './src/data/' + museum +'/journaler.txt'
+        console.log( 'fileread.js: musit fila: '+  musitFile);
         
     } else {
         fileList.forEach(element => {
