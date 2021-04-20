@@ -137,7 +137,7 @@ const resultTable = (subMusitData, musitData) => {
                 //     cell8.innerHTML = `<span class="fas fa-camera"></span>`
                 // }
 
-                if( subMusitData[i].associatedMedia ) {    
+                if( subMusitData[i].associatedMedia ) {   
                     cell8.innerHTML = `<span class="fas fa-camera"></span>`
                 } else if( subMusitData[i].photoIdentifiers ) {   
                     cell8.innerHTML = `<span class="fas fa-camera"></span>`
@@ -156,7 +156,7 @@ const resultTable = (subMusitData, musitData) => {
                 //     }
                    
                 // }
-               
+                
                 cell11.innerHTML = `<input type="checkbox" id=checkbox${i} onclick="registerChecked(${i})" ></input>`
                 
                 if (investigateChecked(i)) {
@@ -176,7 +176,9 @@ const resultTable = (subMusitData, musitData) => {
                 cell9.className = 'row-9 row-coordinates'
                 //cell10.className = 'row-10 row-sampleType'
                 cell11.className = 'row-11 row-checkbox'
+                
             }
+          
         }
         
         // hide corema-link-column for UM and TMU
@@ -187,6 +189,7 @@ const resultTable = (subMusitData, musitData) => {
         ////////////// remove when stiched files are in place
         if (window.location.href.includes('/nhm')) {
             hide_column(9)
+            
         }
 
         showResultElements()

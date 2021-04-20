@@ -230,11 +230,11 @@ app.get('*/help', (req, res) => {
     res.render('help', {})
 })
 
-app.get('/map', (req, res) => {
+app.get('*/map', (req, res) => {
     res.render('map', {})
 })
 
-app.get('/mapObject', (req, res) => {
+app.get('*/mapObject', (req, res) => {
     res.render('mapObject', {})
 })
 

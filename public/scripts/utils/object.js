@@ -403,11 +403,21 @@ function imageExists(image_url){
 //map
 drawMapObject(object)
 
+// figures out which museum we are in
+// out: string, abbreviation for museum
+// is called by doSearch() and updateFooter()
+const getCurrentMuseum = () => {
+    console.log(window.location.pathname)
+    let museum = window.location.pathname
+    museum = museum.slice(8)
+    return museum
+}
+
 
 // large map 
 document.getElementById('large-map-object-button').onclick = () => {
-    console.log(urlPath)
-    window.open(href=`${urlPath}/mapObject/?id=${id}`)
+    
+    window.open(href=`${urlPath}/${getCurrentMuseum()}/mapObject/?id=${id}`)
 }
 
 

@@ -359,7 +359,7 @@ emptySearchButton.addEventListener('click', (e) => {
 })
 
 document.getElementById('large-map-button').onclick = () => {
-    window.open(href= urlPath + "/map")
+    window.open(href= urlPath + "/" + getCurrentMuseum() + "/map")
 }
 
 

@@ -12,7 +12,16 @@ const loadString = () => {
             searchResult.forEach(el => {
                 if (el.checked) {newArray.push(el)}
             })
-            return newArray
+            if (newArray.length > 0) {
+                return newArray
+            } else {
+                // if no boxes are ticked; then we want to show all
+                searchResult.forEach(el => {
+                    newArray.push(el)
+                })
+                return newArray
+            }
+            
         } else {
             return []
         }

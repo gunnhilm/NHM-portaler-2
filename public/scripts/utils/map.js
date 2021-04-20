@@ -38,7 +38,6 @@ const drawMap = (parsedData) => {
         
         if (coordinateArray.length === 0) {
             document.querySelector("#map-search").innerHTML = textItems.mapSearchAlt[index]
-            console.log('her')
         } else {
             const newArray = []
             coordinateArray.forEach(function(item) {
@@ -307,7 +306,6 @@ const drawMapObject = (object) => {
         initialize_map()
         
         if (!location.href.includes('mapObject') && map) {
-            console.log('her da')
             document.getElementById('zoom-button').style.display = "inline-block"
             document.getElementById('large-map-object-button').style.display = "inline-block"
             // document.getElementById('export-png').style.display = "inline-block"
