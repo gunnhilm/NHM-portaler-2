@@ -51,7 +51,7 @@ if(!window.location.href.includes('/nhm')) {
   document.querySelector('#coremaopt').style.display = 'none'
   document.querySelector('#DNAopt').style.display = 'none'
   document.querySelector('#alger').style.display = 'none'
-  document.querySelector('#GeoPalOpt').style.display = 'none'
+  //document.querySelector('#GeoPalOpt').style.display = 'none'
   document.querySelector('#algae_row').style.display = 'none'
   document.querySelector('#mammal_row').style.display = 'none'
   document.querySelector('#bird_row').style.display = 'none'
