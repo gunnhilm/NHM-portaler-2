@@ -5,10 +5,20 @@ function swapStyleSheet(sheet) {
     document.getElementById('museumStyle').setAttribute('href', sheet)
 }
 
-const getHostname = (url) => {
-    // use URL constructor and return hostname
-    return new URL(url).hostname;
-  }
+
+// figures out which museum we are in
+// and redirects if we are using the old url https://samlingsportal.nhm.uio.no/nhm/ to https://samlingsportal.nhm.uio.no/museum/nhm/
+// needs proxypass in apache server ProxyPass /nhm http://localhost:3000
+const redirectIfWrong = () => {
+    let museum = window.location.pathname
+    host = window.location.origin
+    museum = museum.split('/')
+    if (museum[1].toLowerCase() === 'nhm'){
+        location.replace(host + "/museum/nhm")
+    }  
+}
+
+
 
 // swaps styel sheet when another museum is chosen in url
 // is called in this file
@@ -24,6 +34,8 @@ const getMuseumStyleSheet = () => {
         location.replace("/museum/nhm")
     }
 }
+
+redirectIfWrong()
 
 getMuseumStyleSheet()
 
