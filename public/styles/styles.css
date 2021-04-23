@@ -203,6 +203,10 @@ footer {
     font-size: 30px;
 }
 
+.page-text {
+    max-width: 1000px;
+}
+
 td {
     vertical-align: top;
 }

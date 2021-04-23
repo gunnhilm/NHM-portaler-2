@@ -54,10 +54,10 @@ const journalResultTable = (children) => {
         Object.keys(child).forEach(function(k ,index) {
             if (index < columnsToShow) {
                 const cell = row.insertCell()
-                if (index === 0) {
+                if (k.includes('NHM ID')) {
                     cell.appendChild(document.createTextNode(child[k]))
                     cell.className = 'nowrap'
-                } else if(k.includes('Flipbook')) {
+                } else if(k.includes('FlipBook')) {
                     child[k] = '<a href="https://data.gbif.no/ggbn/flipbook' + child[k] + '"> FlipBook</a>'
                     cell.appendChild(document.createTextNode(''));
                     cell.innerHTML = child[k] 

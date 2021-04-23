@@ -248,7 +248,7 @@ const renderText = function(lang) {
     // journals page
     if (location.href.includes('journaler')) {
         document.querySelector('#header-journal-page').innerHTML = textItems.journalHeader[index]
-        //document.querySelector('#helpText').innerHTML = textItems.helpText[index]
+        document.querySelector('#text-journal-page').innerHTML = textItems.journalText[index]
     }
 
     // getDOI page
