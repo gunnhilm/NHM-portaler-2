@@ -4,7 +4,7 @@ const journalSearch = document.getElementById('journal-search-text')
 const journalSearchForm = document.getElementById('search-button') 
 const errorMessage = document.getElementById('head-nb-hits')
 const nbHitsElement = document.getElementById('nb-hits') 
-const columnsToShow = 13
+const columnsToShow = 14
 
 // figures out which museum we are in
 // out: string, abbreviation for museum
@@ -51,20 +51,23 @@ const journalResultTable = (children) => {
             addHeaders(table, Object.keys(child));
         }
         const row = table.insertRow();
+        
         Object.keys(child).forEach(function(k ,index) {
+            
             if (index < columnsToShow) {
-                const cell = row.insertCell()
-                if (k.includes('NHM ID')) {
+                const cell = row.insertCell() 
+                //if(k.includes('FlipBook')) {
+                if (index === 0) {
+                    child[k] = '<a href ="https://data.gbif.no/ggbn/flipbook' + child[k] + '">FlipBook</a>'
+                    cell.appendChild(document.createTextNode(''));
+                    cell.innerHTML = child[k] 
+                } else if (k.startsWith('PDF')) {
+                    child[k] = '<a href ="https://data.gbif.no/ggbn/flipbook' + child[k] + '"> PDF</a>'
+                    cell.appendChild(document.createTextNode(''));
+                    cell.innerHTML = child[k] 
+                } else  if (k.includes('NHM ID')) {
                     cell.appendChild(document.createTextNode(child[k]))
                     cell.className = 'nowrap'
-                } else if(k.includes('FlipBook')) {
-                    child[k] = '<a href="https://data.gbif.no/ggbn/flipbook' + child[k] + '"> FlipBook</a>'
-                    cell.appendChild(document.createTextNode(''));
-                    cell.innerHTML = child[k] 
-                } else if (k.includes('PDF')) {
-                    child[k] = '<a href="https://data.gbif.no/ggbn/flipbook' + child[k] + '"> PDF</a>'
-                    cell.appendChild(document.createTextNode(''));
-                    cell.innerHTML = child[k] 
                 } else {
                     cell.appendChild(document.createTextNode(child[k]));
                 }
