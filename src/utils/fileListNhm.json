@@ -129,5 +129,29 @@
     "mediaFile": "",
     "url": "",
     "akronym": "GMO-BO"
+},
+{
+    "source": "access",
+    "name": "fisk",
+    "zipFileName": "occurrence",
+    "mediaFile": "",
+    "url": "",
+    "akronym": "NHMO-J"
+},
+{
+    "source": "excel",
+    "name": "utad",
+    "zipFileName": "occurrence",
+    "mediaFile": "",
+    "url": "",
+    "akronym": "NHMO-U"
+},
+{
+    "source": "excel",
+    "name": "bulk",
+    "zipFileName": "occurrence",
+    "mediaFile": "",
+    "url": "",
+    "akronym": "NHMO-BULK"
 }
 ]

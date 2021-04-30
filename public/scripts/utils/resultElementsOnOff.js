@@ -40,12 +40,23 @@ if (!sessionStorage.getItem('propsSorted')) {
         sortedTwice: false},
         {id: 'processID',
         sortedOnce: false,
+        sortedTwice: false},
+        {id: 'preparations',
+        sortedOnce: false,
+        sortedTwice: false},
+        {id: 'unitType',
+        sortedOnce: false,
+        sortedTwice: false},
+        {id: 'amount',
+        sortedOnce: false,
         sortedTwice: false}
     ]
     sessionStorage.setItem('propsSorted', JSON.stringify(propsSorted))
 } else { 
     propsSorted = JSON.parse(sessionStorage.getItem('propsSorted'))
 }
+
+const table = document.getElementById("myTable")
 
 // resets the Boolean sorting values for the resultTable
 // is called by doSearch(limit) in search.js
@@ -212,6 +223,34 @@ function getArrows(prop) {
     } else if (propsSorted.find(x => x.id === prop).sortedTwice) {
         return arrowUp
     }
+}
+
+// puts content in headerbuttons in result-table
+// calls getArrows(..) for table-header-buttons
+// addSortingText(..) for tabel-header-buttons
+fillResultHeadersBulk = (cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell11,musitData) => {
+    cell1.innerHTML = `<button id='musitIDButton' class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>`  
+    cell2.innerHTML = `<button id='scientificNameButton' class='sort'>${textItems.headerTaxon[index].bold()} ${getArrows('scientificName')} </button>`
+    cell3.innerHTML = `<button id='collectorButton' class='sort'>${textItems.headerCollector[index].bold()} ${getArrows('recordedBy')}</button>`
+    cell4.innerHTML = `<button id='dateButton' class='sort'>${textItems.headerDate[index].bold()} ${getArrows('eventDate')}</button>`
+    cell5.innerHTML = `<button id='preparationsButton' class='sort'>${textItems.headerPreparations[index].bold()} ${getArrows('preparations')} </button>`
+    cell6.innerHTML = `<button id='unitTypeButton' class='sort'>${textItems.headerUnitType[index].bold()} ${getArrows('unitType')}</button>`
+    cell7.innerHTML = `<button id='amountButton' class='sort'>${textItems.headerAmount[index].bold()} ${getArrows('amount')}</button>`
+    cell11.innerHTML = `<select id='checkboxSelect' class='sort'>
+        <option value="select" id="select">${textItems.select[index].bold()}</option>
+        <option value="all" id="selectAll">${textItems.selectAll[index]}</option>
+        <option value="all_on_page" id="selectAllOnPage">${ textItems.selectAllOnPage[index]}</option>
+        <option value="none" id="selectNone">${ textItems.selectNone[index]}</option>
+    </select>`
+    
+
+    addSortingText('musitIDButton', 'catalogNumber', musitData)  // Tabellen blir sortert på nummer
+    addSortingText('scientificNameButton', 'scientificName', musitData)
+    addSortingText('preparationsButton', 'preparateions', musitData)
+    addSortingText('collectorButton', 'recordedBy', musitData)
+    addSortingText('dateButton', 'eventDate', musitData)
+    addSortingText('unitTypeButton', 'unitType', musitData)
+    addSortingText('amountButton', 'amount', musitData)
 }
 
 // puts content in headerbuttons in result-table

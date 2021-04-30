@@ -69,6 +69,7 @@ const renderText = function(lang) {
         document.querySelector('#alger').innerHTML = textItems.alger[index]
         document.querySelector('#insekter').innerHTML = textItems.insekter[index]
         document.querySelector('#evertebrater').innerHTML = textItems.evertebrater[index]
+        document.querySelector('#fisk').innerHTML = textItems.fisk[index]
         document.querySelector('#coremaopt').label = textItems.coremaopt[index]
         document.querySelector('#fugler').innerHTML = textItems.fugler[index]
         document.querySelector('#pattedyr').innerHTML = textItems.pattedyr[index]
@@ -81,6 +82,9 @@ const renderText = function(lang) {
         document.querySelector('#oslofeltet').innerHTML = textItems.oslofeltet[index]
         // document.querySelector('#utenlandskeBergarter').innerHTML = textItems.utenlandskeBA[index]
         document.querySelector('#GeoPalOpt').label = textItems.GeoPal[index]
+        document.querySelector('#otherOpt').label = textItems.otherOpt[index]
+        document.querySelector('#utad').label = textItems.utad[index]
+        document.querySelector('#bulk').label = textItems.bulk[index]
         
     }
 
@@ -223,6 +227,7 @@ const renderText = function(lang) {
         document.querySelector('#Fungi_header').innerHTML = textItems.sopp[index]
         document.querySelector('#Lichen_header').innerHTML = textItems.lav[index]
         document.querySelector('#Insects_header').innerHTML = textItems.insekter[index]
+        document.querySelector('#Fish_header').innerHTML = textItems.fisk[index]
         document.querySelector('#Algae_header').innerHTML = textItems.alger[index]
         document.querySelector('#Birds_header').innerHTML = textItems.fugler[index]
         document.querySelector('#Mammals_header').innerHTML = textItems.pattedyr[index]

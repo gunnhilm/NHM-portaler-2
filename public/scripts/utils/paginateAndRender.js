@@ -1,5 +1,7 @@
 //paginateAndRender.js: Renders result table and contains functionality related to this, e.g. sorting of table and splitting of result into pages.
 
+//const { contentSecurityPolicy } = require("helmet")
+
 // urlPath is defined in textItems.js
 
 // show collections in select dependent on museum
@@ -8,12 +10,14 @@ if(!window.location.href.includes('/nhm')) {
     document.querySelector('#DNAopt').style.display = 'none'
     document.querySelector('#GeoPalOpt').style.display = 'none'
     document.querySelector('#alger').style.display = 'none'
+    document.querySelector('#fisk').style.display = 'none'
+    document.querySelector('#otherOpt').style.display = 'none'
 } else {
     document.querySelector('#evertebrater').style.display = 'none'
 }
 
 // rendered with result table (used in function resultTable())
-const table = document.getElementById("myTable")
+
 const hitsPerPage = document.querySelector('#number-per-page')
 
 
@@ -49,10 +53,25 @@ function hide_column(col_no) {
     }
 }
 
+// // renders result table for bulk- and project collection
+// // input: subMusitData
+// // input: musitData
+
+// const resultTableBulk = (subMusitData, musitData) => {
+//     try {
+//         table.innerHTML = ""
+//         for (let i = -1; i < pageList.length; i++) {
+//             const row = 
+//         }
+//     }
+// }
+
+
+
 // renders result table
-// in: subMusitData (JSON; part of search result that is rendered on page)
-// in: musitData (JSON; searchResult, all of it)
-// calls fillResultHeaders(…) in resultElementOnOff.js
+// input: subMusitData (JSON; part of search result that is rendered on page)
+// input: musitData (JSON; searchResult, all of it)
+// calls fillResultHeaders(…) or fillREsultHeadersBulk(...) in resultElementOnOff.js
 //  investigateChecked(i), to check if boxes should appear as checked
 //	hide_column(number) to hide corema-columns when necessary
 //	showResultElement() in resultElementOnOff.js
@@ -81,8 +100,13 @@ const resultTable = (subMusitData, musitData) => {
             cell10.className += "cell10";
             const cell11 = row.insertCell(10)
             if (i === -1) {     // her kommer tittellinjen
-                fillResultHeaders(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell10,cell11,musitData)
-               
+                if (document.querySelector('#collection-select').value = 'Bulk') {
+                    console.log(musitData)
+                    fillResultHeadersBulk(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell11,musitData)
+                } else {
+                    fillResultHeaders(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell10,cell11,musitData)
+                }
+                
                 // if (document.querySelector('#collection-select option:checked').parentElement.label === 'Specimens') {
                 //     addSortingText('coremaNoButton', 10, 'coremaNo', musitData)
                 // } else {
@@ -93,7 +117,6 @@ const resultTable = (subMusitData, musitData) => {
                 
             } else {        // Her kommer innmaten i tabellen, selve resultatene
                 let museumURLPath
-                
                 if (window.location.href.includes('/um')) { 
                     museumURLPath = urlPath + "/um"
                 } else if (window.location.href.includes('tmu')) {
@@ -102,12 +125,15 @@ const resultTable = (subMusitData, musitData) => {
                     museumURLPath = urlPath + "/nhm"
                 }
                 
+                
                 let prefix
                 if (!(/[a-zA-Z]/).test(subMusitData[i].catalogNumber.charAt(0))) {
+                    
                     prefix = subMusitData[i].institutionCode + '-' + subMusitData[i].collectionCode + '-'
                 } else {
                     prefix = ''
                 }
+
                 // collectionCodes = ['V','F','L','B','A','ENT','M','BU','GM-BU']
                 // if ( !window.location.href.includes('/um') && !window.location.href.includes('tmu')) {
                 //     if( !collectionCodes.includes(subMusitData[i].collectionCode) )  {
@@ -116,7 +142,6 @@ const resultTable = (subMusitData, musitData) => {
                 //         prefix = subMusitData[i].institutionCode + '-' + subMusitData[i].collectionCode + '-'
                 //     }
                 // }
-                
                 cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}"> ${prefix}${subMusitData[i].catalogNumber} </a>`
                 cell2.innerHTML = subMusitData[i].scientificName
                 // // to avoid lots of text in collector-field I tried to cut it down to one name et al. but in corema collector is often "Johannessen, Lars Erik", so looking for comma does not work
@@ -125,40 +150,48 @@ const resultTable = (subMusitData, musitData) => {
                 //     let y = subMusitData[i].recordedBy.substr(0,x)
                 //     cell3.innerHTML = y + " et al."    
                 // } else {
+                
                     cell3.innerHTML = subMusitData[i].recordedBy
                 //}
-                
                 cell4.innerHTML = subMusitData[i].eventDate
-                cell5.innerHTML = subMusitData[i].country
-                cell6.innerHTML = subMusitData[i].county
-                cell7.innerHTML = subMusitData[i].locality
-                //corema-cases
-                // if (document.querySelector('#collection-select  option:checked').parentElement.label === 'Specimens og DNA') {
-                //     cell8.innerHTML = `<span class="fas fa-camera"></span>`
-                // }
-
-                if( subMusitData[i].associatedMedia ) {   
-                    cell8.innerHTML = `<span class="fas fa-camera"></span>`
-                } else if( subMusitData[i].photoIdentifiers ) {   
-                    cell8.innerHTML = `<span class="fas fa-camera"></span>`
-                }
-                if( subMusitData[i].decimalLongitude) {
-                    cell9.innerHTML = '<span class="fas fa-compass"></span>'
-                }
-                
-                // if (window.location.href.includes('/nhm')) {
-                //     cell10.innerHTML = 'test'
-                // } else {
-                //     if (document.querySelector('#collection-select  option:checked').parentElement.label === 'Specimens') {
-                //         cell10.innerHTML = subMusitData[i].coremaNo
-                //     } else {
-                //         cell10.innerHTML = itemType(subMusitData[i].catalogNumber)
-                //     }
+                if (document.querySelector('#collection-select').value = 'Bulk') {
+                    cell5.innerHTML = subMusitData[i].preparations
+                    cell6.innerHTML = subMusitData[i].unitType
+                    cell7.innerHTML = subMusitData[i].amount
+                } else {
+                    cell5.innerHTML = subMusitData[i].country
+                    if (subMusitData[i].county) {cell6.innerHTML = subMusitData[i].county}
+                    cell7.innerHTML = subMusitData[i].locality
+                    //corema-cases
+                    // if (document.querySelector('#collection-select  option:checked').parentElement.label === 'Specimens og DNA') {
+                    //     cell8.innerHTML = `<span class="fas fa-camera"></span>`
+                    // }
+    
+                    if( subMusitData[i].associatedMedia ) {   
+                        cell8.innerHTML = `<span class="fas fa-camera"></span>`
+                    } else if( subMusitData[i].photoIdentifiers ) {   
+                        cell8.innerHTML = `<span class="fas fa-camera"></span>`
+                    }
+                    if( subMusitData[i].decimalLongitude) {
+                        cell9.innerHTML = '<span class="fas fa-compass"></span>'
+                    }
+                    
+                    // if (window.location.href.includes('/nhm')) {
+                    //     cell10.innerHTML = 'test'
+                    // } else {
+                    //     if (document.querySelector('#collection-select  option:checked').parentElement.label === 'Specimens') {
+                    //         cell10.innerHTML = subMusitData[i].coremaNo
+                    //     } else {
+                    //         cell10.innerHTML = itemType(subMusitData[i].catalogNumber)
+                    //     }
+                       
+                    // }
+                    
                    
-                // }
-                
+                    
+                }
                 cell11.innerHTML = `<input type="checkbox" id=checkbox${i} onclick="registerChecked(${i})" ></input>`
-                
+                console.log('her')
                 if (investigateChecked(i)) {
                     document.getElementById(`checkbox${i}`).checked = true
                 } else {

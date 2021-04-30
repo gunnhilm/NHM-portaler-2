@@ -443,7 +443,10 @@ const checkSeveralBoxes = (subMusitData) => {
 }
 
 const select = document.getElementById('checkboxSelect')
-pageList = JSON.parse(sessionStorage.getItem('pageList'))
+if (JSON.parse(sessionStorage.getItem('pageList'))) {
+    pageList = JSON.parse(sessionStorage.getItem('pageList'))
+}
+
 if(select) {
     select.onchange =() => {
         checkSeveralBoxes(pageList)
