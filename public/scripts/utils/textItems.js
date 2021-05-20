@@ -16,6 +16,10 @@ const textItems = {
     logoUM: [urlPath + "/images/UiBlogoUM_white_v.png", urlPath + "/images/UiBlogo_Eng_white_left.png"],
     
     // index page
+    botanikk: ["Botanikk og mykologi", "Botany and mycology"],
+    zoologi: ["Zoologi", "Zoology"],
+    geologi: ["Geologi", "Geology"],
+    otherCollections: ["Andre samlinger", "Other collections"],
     emptySearch: ["Tøm søk", "Empty search"],
     headerSearchPage: ["Søk i samlingene", "Search the collections"],
     vennligst: ["--Velg en samling--", "--Choose a collection--"],
@@ -72,6 +76,7 @@ const textItems = {
     placeholder: [" Søk etter latinsk artsnavn, katalognummer, person, sted... ", " Search for latin species name, catalognumber, person, place... "],
     serverError: ["Serverfeil, prøv nytt søk", "Server error, try new search"],
     noHits: ["Ingen treff, prøv nytt søk", "No hits, try new search"],
+    tooManyHits: ["Mer enn 2000, kan ikke vise flere", "More than 2000, cannot show more"],
     errorRenderResult: ["Noe gikk feil, søk igjen, begrens ev. søket med f.eks. flere søkeord", "Something went wrong, try a new search, possibly limit the seach by e.g. more search terms"],
     errorFileNotExisting: ["Beklager, noe er feil med valgte samling. Velg en annen samling, kom tilbake senere, eller kontakt oss (se hjelpesiden)",
      "Sorry, something is wrong with the chosen collection. Choose another collection, come back later, or contact us (see help page)"],
@@ -159,6 +164,7 @@ const textItems = {
     nbCoordHeader: ["Poster med koordinater", "Records with coordinates"],
     vascularHeader: ["Karplanter", "Vascular plants"],
     mossesHeader: ["Moser", "Mosses"],
+    graphHeader: ["Grafer: ", "Graphs: "],
 
     // help page
     helpHeader: ["Hvordan søke", "How to search the collections"],

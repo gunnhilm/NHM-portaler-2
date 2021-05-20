@@ -5,16 +5,16 @@
 // urlPath is defined in textItems.js
 
 // show collections in select dependent on museum
-if(!window.location.href.includes('/nhm')) {
-    document.querySelector('#coremaopt').style.display = 'none'
-    document.querySelector('#DNAopt').style.display = 'none'
-    document.querySelector('#GeoPalOpt').style.display = 'none'
-    document.querySelector('#alger').style.display = 'none'
-    document.querySelector('#fisk').style.display = 'none'
-    document.querySelector('#otherOpt').style.display = 'none'
-} else {
-    document.querySelector('#evertebrater').style.display = 'none'
-}
+// if(!window.location.href.includes('/nhm')) {
+//     document.querySelector('#coremaopt').style.display = 'none'
+//     document.querySelector('#DNAopt').style.display = 'none'
+//     document.querySelector('#GeoPalOpt').style.display = 'none'
+//     document.querySelector('#alger').style.display = 'none'
+//     document.querySelector('#fisk').style.display = 'none'
+//     document.querySelector('#otherOpt').style.display = 'none'
+// } else {
+//     document.querySelector('#evertebrater').style.display = 'none'
+// }
 
 // rendered with result table (used in function resultTable())
 
@@ -100,8 +100,7 @@ const resultTable = (subMusitData, musitData) => {
             cell10.className += "cell10";
             const cell11 = row.insertCell(10)
             if (i === -1) {     // her kommer tittellinjen
-                if (document.querySelector('#collection-select').value = 'Bulk') {
-                    console.log(musitData)
+                if (document.querySelector('#collection-select').value == 'Bulk') {
                     fillResultHeadersBulk(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell11,musitData)
                 } else {
                     fillResultHeaders(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell10,cell11,musitData)
@@ -133,7 +132,7 @@ const resultTable = (subMusitData, musitData) => {
                 } else {
                     prefix = ''
                 }
-
+                
                 // collectionCodes = ['V','F','L','B','A','ENT','M','BU','GM-BU']
                 // if ( !window.location.href.includes('/um') && !window.location.href.includes('tmu')) {
                 //     if( !collectionCodes.includes(subMusitData[i].collectionCode) )  {
@@ -154,7 +153,7 @@ const resultTable = (subMusitData, musitData) => {
                     cell3.innerHTML = subMusitData[i].recordedBy
                 //}
                 cell4.innerHTML = subMusitData[i].eventDate
-                if (document.querySelector('#collection-select').value = 'Bulk') {
+                if (document.querySelector('#collection-select').value == 'Bulk') {
                     cell5.innerHTML = subMusitData[i].preparations
                     cell6.innerHTML = subMusitData[i].unitType
                     cell7.innerHTML = subMusitData[i].amount
@@ -166,7 +165,7 @@ const resultTable = (subMusitData, musitData) => {
                     // if (document.querySelector('#collection-select  option:checked').parentElement.label === 'Specimens og DNA') {
                     //     cell8.innerHTML = `<span class="fas fa-camera"></span>`
                     // }
-    
+                    console.log(subMusitData[i])
                     if( subMusitData[i].associatedMedia ) {   
                         cell8.innerHTML = `<span class="fas fa-camera"></span>`
                     } else if( subMusitData[i].photoIdentifiers ) {   
@@ -187,11 +186,8 @@ const resultTable = (subMusitData, musitData) => {
                        
                     // }
                     
-                   
-                    
                 }
                 cell11.innerHTML = `<input type="checkbox" id=checkbox${i} onclick="registerChecked(${i})" ></input>`
-                console.log('her')
                 if (investigateChecked(i)) {
                     document.getElementById(`checkbox${i}`).checked = true
                 } else {
@@ -224,7 +220,7 @@ const resultTable = (subMusitData, musitData) => {
             hide_column(9)
             
         }
-
+        
         showResultElements()
         document.getElementById("empty-search-button").style.display = "inline-block"
         numberOfPages = getNumberOfPages(numberPerPage)
@@ -344,12 +340,15 @@ function lastPage() {
 //  hitsPerPage eventlistener
 //  load()
 function loadList() {
+    
     const begin = ((currentPage - 1) * numberPerPage);
     const end = begin + numberPerPage;
     pageList = list.slice(begin, end);
     sessionStorage.setItem('pageList', JSON.stringify(pageList)) // pageList is the same as subMusitData other places; the part of the search result that is listed on the current page
+    
     resultTable(pageList, list)
     check();
+    
 }
 
 // disables page-buttons if necesary
@@ -376,6 +375,7 @@ function load() {
     // parsing search result
     list = JSON.parse(stringData)   
     numberOfPages = getNumberOfPages(numberPerPage)
+    
     loadList()
 }
 

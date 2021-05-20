@@ -6,6 +6,7 @@ const getStatFile = require('./utils/getStatFile')
 const footerDate = require('./utils/footerDate')
 const hbs = require('hbs')
 const helmet = require('helmet')
+const { response } = require('express')
 
 
 
@@ -103,6 +104,25 @@ app.get('/search', (req, res) => {
         catch(error) {
             console.log('error in fileread.js ' + error)
             throw new Error ('File not found ')
+        }
+    }
+})
+
+app.get('/collections', (req, res) => {
+    if (!req.query.museum) {
+        throw new Error ('no museum...')
+    }else {
+        try {
+            console.log(req.query.orgGroup)
+            let coll = fileRead.setSubcollections(req.query.museum, req.query.orgGroup, (error, results) => {
+            })
+
+            console.log(coll)
+            res.send(coll)
+        }
+        catch(error) {
+            console.log(error)
+            throw new Error ('feil app.js linje 120')
         }
     }
 })

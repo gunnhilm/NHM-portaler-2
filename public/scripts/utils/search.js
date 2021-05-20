@@ -34,6 +34,84 @@ if (sessionStorage.language) {
     sessionStorage.setItem('language', language)
 }
 
+// figures out which museum we are in
+// out: string, abbreviation for museum
+// is called by doSearch() and updateFooter()
+const getCurrentMuseum = () => {
+    console.log(window.location.pathname)
+    let museum = window.location.pathname
+    museum = museum.slice(8)
+    return museum
+}
+
+let museum = getCurrentMuseum()   
+
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1)
+}
+
+// put organism-group-buttons into array
+let buttonArray = [document.querySelector('#botanikk'),document.querySelector('#zoologi'),document.querySelector('#geologi'),document.querySelector('#other')]
+
+function addCollectionsToSelect(orgGroup) {
+    collection.style.display = 'block'
+    
+    let length = collection.options.length
+    console.log(length)
+    for (i = length-1; i >= 0; i--) {
+      collection.options[i] = null
+    }
+    
+    buttonArray.forEach(el => {
+        el.className = "white-button"
+    })
+    document.querySelector('#'+ orgGroup).className = "blue-button"
+    document.querySelector('#'+ orgGroup).style.marginRight = "10px"
+    const url_coll = urlPath + '/collections/?museum=' + museum + '&orgGroup=' + orgGroup
+   
+    const vennligst = document.createElement("option")
+    vennligst.text = textItems.vennligst[index]
+    collection.add(vennligst)
+    
+    fetch(url_coll).then((response) => {
+        if (!response.ok) {
+            throw 'noe er galt med respons til samlinger til select'
+        } else {
+            try {
+                response.text().then((data) => {
+                    const JSONdata = JSON.parse(data)  
+                    JSONdata.forEach(el => {
+                        elOption = document.createElement("option")
+                        elOption.text = capitalizeFirstLetter(el)
+                        elOption.value = el
+                        elOption.id = el
+                        collection.add(elOption)
+                    })
+                })
+            }
+            catch (error) {
+                console.log(error)
+                reject(error)
+            }
+        }
+    }).catch((error) => {
+        console.log('feil i samlinger til select. ' + error)
+    })
+}
+
+// create options for collection-select dependent on museum
+// when category of collection is chosen
+buttonArray.forEach(el => {
+    el.addEventListener('click', (e) => {
+        console.log(el.id)
+        addCollectionsToSelect(el.id)
+        e.preventDefault()
+    })
+})
+
+
+
 // download search-result to file
 // in: filename(string, name of outputfile)
 // in: text (string, the text that goes into the file, that is, the search result)
@@ -135,15 +213,6 @@ function forceDownload(url, fileName){
 }
 
 
-// figures out which museum we are in
-// out: string, abbreviation for museum
-// is called by doSearch() and updateFooter()
-const getCurrentMuseum = () => {
-    console.log(window.location.pathname)
-    let museum = window.location.pathname
-    museum = museum.slice(8)
-    return museum
-}
 
 // deletes previous search results, resets value that says if search failed, resets Boolean sorting-values for result, hides buttons, performs search
 // in: limit (number, line number of search result where search stops)
@@ -162,7 +231,6 @@ const doSearch = (limit = 20) => {
     searchFailed = false
     resetSortedBoolean() // set all booleans in propsSorted-array in PaginateAndRender.js to false
     const searchTerm = search.value
-    console.log(search.value)
     const chosenCollection = collection.value
     searchLineNumber = limit
 
@@ -207,13 +275,16 @@ const doSearch = (limit = 20) => {
                                 try {
                                     // hvis vi får flere enn 2000 treff må vi si i fra om det
                                     if(parsedResults.data.length > 1999){
-                                        nbHitsElement.textContent = 'mer enn 2000'
+                                        nbHitsElement.textContent = textItems.tooManyHits[index]
+                                        nbHitsElement.style.color = 'red'
                                     } else {
                                         nbHitsElement.textContent = parsedResults.data.length
                                     }
                                     nbHitsHeader.innerHTML = textItems.nbHitsText[index]
                                     sessionStorage.setItem('string', JSON.stringify(parsedResults.data))      
+                                    
                                     load() 
+                                    
                                     } catch (error) {
                                         errorMessage.innerHTML = textItems.errorRenderResult[index]
                                         searchFailed = true // is checked when map is drawn 
@@ -245,6 +316,8 @@ searchForm.addEventListener('submit', (e) => {
 collection.addEventListener('change', (e) => {
     e.preventDefault()
     updateFooter()
+    searchForm.style.display = "block"
+    document.querySelector('#hits-row').style.display = 'block'
     errorMessage.innerHTML = ""
 
     if (document.getElementById("search-text").style.display === "none" || document.getElementById("search-button").style.display === "none") {
@@ -298,7 +371,9 @@ const oldSearch = () => {
             } else {
                 language = sessionStorage.getItem('language')
             }
+            collection.style.display = 'block'
             renderText(language)
+            
             try {
                 document.getElementById('collection-select').value = sessionStorage.getItem('collection')
                 document.getElementById('search-text').value = sessionStorage.getItem('searchTerm')
@@ -334,9 +409,20 @@ const emptySearch = () => {
     sessionStorage.removeItem('currentPage')
     sessionStorage.removeItem('numberPerPage')
     
+    let length = collection.options.length
+    console.log(length)
+    for (i = length-1; i >= 0; i--) {
+      collection.options[i] = null
+    }
+    
+    buttonArray.forEach(el => {
+        el.className = "white-button"
+    })
+    
     collection.value = "" 
     document.getElementById("search-text").value = ""
     
+
     emptyTable()
     
     // remove old map if any and empty array

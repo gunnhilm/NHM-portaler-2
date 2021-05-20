@@ -231,6 +231,20 @@ td {
     cursor: pointer;
     min-width: 60px;
 }
+.white-button {
+    padding: 6px;
+    vertical-align: center;
+    border-radius: 4px;
+    color: black;
+    font-weight: bold;
+    border: none;
+    font-size: 16px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    min-width: 60px;
+    margin-right: 10px;
+}   
+
 .descrete-button {
     padding: 7px;
     vertical-align: center;

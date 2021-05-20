@@ -384,22 +384,10 @@ if (mediaLink) {
         let smallImage = mediaLink
         smallImage = smallImage.replace('jpeg', 'small')
         document.getElementById("photo-box").src = smallImage
-        
-        console.log(imageExists(smallImage))
-        
     }
     
 }
 
-// http-request to check if an image exists
-// in: image_url (string; name of photo)
-// is called only by a console.log in this file (?)
-function imageExists(image_url){
-    var http = new XMLHttpRequest();
-    http.open('HEAD', image_url, false);
-    http.send();
-    return http //!= 404;
-}
 //map
 drawMapObject(object)
 

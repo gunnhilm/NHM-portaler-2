@@ -61,30 +61,30 @@ const renderText = function(lang) {
     if (!location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler') & !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools') & !location.href.includes('checkCoord')) {
     //if (location.href.substring(location.href.split('/',3).join('/').length).lengt === 12) { 
     
-    // document.querySelector('#specimensOptgroup').innerHTML = textItems.specimensOptgroup[index]
-        document.querySelector('#karplanter').innerHTML = textItems.karplanter[index]
-        document.querySelector('#sopp').innerHTML = textItems.sopp[index]
-        document.querySelector('#moser').innerHTML = textItems.moser[index]
-        document.querySelector('#lav').innerHTML = textItems.lav[index]
-        document.querySelector('#alger').innerHTML = textItems.alger[index]
-        document.querySelector('#insekter').innerHTML = textItems.insekter[index]
-        document.querySelector('#evertebrater').innerHTML = textItems.evertebrater[index]
-        document.querySelector('#fisk').innerHTML = textItems.fisk[index]
-        document.querySelector('#coremaopt').label = textItems.coremaopt[index]
-        document.querySelector('#fugler').innerHTML = textItems.fugler[index]
-        document.querySelector('#pattedyr').innerHTML = textItems.pattedyr[index]
-        document.querySelector('#dna_karplanter').innerHTML = textItems.dna_karplanter[index]
-        document.querySelector('#dna_insekter').innerHTML = textItems.dna_insekter[index]
-        document.querySelector('#dna_fish_herptiles').innerHTML = textItems.fishHerp[index]
-        document.querySelector('#dna_fungi_lichens').innerHTML = textItems.fungiLichens[index]
-        document.querySelector('#dna_other').innerHTML = textItems.other[index]
-        document.querySelector('#malmer').innerHTML = textItems.malmer[index]
-        document.querySelector('#oslofeltet').innerHTML = textItems.oslofeltet[index]
-        // document.querySelector('#utenlandskeBergarter').innerHTML = textItems.utenlandskeBA[index]
-        document.querySelector('#GeoPalOpt').label = textItems.GeoPal[index]
-        document.querySelector('#otherOpt').label = textItems.otherOpt[index]
-        document.querySelector('#utad').label = textItems.utad[index]
-        document.querySelector('#bulk').label = textItems.bulk[index]
+    // // document.querySelector('#specimensOptgroup').innerHTML = textItems.specimensOptgroup[index]
+    //     document.querySelector('#karplanter').innerHTML = textItems.karplanter[index]
+    //     document.querySelector('#sopp').innerHTML = textItems.sopp[index]
+    //     document.querySelector('#moser').innerHTML = textItems.moser[index]
+    //     document.querySelector('#lav').innerHTML = textItems.lav[index]
+    //     document.querySelector('#alger').innerHTML = textItems.alger[index]
+    //     document.querySelector('#insekter').innerHTML = textItems.insekter[index]
+    //     document.querySelector('#evertebrater').innerHTML = textItems.evertebrater[index]
+    //     document.querySelector('#fisk').innerHTML = textItems.fisk[index]
+    //     document.querySelector('#coremaopt').label = textItems.coremaopt[index]
+    //     document.querySelector('#fugler').innerHTML = textItems.fugler[index]
+    //     document.querySelector('#pattedyr').innerHTML = textItems.pattedyr[index]
+    //     document.querySelector('#dna_karplanter').innerHTML = textItems.dna_karplanter[index]
+    //     document.querySelector('#dna_insekter').innerHTML = textItems.dna_insekter[index]
+    //     document.querySelector('#dna_fish_herptiles').innerHTML = textItems.fishHerp[index]
+    //     document.querySelector('#dna_fungi_lichens').innerHTML = textItems.fungiLichens[index]
+    //     document.querySelector('#dna_other').innerHTML = textItems.other[index]
+    //     document.querySelector('#malmer').innerHTML = textItems.malmer[index]
+    //     document.querySelector('#oslofeltet').innerHTML = textItems.oslofeltet[index]
+    //     // document.querySelector('#utenlandskeBergarter').innerHTML = textItems.utenlandskeBA[index]
+    //     document.querySelector('#GeoPalOpt').label = textItems.GeoPal[index]
+    //     document.querySelector('#otherOpt').label = textItems.otherOpt[index]
+    //     document.querySelector('#utad').label = textItems.utad[index]
+    //     document.querySelector('#bulk').label = textItems.bulk[index]
         
     }
 
@@ -92,12 +92,16 @@ const renderText = function(lang) {
     if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler')& !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools') & !location.href.includes('checkCoord')) {
     //if (location.href.substring(location.href.split('/',3).join('/').length).length === 12) { 
 
-        document.querySelector('#vennligst').innerHTML = textItems.vennligst[index] 
+        //document.querySelector('#vennligst').innerHTML = textItems.vennligst[index] 
         
+        document.querySelector('#botanikk').innerHTML = textItems.botanikk[index]
+        document.querySelector('#zoologi').innerHTML = textItems.zoologi[index]
+        document.querySelector('#geologi').innerHTML = textItems.geologi[index]
+        document.querySelector('#other').innerHTML = textItems.otherCollections[index]
         document.querySelector('#search-button').innerHTML = textItems.searchButton[index]
         document.querySelector('#empty-search-button').innerHTML = textItems.emptySearch[index]
         document.querySelector('#header-search-page').innerHTML = textItems.headerSearchPage[index]
-        //document.querySelector('#select-collection-label').innerHTML = textItems.selectCollectionLabel[index]
+        //document.querySelector('#select-collection-label').innerHTML = textItems.selectCollection[index]
         document.querySelector('#hits-per-page').innerHTML = textItems.hitsPerPage[index]
         if (sessionStorage.getItem('string')) {
             document.getElementById("head-nb-hits").innerHTML = textItems.nbHitsText[index]
@@ -227,15 +231,19 @@ const renderText = function(lang) {
         document.querySelector('#Fungi_header').innerHTML = textItems.sopp[index]
         document.querySelector('#Lichen_header').innerHTML = textItems.lav[index]
         document.querySelector('#Insects_header').innerHTML = textItems.insekter[index]
-        document.querySelector('#Fish_header').innerHTML = textItems.fisk[index]
-        document.querySelector('#Algae_header').innerHTML = textItems.alger[index]
-        document.querySelector('#Birds_header').innerHTML = textItems.fugler[index]
-        document.querySelector('#Mammals_header').innerHTML = textItems.pattedyr[index]
-        //document.querySelector('#malmer_header').innerHTML = textItems.malmer[index]
-        //document.querySelector('#oslofeltet_header').innerHTML = textItems.oslofeltet[index]
-        // document.querySelector('#utenlandskeBA_header').innerHTML = textItems.utenlandskeBA[index]
-        document.querySelector('#Evertebrates_header').innerHTML = textItems.evertebrater[index]
-        
+        if(window.location.href.includes('/nhm')) {
+            //document.querySelector('#Fish_header').innerHTML = textItems.fisk[index]
+            document.querySelector('#Algae_header').innerHTML = textItems.alger[index]
+            document.querySelector('#Birds_header').innerHTML = textItems.fugler[index]
+            document.querySelector('#Mammals_header').innerHTML = textItems.pattedyr[index]
+            //document.querySelector('#malmer_header').innerHTML = textItems.malmer[index]
+            //document.querySelector('#oslofeltet_header').innerHTML = textItems.oslofeltet[index]
+            // document.querySelector('#utenlandskeBA_header').innerHTML = textItems.utenlandskeBA[index]
+        }
+        if(!window.location.href.includes('/nhm')) {
+            document.querySelector('#Evertebrates_header').innerHTML = textItems.evertebrater[index]
+        }
+        document.querySelector('#graph_header').innerHTML = textItems.graphHeader[index]
     }
 
     // about page
@@ -254,6 +262,8 @@ const renderText = function(lang) {
     if (location.href.includes('journaler')) {
         document.querySelector('#header-journal-page').innerHTML = textItems.journalHeader[index]
         document.querySelector('#text-journal-page').innerHTML = textItems.journalText[index]
+        document.querySelector('#search-button').innerHTML = textItems.searchButton[index]
+        document.getElementById("head-nb-hits").innerHTML = textItems.nbHitsText[index]
     }
 
     // getDOI page

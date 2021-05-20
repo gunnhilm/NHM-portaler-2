@@ -10,6 +10,7 @@
 },
 {
     "source": "musit",
+    "orgGroup": "botanikk",
     "name": "alger",
     "zipFileName": "alge_o",
     "mediaFile": "_media",
@@ -17,6 +18,7 @@
 },
 {
     "source": "corema",
+    "orgGroup": "DNA",
     "name": "dna_other",
     "zipFileName": "occurrence",
     "mediaFile": "_multimedia",
@@ -25,6 +27,7 @@
 },
 {
     "source": "musit",
+    "orgGroup": "botanikk",
     "name": "karplanter",
     "zipFileName": "vascular_o",
     "mediaFile": "_media",
@@ -32,6 +35,7 @@
 },
 {
     "source": "musit",
+    "orgGroup": "zoologi",
     "name": "entomologi",
     "zipFileName": "entomology_nhmo",
     "mediaFile": "_media",
@@ -39,6 +43,7 @@
 },
 {
     "source": "musit",
+    "orgGroup": "botanikk",
     "name": "lav",
     "zipFileName": "lichens_o",
     "mediaFile": "_media",
@@ -46,6 +51,7 @@
 },
 {
     "source": "musit",
+    "orgGroup": "botanikk",
     "name": "moser",
     "zipFileName": "moss_o",
     "mediaFile": "_media",
@@ -53,6 +59,7 @@
 },
 {
     "source": "musit",
+    "orgGroup": "botanikk",
     "name": "sopp",
     "zipFileName": "fungus_o",
     "mediaFile": "_media",
@@ -60,6 +67,7 @@
 },
 {
     "source": "corema",
+    "orgGroup": "zoologi",
     "name": "mammals",
     "zipFileName": "occurrence",
     "mediaFile": "_multimedia",
@@ -68,6 +76,7 @@
 },
 {
     "source": "corema",
+    "orgGroup": "zoologi",
     "name": "birds",
     "zipFileName": "occurrence",
     "mediaFile": "_multimedia",
@@ -76,6 +85,7 @@
 },
 {
     "source": "corema",
+    "orgGroup": "DNA",
     "name": "dna_entomologi",
     "zipFileName": "occurrence",
     "mediaFile": "_multimedia",
@@ -84,6 +94,7 @@
 },
 {
     "source": "corema",
+    "orgGroup": "DNA",
     "name": "dna_fish_herptiles",
     "zipFileName": "occurrence",
     "mediaFile": "_multimedia",
@@ -92,6 +103,7 @@
 },
 {
     "source": "corema",
+    "orgGroup": "DNA",
     "name": "dna_fungi_lichens",
     "zipFileName": "occurrence",
     "mediaFile": "_multimedia",
@@ -100,6 +112,7 @@
 },
 {
     "source": "corema",
+    "orgGroup": "DNA",
     "name": "dna_karplanter",
     "zipFileName": "occurrence",
     "mediaFile": "_multimedia",
@@ -108,6 +121,7 @@
 },
 {
     "source": "access",
+    "orgGroup": "geologi",
     "name": "malmer",
     "zipFileName": "occurrence",
     "mediaFile": "",
@@ -116,6 +130,7 @@
 },
 {
     "source": "access",
+    "orgGroup": "geologi",
     "name": "utenlandskeBergarter",
     "zipFileName": "occurrence",
     "mediaFile": "",
@@ -124,6 +139,7 @@
 },
 {
     "source": "access",
+    "orgGroup": "geologi",
     "name": "oslofeltet",
     "zipFileName": "occurrence",
     "mediaFile": "",
@@ -132,6 +148,7 @@
 },
 {
     "source": "access",
+    "orgGroup": "zoologi",
     "name": "fisk",
     "zipFileName": "occurrence",
     "mediaFile": "",
@@ -140,6 +157,7 @@
 },
 {
     "source": "excel",
+    "orgGroup": "other",
     "name": "utad",
     "zipFileName": "occurrence",
     "mediaFile": "",
@@ -148,6 +166,7 @@
 },
 {
     "source": "excel",
+    "orgGroup": "other",
     "name": "bulk",
     "zipFileName": "occurrence",
     "mediaFile": "",
