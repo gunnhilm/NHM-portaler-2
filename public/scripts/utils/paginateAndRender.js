@@ -165,7 +165,6 @@ const resultTable = (subMusitData, musitData) => {
                     // if (document.querySelector('#collection-select  option:checked').parentElement.label === 'Specimens og DNA') {
                     //     cell8.innerHTML = `<span class="fas fa-camera"></span>`
                     // }
-                    console.log(subMusitData[i])
                     if( subMusitData[i].associatedMedia ) {   
                         cell8.innerHTML = `<span class="fas fa-camera"></span>`
                     } else if( subMusitData[i].photoIdentifiers ) {   

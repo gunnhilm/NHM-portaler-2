@@ -346,6 +346,7 @@ const coll = sessionStorage.getItem('collection')
 let mediaLink
 let imageList
 if ( coll === 'birds' || coll === 'mammals' || coll === 'dna_fish_herptiles' || coll === 'dna_other') {
+    
     mediaLink = object.photoIdentifiers
 } else {
     mediaLink = object.associatedMedia

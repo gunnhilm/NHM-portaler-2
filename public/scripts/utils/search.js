@@ -55,6 +55,8 @@ function capitalizeFirstLetter(string) {
 let buttonArray = [document.querySelector('#botanikk'),document.querySelector('#zoologi'),document.querySelector('#geologi'),document.querySelector('#other')]
 
 function addCollectionsToSelect(orgGroup) {
+    sessionStorage.setItem('organismGroup', orgGroup)
+    
     collection.style.display = 'block'
     
     let length = collection.options.length
@@ -362,6 +364,56 @@ const updateFooter = () => {
 // calls renderText(language), updateFooter(), load()
 // is called in search.js, that is, every time main page is rendered
 const oldSearch = () => {
+    console.log(sessionStorage.getItem('organismGroup') + 'blabla')
+    console.log(sessionStorage.getItem('collection'))
+    collection.value = sessionStorage.getItem('collection')
+
+    orgGroup = sessionStorage.getItem('organismGroup')
+    ///////gjør dette til en funksjon jeg kan kalle opp
+    const url_coll = urlPath + '/collections/?museum=' + museum + '&orgGroup=' + orgGroup
+    const vennligst = document.createElement("option")
+    vennligst.text = textItems.vennligst[index]
+    //collection.add(vennligst)
+    
+
+
+    fetch(url_coll).then((response) => {
+        if (!response.ok) {
+            throw 'noe er galt med respons til samlinger til select'
+        } else {
+            try {
+                response.text().then((data) => {
+                    const JSONdata = JSON.parse(data)  
+                    JSONdata.forEach(el => {
+                        elOption = document.createElement("option")
+                        elOption.text = capitalizeFirstLetter(el)
+                        elOption.value = el
+                        elOption.id = el
+                        collection.add(elOption)
+                    })
+                })
+            }
+            catch (error) {
+                console.log(error)
+                reject(error)
+            }
+        }
+    }).catch((error) => {
+        console.log('feil i samlinger til select. ' + error)
+    })
+
+
+
+    if (sessionStorage.getItem('organismGroup')) {
+        // gå gjennom alle knappene og aktiver den relevante
+        buttonArray.forEach(el => {
+            if (sessionStorage.getItem('organismGroup') == el.id) {
+                console.log(el.id)
+                el.className = "blue-button"
+                
+            }
+        })
+    }
     if (sessionStorage.getItem('collection')) {
         if (sessionStorage.getItem('string')) { //hvis det er søkeresultater i sesion storage, så skal disse vises
             // render correct language
@@ -402,6 +454,7 @@ oldSearch()
 //      emptyResultElements() in resultElementsOnOff.js
 // is called by emptySearchButton.eventlistener, upateFooter() when error
 const emptySearch = () => {
+    
     sessionStorage.removeItem('string')
     sessionStorage.removeItem('collection')
     sessionStorage.removeItem('searchLineNumber')
@@ -409,17 +462,26 @@ const emptySearch = () => {
     sessionStorage.removeItem('currentPage')
     sessionStorage.removeItem('numberPerPage')
     
-    let length = collection.options.length
-    console.log(length)
-    for (i = length-1; i >= 0; i--) {
-      collection.options[i] = null
+    if (sessionStorage.getItem('organismGroup')) {
+        // gå gjennom alle knappene og aktiver den relevante
+        buttonArray.forEach(el => {
+            if (sessionStorage.getItem('organismGroup') == el.id) {
+                console.log(el.id)
+                el.className = "blue-button"
+                
+            }
+        })
     }
+    // let length = collection.options.length
+    // console.log(length)
+    // for (i = length-1; i >= 0; i--) {
+    //   collection.options[i] = null
+    // }
     
-    buttonArray.forEach(el => {
-        el.className = "white-button"
-    })
+    // buttonArray.forEach(el => {
+    //     el.className = "white-button"
+    // })
     
-    collection.value = "" 
     document.getElementById("search-text").value = ""
     
 
@@ -437,7 +499,6 @@ const emptySearch = () => {
     numberOfPages = 0; // calculates the total number of pages
     document.getElementById('number-per-page').value = '20'
 }
-
 emptySearchButton.addEventListener('click', (e) => {
     e.preventDefault()
     // erase the last search result
