@@ -100,8 +100,9 @@ const resultTable = (subMusitData, musitData) => {
             cell10.className += "cell10";
             const cell11 = row.insertCell(10)
             if (i === -1) {     // her kommer tittellinjen
-                if (document.querySelector('#collection-select').value == 'Bulk') {
-                    fillResultHeadersBulk(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell11,musitData)
+                console.log(document.querySelector('#collection-select').value)
+                if (document.querySelector('#collection-select').value == 'bulk') {
+                    fillResultHeadersBulk(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell11,musitData)
                 } else {
                     fillResultHeaders(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell10,cell11,musitData)
                 }
@@ -153,10 +154,12 @@ const resultTable = (subMusitData, musitData) => {
                     cell3.innerHTML = subMusitData[i].recordedBy
                 //}
                 cell4.innerHTML = subMusitData[i].eventDate
-                if (document.querySelector('#collection-select').value == 'Bulk') {
+                if (document.querySelector('#collection-select').value == 'bulk') {
                     cell5.innerHTML = subMusitData[i].preparations
-                    cell6.innerHTML = subMusitData[i].unitType
-                    cell7.innerHTML = subMusitData[i].amount
+                    cell6.innerHTML = subMusitData[i].country
+                    cell7.innerHTML = subMusitData[i].stateProvince
+                    cell8.innerHTML = subMusitData[i].dynamicProperties
+                    cell9.style.display = 'none'
                 } else {
                     cell5.innerHTML = subMusitData[i].country
                     if (subMusitData[i].county) {cell6.innerHTML = subMusitData[i].county}
