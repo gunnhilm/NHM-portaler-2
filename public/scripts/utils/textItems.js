@@ -63,6 +63,7 @@ const textItems = {
     headerLocality: ["Sted", "Locality"],
     headerCoremaNo: ["Corema no", "Corema no"],
     headerPreparations: ["Type materiale","Type of material"],
+    headerPlacement: ["Plassering", "Placement"],
     //headerUnitType: ["Type batch", "Type of batch"],
     //headerAmount: ["Antall batcher", "Number of batches"],
     headerStateProvince: ["Fylke", "County"],

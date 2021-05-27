@@ -148,6 +148,7 @@ console.log(sessionStorage.getItem('collection'))
 // put content in html-boxes
 renderText(language)
 
+
 if (!sessionStorage.getItem('collection').includes('dna') & !sessionStorage.getItem('collection').includes('birds') & !sessionStorage.getItem('collection').includes('mammals')) {
     document.querySelector("#musit-regno").innerHTML = regnoEl
 } else {
@@ -155,12 +156,14 @@ if (!sessionStorage.getItem('collection').includes('dna') & !sessionStorage.getI
 }
 
 document.querySelector("#species-name").innerHTML = `<span class="italic">${object.scientificName}</span>`
-document.querySelector("#det").innerHTML =  `<span>${object.identifiedBy}</span>`
-document.querySelector("#det-date").innerHTML = `<span>${object.dateIdentified}</span>`
 
 document.querySelector("#coll-date").innerHTML = `<span>${object.eventDate}</span>`
 document.querySelector("#coll").innerHTML = `<span>${object.recordedBy}</span>`
 document.querySelector("#locality").innerHTML = `<span>${concatLocality}</span>`
+
+document.querySelector("#det").innerHTML =  `<span>${object.identifiedBy}</span>`
+document.querySelector("#det-date").innerHTML = `<span>${object.dateIdentified}</span>`
+
 document.querySelector("#coordinates").innerHTML = `<span>${coordinates(object)}</span>`
 document.querySelector("#habitat").innerHTML = habitat
 document.querySelector("#artsobsID").innerHTML = artsobsID

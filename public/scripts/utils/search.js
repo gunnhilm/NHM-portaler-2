@@ -57,10 +57,11 @@ let buttonArray = [document.querySelector('#botanikk'),document.querySelector('#
 function addCollectionsToSelect(orgGroup) {
     sessionStorage.setItem('organismGroup', orgGroup)
     
+    document.querySelector('#select-cell').style.display = 'block'
     collection.style.display = 'block'
     
     let length = collection.options.length
-    console.log(length)
+    
     for (i = length-1; i >= 0; i--) {
       collection.options[i] = null
     }
@@ -68,44 +69,63 @@ function addCollectionsToSelect(orgGroup) {
     buttonArray.forEach(el => {
         el.className = "white-button"
     })
-    document.querySelector('#'+ orgGroup).className = "blue-button"
-    document.querySelector('#'+ orgGroup).style.marginRight = "10px"
-    const url_coll = urlPath + '/collections/?museum=' + museum + '&orgGroup=' + orgGroup
-   
+    
     const vennligst = document.createElement("option")
     vennligst.text = textItems.vennligst[index]
+    vennligst.value = 'vennligst'
     collection.add(vennligst)
-    
-    fetch(url_coll).then((response) => {
-        if (!response.ok) {
-            throw 'noe er galt med respons til samlinger til select'
-        } else {
-            try {
-                response.text().then((data) => {
-                    const JSONdata = JSON.parse(data)  
-                    JSONdata.forEach(el => {
-                        elOption = document.createElement("option")
-                        elOption.text = capitalizeFirstLetter(el)
-                        elOption.value = el
-                        elOption.id = el
-                        collection.add(elOption)
+
+    if (orgGroup) {
+        document.querySelector('#'+ orgGroup).className = "blue-button"
+        document.querySelector('#'+ orgGroup).style.marginRight = "10px"
+        const url_coll = urlPath + '/collections/?museum=' + museum + '&orgGroup=' + orgGroup
+        
+        fetch(url_coll).then((response) => {
+            if (!response.ok) {
+                throw 'noe er galt med respons til samlinger til select'
+            } else {
+                try {
+                    response.text().then((data) => {
+                        const JSONdata = JSON.parse(data)  
+                        JSONdata.forEach(el => {
+                            elOption = document.createElement("option")
+                            elOption.text = capitalizeFirstLetter(el)
+                            elOption.value = el
+                            elOption.id = el
+                            collection.add(elOption)
+                        })
+                        if (sessionStorage.getItem('collection')) {
+                            collection.value = sessionStorage.getItem('collection')
+                        } else {
+                            collection.value = 'vennligst'
+                        }
                     })
-                })
+                }
+                catch (error) {
+                    console.log(error)
+                    reject(error)
+                }
             }
-            catch (error) {
-                console.log(error)
-                reject(error)
-            }
-        }
-    }).catch((error) => {
-        console.log('feil i samlinger til select. ' + error)
-    })
+        }).catch((error) => {
+            console.log('feil i samlinger til select. ' + error)
+        })
+        
+    } else {
+        collection.value = 'vennligst'
+    }
+    
+    
 }
 
 // create options for collection-select dependent on museum
 // when category of collection is chosen
 buttonArray.forEach(el => {
     el.addEventListener('click', (e) => {
+        console.log(document.getElementById('search-form').style.display)
+        if (document.getElementById('search-form').style.display) {
+            emptySearch()
+            console.log('empty search')
+        }
         console.log(el.id)
         addCollectionsToSelect(el.id)
         e.preventDefault()
@@ -364,45 +384,13 @@ const updateFooter = () => {
 // calls renderText(language), updateFooter(), load()
 // is called in search.js, that is, every time main page is rendered
 const oldSearch = () => {
-    console.log(sessionStorage.getItem('organismGroup') + 'blabla')
-    console.log(sessionStorage.getItem('collection'))
-    collection.value = sessionStorage.getItem('collection')
+        // collection.value = sessionStorage.getItem('collection')
+    //console.log(sessionStorage.getItem('collection'))
 
     orgGroup = sessionStorage.getItem('organismGroup')
-    ///////gjør dette til en funksjon jeg kan kalle opp
-    const url_coll = urlPath + '/collections/?museum=' + museum + '&orgGroup=' + orgGroup
-    const vennligst = document.createElement("option")
-    vennligst.text = textItems.vennligst[index]
-    //collection.add(vennligst)
+    addCollectionsToSelect(orgGroup)
+    document.getElementById("search-form").style.display = "inline" 
     
-
-
-    fetch(url_coll).then((response) => {
-        if (!response.ok) {
-            throw 'noe er galt med respons til samlinger til select'
-        } else {
-            try {
-                response.text().then((data) => {
-                    const JSONdata = JSON.parse(data)  
-                    JSONdata.forEach(el => {
-                        elOption = document.createElement("option")
-                        elOption.text = capitalizeFirstLetter(el)
-                        elOption.value = el
-                        elOption.id = el
-                        collection.add(elOption)
-                    })
-                })
-            }
-            catch (error) {
-                console.log(error)
-                reject(error)
-            }
-        }
-    }).catch((error) => {
-        console.log('feil i samlinger til select. ' + error)
-    })
-
-
 
     if (sessionStorage.getItem('organismGroup')) {
         // gå gjennom alle knappene og aktiver den relevante
@@ -428,6 +416,7 @@ const oldSearch = () => {
             
             try {
                 document.getElementById('collection-select').value = sessionStorage.getItem('collection')
+                console.log('try')
                 document.getElementById('search-text').value = sessionStorage.getItem('searchTerm')
                 nbHitsElement.innerHTML = JSON.parse(sessionStorage.getItem('string')).length
             } catch (error) {
@@ -447,7 +436,10 @@ const oldSearch = () => {
 }
 
 //run the function
-oldSearch() 
+if (sessionStorage.getItem('organismGroup')) {
+    oldSearch() 
+}
+
 
 // empties session’s search-result (sessionStorage), removes elements from page, resets pagination variables
 // calls emptyTable() in resultElementsOnOff.js
@@ -472,6 +464,8 @@ const emptySearch = () => {
             }
         })
     }
+
+    collection.value = "vennligst"
     // let length = collection.options.length
     // console.log(length)
     // for (i = length-1; i >= 0; i--) {
@@ -482,9 +476,10 @@ const emptySearch = () => {
     //     el.className = "white-button"
     // })
     
+    document.getElementById('search-form').style.display = "none"
     document.getElementById("search-text").value = ""
     
-
+    document.getElementById('hits-row').style.display = "none"
     emptyTable()
     
     // remove old map if any and empty array
