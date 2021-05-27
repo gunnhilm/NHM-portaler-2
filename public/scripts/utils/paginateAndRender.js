@@ -10,7 +10,7 @@ if(!window.location.href.includes('/nhm')) {
     document.querySelector('#DNAopt').style.display = 'none'
     document.querySelector('#GeoPalOpt').style.display = 'none'
     document.querySelector('#alger').style.display = 'none'
-    document.querySelector('#fisk').style.display = 'none'
+    //document.querySelector('#fisk').style.display = 'none'
     document.querySelector('#otherOpt').style.display = 'none'
 } else {
     document.querySelector('#evertebrater').style.display = 'none'
