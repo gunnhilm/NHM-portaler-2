@@ -10,21 +10,15 @@
 },
 {
     "source": "musit",
+    "orgGroup": "botanikk",
     "name": "alger",
     "zipFileName": "alge_o",
     "mediaFile": "_media",
     "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/alge_o.zip"
 },
 {
-    "source": "corema",
-    "name": "dna_other",
-    "zipFileName": "occurrence",
-    "mediaFile": "_multimedia",
-    "url": "https://ipt.gbif.no/archive.do?r=o_dna_other",
-    "akronym": "NHMO-DOT"
-},
-{
     "source": "musit",
+    "orgGroup": "botanikk",
     "name": "karplanter",
     "zipFileName": "vascular_o",
     "mediaFile": "_media",
@@ -32,13 +26,7 @@
 },
 {
     "source": "musit",
-    "name": "entomologi",
-    "zipFileName": "entomology_nhmo",
-    "mediaFile": "_media",
-    "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/entomology_nhmo.zip"
-},
-{
-    "source": "musit",
+    "orgGroup": "botanikk",
     "name": "lav",
     "zipFileName": "lichens_o",
     "mediaFile": "_media",
@@ -46,6 +34,7 @@
 },
 {
     "source": "musit",
+    "orgGroup": "botanikk",
     "name": "moser",
     "zipFileName": "moss_o",
     "mediaFile": "_media",
@@ -53,6 +42,7 @@
 },
 {
     "source": "musit",
+    "orgGroup": "botanikk",
     "name": "sopp",
     "zipFileName": "fungus_o",
     "mediaFile": "_media",
@@ -60,38 +50,7 @@
 },
 {
     "source": "corema",
-    "name": "mammals",
-    "zipFileName": "occurrence",
-    "mediaFile": "_multimedia",
-    "url": "https://ipt.gbif.no/archive.do?r=o_mammals",
-    "akronym": "NHMO-BMA"
-},
-{
-    "source": "corema",
-    "name": "birds",
-    "zipFileName": "occurrence",
-    "mediaFile": "_multimedia",
-    "url": "https://ipt.gbif.no/archive.do?r=birds",
-    "akronym": "NHMO-BI"
-},
-{
-    "source": "corema",
-    "name": "dna_entomologi",
-    "zipFileName": "occurrence",
-    "mediaFile": "_multimedia",
-    "url": "https://ipt.gbif.no/archive.do?r=o_dna_arthropods",
-    "akronym": "NHMO-DAR"
-},
-{
-    "source": "corema",
-    "name": "dna_fish_herptiles",
-    "zipFileName": "occurrence",
-    "mediaFile": "_multimedia",
-    "url": "https://ipt.gbif.no/archive.do?r=o_dna_fish_herptiles",
-    "akronym": "NHMO-DFH"
-},
-{
-    "source": "corema",
+    "orgGroup": "botanikk",
     "name": "dna_fungi_lichens",
     "zipFileName": "occurrence",
     "mediaFile": "_multimedia",
@@ -100,6 +59,7 @@
 },
 {
     "source": "corema",
+    "orgGroup": "botanikk",
     "name": "dna_karplanter",
     "zipFileName": "occurrence",
     "mediaFile": "_multimedia",
@@ -107,7 +67,61 @@
     "akronym": "O-DP"
 },
 {
+    "source": "musit",
+    "orgGroup": "zoologi",
+    "name": "entomologi",
+    "zipFileName": "entomology_nhmo",
+    "mediaFile": "_media",
+    "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/entomology_nhmo.zip"
+},
+{
+    "source": "corema",
+    "orgGroup": "zoologi",
+    "name": "mammals",
+    "zipFileName": "occurrence",
+    "mediaFile": "_multimedia",
+    "url": "https://ipt.gbif.no/archive.do?r=o_mammals",
+    "akronym": "NHMO-BMA"
+},
+{
+    "source": "corema",
+    "orgGroup": "zoologi",
+    "name": "birds",
+    "zipFileName": "occurrence",
+    "mediaFile": "_multimedia",
+    "url": "https://ipt.gbif.no/archive.do?r=birds",
+    "akronym": "NHMO-BI"
+},
+{
+    "source": "corema",
+    "orgGroup": "zoologi",
+    "name": "dna_entomologi",
+    "zipFileName": "occurrence",
+    "mediaFile": "_multimedia",
+    "url": "https://ipt.gbif.no/archive.do?r=o_dna_arthropods",
+    "akronym": "NHMO-DAR"
+},
+{
+    "source": "corema",
+    "orgGroup": "zoologi",
+    "name": "dna_fish_herptiles",
+    "zipFileName": "occurrence",
+    "mediaFile": "_multimedia",
+    "url": "https://ipt.gbif.no/archive.do?r=o_dna_fish_herptiles",
+    "akronym": "NHMO-DFH"
+},
+{
+    "source": "corema",
+    "orgGroup": "zoologi",
+    "name": "dna_other",
+    "zipFileName": "occurrence",
+    "mediaFile": "_multimedia",
+    "url": "https://ipt.gbif.no/archive.do?r=o_dna_other",
+    "akronym": "NHMO-DOT"
+},
+{
     "source": "access",
+    "orgGroup": "geologi",
     "name": "malmer",
     "zipFileName": "occurrence",
     "mediaFile": "",
@@ -116,6 +130,7 @@
 },
 {
     "source": "access",
+    "orgGroup": "geologi",
     "name": "utenlandskeBergarter",
     "zipFileName": "occurrence",
     "mediaFile": "",
@@ -124,6 +139,7 @@
 },
 {
     "source": "access",
+    "orgGroup": "geologi",
     "name": "oslofeltet",
     "zipFileName": "occurrence",
     "mediaFile": "",
@@ -132,6 +148,7 @@
 },
 {
     "source": "access",
+    "orgGroup": "zoologi",
     "name": "fisk",
     "zipFileName": "occurrence",
     "mediaFile": "",
@@ -140,6 +157,7 @@
 },
 {
     "source": "excel",
+    "orgGroup": "other",
     "name": "utad",
     "zipFileName": "occurrence",
     "mediaFile": "",
@@ -148,6 +166,7 @@
 },
 {
     "source": "excel",
+    "orgGroup": "other",
     "name": "bulk",
     "zipFileName": "occurrence",
     "mediaFile": "",

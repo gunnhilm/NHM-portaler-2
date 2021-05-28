@@ -30,42 +30,22 @@
                                 {{!-- table with all text-fields to the left except title --}}
                                 <table width="100%"> 
                                     <tr>
+                                        <td style="vertical-align: middle" colspan="2" id ="button-cell">
+                                            
+                                            {{!-- <button class="white-button" id="botanikk">Botanikk</button>
+                                            <button class="white-button" id="zoologi">Zoologi</button>
+                                            <button class="white-button" id="geologi">Geologi</button>
+                                            <button class="white-button" id="paleontologi">Paleontologi</button>
+                                            <button class="white-button" id="other">Annet</button> --}}
+                                            <br>
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         {{!-- cell-row with select-collection and search -button --}}
-                                        <td style="vertical-align: middle" colspan="2">
-                                            <label for="collection-select" id="select-collection-label" ></label>
-                                            <select id="collection-select"  style=" height:30px; border-radius:4px; overflow-y:auto" >
-                                                <option value="" id="vennligst" >--Velg en samling--</option>
-                                            <optgroup label="Specimens" id="specimensOptgroup">                                                
-                                                <option value="karplanter" id="karplanter">Karplanter</option>
-                                                <option value="sopp" id="sopp">Sopp</option>
-                                                <option value="moser" id="moser">Moser</option>
-                                                <option value="lav" id="lav">Lav</option>
-                                                <option value="alger" id="alger">Alger</option>
-                                                <option value="entomologi" id="insekter">Insekter</option>
-                                                <option value="evertebrater" id="evertebrater">Evertebrater</option>
-                                                {{!-- <option value="fisk" id="fisk">Fisk</option> --}}
-                                            </optgroup>
-                                            <optgroup label ="Specimens og DNA" id ='coremaopt'>
-                                                <option value="birds" id="fugler">Fugler</option>
-                                                <option value="mammals" id="pattedyr">Pattedyr</option>
-                                            </optgroup>
-                                            <optgroup label="DNA" id="DNAopt">
-                                                <option value="dna_karplanter" id="dna_karplanter">Karplanter - DNA</option>
-                                                <option value="dna_entomologi" id="dna_insekter">Insekter - DNA</option>
-                                                <option value="dna_fish_herptiles" id="dna_fish_herptiles">Fisk og herptiler - DNA</option>
-                                                <option value="dna_fungi_lichens" id="dna_fungi_lichens">Sopp og lav - DNA</option>
-                                                <option value="dna_other" id="dna_other">Andre grupper - DNA</option>
-                                            </optgroup>
-                                            <optgroup label="GeoPal" id="GeoPalOpt">
-                                                <option value="malmer" id="malmer">Malmer</option>
-                                                <option value="oslofeltet" id="oslofeltet">Oslofeltet</option>
-                                                <option value="utenlandskeBergarter" id="utenlandskeBergarter">Utenlandske bergarter</option>
-                                            </optgroup>
-                                            <optgroup label="Other" id="otherOpt">
-                                                {{!-- <option value="utad" id="utad">Utad-samling</option> --}}
-                                                <option value="bulk" id="bulk">Bulksamling</option>
-                                            </optgroup>
-                                            </select>
+                                        <td id = 'select-cell' style="vertical-align: middle; display: none;" colspan="2">
+                                            <br>
+                                            <label for="collection-select" id="select-collection-label" style="display:none"></label>
+                                            <select id="collection-select"  style=" height:30px; border-radius:4px; overflow-y:auto; display:none" ></select>
                                         </td>
                                         <td  colspan="2">
                                             <button class="blue-button" id="empty-search-button" style="display:none" title="Slett søke resultater">Tøm søk</button>
@@ -75,9 +55,9 @@
                                         <td colspan = "3">
                                             <br>
                                             <br>
-                                            <form>
+                                            <form style="display:none" id="search-form">
                                                 <div  style="float: left; width:100%">
-                                                    <input id="search-text" type="text" class="input" style="height:30px;  width:99%; border-radius:4px; border-width: 1px; "   title="Skriv innnsøke ord">
+                                                    <input id="search-text" type="text" class="input" style="height:30px;  width:99%; border-radius:4px; border-width: 1px; "   title="Skriv inn søkeord">
                                                     
                                                 </div>
                                                 <br><br><br>
@@ -89,9 +69,9 @@
                                             <img id="please-wait" src="/museum/images/ajax-loader.gif" alt="Please Wait"  style="display:none" valign="top">
                                         </td>
                                     </tr>
-                                    <tr >    
-                                        <td id="hits-per-page" style="vertical-align:middle; white-space: nowrap; width: 110px;" title="Antall treff per side"></td>
-                                        <td  style="vertical-align:middle; " >
+                                    <tr id="hits-row" style="display:none">    
+                                        <td id="hits-per-page" style="vertical-align:middle; white-space: nowrap; width: 110px; " title="Antall treff per side"></td>
+                                        <td  style="vertical-align:middle;  " >
                                             <select id="number-per-page" style=" height:30px; border-radius:4px;" title="Antall treff per side">
                                                 <option value="10">10</option>
                                                 <option value="20" selected="selected">20</option>
@@ -104,11 +84,15 @@
                                     </tr>
                                     <tr>
                                         <td><br><br></td>
+                                        
                                     </tr>
                                     <tr>    
-                                        <td style="vertical-align:middle; white-space: nowrap; "  id="head-nb-hits"></td>
-                                        <td  style="vertical-align:middle; white-space: nowrap;" id="nb-hits" ></td>
-                                        <td style="vertical-align: middle;">
+                                        <td style="vertical-align:middle; white-space: nowrap; ">
+                                            <div id="head-nb-hits"style="display: inline-block"></div>
+                                            <div id= "nb-hits"style="display: inline-block"></div>
+                                        </td>
+                                        <td  style="vertical-align:middle; white-space: nowrap;" ></td>
+                                        <td style="vertical-align: middle; ">
                                             <button class="blue-button" id="download-button"  style="display:none" title="Last ned resultater">Last ned resultat<i class="fa fa-download"></i></button>
                                         </td>
                                    

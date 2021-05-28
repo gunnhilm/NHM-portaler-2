@@ -44,6 +44,9 @@ if (!sessionStorage.getItem('propsSorted')) {
         {id: 'preparations',
         sortedOnce: false,
         sortedTwice: false},
+        {id: 'placement',
+        sortedOnce: false,
+        sortedTwice: false},
         // {id: 'unitType',
         // sortedOnce: false,
         // sortedTwice: false},
@@ -53,7 +56,7 @@ if (!sessionStorage.getItem('propsSorted')) {
         {id: 'stateProvince',
         sortedOnce: false,
         sortedTwice: false},
-        {id: 'dynamicProperties',
+        {id: 'note',
         sortedOnce: false,
         sortedTwice: false}
     ]

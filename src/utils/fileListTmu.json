@@ -9,6 +9,7 @@
 },
 {
     "source": "musit",
+    "orgGroup": "botanikk",
     "name": "karplanter",
     "zipFileName": "vascular_trom",
     "mediaFile": "_media",
@@ -16,13 +17,7 @@
 },
 {
     "source": "musit",
-    "name": "entomologi",
-    "zipFileName": "entomology_tsz",
-    "mediaFile": "_media",
-    "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/entomology_tsz.zip"
-},
-{
-    "source": "musit",
+    "orgGroup": "botanikk",
     "name": "lav",
     "zipFileName": "lichens_trom",
     "mediaFile": "_media",
@@ -30,6 +25,7 @@
 },
 {
     "source": "musit",
+    "orgGroup": "botanikk",
     "name": "moser",
     "zipFileName": "moss_trom",
     "mediaFile": "_media",
@@ -37,6 +33,7 @@
 },
 {
     "source": "musit",
+    "orgGroup": "botanikk",
     "name": "sopp",
     "zipFileName": "fungus_trom",
     "mediaFile": "_media",
@@ -44,6 +41,15 @@
 },
 {
     "source": "musit",
+    "orgGroup": "zoologi",
+    "name": "entomologi",
+    "zipFileName": "entomology_tsz",
+    "mediaFile": "_media",
+    "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/entomology_tsz.zip"
+},
+{
+    "source": "musit",
+    "orgGroup": "zoologi",
     "name": "evertebrater",
     "zipFileName": "evert_tsz",
     "mediaFile": "_media",

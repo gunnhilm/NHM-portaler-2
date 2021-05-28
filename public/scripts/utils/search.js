@@ -34,6 +34,197 @@ if (sessionStorage.language) {
     sessionStorage.setItem('language', language)
 }
 
+// figures out which museum we are in
+// out: string, abbreviation for museum
+// is called by doSearch() and updateFooter()
+const getCurrentMuseum = () => {
+    console.log(window.location.pathname)
+    let museum = window.location.pathname
+    museum = museum.slice(8)
+    return museum
+}
+
+let museum = getCurrentMuseum()   
+
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1)
+}
+
+function addTextInOrgButtons(a) {
+    if (a == 'botanikk') {return textItems.botanikk[index]}
+    else if (a == 'zoologi') {return textItems.zoologi[index]}
+    else if (a == 'geologi') {return textItems.geologi[index]}
+    else if (a == 'other') {return textItems.otherCollections[index]}
+}
+
+function makeButtons() {
+    orgGroups = sessionStorage.getItem('organismGroups').split(',')
+    orgGroups.forEach(el => {
+        button = document.createElement("button")
+        button.innerHTML = addTextInOrgButtons(el)
+        button.id = el
+        document.getElementById("button-cell").appendChild(button)
+        buttonArray.push(button)   
+         
+    })
+    
+    buttonArray.forEach(el => {
+        el.addEventListener('click', (e) => {
+            if (document.getElementById('search-form').style.display == 'block') {
+              //  console.log('emtpy')
+                emptySearch()
+            }
+            addCollectionsToSelect(el.id)
+            e.preventDefault()
+        })
+        el.className = "white-button"
+    })
+}
+
+function addOrgGroups() {
+    
+    url_orgGroup = urlPath + '/orgGroups/?museum=' + museum
+    let orgGroups = []
+    fetch(url_orgGroup).then((response) => {
+        if (!response.ok) {
+            throw 'noe er galt med respons til organismegrupper fra museum'
+        } else {
+            try {
+    
+              
+                response.text().then((data) => {
+                    const JSONdata = JSON.parse(data)
+                    JSONdata.forEach(el => {
+                        orgGroups.push(el)
+                    })
+                    sessionStorage.setItem('organismGroups', orgGroups)
+                    makeButtons()
+                    
+                })
+            }
+            catch (error) {
+                console.log(error)
+                reject(error)
+            }
+        }
+    })
+    
+}
+
+// put organism-group-buttons into array
+let buttonArray = []
+//console.log(document.getElementById('button-cell').childNodes.length)
+//if (document.getElementById('button-cell').childNodes.length == 3) {
+    addOrgGroups()
+//}
+function addTextInCollSelect(a) {
+    if (a == 'moser') {return textItems.moser[index]}
+    else if (a == 'karplanter') {return textItems.karplanter[index]}
+    else if (a == 'lav') {return textItems.lav[index]}
+    else if (a == 'alger') {return textItems.alger[index]}
+    else if (a == 'entomologi') {return textItems.insekter[index]}
+    else if (a == 'evertebrater') {return textItems.evertebrater[index]}
+    else if (a == 'fisk') {return textItems.fisk[index]}
+    else if (a == 'birds') {return textItems.fugler[index]}
+    else if (a == 'mammals') {return textItems.pattedyr[index]}
+    else if (a == 'dna_karplanter') {return textItems.dna_karplanter[index]}
+    else if (a == 'dna_fungi_lichens') {return textItems.fungiLichens[index]}
+    else if (a == 'dna_entomologi') {return textItems.dna_insekter[index]}
+    else if (a == 'dna_fish_herptiles') {return textItems.fishHerp[index]}
+    else if (a == 'sopp') {return textItems.sopp[index]}
+    else if (a == 'dna_other') {return textItems.other[index]}
+    else if (a == 'malmer') {return textItems.malmer[index]}
+    else if (a == 'oslofeltet') {return textItems.oslofeltet[index]}
+    else if (a == 'utenlandskeBergarter') {return textItems.utenlandskeBA[index]}
+    //else if (a == 'GeoPal') {return textItems.GeoPal[index]}
+    //else if (a == 'otherOpt') {return textItems.otherOpt[index]}
+    else if (a == 'utad') {return textItems.utad[index]}
+    else if (a == 'bulk') {return textItems.bulk[index]}
+}
+
+
+    
+function addCollectionsToSelect(orgGroup) {
+    sessionStorage.setItem('organismGroup', orgGroup)
+    orgGroups = sessionStorage.getItem('organismGroups').split(',')
+    
+    document.querySelector('#select-cell').style.display = 'block'
+    collection.style.display = 'block'
+    
+    let length = collection.options.length
+    
+    for (i = length-1; i >= 0; i--) {
+      collection.options[i] = null
+    }
+    
+   
+    
+    const vennligst = document.createElement("option")
+    vennligst.text = textItems.vennligst[index]
+    vennligst.value = 'vennligst'
+    vennligst.id = 'vennligst'
+    collection.add(vennligst)
+
+    if (orgGroup) {
+        orgGroups.forEach(el => {
+            if (el == orgGroup) { 
+                document.querySelector('#' + el).className = "blue-button" 
+            } else {
+                document.querySelector('#' + el).className = "white-button" 
+            }
+        })
+
+        document.querySelector('#'+ orgGroup).style.marginRight = "10px"
+        const url_coll = urlPath + '/collections/?museum=' + museum + '&orgGroup=' + orgGroup
+        
+        fetch(url_coll).then((response) => {
+            if (!response.ok) {
+                throw 'noe er galt med respons til samlinger til select'
+            } else {
+                try {
+                    response.text().then((data) => {
+                        const JSONdata = JSON.parse(data)  
+                        JSONdata.forEach(el => {
+                            elOption = document.createElement("option")
+                            elOption.text = addTextInCollSelect(el)
+                            elOption.value = el
+                            elOption.id = el
+                            collection.add(elOption)
+                        })
+                        if (sessionStorage.getItem('collection')) {
+                            collection.value = sessionStorage.getItem('collection')
+                        } else {
+                            collection.value = 'vennligst'
+                        }
+                    })
+                }
+                catch (error) {
+                    console.log(error)
+                    reject(error)
+                }
+            }
+        }).catch((error) => {
+            console.log('feil i samlinger til select. ' + error)
+        })
+    } else {
+        collection.value = 'vennligst'
+    }
+ }
+// create options for collection-select dependent on museum
+// when category of collection is chosen
+// buttonArray.forEach(el => {
+//     el.addEventListener('click', (e) => {
+//         if (document.getElementById('search-form').style.display) {
+//             emptySearch()
+//         }
+//         addCollectionsToSelect(el.id)
+//         e.preventDefault()
+//     })
+// })
+
+
+
 // download search-result to file
 // in: filename(string, name of outputfile)
 // in: text (string, the text that goes into the file, that is, the search result)
@@ -135,15 +326,6 @@ function forceDownload(url, fileName){
 }
 
 
-// figures out which museum we are in
-// out: string, abbreviation for museum
-// is called by doSearch() and updateFooter()
-const getCurrentMuseum = () => {
-    console.log(window.location.pathname)
-    let museum = window.location.pathname
-    museum = museum.slice(8)
-    return museum
-}
 
 // deletes previous search results, resets value that says if search failed, resets Boolean sorting-values for result, hides buttons, performs search
 // in: limit (number, line number of search result where search stops)
@@ -162,7 +344,6 @@ const doSearch = (limit = 20) => {
     searchFailed = false
     resetSortedBoolean() // set all booleans in propsSorted-array in PaginateAndRender.js to false
     const searchTerm = search.value
-    console.log(search.value)
     const chosenCollection = collection.value
     searchLineNumber = limit
 
@@ -207,13 +388,16 @@ const doSearch = (limit = 20) => {
                                 try {
                                     // hvis vi får flere enn 2000 treff må vi si i fra om det
                                     if(parsedResults.data.length > 1999){
-                                        nbHitsElement.textContent = 'mer enn 2000'
+                                        nbHitsElement.textContent = textItems.tooManyHits[index]
+                                        nbHitsElement.style.color = 'red'
                                     } else {
                                         nbHitsElement.textContent = parsedResults.data.length
                                     }
                                     nbHitsHeader.innerHTML = textItems.nbHitsText[index]
                                     sessionStorage.setItem('string', JSON.stringify(parsedResults.data))      
+                                    
                                     load() 
+                                    
                                     } catch (error) {
                                         errorMessage.innerHTML = textItems.errorRenderResult[index]
                                         searchFailed = true // is checked when map is drawn 
@@ -245,6 +429,8 @@ searchForm.addEventListener('submit', (e) => {
 collection.addEventListener('change', (e) => {
     e.preventDefault()
     updateFooter()
+    searchForm.style.display = "block"
+    document.querySelector('#hits-row').style.display = 'block'
     errorMessage.innerHTML = ""
 
     if (document.getElementById("search-text").style.display === "none" || document.getElementById("search-button").style.display === "none") {
@@ -289,6 +475,13 @@ const updateFooter = () => {
 // calls renderText(language), updateFooter(), load()
 // is called in search.js, that is, every time main page is rendered
 const oldSearch = () => {
+    if (document.getElementById('button-cell')) {
+        while (document.getElementById('button-cell').hasChildNodes()) {
+            document.getElementById('button-cell').removeChild(document.getElementById('button-cell').lastChild);
+        }
+    }
+    
+    document.getElementById("search-form").style.display = "block" 
     if (sessionStorage.getItem('collection')) {
         if (sessionStorage.getItem('string')) { //hvis det er søkeresultater i sesion storage, så skal disse vises
             // render correct language
@@ -298,9 +491,12 @@ const oldSearch = () => {
             } else {
                 language = sessionStorage.getItem('language')
             }
+            collection.style.display = 'block'
             renderText(language)
+            
             try {
                 document.getElementById('collection-select').value = sessionStorage.getItem('collection')
+                console.log('try')
                 document.getElementById('search-text').value = sessionStorage.getItem('searchTerm')
                 nbHitsElement.innerHTML = JSON.parse(sessionStorage.getItem('string')).length
             } catch (error) {
@@ -317,16 +513,21 @@ const oldSearch = () => {
             load()
         }
     } 
+    
 }
 
 //run the function
-oldSearch() 
+if (sessionStorage.getItem('organismGroup')) {
+    oldSearch() 
+}
+
 
 // empties session’s search-result (sessionStorage), removes elements from page, resets pagination variables
 // calls emptyTable() in resultElementsOnOff.js
 //      emptyResultElements() in resultElementsOnOff.js
 // is called by emptySearchButton.eventlistener, upateFooter() when error
 const emptySearch = () => {
+    
     sessionStorage.removeItem('string')
     sessionStorage.removeItem('collection')
     sessionStorage.removeItem('searchLineNumber')
@@ -334,9 +535,32 @@ const emptySearch = () => {
     sessionStorage.removeItem('currentPage')
     sessionStorage.removeItem('numberPerPage')
     
-    collection.value = "" 
+    if (sessionStorage.getItem('organismGroup')) {
+        // gå gjennom alle knappene og aktiver den relevante
+        buttonArray.forEach(el => {
+            if (sessionStorage.getItem('organismGroup') == el.id) {
+                console.log(el.id)
+                el.className = "blue-button"
+                
+            }
+        })
+    }
+
+    collection.value = "vennligst"
+    // let length = collection.options.length
+    // console.log(length)
+    // for (i = length-1; i >= 0; i--) {
+    //   collection.options[i] = null
+    // }
+    
+    // buttonArray.forEach(el => {
+    //     el.className = "white-button"
+    // })
+    
+    document.getElementById('search-form').style.display = "none"
     document.getElementById("search-text").value = ""
     
+    document.getElementById('hits-row').style.display = "none"
     emptyTable()
     
     // remove old map if any and empty array
@@ -351,7 +575,6 @@ const emptySearch = () => {
     numberOfPages = 0; // calculates the total number of pages
     document.getElementById('number-per-page').value = '20'
 }
-
 emptySearchButton.addEventListener('click', (e) => {
     e.preventDefault()
     // erase the last search result

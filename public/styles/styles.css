@@ -231,6 +231,20 @@ td {
     cursor: pointer;
     min-width: 60px;
 }
+.white-button {
+    padding: 6px;
+    vertical-align: center;
+    border-radius: 4px;
+    color: black;
+    font-weight: bold;
+    border: none;
+    font-size: 16px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    min-width: 60px;
+    margin-right: 10px;
+}   
+
 .descrete-button {
     padding: 7px;
     vertical-align: center;
@@ -320,7 +334,6 @@ td {
         width: 10%;
         padding: 5px;
         vertical-align: middle;
-
     }
     .row-dato {
         width: 7%;
@@ -370,6 +383,42 @@ td {
         vertical-align: middle;
         text-align: center;
     }
+    
+    /* bulk-result-table */
+    .row-bulk-name {
+        font-style: normal;
+        vertical-align: middle;
+        padding: 5px;
+        width: 7%;
+    }
+    .row-bulk-innsamler {
+        padding: 5px;
+        width: 10%;
+    }
+    .row-bulk-dato {
+        width: 4%;
+        padding: 5px;
+    }
+    .row-prep {
+        width: 10%;
+        padding: 5px;
+    }
+    .row-bulk-sted {
+        width: 20%;
+        padding: 5px;
+    }
+    .row-placement {
+        width: 20%;
+    }
+    .row-note {
+        width: 10%;
+        /* white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block; */
+    }
+    
+    
     input[type=checkbox] {
         transform: scale(1.5);
     }

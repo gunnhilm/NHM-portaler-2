@@ -4,18 +4,6 @@
 
 // urlPath is defined in textItems.js
 
-// show collections in select dependent on museum
-if(!window.location.href.includes('/nhm')) {
-    document.querySelector('#coremaopt').style.display = 'none'
-    document.querySelector('#DNAopt').style.display = 'none'
-    document.querySelector('#GeoPalOpt').style.display = 'none'
-    document.querySelector('#alger').style.display = 'none'
-    //document.querySelector('#fisk').style.display = 'none'
-    document.querySelector('#otherOpt').style.display = 'none'
-} else {
-    document.querySelector('#evertebrater').style.display = 'none'
-}
-
 // rendered with result table (used in function resultTable())
 
 const hitsPerPage = document.querySelector('#number-per-page')
@@ -100,12 +88,7 @@ const resultTable = (subMusitData, musitData) => {
             cell10.className += "cell10";
             const cell11 = row.insertCell(10)
             if (i === -1) {     // her kommer tittellinjen
-                console.log(document.querySelector('#collection-select').value)
-                if (document.querySelector('#collection-select').value == 'bulk') {
-                    fillResultHeadersBulk(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell11,musitData)
-                } else {
-                    fillResultHeaders(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell10,cell11,musitData)
-                }
+                fillResultHeaders(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell10,cell11,musitData)
                 
                 // if (document.querySelector('#collection-select option:checked').parentElement.label === 'Specimens') {
                 //     addSortingText('coremaNoButton', 10, 'coremaNo', musitData)
@@ -133,7 +116,7 @@ const resultTable = (subMusitData, musitData) => {
                 } else {
                     prefix = ''
                 }
-
+                
                 // collectionCodes = ['V','F','L','B','A','ENT','M','BU','GM-BU']
                 // if ( !window.location.href.includes('/um') && !window.location.href.includes('tmu')) {
                 //     if( !collectionCodes.includes(subMusitData[i].collectionCode) )  {
@@ -154,44 +137,34 @@ const resultTable = (subMusitData, musitData) => {
                     cell3.innerHTML = subMusitData[i].recordedBy
                 //}
                 cell4.innerHTML = subMusitData[i].eventDate
-                if (document.querySelector('#collection-select').value == 'bulk') {
-                    cell5.innerHTML = subMusitData[i].preparations
-                    cell6.innerHTML = subMusitData[i].country
-                    cell7.innerHTML = subMusitData[i].stateProvince
-                    cell8.innerHTML = subMusitData[i].dynamicProperties
-                    cell9.style.display = 'none'
-                } else {
-                    cell5.innerHTML = subMusitData[i].country
-                    if (subMusitData[i].county) {cell6.innerHTML = subMusitData[i].county}
-                    cell7.innerHTML = subMusitData[i].locality
-                    //corema-cases
-                    // if (document.querySelector('#collection-select  option:checked').parentElement.label === 'Specimens og DNA') {
-                    //     cell8.innerHTML = `<span class="fas fa-camera"></span>`
-                    // }
-    
-                    if( subMusitData[i].associatedMedia ) {   
-                        cell8.innerHTML = `<span class="fas fa-camera"></span>`
-                    } else if( subMusitData[i].photoIdentifiers ) {   
-                        cell8.innerHTML = `<span class="fas fa-camera"></span>`
-                    }
-                    if( subMusitData[i].decimalLongitude) {
-                        cell9.innerHTML = '<span class="fas fa-compass"></span>'
-                    }
-                    
-                    // if (window.location.href.includes('/nhm')) {
-                    //     cell10.innerHTML = 'test'
-                    // } else {
-                    //     if (document.querySelector('#collection-select  option:checked').parentElement.label === 'Specimens') {
-                    //         cell10.innerHTML = subMusitData[i].coremaNo
-                    //     } else {
-                    //         cell10.innerHTML = itemType(subMusitData[i].catalogNumber)
-                    //     }
-                       
-                    // }
-                    
-                   
-                    
+                cell5.innerHTML = subMusitData[i].country
+                if (subMusitData[i].county) {cell6.innerHTML = subMusitData[i].county}
+                cell7.innerHTML = subMusitData[i].locality
+                //corema-cases
+                // if (document.querySelector('#collection-select  option:checked').parentElement.label === 'Specimens og DNA') {
+                //     cell8.innerHTML = `<span class="fas fa-camera"></span>`
+                // }
+                if( subMusitData[i].associatedMedia ) {   
+                    cell8.innerHTML = `<span class="fas fa-camera"></span>`
+                } else if( subMusitData[i].photoIdentifiers ) {   
+                    cell8.innerHTML = `<span class="fas fa-camera"></span>`
                 }
+                if( subMusitData[i].decimalLongitude) {
+                    cell9.innerHTML = '<span class="fas fa-compass"></span>'
+                }
+                
+                // if (window.location.href.includes('/nhm')) {
+                //     cell10.innerHTML = 'test'
+                // } else {
+                //     if (document.querySelector('#collection-select  option:checked').parentElement.label === 'Specimens') {
+                //         cell10.innerHTML = subMusitData[i].coremaNo
+                //     } else {
+                //         cell10.innerHTML = itemType(subMusitData[i].catalogNumber)
+                //     }
+                    
+                // }
+                
+                
                 cell11.innerHTML = `<input type="checkbox" id=checkbox${i} onclick="registerChecked(${i})" ></input>`
                 if (investigateChecked(i)) {
                     document.getElementById(`checkbox${i}`).checked = true
@@ -225,7 +198,7 @@ const resultTable = (subMusitData, musitData) => {
             hide_column(9)
             
         }
-
+        
         showResultElements()
         document.getElementById("empty-search-button").style.display = "inline-block"
         numberOfPages = getNumberOfPages(numberPerPage)
@@ -255,6 +228,157 @@ const resultTable = (subMusitData, musitData) => {
 
 }
 
+const bulkResultTable = (subBulkData, bulkData) => {
+    try {
+        table.innerHTML = ""
+        for (let i = -1; i < pageList.length; i++) { // vis en tabell med resultater som er like lang som det vi ba om pageList.length; 
+            const row = table.insertRow(-1)
+            const cell1 = row.insertCell(0)
+            const cell2 = row.insertCell(1)
+            const cell3 = row.insertCell(2)
+            //cell3.className += "cell3"
+            const cell4 = row.insertCell(3)
+            const cell5 = row.insertCell(4)
+            //cell5.className += "cell5";
+            const cell6 = row.insertCell(5)
+            const cell7 = row.insertCell(6)
+            const cell8 = row.insertCell(7)
+            const cell9 = row.insertCell(8)
+            const cell10 = row.insertCell(9)
+            //cell10.className += "cell10";
+            const cell11 = row.insertCell(10)
+            if (i === -1) {     // her kommer tittellinjen
+                cell1.innerHTML = `<button id='musitIDButton' class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>`  
+                cell2.innerHTML = `<button id='scientificNameButton' class='sort'>${textItems.headerTaxon[index].bold()} ${getArrows('scientificName')} </button>`
+                cell3.innerHTML = `<button id='collectorButton' class='sort'>${textItems.headerCollector[index].bold()} ${getArrows('recordedBy')}</button>`
+                cell4.innerHTML = `<button id='dateButton' class='sort'>${textItems.headerDate[index].bold()} ${getArrows('eventDate')}</button>`
+                cell5.innerHTML = `<button id='preparationsButton' class='sort'>${textItems.headerPreparations[index].bold()} ${getArrows('preparations')} </button>`
+                //cell6.innerHTML = `<button id='unitTypeButton' class='sort'>${textItems.headerUnitType[index].bold()} ${getArrows('unitType')}</button>`
+                cell6.innerHTML = `<button id='localityButton' class='sort'>${textItems.headerLocality[index].bold()} ${getArrows('locality')}</button>`
+                cell7.innerHTML = `<button id='placementButton' class='sort'>${textItems.headerPlacement[index].bold()} ${getArrows('placement')}</button>`
+                //cell7.innerHTML = `<button id='stateProvinceButton' class='sort'>${textItems.headerStateProvince[index].bold()} ${getArrows('stateProvince')}</button>`
+                cell8.innerHTML = `<button id='noteButton' class='sort'>${textItems.headerNotes[index].bold()} ${getArrows('note')}</button>`
+                cell9.style.display = 'none'
+                cell11.innerHTML = `<select id='checkboxSelect' class='sort'>
+                    <option value="select" id="select">${textItems.select[index].bold()}</option>
+                    <option value="all" id="selectAll">${textItems.selectAll[index]}</option>
+                    <option value="all_on_page" id="selectAllOnPage">${ textItems.selectAllOnPage[index]}</option>
+                    <option value="none" id="selectNone">${ textItems.selectNone[index]}</option>
+                </select>`
+                
+            
+                addSortingText('musitIDButton', 'catalogNumber', bulkData)  // Tabellen blir sortert på nummer
+                addSortingText('scientificNameButton', 'scientificName', bulkData)
+                addSortingText('preparationsButton', 'preparations', bulkData)
+                addSortingText('collectorButton', 'recordedBy', bulkData)
+                addSortingText('dateButton', 'eventDate', bulkData)
+                // fix!!!!!!
+                //addSortingText('localityButton', 'locality', bulkData)
+                //addSortingText('placementButton', 'placement', bulkData)
+                addSortingText('noteButton', 'note', bulkData)
+                
+            
+            } else {        // Her kommer innmaten i tabellen, selve resultatene
+                let museumURLPath
+                if (window.location.href.includes('/um')) { 
+                    museumURLPath = urlPath + "/um"
+                } else if (window.location.href.includes('tmu')) {
+                    museumURLPath = urlPath + "/tmu"
+                } else {
+                    museumURLPath = urlPath + "/nhm"
+                }
+                
+                let prefix
+                if (!(/[a-zA-Z]/).test(subBulkData[i].catalogNumber.charAt(0))) {
+                    
+                    prefix = subBulkData[i].institutionCode + '-' + subBulkData[i].collectionCode + '-'
+                } else {
+                    prefix = ''
+                }
+                
+                //cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subBulkData[i].catalogNumber}"> ${prefix}${subBulkData[i].catalogNumber} </a>`
+                cell1.innerHTML =  prefix + subBulkData[i].catalogNumber
+                cell2.innerHTML = subBulkData[i].scientificName
+                cell3.innerHTML = subBulkData[i].recordedBy
+                cell4.innerHTML = subBulkData[i].eventDate
+                cell5.innerHTML = subBulkData[i].preparations
+                
+                let comma1
+                let comma2
+                if (subBulkData[i].stateProvince) {comma1 = ', '} else { comma1 = ''}
+                if (subBulkData[i].locality) {comma2 = ', '} else { comma2 = ''}
+                let concatLocality = subBulkData[i].country + comma1 + subBulkData[i].stateProvince + comma2 + subBulkData[i].locality
+                cell6.innerHTML = concatLocality
+                
+                let commaP1
+                let commaP2
+                if (subBulkData[i].room) {commaP1 = ', '} else {commaP1 = ''}
+                if (subBulkData[i].cupboard) {commaP2 = ', '} else {commaP2 = ''}
+                let placement = subBulkData[i].building + commaP1 + subBulkData[i].room + commaP2 + subBulkData[i].cupboard
+                cell7.innerHTML = placement
+                cell8.innerHTML = subBulkData[i].note
+                cell9.style.display = 'none'
+                cell11.innerHTML = `<input type="checkbox" id=checkbox${i} onclick="registerChecked(${i})" ></input>`
+                if (investigateChecked(i)) {
+                    document.getElementById(`checkbox${i}`).checked = true
+                } else {
+                    document.getElementById(`checkbox${i}`).checked = false
+                }
+                
+                cell1.className = 'row-1 row-ID'
+                cell2.className = 'row-2 row-bulk-name'
+                cell3.className = 'row-3 row-bulk-innsamler'
+                cell4.className = 'row-4 row-bulk-dato'
+                cell5.className = 'row-5 row-prep'
+                cell6.className = 'row-6 row-bulk-sted'
+                cell7.className = 'row-7 row-placement'
+                cell8.className = 'row-8 row-note'
+                cell11.className = 'row-11 row-checkbox'
+                
+            }
+          
+        }
+        
+        // hide corema-link-column for UM and TMU
+        if (!window.location.href.includes('/nhm') ) {
+            hide_column(9)
+        }
+
+        ////////////// remove when stiched files are in place
+        if (window.location.href.includes('/nhm')) {
+            hide_column(9)
+            
+        }
+        
+        showResultElements()
+        document.getElementById("empty-search-button").style.display = "inline-block"
+        numberOfPages = getNumberOfPages(numberPerPage)
+        
+        if (!searchFailed) {
+            try {
+                drawMap(bulkData) 
+            } catch (error) {
+                console.error(error)
+                reject(error);
+            }
+        } 
+        
+    }  
+    catch(error) {
+        console.log('er vi her?')
+        errorMessage.innerHTML = textItems.errorRenderResult[index]
+        searchFailed = true // is checked when map is drawn 
+    }
+
+    const select = document.getElementById('checkboxSelect')
+    if(select) {
+        select.onchange =() => {
+            checkSeveralBoxes(subBulkData)
+        }
+    }
+
+    
+}
 
 // pagination part
 // https://www.thatsoftwaredude.com/content/6125/how-to-paginate-through-a-collection-in-javascript
@@ -345,12 +469,19 @@ function lastPage() {
 //  hitsPerPage eventlistener
 //  load()
 function loadList() {
+    
     const begin = ((currentPage - 1) * numberPerPage);
     const end = begin + numberPerPage;
     pageList = list.slice(begin, end);
     sessionStorage.setItem('pageList', JSON.stringify(pageList)) // pageList is the same as subMusitData other places; the part of the search result that is listed on the current page
-    resultTable(pageList, list)
+    
+    if (document.querySelector('#collection-select').value == 'bulk') {
+        bulkResultTable(pageList, list)
+    } else {
+        resultTable(pageList, list)
+    }
     check();
+    
 }
 
 // disables page-buttons if necesary
@@ -377,6 +508,7 @@ function load() {
     // parsing search result
     list = JSON.parse(stringData)   
     numberOfPages = getNumberOfPages(numberPerPage)
+    
     loadList()
 }
 

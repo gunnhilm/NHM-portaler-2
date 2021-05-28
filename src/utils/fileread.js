@@ -5,6 +5,44 @@ const fileListNhm = require('./fileListNhm')
 const fileListTmu = require('./fileListTmu')
 const fileListUm = require('./fileListUm')
 
+const setOrgGroups = (museum) => {
+    let fileList
+    if (museum == 'tmu') {
+        fileList = fileListTmu
+    } else if (museum == 'um') {
+        fileList = fileListUm
+    } else {
+        fileList = fileListNhm
+    }
+    let orgGroups = []
+    fileList.forEach(el => {
+        if (!el.filMetadata) {
+            orgGroups.push(el.orgGroup)
+        }
+    })
+    let uniqueOrgGroups = [...new Set(orgGroups)]
+    return uniqueOrgGroups
+}
+
+const setSubcollections = (museum, orgGroup) => {
+    let fileList
+    if (museum == 'tmu') {
+        fileList = fileListTmu
+    } else if (museum == 'um') {
+        fileList = fileListUm
+    } else {
+        fileList = fileListNhm
+    }
+    
+    let coll = []
+    fileList.forEach(el => {
+        if (el.orgGroup === orgGroup) {
+            coll.push(el.name)
+        }
+    })
+    console.log(coll)
+    return coll
+}
 
 const setCollection = (museum, samling) => {
     let fileList
@@ -119,6 +157,8 @@ const checkRegion = (region, lat, long, callback) => {
  
 module.exports = { 
     search,
+    setOrgGroups,
+    setSubcollections,
     setCollection,
     checkRegion
  } 

@@ -148,6 +148,7 @@ console.log(sessionStorage.getItem('collection'))
 // put content in html-boxes
 renderText(language)
 
+
 if (!sessionStorage.getItem('collection').includes('dna') & !sessionStorage.getItem('collection').includes('birds') & !sessionStorage.getItem('collection').includes('mammals')) {
     document.querySelector("#musit-regno").innerHTML = regnoEl
 } else {
@@ -155,12 +156,14 @@ if (!sessionStorage.getItem('collection').includes('dna') & !sessionStorage.getI
 }
 
 document.querySelector("#species-name").innerHTML = `<span class="italic">${object.scientificName}</span>`
-document.querySelector("#det").innerHTML =  `<span>${object.identifiedBy}</span>`
-document.querySelector("#det-date").innerHTML = `<span>${object.dateIdentified}</span>`
 
 document.querySelector("#coll-date").innerHTML = `<span>${object.eventDate}</span>`
 document.querySelector("#coll").innerHTML = `<span>${object.recordedBy}</span>`
 document.querySelector("#locality").innerHTML = `<span>${concatLocality}</span>`
+
+document.querySelector("#det").innerHTML =  `<span>${object.identifiedBy}</span>`
+document.querySelector("#det-date").innerHTML = `<span>${object.dateIdentified}</span>`
+
 document.querySelector("#coordinates").innerHTML = `<span>${coordinates(object)}</span>`
 document.querySelector("#habitat").innerHTML = habitat
 document.querySelector("#artsobsID").innerHTML = artsobsID
@@ -346,6 +349,7 @@ const coll = sessionStorage.getItem('collection')
 let mediaLink
 let imageList
 if ( coll === 'birds' || coll === 'mammals' || coll === 'dna_fish_herptiles' || coll === 'dna_other') {
+    
     mediaLink = object.photoIdentifiers
 } else {
     mediaLink = object.associatedMedia
@@ -384,22 +388,10 @@ if (mediaLink) {
         let smallImage = mediaLink
         smallImage = smallImage.replace('jpeg', 'small')
         document.getElementById("photo-box").src = smallImage
-        
-        console.log(imageExists(smallImage))
-        
     }
     
 }
 
-// http-request to check if an image exists
-// in: image_url (string; name of photo)
-// is called only by a console.log in this file (?)
-function imageExists(image_url){
-    var http = new XMLHttpRequest();
-    http.open('HEAD', image_url, false);
-    http.send();
-    return http //!= 404;
-}
 //map
 drawMapObject(object)
 
