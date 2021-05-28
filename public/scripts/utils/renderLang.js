@@ -61,30 +61,31 @@ const renderText = function(lang) {
     if (!location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler') & !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools') & !location.href.includes('checkCoord')) {
     //if (location.href.substring(location.href.split('/',3).join('/').length).lengt === 12) { 
     
-    // // document.querySelector('#specimensOptgroup').innerHTML = textItems.specimensOptgroup[index]
-    //     document.querySelector('#karplanter').innerHTML = textItems.karplanter[index]
-    //     document.querySelector('#sopp').innerHTML = textItems.sopp[index]
-    //     document.querySelector('#moser').innerHTML = textItems.moser[index]
-    //     document.querySelector('#lav').innerHTML = textItems.lav[index]
-    //     document.querySelector('#alger').innerHTML = textItems.alger[index]
-    //     document.querySelector('#insekter').innerHTML = textItems.insekter[index]
-    //     document.querySelector('#evertebrater').innerHTML = textItems.evertebrater[index]
-    //     document.querySelector('#fisk').innerHTML = textItems.fisk[index]
-    //     document.querySelector('#coremaopt').label = textItems.coremaopt[index]
-    //     document.querySelector('#fugler').innerHTML = textItems.fugler[index]
-    //     document.querySelector('#pattedyr').innerHTML = textItems.pattedyr[index]
-    //     document.querySelector('#dna_karplanter').innerHTML = textItems.dna_karplanter[index]
-    //     document.querySelector('#dna_insekter').innerHTML = textItems.dna_insekter[index]
-    //     document.querySelector('#dna_fish_herptiles').innerHTML = textItems.fishHerp[index]
-    //     document.querySelector('#dna_fungi_lichens').innerHTML = textItems.fungiLichens[index]
-    //     document.querySelector('#dna_other').innerHTML = textItems.other[index]
-    //     document.querySelector('#malmer').innerHTML = textItems.malmer[index]
-    //     document.querySelector('#oslofeltet').innerHTML = textItems.oslofeltet[index]
-    //     // document.querySelector('#utenlandskeBergarter').innerHTML = textItems.utenlandskeBA[index]
-    //     document.querySelector('#GeoPalOpt').label = textItems.GeoPal[index]
-    //     document.querySelector('#otherOpt').label = textItems.otherOpt[index]
-    //     document.querySelector('#utad').label = textItems.utad[index]
-    //     document.querySelector('#bulk').label = textItems.bulk[index]
+    // document.querySelector('#specimensOptgroup').innerHTML = textItems.specimensOptgroup[index]
+        if (document.querySelector('#vennligst')) {document.querySelector('#vennligst').innerHTML = textItems.vennligst[index]}
+        if (document.querySelector('#karplanter')) {document.querySelector('#karplanter').innerHTML = textItems.karplanter[index]}
+        if (document.querySelector('#sopp')) {document.querySelector('#sopp').innerHTML = textItems.sopp[index]}
+        if (document.querySelector('#moser')) {document.querySelector('#moser').innerHTML = textItems.moser[index]}
+        if (document.querySelector('#lav')) {document.querySelector('#lav').innerHTML = textItems.lav[index]}
+        if (document.querySelector('#alger')) {document.querySelector('#alger').innerHTML = textItems.alger[index]}
+        if (document.querySelector('#entomologi')) {document.querySelector('#insekter').innerHTML = textItems.insekter[index]}
+        if (document.querySelector('#evertebrater')) {document.querySelector('#evertebrater').innerHTML = textItems.evertebrater[index]}
+        if (document.querySelector('#fisk')) {document.querySelector('#fisk').innerHTML = textItems.fisk[index]}
+        if (document.querySelector('#coremaopt')) {document.querySelector('#coremaopt').label = textItems.coremaopt[index]}
+        if (document.querySelector('#birds')) {document.querySelector('#fugler').innerHTML = textItems.fugler[index]}
+        if (document.querySelector('#mammals')) {document.querySelector('#pattedyr').innerHTML = textItems.pattedyr[index]}
+        if (document.querySelector('#dna_karplanter')) {document.querySelector('#dna_karplanter').innerHTML = textItems.dna_karplanter[index]}
+        if (document.querySelector('#dna_insekter')) {document.querySelector('#dna_insekter').innerHTML = textItems.dna_insekter[index]}
+        if (document.querySelector('#dna_fish_herptiles')) {document.querySelector('#dna_fish_herptiles').innerHTML = textItems.fishHerp[index]}
+        if (document.querySelector('#dna_fungi_lichens')) {document.querySelector('#dna_fungi_lichens').innerHTML = textItems.fungiLichens[index]}
+        if (document.querySelector('#dna_other')) {document.querySelector('#dna_other').innerHTML = textItems.other[index]}
+        if (document.querySelector('#malmer')) {document.querySelector('#malmer').innerHTML = textItems.malmer[index]}
+        if (document.querySelector('#oslofeltet')) {document.querySelector('#oslofeltet').innerHTML = textItems.oslofeltet[index]}
+        if (document.querySelector('#utenlandskeBergarter')) {document.querySelector('#utenlandskeBergarter').innerHTML = textItems.utenlandskeBA[index]}
+        if (document.querySelector('#GeoPalOpt')) {document.querySelector('#GeoPalOpt').label = textItems.GeoPal[index]}
+        if (document.querySelector('#otherOpt')) {document.querySelector('#otherOpt').label = textItems.otherOpt[index]}
+        if (document.querySelector('#utad')) {document.querySelector('#utad').label = textItems.utad[index]}
+        if (document.querySelector('#bulk')) {document.querySelector('#bulk').label = textItems.bulk[index]}
         
     }
 
@@ -94,10 +95,10 @@ const renderText = function(lang) {
 
         //document.querySelector('#vennligst').innerHTML = textItems.vennligst[index] 
         
-        document.querySelector('#botanikk').innerHTML = textItems.botanikk[index]
-        document.querySelector('#zoologi').innerHTML = textItems.zoologi[index]
-        document.querySelector('#geologi').innerHTML = textItems.geologi[index]
-        document.querySelector('#other').innerHTML = textItems.otherCollections[index]
+        if (document.querySelector('#botanikk')) {document.querySelector('#botanikk').innerHTML = textItems.botanikk[index]}
+        if (document.querySelector('#zoologi')) {document.querySelector('#zoologi').innerHTML = textItems.zoologi[index]}
+        if (document.querySelector('#geologi')) {document.querySelector('#geologi').innerHTML = textItems.geologi[index]}
+        if (document.querySelector('#other')) {document.querySelector('#other').innerHTML = textItems.otherCollections[index]}
         document.querySelector('#search-button').innerHTML = textItems.searchButton[index]
         document.querySelector('#empty-search-button').innerHTML = textItems.emptySearch[index]
         document.querySelector('#header-search-page').innerHTML = textItems.headerSearchPage[index]
@@ -238,7 +239,7 @@ const renderText = function(lang) {
             document.querySelector('#Mammals_header').innerHTML = textItems.pattedyr[index]
             //document.querySelector('#malmer_header').innerHTML = textItems.malmer[index]
             //document.querySelector('#oslofeltet_header').innerHTML = textItems.oslofeltet[index]
-            // document.querySelector('#utenlandskeBA_header').innerHTML = textItems.utenlandskeBA[index]
+            //document.querySelector('#utenlandskeBA_header').innerHTML = textItems.utenlandskeBA[index]
         }
         if(!window.location.href.includes('/nhm')) {
             document.querySelector('#Evertebrates_header').innerHTML = textItems.evertebrater[index]

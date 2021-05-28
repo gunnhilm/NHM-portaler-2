@@ -51,11 +51,103 @@ function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1)
 }
 
-// put organism-group-buttons into array
-let buttonArray = [document.querySelector('#botanikk'),document.querySelector('#zoologi'),document.querySelector('#geologi'),document.querySelector('#other')]
+function addTextInOrgButtons(a) {
+    if (a == 'botanikk') {return textItems.botanikk[index]}
+    else if (a == 'zoologi') {return textItems.zoologi[index]}
+    else if (a == 'geologi') {return textItems.geologi[index]}
+    else if (a == 'other') {return textItems.otherCollections[index]}
+}
 
+function makeButtons() {
+    orgGroups = sessionStorage.getItem('organismGroups').split(',')
+    orgGroups.forEach(el => {
+        button = document.createElement("button")
+        button.innerHTML = addTextInOrgButtons(el)
+        button.id = el
+        document.getElementById("button-cell").appendChild(button)
+        buttonArray.push(button)   
+         
+    })
+    
+    buttonArray.forEach(el => {
+        el.addEventListener('click', (e) => {
+            if (document.getElementById('search-form').style.display == 'block') {
+              //  console.log('emtpy')
+                emptySearch()
+            }
+            addCollectionsToSelect(el.id)
+            e.preventDefault()
+        })
+        el.className = "white-button"
+    })
+}
+
+function addOrgGroups() {
+    
+    url_orgGroup = urlPath + '/orgGroups/?museum=' + museum
+    let orgGroups = []
+    fetch(url_orgGroup).then((response) => {
+        if (!response.ok) {
+            throw 'noe er galt med respons til organismegrupper fra museum'
+        } else {
+            try {
+    
+              
+                response.text().then((data) => {
+                    const JSONdata = JSON.parse(data)
+                    JSONdata.forEach(el => {
+                        orgGroups.push(el)
+                    })
+                    sessionStorage.setItem('organismGroups', orgGroups)
+                    makeButtons()
+                    
+                })
+            }
+            catch (error) {
+                console.log(error)
+                reject(error)
+            }
+        }
+    })
+    
+}
+
+// put organism-group-buttons into array
+let buttonArray = []
+//console.log(document.getElementById('button-cell').childNodes.length)
+//if (document.getElementById('button-cell').childNodes.length == 3) {
+    addOrgGroups()
+//}
+function addTextInCollSelect(a) {
+    if (a == 'moser') {return textItems.moser[index]}
+    else if (a == 'karplanter') {return textItems.karplanter[index]}
+    else if (a == 'lav') {return textItems.lav[index]}
+    else if (a == 'alger') {return textItems.alger[index]}
+    else if (a == 'entomologi') {return textItems.insekter[index]}
+    else if (a == 'evertebrater') {return textItems.evertebrater[index]}
+    else if (a == 'fisk') {return textItems.fisk[index]}
+    else if (a == 'birds') {return textItems.fugler[index]}
+    else if (a == 'mammals') {return textItems.pattedyr[index]}
+    else if (a == 'dna_karplanter') {return textItems.dna_karplanter[index]}
+    else if (a == 'dna_fungi_lichens') {return textItems.fungiLichens[index]}
+    else if (a == 'dna_entomologi') {return textItems.dna_insekter[index]}
+    else if (a == 'dna_fish_herptiles') {return textItems.fishHerp[index]}
+    else if (a == 'sopp') {return textItems.sopp[index]}
+    else if (a == 'dna_other') {return textItems.other[index]}
+    else if (a == 'malmer') {return textItems.malmer[index]}
+    else if (a == 'oslofeltet') {return textItems.oslofeltet[index]}
+    else if (a == 'utenlandskeBergarter') {return textItems.utenlandskeBA[index]}
+    //else if (a == 'GeoPal') {return textItems.GeoPal[index]}
+    //else if (a == 'otherOpt') {return textItems.otherOpt[index]}
+    else if (a == 'utad') {return textItems.utad[index]}
+    else if (a == 'bulk') {return textItems.bulk[index]}
+}
+
+
+    
 function addCollectionsToSelect(orgGroup) {
     sessionStorage.setItem('organismGroup', orgGroup)
+    orgGroups = sessionStorage.getItem('organismGroups').split(',')
     
     document.querySelector('#select-cell').style.display = 'block'
     collection.style.display = 'block'
@@ -66,17 +158,23 @@ function addCollectionsToSelect(orgGroup) {
       collection.options[i] = null
     }
     
-    buttonArray.forEach(el => {
-        el.className = "white-button"
-    })
+   
     
     const vennligst = document.createElement("option")
     vennligst.text = textItems.vennligst[index]
     vennligst.value = 'vennligst'
+    vennligst.id = 'vennligst'
     collection.add(vennligst)
 
     if (orgGroup) {
-        document.querySelector('#'+ orgGroup).className = "blue-button"
+        orgGroups.forEach(el => {
+            if (el == orgGroup) { 
+                document.querySelector('#' + el).className = "blue-button" 
+            } else {
+                document.querySelector('#' + el).className = "white-button" 
+            }
+        })
+
         document.querySelector('#'+ orgGroup).style.marginRight = "10px"
         const url_coll = urlPath + '/collections/?museum=' + museum + '&orgGroup=' + orgGroup
         
@@ -89,7 +187,7 @@ function addCollectionsToSelect(orgGroup) {
                         const JSONdata = JSON.parse(data)  
                         JSONdata.forEach(el => {
                             elOption = document.createElement("option")
-                            elOption.text = capitalizeFirstLetter(el)
+                            elOption.text = addTextInCollSelect(el)
                             elOption.value = el
                             elOption.id = el
                             collection.add(elOption)
@@ -109,28 +207,21 @@ function addCollectionsToSelect(orgGroup) {
         }).catch((error) => {
             console.log('feil i samlinger til select. ' + error)
         })
-        
     } else {
         collection.value = 'vennligst'
     }
-    
-    
-}
-
+ }
 // create options for collection-select dependent on museum
 // when category of collection is chosen
-buttonArray.forEach(el => {
-    el.addEventListener('click', (e) => {
-        console.log(document.getElementById('search-form').style.display)
-        if (document.getElementById('search-form').style.display) {
-            emptySearch()
-            console.log('empty search')
-        }
-        console.log(el.id)
-        addCollectionsToSelect(el.id)
-        e.preventDefault()
-    })
-})
+// buttonArray.forEach(el => {
+//     el.addEventListener('click', (e) => {
+//         if (document.getElementById('search-form').style.display) {
+//             emptySearch()
+//         }
+//         addCollectionsToSelect(el.id)
+//         e.preventDefault()
+//     })
+// })
 
 
 
@@ -384,24 +475,13 @@ const updateFooter = () => {
 // calls renderText(language), updateFooter(), load()
 // is called in search.js, that is, every time main page is rendered
 const oldSearch = () => {
-        // collection.value = sessionStorage.getItem('collection')
-    //console.log(sessionStorage.getItem('collection'))
-
-    orgGroup = sessionStorage.getItem('organismGroup')
-    addCollectionsToSelect(orgGroup)
-    document.getElementById("search-form").style.display = "inline" 
-    
-
-    if (sessionStorage.getItem('organismGroup')) {
-        // gå gjennom alle knappene og aktiver den relevante
-        buttonArray.forEach(el => {
-            if (sessionStorage.getItem('organismGroup') == el.id) {
-                console.log(el.id)
-                el.className = "blue-button"
-                
-            }
-        })
+    if (document.getElementById('button-cell')) {
+        while (document.getElementById('button-cell').hasChildNodes()) {
+            document.getElementById('button-cell').removeChild(document.getElementById('button-cell').lastChild);
+        }
     }
+    
+    document.getElementById("search-form").style.display = "block" 
     if (sessionStorage.getItem('collection')) {
         if (sessionStorage.getItem('string')) { //hvis det er søkeresultater i sesion storage, så skal disse vises
             // render correct language
@@ -433,6 +513,7 @@ const oldSearch = () => {
             load()
         }
     } 
+    
 }
 
 //run the function

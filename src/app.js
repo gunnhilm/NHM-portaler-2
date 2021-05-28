@@ -108,16 +108,35 @@ app.get('/search', (req, res) => {
     }
 })
 
+app.get('/orgGroups', (req, res) => {
+    if (!req.query.museum) {
+        throw new Error ('no museum...')
+    } else {
+        try {
+            console.log(req.query.museum)
+            let orgGroup = fileRead.setOrgGroups(req.query.museum, (error, results) => {
+
+            })
+            console.log(orgGroup)
+            res.send(orgGroup)
+        }
+        catch(error) {
+            console.log(error)
+            throw new Error ('feil i app.js')
+        }
+    }
+
+})
 app.get('/collections', (req, res) => {
     if (!req.query.museum) {
         throw new Error ('no museum...')
     }else {
         try {
-            console.log(req.query.orgGroup)
+            //console.log(req.query.orgGroup)
             let coll = fileRead.setSubcollections(req.query.museum, req.query.orgGroup, (error, results) => {
             })
 
-            console.log(coll)
+            //console.log(coll)
             res.send(coll)
         }
         catch(error) {

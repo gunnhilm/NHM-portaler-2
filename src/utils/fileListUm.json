@@ -9,6 +9,7 @@
 },
 {
     "source": "musit",
+    "orgGroup": "botanikk",
     "name": "karplanter",
     "zipFileName": "vascular_bg",
     "mediaFile": "_media",
@@ -16,6 +17,7 @@
 },
 {
     "source": "musit",
+    "orgGroup": "zoologi",
     "name": "entomologi",
     "zipFileName": "entomology_zmbn",
     "mediaFile": "_media",
@@ -23,6 +25,7 @@
 },
 {
     "source": "musit",
+    "orgGroup": "botanikk",
     "name": "lav",
     "zipFileName": "lichens_bg",
     "mediaFile": "_media",
@@ -30,6 +33,7 @@
 },
 {
     "source": "musit",
+    "orgGroup": "botanikk",
     "name": "moser",
     "zipFileName": "moss_bg",
     "mediaFile": "_media",
@@ -37,6 +41,7 @@
 },
 {
     "source": "musit",
+    "orgGroup": "botanikk",
     "name": "sopp",
     "zipFileName": "fungus_bg",
     "mediaFile": "_media",
@@ -44,6 +49,7 @@
 },
 {
     "source": "musit",
+    "orgGroup": "zoologi",
     "name": "evertebrater",
     "zipFileName": "evert_zmbn",
     "mediaFile": "_media",

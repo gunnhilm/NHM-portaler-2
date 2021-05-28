@@ -17,29 +17,12 @@
     "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/alge_o.zip"
 },
 {
-    "source": "corema",
-    "orgGroup": "DNA",
-    "name": "dna_other",
-    "zipFileName": "occurrence",
-    "mediaFile": "_multimedia",
-    "url": "https://ipt.gbif.no/archive.do?r=o_dna_other",
-    "akronym": "NHMO-DOT"
-},
-{
     "source": "musit",
     "orgGroup": "botanikk",
     "name": "karplanter",
     "zipFileName": "vascular_o",
     "mediaFile": "_media",
     "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/vascular_o.zip"
-},
-{
-    "source": "musit",
-    "orgGroup": "zoologi",
-    "name": "entomologi",
-    "zipFileName": "entomology_nhmo",
-    "mediaFile": "_media",
-    "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/entomology_nhmo.zip"
 },
 {
     "source": "musit",
@@ -67,6 +50,32 @@
 },
 {
     "source": "corema",
+    "orgGroup": "botanikk",
+    "name": "dna_fungi_lichens",
+    "zipFileName": "occurrence",
+    "mediaFile": "_multimedia",
+    "url": "https://ipt.gbif.no/archive.do?r=o_dna_fungi_lichens",
+    "akronym": "O-DFL"
+},
+{
+    "source": "corema",
+    "orgGroup": "botanikk",
+    "name": "dna_karplanter",
+    "zipFileName": "occurrence",
+    "mediaFile": "_multimedia",
+    "url": "https://ipt.gbif.no/archive.do?r=o_dna_plants",
+    "akronym": "O-DP"
+},
+{
+    "source": "musit",
+    "orgGroup": "zoologi",
+    "name": "entomologi",
+    "zipFileName": "entomology_nhmo",
+    "mediaFile": "_media",
+    "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/entomology_nhmo.zip"
+},
+{
+    "source": "corema",
     "orgGroup": "zoologi",
     "name": "mammals",
     "zipFileName": "occurrence",
@@ -85,7 +94,7 @@
 },
 {
     "source": "corema",
-    "orgGroup": "DNA",
+    "orgGroup": "zoologi",
     "name": "dna_entomologi",
     "zipFileName": "occurrence",
     "mediaFile": "_multimedia",
@@ -94,7 +103,7 @@
 },
 {
     "source": "corema",
-    "orgGroup": "DNA",
+    "orgGroup": "zoologi",
     "name": "dna_fish_herptiles",
     "zipFileName": "occurrence",
     "mediaFile": "_multimedia",
@@ -103,21 +112,12 @@
 },
 {
     "source": "corema",
-    "orgGroup": "DNA",
-    "name": "dna_fungi_lichens",
+    "orgGroup": "zoologi",
+    "name": "dna_other",
     "zipFileName": "occurrence",
     "mediaFile": "_multimedia",
-    "url": "https://ipt.gbif.no/archive.do?r=o_dna_fungi_lichens",
-    "akronym": "O-DFL"
-},
-{
-    "source": "corema",
-    "orgGroup": "DNA",
-    "name": "dna_karplanter",
-    "zipFileName": "occurrence",
-    "mediaFile": "_multimedia",
-    "url": "https://ipt.gbif.no/archive.do?r=o_dna_plants",
-    "akronym": "O-DP"
+    "url": "https://ipt.gbif.no/archive.do?r=o_dna_other",
+    "akronym": "NHMO-DOT"
 },
 {
     "source": "access",

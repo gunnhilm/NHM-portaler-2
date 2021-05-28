@@ -300,9 +300,9 @@ const drawMapObject = (object) => {
             })
         })
     }
-
-    if (object.decimalLatitude & object.decimalLongitude) {
-
+    
+    if (object.decimalLatitude && object.decimalLongitude) {
+        
         initialize_map()
         
         if (!location.href.includes('mapObject') && map) {
