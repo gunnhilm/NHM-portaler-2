@@ -287,6 +287,12 @@ app.get('*/checkCoord', (req, res) => {
     res.render('checkCoord', {})
 })
 
+// tool-page for getting error from GBiF
+app.get('*/dataErrors', (req, res) => {
+    res.render('dataErrors', {})
+})
+
+
 // functionality to check if coordinates are within correct region
 app.get('/checkRegion', (req, res) => {
     if (!req.query.regionType) {

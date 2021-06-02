@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Get Error data from GBIF for a collection</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        
+    </head>
+    <body>
+        <div class="wrapper">
+            {{>header}}
+
+            <table>
+                <tr>
+                    <td>
+                        <br>
+                    <label for="collection-select" id="select-collection-label">Velg samling</label>
+                    <select id="collection-select" style="height:30px; border-radius:4px;">
+                    <option value="" id="selectCollection"></option>
+                    </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    <br> Velg samling for å se feilmeldinger fra GBiF. Lenken bringer deg til GBiF.org <br>
+                    </td>
+                    <td> Frictionless Data fra Bionommia.net Innsamlingsdato sjekkes mot når insamleren var i livet, uoverenstemmelser kan lastes ned her:</td>
+                </tr>
+                <tr>
+                    <td>
+                        <table id="error-results" border="1"></table>
+                    </td>
+                    <td>
+                        <table id="bionomia-files" border="1"></table>
+                    </td>
+                </tr>
+            </table>
+
+
+
+
+        </div>
+        <link rel="stylesheet" href="/museum/styles/styles.css">
+        <link id="museumStyle" rel="stylesheet" type="text/css" href= "">
+        <script src="/museum/scripts/utils/showCorrectMuseum.js"></script>
+        <script src="/museum/scripts/utils/textItems.js"></script>
+        <script src="/museum/scripts/utils/renderLang.js"></script>
+        <script src="/museum/scripts/utils/getDOI/dataObject.js"></script>
+        <script src="/museum/scripts/utils/tools/issueObject.js"></script>
+        <script src="/museum/scripts/utils/tools/getMetricsFromGBiF.js"></script>
+    </body>
+
+
+</html>

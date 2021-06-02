@@ -1,4 +1,5 @@
 // UUIDene til NHMs dataset hos GBIF
+// eslint-disable-next-line no-unused-vars
 const GBifIdentifiers = {
     nhm: {
         Mammals : {

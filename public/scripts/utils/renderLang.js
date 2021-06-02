@@ -273,9 +273,7 @@ const renderText = function(lang) {
         //document.querySelector('#museum-select').innerHTML = textItems.selectMuseum[index] 
         //document.querySelector('#collection-select').innerHTML = textItems.selectCollection[index] 
         document.querySelector('#selectMuseum').innerHTML = textItems.selectMuseum[index] 
-        console.log('hit')
         document.querySelector('#selectCollection').innerHTML = textItems.selectCollection[index] 
-        console.log('hit')
         document.querySelector('#onloggingData').innerHTML = textItems.onloggingData[index]
         document.querySelector('#emailRequest').innerHTML = textItems.emailRequest[index]
         document.querySelector('#usernameRequest').innerHTML = textItems.usernameRequest[index]
@@ -287,7 +285,6 @@ const renderText = function(lang) {
 
     if (location.href.includes('checkCoord')) {
         document.querySelector('#checkCoordHeader').innerHTML = textItems.checkCoordHeader[index]
-        
     }
 }
 
