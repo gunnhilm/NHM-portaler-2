@@ -290,11 +290,32 @@ app.get('*/checkCoord', (req, res) => {
 // functionality to check if coordinates are within correct region
 app.get('/checkRegion', (req, res) => {
     if (!req.query.regionType) {
+        throw new Error ('no region...') 
+    } else {
+        try {
+            fileRead.checkRegion(req.query.regionType, req.query.lat, req.query.long, (error, results) => {
+                res.send({
+                    unparsed: results
+                })
+            })
+        }
+        catch(error) {
+            console.log('error in fileread.js ' + error)
+            throw new Error ('File not found ')
+        }
+    }
+})
+
+
+
+
+app.get('/checkRegion2', (req, res) => {
+    if (!req.query.regionType) {
         console.log('checkRegion-error')
         throw new Error ('regiontype not chosen')
     } else {
         try {
-            fileRead.checkRegion(req.query.regionType, req.query.lat, req.query.long, (error, results) => {
+            fileRead.checkRegion2(req.query.regionType, req.query.lat, req.query.long, (error, results) => {
                 res.send({
                     unparsed: results
                 })

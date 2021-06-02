@@ -132,6 +132,7 @@ showResultElements = () => {
     document.getElementById("resultPageText").style.display = "inline-block"
     document.getElementById("resultPageText").innerHTML = textItems.page[index]
     document.getElementById("resultPageNb").style.display = "inline-block"
+    document.getElementById("resultPageNb").innerHTML = " " + currentPage + '/' + numberOfPages
     //document.querySelector('#large-map-button').innerHTML = textItems.largeMapButton[index]
     //document.querySelector('#export-png').innerHTML = textItems.downloadMapButton[index]
     //document.querySelector('#checkedInMap').innerHTML = textItems.checkedInMap[index]   

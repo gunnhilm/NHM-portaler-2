@@ -141,6 +141,86 @@ const search = (museum, samling, searchTerm, linjeNumber = 0, limit = 20, callba
 
 const request = require('request')
 
+
+// const checkRegion = (museum, samling, searchTerm, linjeNumber = 0, limit = 20, callback) => {
+//     // velg riktig MUSIT dump fil å lese
+//       console.log('her kommer search museum: ' + museum);
+//     musitFile = setCollection(museum,samling)
+//     console.log(musitFile)
+//     if (fs.existsSync(musitFile)) {
+//         // cleaning the searchterm before making the search so that we get a more precise
+//         // remove whiteSpace
+//         searchTerm = searchTerm.trim()
+//         // Case insensitve search
+//         searchTerm = searchTerm.toLowerCase()
+//         console.log( 'Search Term: ' + searchTerm);
+        
+//         terms = searchTerm.split(' ')
+//         let results = ''
+//         const readInterface = readline.createInterface({
+//             input: fs.createReadStream(musitFile),
+//             console: false
+//         })
+
+//         let count = 0  // iterates over each line of the current file
+//         let resultCount = 0
+//         let masterCoordArray = []
+//         readInterface.on('line', function(line) {
+//             count++
+//             if (resultCount == limit) {
+//                 readInterface.close()
+//             } 
+//             if (count === 1) {
+//                 // header row 
+//                 results =  line
+                
+//             } else {         //if (count > linjeNumber) {
+//                 if (terms.length === 1){
+//                     if (line.toLowerCase().indexOf(terms[0]) !== -1) {
+//                         // søk for en match i linja  (line.indexOf(searchTerm) !== -1)
+//                         results =  results +  '\n' + line
+//                         resultCount++
+//                     } 
+//                     let array = line.split('\t')
+//                     let coordArray = []
+//                     coordArray.push(array[25])
+//                     coordArray.push(array[27])
+//                     coordArray.push(array[28])
+//                     //console.log(coordArray)
+
+//                     const url = 'https://ws.geonorge.no/kommuneinfo/v1/punkt?ost=' + array[27] + '&nord=' + array[28] + '&koordsys=4258'
+//                     request({ url, json: true }, (error, {body}) => {
+                        
+//                         if (error) {
+//                             callback('Unable to connect to geonorge.', undefined)
+//                         } else if (body.error) {
+//                             callback('Unable to find location.', undefined)
+//                         } else {
+                            
+//                             //console.log(body)
+//                             coordArray.push(body.kommunenavn)
+//                             masterCoordArray.push(coordArray)
+//                             console.log(masterCoordArray[0])
+//                             //callback(undefined, masterCoordArray)
+//                         }
+//                     })
+                    
+//                 }
+                
+//             }
+            
+//         }).on('close', function () {
+            
+//             const resulstAndLine = {results, count }
+            
+//             callback(undefined, resulstAndLine)
+//         })
+       
+//     } else {
+//         throw new Error ('File not found ')
+//     }
+// }
+
 const checkRegion = (region, lat, long, callback) => {
     const url = 'https://ws.geonorge.no/' + region + 'info/v1/punkt?ost=' + long + '&nord=' + lat + '&koordsys=4258'
     request({ url, json: true }, (error, {body}) => {
@@ -149,6 +229,7 @@ const checkRegion = (region, lat, long, callback) => {
         } else if (body.error) {
             callback('Unable to find location.', undefined)
         } else {
+            console.log(body)
             callback(undefined, body.kommunenavn)
         }
     })

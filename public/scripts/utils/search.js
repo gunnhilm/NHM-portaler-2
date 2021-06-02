@@ -185,6 +185,7 @@ function addCollectionsToSelect(orgGroup) {
                 try {
                     response.text().then((data) => {
                         const JSONdata = JSON.parse(data)  
+                        sessionStorage.setItem('options', data)
                         JSONdata.forEach(el => {
                             elOption = document.createElement("option")
                             elOption.text = addTextInCollSelect(el)
@@ -344,10 +345,15 @@ const doSearch = (limit = 20) => {
     searchFailed = false
     resetSortedBoolean() // set all booleans in propsSorted-array in PaginateAndRender.js to false
     const searchTerm = search.value
+    sessionStorage.setItem('searchTerm', searchTerm)
     const chosenCollection = collection.value
+    sessionStorage.setItem('chosenCollection',chosenCollection)
     searchLineNumber = limit
+    sessionStorage.setItem('limit', limit)
 
     let museum = getCurrentMuseum()   
+    sessionStorage.setItem('museum',museum)
+    console.log(sessionStorage.getItem('museum'))
  
     emptyTable()
 
@@ -481,7 +487,31 @@ const oldSearch = () => {
         }
     }
     
-    document.getElementById("search-form").style.display = "block" 
+    const vennligst = document.createElement("option")
+    vennligst.text = textItems.vennligst[index]
+    vennligst.value = 'vennligst'
+    vennligst.id = 'vennligst'
+    collection.add(vennligst)
+
+    data = sessionStorage.getItem('options')
+    JSONdata = JSON.parse(data)
+    JSONdata.forEach(el => {
+        elOption = document.createElement("option")
+        elOption.text = addTextInCollSelect(el)
+        elOption.value = el
+        elOption.id = el
+        collection.add(elOption)
+    })
+    if (sessionStorage.getItem('collection')) {
+        collection.value = sessionStorage.getItem('collection')
+    } else {
+        collection.value = 'vennligst'
+    }
+    // console.log(collection)
+
+    document.querySelector('#select-cell').style.display = 'block'
+    collection.style.display = 'block'
+    
     if (sessionStorage.getItem('collection')) {
         if (sessionStorage.getItem('string')) { //hvis det er søkeresultater i sesion storage, så skal disse vises
             // render correct language
@@ -491,8 +521,10 @@ const oldSearch = () => {
             } else {
                 language = sessionStorage.getItem('language')
             }
-            collection.style.display = 'block'
-            renderText(language)
+            
+        document.getElementById("search-form").style.display = "block" 
+        document.querySelector('#hits-row').style.display = 'block'
+        renderText(language)
             
             try {
                 document.getElementById('collection-select').value = sessionStorage.getItem('collection')

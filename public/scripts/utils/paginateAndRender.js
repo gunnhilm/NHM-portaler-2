@@ -470,9 +470,13 @@ function lastPage() {
 //  load()
 function loadList() {
     
-    const begin = ((currentPage - 1) * numberPerPage);
-    const end = begin + numberPerPage;
-    pageList = list.slice(begin, end);
+    const begin = ((currentPage - 1) * numberPerPage)
+    const end = Number(begin) + Number(numberPerPage)
+    pageList = list.slice(begin, end)
+    console.log(pageList)
+    console.log(begin)
+    console.log(end)
+    console.log(numberPerPage)
     sessionStorage.setItem('pageList', JSON.stringify(pageList)) // pageList is the same as subMusitData other places; the part of the search result that is listed on the current page
     
     if (document.querySelector('#collection-select').value == 'bulk') {
