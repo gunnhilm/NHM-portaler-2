@@ -270,33 +270,77 @@ downloadButton.addEventListener('click', (e) => {
 })
 
 
+// https://huynvk.dev/blog/download-files-and-zip-them-in-your-browsers-using-javascript
+const downloadImage = async (url) => {
+    return fetch(url).then(resp => resp.blob());
+  };
+  
+  const downloadMany = urls => {
+    return Promise.all(urls.map(url => downloadImage(url)))
+  }
+// const exportZip = (blobs, urls) => {
+//     const zip = JSZip();
+//     console.log('heie');
+//     console.log(urls);
+//     blobs.forEach((blob, i) => {
+//       zip.file(`file-${i}.jpg`, blob);
+//     //   zip.file(urls[i], blob);
+//     });
+//     zip.generateAsync({type: 'blob'}).then(zipFile => {
+//       const currentDate = new Date().getTime();
+//       const fileName = `combined-${currentDate}.zip`;
+//       return saveAs(zipFile, fileName);
+//     });
+//   }
+
+// const downloadAndZip = async (urls) => {
+//     return downloadMany(urls).then(exportZip(urls));
+//   }
+
+const exportZip = (blobs, urls) => {
+
+  }
+
+const downloadAndZip = async (urls, catalogNo) => {
+    document.getElementById("please-wait").style.display = "block"
+    return downloadMany(urls).then(blobs =>{
+        const zip = JSZip();
+        blobs.forEach((blob, i) => {
+        //   zip.file(`file-${i}.jpg`, blob);
+          zip.file(`${catalogNo[i]}.jpg`, blob);
+        });
+        zip.generateAsync({type: 'blob'}).then(zipFile => {
+          const currentDate = new Date().getTime();
+          const fileName = `combined-${currentDate}.zip`;
+          document.getElementById("please-wait").style.display = "none"
+          return saveAs(zipFile, fileName);
+        });
+    } );
+  }
+
 downloadPhotoButton.addEventListener('click', (e) => {
     e.preventDefault()
-    
-    const url = urlPath + '/downloadImage/'
-        console.log(url);
-        
         
     const searchResult = JSON.parse(sessionStorage.getItem('string'))
     // loop through - put those which checked in new array
     const newArray = []
+    const urls = []
+    const catalogNo = []
     searchResult.forEach(el => {
         if (el.checked) {newArray.push(el)}
     })
-    if (newArray.length == 0) {
+    
+    if (newArray.length === 0) {
         console.log('velg bilder å laste ned')
         zoomModal.style.display = "block";
         zoomModalContent.innerHTML = textItems.mapCheckedMessage[index]
-
-        
     } else {
         if (newArray.some(el => el.associatedMedia)) {
             newArray.forEach( el => {
-                const photoToDownload = el.associatedMedia    
-                if (photoToDownload) {
-                    forceDownload(photoToDownload, `image${el.catalogNumber}.jpg`)
-                }
+                urls.push(el.associatedMedia)
+                catalogNo.push(el.catalogNumber)
             })
+            downloadAndZip(urls,catalogNo)
         } else {
             zoomModal.style.display = "block";
             zoomModalContent.innerHTML = textItems.noPhotoMessage[index]
@@ -304,27 +348,6 @@ downloadPhotoButton.addEventListener('click', (e) => {
     }
 })
 
-
-// downloads photo
-// in: url (url to photo on server)
-// in: filename (string, name to be given to downloaded photo)
-// is called by downloadPhotoButton.eventlistener
-function forceDownload(url, fileName){
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", url, true);
-    xhr.responseType = "blob";
-    xhr.onload = function(){
-        var urlCreator = window.URL || window.webkitURL;
-        var imageUrl = urlCreator.createObjectURL(this.response);
-        var tag = document.createElement('a');
-        tag.href = imageUrl;
-        tag.download = fileName;
-        document.body.appendChild(tag);
-        tag.click();
-        document.body.removeChild(tag);
-    }
-    xhr.send()
-}
 
 
 
@@ -553,7 +576,6 @@ if (sessionStorage.getItem('organismGroup')) {
     oldSearch() 
 }
 
-
 // empties session’s search-result (sessionStorage), removes elements from page, resets pagination variables
 // calls emptyTable() in resultElementsOnOff.js
 //      emptyResultElements() in resultElementsOnOff.js
@@ -616,7 +638,6 @@ emptySearchButton.addEventListener('click', (e) => {
 document.getElementById('large-map-button').onclick = () => {
     window.open(href= urlPath + "/" + getCurrentMuseum() + "/map")
 }
-
 
 //Download map as png-file
 document.getElementById('export-png').addEventListener('click', function() {
