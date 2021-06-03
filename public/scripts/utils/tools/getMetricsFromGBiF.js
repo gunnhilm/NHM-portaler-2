@@ -21,8 +21,7 @@ const getMetics = async (museum, samling) => {
             const table = document.querySelector('#error-results')
             //empty table if  there is already content
             table.innerHTML = ''
-            console.log(table);
-            const header = ['Issues and flags', 'Count']
+            const header = ['Issues and flags', 'Antall poster']
             const row = table.insertRow(0)
             row.style = "border: solid"
             const cell1 = row.insertCell(0)
@@ -38,13 +37,14 @@ const getMetics = async (museum, samling) => {
                 fetch('https://api.gbif.org/v1/occurrence/count?datasetKey=' + collectionKey + '&issue=' + issueArray[index])
                 .then(response => response.json())
                 .then(data => {
-
-                const issueLink = '<a href ="https://www.gbif.org/occurrence/search?dataset_Key=' + collectionKey + '&issue=' + issueArray[index] + '" target="_blank">' + issueArray[index] + '</a>'
-                const row1 = table.insertRow(1)
-                const cell_1 = row1.insertCell(0)
-                const cell_2 = row1.insertCell(1)
-                cell_1.innerHTML = issueLink
-                cell_2.innerHTML  = data
+                if(data){
+                    const issueLink = '<a href ="https://www.gbif.org/occurrence/search?dataset_Key=' + collectionKey + '&issue=' + issueArray[index] + '" target="_blank">' + issueArray[index] + '</a>'
+                    const row1 = table.insertRow(1)
+                    const cell_1 = row1.insertCell(0)
+                    const cell_2 = row1.insertCell(1)
+                    cell_1.innerHTML = issueLink
+                    cell_2.innerHTML  = data
+                }
                 }).then(errorsResult => resolve(errorsResult)); 
             }
 
@@ -62,13 +62,10 @@ const getBionomiaFiles = async (museum) => {
             const table = document.querySelector('#bionomia-files')
                 //empty table if  there is already content
                 table.innerHTML = ''
-                console.log(table);
-                const header = ['Collection']
+                const header = ['Frictionless data']
                 const row = table.insertRow(0)
                 row.style = "border: solid"
                 const cell1 = row.insertCell(0)
-
-
                 cell1.innerHTML = header[0].bold()
 
 
@@ -97,7 +94,7 @@ const main = async (museum, samling) => {
 
         // const data = await getMetics(collection[0], issue[0] )
         await getMetics(museum, samling)
-        getBionomiaFiles(museum)
+        
     } catch (error) {
         console.log('her kommer en feil: ');
         console.error(error.name + ': ' + error.message);
@@ -112,3 +109,5 @@ document.getElementById('collection-select').addEventListener('change',function(
     const museum = getMuseum()
     main(museum,valgtSamling)
 })
+
+getBionomiaFiles(getMuseum())
