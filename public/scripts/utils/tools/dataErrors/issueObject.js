@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 const issues = {
     INSTITUTION_COLLECTION_MISMATCH: "Institution collection mismatch",
     INSTITUTION_MATCH_FUZZY: "Institution match fuzzy",

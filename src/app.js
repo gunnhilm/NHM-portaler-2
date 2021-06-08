@@ -292,6 +292,10 @@ app.get('*/dataErrors', (req, res) => {
     res.render('dataErrors', {})
 })
 
+// tool-page for getting checking dataflow to GBiF and Artsdatabanken
+app.get('*/dataFlow', (req, res) => {
+    res.render('dataFlow', {})
+})
 
 // functionality to check if coordinates are within correct region
 app.get('/checkRegion', (req, res) => {
