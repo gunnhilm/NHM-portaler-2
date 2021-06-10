@@ -82,6 +82,20 @@ app.get('/um', (req, res) => {
     }
 })
 
+app.get('/nbh', (req, res) => {
+    if (!req.query.search) {
+        return res.render('index', {
+        })
+    } else {
+        fileRead.search(req.query.search, (error, results) => {
+            res.render('index', {
+                results: results
+             })
+         })
+    }
+})
+
+
 // Søk er treff i MUSIT-dump fila
 // input:
 //  req.query.samling = samling fra dropdown
@@ -117,7 +131,6 @@ app.get('/orgGroups', (req, res) => {
             let orgGroup = fileRead.setOrgGroups(req.query.museum, (error, results) => {
 
             })
-            console.log(orgGroup)
             res.send(orgGroup)
         }
         catch(error) {
@@ -132,11 +145,8 @@ app.get('/collections', (req, res) => {
         throw new Error ('no museum...')
     }else {
         try {
-            //console.log(req.query.orgGroup)
             let coll = fileRead.setSubcollections(req.query.museum, req.query.orgGroup, (error, results) => {
             })
-
-            //console.log(coll)
             res.send(coll)
         }
         catch(error) {

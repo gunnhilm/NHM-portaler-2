@@ -1,0 +1,72 @@
+header {
+    background-color: #387f33;
+}
+
+#logo {
+    height: 40px;
+    padding: 5px;
+}
+
+#logo {
+    height: 40px;
+    padding: 5px;
+}
+
+#logo {
+    height: 40px;
+    padding: 5px;
+}
+
+
+/* footer.hbs */
+footer {
+    background-color: #387f33;
+} 
+
+#language {
+    background-color: #387f33;
+    color: white;
+} 
+
+.headerLink {
+    color: white;
+}
+
+#journal-link {
+    display: 'none';
+}
+
+.headerLink:hover {
+    background-color: #387f33;
+}
+
+/* Dropdown Button */
+.dropbtn {
+    background-color:  #387f33;
+    color: white;
+  }
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    background-color: #005173;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color:  white;
+  }
+
+  /* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #213a47;}
+
+@media only screen and (max-width: 670px) {
+
+    #logo {
+        position: absolute;
+        clip: rect(0px,50px,200px,0px)
+    }
+}
+
+
+
+

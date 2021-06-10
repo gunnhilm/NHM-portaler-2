@@ -1,0 +1,45 @@
+[
+    
+    {
+        "filMetadata": {
+            "forklaring": "i kombinasjon med name objektet gir occurranceFile filnavn for occurrance fila" ,
+            "OccurranceFile": "_occurrence.txt",
+            "mediaFile": "_media.txt",
+            "museum": "nhm" 
+        },
+        "coremaFiles" : ["occurrence", "amplification","materialsample","multimedia","permit","preparation","preservation","resourcerelationship"]
+    },
+    {
+        "source": "musit",
+        "orgGroup": "botanikk",
+        "name": "karplanter",
+        "zipFileName": "vascular_kmn",
+        "mediaFile": "_media",
+        "url":  "https://www.unimus.no/nedlasting/datasett/naturhistorie/vascular_kmn.zip"
+    },
+    {
+        "source": "musit",
+        "orgGroup": "botanikk",
+        "name": "alger",
+        "zipFileName": "alge_kmn",
+        "mediaFile": "_media",
+        "url": "https://www.unimus.no/nedlasting/datasett/naturhistorie/alge_kmn.zip"
+    },
+    {
+        "source": "musit",
+        "orgGroup": "botanikk",
+        "name": "moser",
+        "zipFileName": "moss_knm",
+        "mediaFile": "_media",
+        "url": "https://www.unimus.no/nedlasting/datasett/naturhistorie/moss_kmn.zip"
+    },
+    {
+        "source": "excel",
+        "orgGroup": "geologi",
+        "name": "mineraler",
+        "zipFileName": "mineralsamlingen",
+        "mediaFile": "",
+        "url": "",
+        "akronym": "NBH-MIN"
+    }
+]

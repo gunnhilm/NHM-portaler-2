@@ -20,7 +20,9 @@ const renderText = function(lang) {
         logo.src = textItems.logoTMU[index]
     } else if (window.location.href.includes('/um')) {
         logo.src = textItems.logoUM[index]
-    } else if (window.location.href.includes('/nhm')) {
+    }  else if (window.location.href.includes('/nbh')) {
+        logo.src = textItems.logoNBH[index]
+    }else if (window.location.href.includes('/nhm')) {
         logo.src = textItems.logoNHM[index]
     }
     

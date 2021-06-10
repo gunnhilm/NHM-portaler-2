@@ -1,6 +1,5 @@
 // search.js: performs searches and add functionality to buttons and selects etc.
 
-
 // urlPath er definert i textItems.js
 // on page initially
 const collection = document.querySelector('#collection-select') 
@@ -39,8 +38,9 @@ if (sessionStorage.language) {
 // is called by doSearch() and updateFooter()
 const getCurrentMuseum = () => {
     console.log(window.location.pathname)
-    let museum = window.location.pathname
-    museum = museum.slice(8)
+    const pathArray = window.location.pathname.split('/')
+    const museum = pathArray[2]
+    console.log('museum er' + museum);
     return museum
 }
 
@@ -50,6 +50,7 @@ let museum = getCurrentMuseum()
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1)
 }
+
 
 function addTextInOrgButtons(a) {
     if (a == 'botanikk') {return textItems.botanikk[index]}
@@ -137,6 +138,7 @@ function addTextInCollSelect(a) {
     else if (a == 'malmer') {return textItems.malmer[index]}
     else if (a == 'oslofeltet') {return textItems.oslofeltet[index]}
     else if (a == 'utenlandskeBergarter') {return textItems.utenlandskeBA[index]}
+    else if (a == 'mineraler') {return textItems.mineraler[index]}
     //else if (a == 'GeoPal') {return textItems.GeoPal[index]}
     //else if (a == 'otherOpt') {return textItems.otherOpt[index]}
     else if (a == 'utad') {return textItems.utad[index]}

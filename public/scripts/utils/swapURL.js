@@ -28,7 +28,17 @@ const getMuseumSpecificURL = () => {
         swapURL('/museum/tmu/tools', 'menu_tools-link')
         swapURL('/museum/tmu/', 'menu_search-page-link')
         document.getElementById('menu_journal-link').style.display = 'none'
-    } else {
+    }  else if (window.location.href.includes('nbh')){
+        swapURL('/museum/nbh/help','help-link')
+        swapURL('/museum/nbh/tools', 'tools-link')
+        swapURL('/museum/nbh/', 'search-page-link')
+        document.getElementById('journal-link').style.display = 'none'
+        // mobile-screen-links
+        swapURL('/museum/nbh/help', 'menu_help-link')
+        swapURL('/museum/nbh/tools', 'menu_tools-link')
+        swapURL('/museum/nbh/', 'menu_search-page-link')
+        document.getElementById('menu_journal-link').style.display = 'none'
+    }else {
         swapURL('/museum/nhm/help', 'help-link')
         swapURL('/museum/nhm/', 'search-page-link')
         swapURL('/museum/nhm/tools', 'tools-link')

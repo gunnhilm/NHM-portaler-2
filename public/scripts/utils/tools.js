@@ -6,6 +6,8 @@ if (window.location.href.includes('/um')) {
     museumURLPath = urlPath + "/um"
 } else if (window.location.href.includes('tmu')) {
     museumURLPath = urlPath + "/tmu"
+} else if (window.location.href.includes('nbh')) {
+    museumURLPath = urlPath + "/nbh"
 } else {
     museumURLPath = urlPath + "/nhm"
 }

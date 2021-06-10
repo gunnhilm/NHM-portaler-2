@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // textItems.js: Contains a part of the generic urlPath that is common for all museums, and an array with strings to be rendered in html-elements, in Norwegian and English
 // Both elements are used in pagingateAndRender.js
 
@@ -14,6 +15,7 @@ const textItems = {
     logoNHM: [urlPath + "/images/UiO NHM SH V2 RGB.png", urlPath + "/images/uio_nhm_a_eng_cmyk_2.png"],
     logoTMU: [urlPath + "/images/Tromso_museum_Logo_Bokmal_2l_HVIT.png", urlPath + "/images/Universitetsmuseet_Logo_Engelsk_2l_HVIT.png"],
     logoUM: [urlPath + "/images/UiBlogoUM_white_v.png", urlPath + "/images/UiBlogo_Eng_white_left.png"],
+    logoNBH: [urlPath + "/images/NBH_logo_green.png", urlPath + "/images/NBH_logo_green.png"],
     
     // index page
     botanikk: ["Botanikk og mykologi", "Botany and mycology"],
@@ -47,6 +49,7 @@ const textItems = {
     malmer: ["Malmer", "Ores"],
     oslofeltet: ["Oslofeltet", "The Oslo field"],
     utenlandskeBA: ["Utenlandske bergarter", "Minerals from outside Norway"],
+    mineraler: ["Mineraler", "Minerals"],
     otherOpt: ["Andre samlinger", "Other collections"],
     utad: ["Utads samling", "Exhibition collection"],
     bulk: ["Bulk- og prosjektmateriale", "Bulk- and project material"],

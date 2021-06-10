@@ -1,9 +1,12 @@
 // https://stackabuse.com/reading-a-file-line-by-line-in-node-js/
 const readline = require('readline');
+const request = require('request')
 const fs = require('fs')
 const fileListNhm = require('./fileListNhm')
 const fileListTmu = require('./fileListTmu')
 const fileListUm = require('./fileListUm')
+const fileListNbh = require('./fileListNbh')
+
 
 const setOrgGroups = (museum) => {
     let fileList
@@ -11,6 +14,8 @@ const setOrgGroups = (museum) => {
         fileList = fileListTmu
     } else if (museum == 'um') {
         fileList = fileListUm
+    }  else if (museum == 'nbh') {
+        fileList = fileListNbh
     } else {
         fileList = fileListNhm
     }
@@ -30,6 +35,8 @@ const setSubcollections = (museum, orgGroup) => {
         fileList = fileListTmu
     } else if (museum == 'um') {
         fileList = fileListUm
+    } else if (museum == 'nbh') {
+        fileList = fileListNbh
     } else {
         fileList = fileListNhm
     }
@@ -50,6 +57,8 @@ const setCollection = (museum, samling) => {
         fileList = fileListTmu
     } else if (museum == 'um') {
         fileList = fileListUm
+    } else if (museum == 'nbh') {
+        fileList = fileListNbh
     } else {
         fileList = fileListNhm
     }
@@ -139,7 +148,6 @@ const search = (museum, samling, searchTerm, linjeNumber = 0, limit = 20, callba
     }
 }
 
-const request = require('request')
 
 
 // const checkRegion = (museum, samling, searchTerm, linjeNumber = 0, limit = 20, callback) => {
@@ -238,9 +246,9 @@ const checkRegion = (region, lat, long, callback) => {
  
 module.exports = { 
     search,
+    setCollection,
     setOrgGroups,
     setSubcollections,
-    setCollection,
     checkRegion
  } 
 

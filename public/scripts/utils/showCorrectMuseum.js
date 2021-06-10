@@ -27,6 +27,8 @@ const getMuseumStyleSheet = () => {
         swapStyleSheet('/museum/styles/styles_UM.css')
     } else if (window.location.href.includes('tmu')){
         swapStyleSheet('/museum/styles/styles_TMU.css')
+    } else if (window.location.href.includes('/nbh')) {
+        swapStyleSheet('/museum/styles/styles_NBH.css')
     } else if (window.location.href.includes('/nhm')) {
         swapStyleSheet('/museum/styles/styles_NHM.css')
     } else {
