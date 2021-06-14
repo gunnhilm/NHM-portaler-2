@@ -60,6 +60,9 @@ if (!sessionStorage.getItem('propsSorted')) {
             {id: 'note',
             sortedOnce: false,
             sortedTwice: false},
+            {id: 'locality_concatenated',
+            sortedOnce: false,
+            sortedTwice: false},
             // UTAD tabell
             {id: 'vernacularName',
             sortedOnce: false,
@@ -238,6 +241,7 @@ function addSortingText(id, prop, musitData, fromFunction) { // her er musitData
         sessionStorage.setItem('pageList', JSON.stringify(subMusitData))
         sessionStorage.setItem('string', JSON.stringify(musitData))
         sessionStorage.setItem('propsSorted', JSON.stringify(propsSorted))
+        console.log(fromFunction)
         if(fromFunction === 'bulkResultTable') {
             bulkResultTable(subMusitData, musitData)
         } else if (fromFunction === 'UTADRestultTable') {

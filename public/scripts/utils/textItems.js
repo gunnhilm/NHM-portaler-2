@@ -168,8 +168,13 @@ const textItems = {
     showToolsHeader: ["Verktøy til bruk i samlingsforvaltningen", "Tools for managing the collections"],
     showToolsText: ["", ""],
     statistikkLink: ["Statistikk", "Statistics"],
+    statistikkTekst: ["Se statistikk over samlingene; antall objekter, utvikling over tid osv.", "See statistics of the collections; number of objects, development over time etc."],
     DOILink: ["Lag DOI fra GBIF", "Get DOI from GBIF"],
+    DOIText: ["Lag en lenke til dataene fra samlingsobjekter. Ved utlån av materiale eller bruk av objekter til forskning kan man få en DOI som det henvises til i en vitenskapelig artikkel slik at man kan refere til samlingene på en entydig måte. Dette er en forutsetning for å kunne utnytte de muligheter som ligger i bionomia.net.",
+                "Make a link to the data of collection objecs. When loaning out material or use of objects for scientific research, you can get a DOI to include in a scientific paper so that you can refer to the collections in an unabiguous way. This is a prerequisite to take advantage in the opportunities that lies in bionomia.net"],
     coordinateLink: ["Sjekk koordinater", "Check coordinates"],
+    dataErrorLink: ["Finn feil i dataene", "Find errors in the data"],
+    dataErrorText: ["Utnytt de verktøyene som tilbys fra GBIF og Bionomia til å oppdage feil i dataene","Utilize the tools available from GBIF and Bionomia to discover errors in the data"],
     
     //ShowStat page
     showStatHeader: ["Statistikk over samlingene", "Statistics from the collections"],

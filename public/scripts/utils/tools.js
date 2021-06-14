@@ -15,5 +15,5 @@ if (window.location.href.includes('/um')) {
 
 document.querySelector('#statistikk-link').href = museumURLPath + '/showStat'
 document.querySelector('#DOI-link').href = museumURLPath + '/getDOI'
-document.querySelector('#Data-error').href = museumURLPath + '/dataErrors'
+document.querySelector('#data-error-link').href = museumURLPath + '/dataErrors'
 // document.querySelector('#coordinate-link').href = museumURLPath + '/checkCoord'

@@ -599,6 +599,10 @@ td {
     color: black
 }
 
+.tool-text {
+    width: 500px;
+}
+
 /* dataError-page */
 .errorHeaders {
     font-size: 20px;
@@ -609,3 +613,4 @@ td {
 #dataError-table {
     border-collapse: collapse
 }
+

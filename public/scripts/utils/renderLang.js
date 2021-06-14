@@ -233,8 +233,13 @@ const renderText = function(lang) {
         document.querySelector('#showToolsHeader').innerHTML = textItems.showToolsHeader[index]
         document.querySelector('#showToolsText').innerHTML = textItems.showToolsText[index]
         document.querySelector('#statistikk-link').innerHTML = textItems.statistikkLink[index]
+        document.querySelector('#statistics-text').innerHTML = textItems.statistikkTekst[index]
         document.querySelector('#DOI-link').innerHTML = textItems.DOILink[index]
-        document.querySelector('#coordinate-link').innerHTML = textItems.coordinateLink[index]
+        document.querySelector('#DOI-text').innerHTML = textItems.DOIText[index]
+        document.querySelector('#data-error-link').innerHTML = textItems.dataErrorLink[index]
+        document.querySelector('#data-error-text').innerHTML = textItems.dataErrorText[index]
+        //document.querySelector('#coordinate-link').innerHTML = textItems.coordinateLink[index]
+
     }
 
     // Stat page

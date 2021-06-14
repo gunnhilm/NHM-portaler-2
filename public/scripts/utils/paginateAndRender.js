@@ -343,7 +343,8 @@ const bulkResultTable = (subBulkData, bulkData) => {
                 cell5.innerHTML = `<button id='preparationsButton' class='sort'>${textItems.headerPreparations[index].bold()} ${getArrows('preparations')} </button>`
                 //cell6.innerHTML = `<button id='unitTypeButton' class='sort'>${textItems.headerUnitType[index].bold()} ${getArrows('unitType')}</button>`
                 cell6.innerHTML = `<button id='localityButton' class='sort'>${textItems.headerLocality[index].bold()} ${getArrows('locality')}</button>`
-                cell7.innerHTML = `<button id='placementButton' class='sort'>${textItems.headerPlacement[index].bold()} ${getArrows('placement')}</button>`
+                //cell7.innerHTML = `<button id='placementButton' class='sort'>${textItems.headerPlacement[index].bold()} ${getArrows('placement')}</button>`
+                cell7.style.display = 'none'
                 //cell7.innerHTML = `<button id='stateProvinceButton' class='sort'>${textItems.headerStateProvince[index].bold()} ${getArrows('stateProvince')}</button>`
                 cell8.innerHTML = `<button id='noteButton' class='sort'>${textItems.headerNotes[index].bold()} ${getArrows('note')}</button>`
                 cell9.style.display = 'none'
@@ -355,15 +356,15 @@ const bulkResultTable = (subBulkData, bulkData) => {
                 </select>`
                 
             
-                addSortingText('musitIDButton', 'catalogNumber', bulkData)  // Tabellen blir sortert på nummer
-                addSortingText('scientificNameButton', 'scientificName', bulkData)
-                addSortingText('preparationsButton', 'preparations', bulkData)
-                addSortingText('collectorButton', 'recordedBy', bulkData)
-                addSortingText('dateButton', 'eventDate', bulkData)
+                addSortingText('musitIDButton', 'catalogNumber', bulkData, 'bulkResultTable')  // Tabellen blir sortert på nummer
+                addSortingText('scientificNameButton', 'scientificName', bulkData, 'bulkResultTable')
+                addSortingText('preparationsButton', 'preparations', bulkData, 'bulkResultTable')
+                addSortingText('collectorButton', 'recordedBy', bulkData, 'bulkResultTable')
+                addSortingText('dateButton', 'eventDate', bulkData, 'bulkResultTable')
                 // fix!!!!!!
-                //addSortingText('localityButton', 'locality', bulkData)
-                //addSortingText('placementButton', 'placement', bulkData)
-                addSortingText('noteButton', 'note', bulkData)
+                addSortingText('localityButton', 'locality_concatenated', bulkData, 'bulkResultTable')
+                //addSortingText('placementButton', 'placement', bulkData, 'bulkResultTable')
+                addSortingText('noteButton', 'note', bulkData, 'bulkResultTable')
                 
             
             } else {        // Her kommer innmaten i tabellen, selve resultatene
@@ -397,15 +398,17 @@ const bulkResultTable = (subBulkData, bulkData) => {
                 let comma2
                 if (subBulkData[i].stateProvince) {comma1 = ', '} else { comma1 = ''}
                 if (subBulkData[i].locality) {comma2 = ', '} else { comma2 = ''}
-                let concatLocality = subBulkData[i].country + comma1 + subBulkData[i].stateProvince + comma2 + subBulkData[i].locality
-                cell6.innerHTML = concatLocality
-                
+                //let concatLocality = subBulkData[i].country + comma1 + subBulkData[i].stateProvince + comma2 + subBulkData[i].locality
+                //cell6.innerHTML = concatLocality
+                cell6.innerHTML = subBulkData[i].locality_concatenated
+
                 let commaP1
                 let commaP2
                 if (subBulkData[i].room) {commaP1 = ', '} else {commaP1 = ''}
                 if (subBulkData[i].cupboard) {commaP2 = ', '} else {commaP2 = ''}
                 let placement = subBulkData[i].building + commaP1 + subBulkData[i].room + commaP2 + subBulkData[i].cupboard
-                cell7.innerHTML = placement
+                //cell7.innerHTML = placement
+                cell7.style.display= 'none'
                 cell8.innerHTML = subBulkData[i].note
                 cell9.style.display = 'none'
                 cell11.innerHTML = `<input type="checkbox" id=checkbox${i} onclick="registerChecked(${i})" ></input>`
