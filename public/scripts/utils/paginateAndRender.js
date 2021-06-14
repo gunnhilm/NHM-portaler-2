@@ -362,7 +362,7 @@ const bulkResultTable = (subBulkData, bulkData) => {
                 addSortingText('collectorButton', 'recordedBy', bulkData, 'bulkResultTable')
                 addSortingText('dateButton', 'eventDate', bulkData, 'bulkResultTable')
                 // fix!!!!!!
-                addSortingText('localityButton', 'locality_concatenated', bulkData, 'bulkResultTable')
+                //addSortingText('localityButton', 'locality', bulkData, 'bulkResultTable')
                 //addSortingText('placementButton', 'placement', bulkData, 'bulkResultTable')
                 addSortingText('noteButton', 'note', bulkData, 'bulkResultTable')
                 
@@ -447,14 +447,6 @@ const bulkResultTable = (subBulkData, bulkData) => {
         document.getElementById("empty-search-button").style.display = "inline-block"
         numberOfPages = getNumberOfPages(numberPerPage)
         
-        if (!searchFailed) {
-            try {
-                drawMap(bulkData) 
-            } catch (error) {
-                console.error(error)
-                reject(error);
-            }
-        } 
         
     }  
     catch(error) {
