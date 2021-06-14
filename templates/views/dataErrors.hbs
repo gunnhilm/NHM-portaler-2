@@ -9,32 +9,56 @@
         <div class="wrapper">
             {{>header}}
 
-            <table>
-                <tr>
-                    <td>
-                        <br>
-                    <label for="collection-select" id="select-collection-label">Velg samling</label>
-                    <select id="collection-select" style="height:30px; border-radius:4px;">
-                    <option value="" id="selectCollection"></option>
-                    </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                    <br> Velg samling for å se feilmeldinger fra GBiF. Lenken bringer deg til GBiF.org <br>
-                    </td>
-                    <td> Frictionless Data fra Bionommia.net Innsamlingsdato sjekkes mot når insamleren var i livet, uoverenstemmelser kan lastes ned her:</td>
-                </tr>
-                <tr>
-                    <td>
-                        <table id="error-results" border="1"></table>
-                    </td>
-                    <td>
-                        <table id="bionomia-files" border="1"></table>
-                    </td>
-                </tr>
-            </table>
-
+            <div class="content">
+                <br><br><br><br>
+                <p class="page-header" id="dataErrorHeader"></p>
+                <br>
+                <table id="dataError-table">
+                    <tr>
+                        <td id="GBIF-header" class="errorHeaders">
+                            <br>
+                            Feilmeldinger fra GBIF
+                            <br>
+                            <br>
+                            
+                        </td>
+                        <td width="150px"></td>
+                        <td id="binomia-header" class="errorHeaders" >
+                            <br>
+                            Sjekk mot bionomia.net
+                            <br>
+                            <br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="GBIF-text">
+                            <br><br> Velg samling for å se feilmeldinger fra GBiF. Lenken bringer deg til GBiF.org <br>
+                        </td>
+                        <td width="30px"></td>
+                        <td id="binomia-text"> 
+                            <br><br>Frictionless Data fra Bionommia.net Innsamlingsdato sjekkes mot når insamleren var i livet, uoverenstemmelser kan lastes ned her:<br></td>
+                    </tr><tr>
+                        <td>
+                            <br>
+                            <label for="collection-select" id="select-collection-label">Velg samling</label>
+                            <select id="collection-select" style="height:30px; border-radius:4px;">
+                            <option value="" id="selectCollection"></option>
+                            </select>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <br>
+                            <table id="error-results" border="1"></table>
+                        </td>
+                        <td width="30px"></td>
+                        <td>
+                            <table id="bionomia-files" border="1"></table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
         <link rel="stylesheet" href="/museum/styles/styles.css">
         <link id="museumStyle" rel="stylesheet" type="text/css" href= "">

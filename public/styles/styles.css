@@ -598,3 +598,14 @@ td {
     font-size: 25px;
     color: black
 }
+
+/* dataError-page */
+.errorHeaders {
+    font-size: 20px;
+    color: black;
+    width: 500px
+}
+
+#dataError-table {
+    border-collapse: collapse
+}

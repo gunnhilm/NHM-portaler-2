@@ -60,7 +60,7 @@ const renderText = function(lang) {
     }
     
     //Dropdown med valg av samlinger, index page og stat page
-    if (!location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler') & !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools') & !location.href.includes('checkCoord')) {
+    if (!location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler') & !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools') & !location.href.includes('checkCoord') & !location.href.includes('dataError')) {
     //if (location.href.substring(location.href.split('/',3).join('/').length).lengt === 12) { 
     
     // document.querySelector('#specimensOptgroup').innerHTML = textItems.specimensOptgroup[index]
@@ -92,7 +92,7 @@ const renderText = function(lang) {
     }
 
     // index page
-    if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler')& !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools') & !location.href.includes('checkCoord')) {
+    if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler')& !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools') & !location.href.includes('checkCoord') & !location.href.includes('dataError')) {
     //if (location.href.substring(location.href.split('/',3).join('/').length).length === 12) { 
 
         //document.querySelector('#vennligst').innerHTML = textItems.vennligst[index] 
@@ -305,6 +305,15 @@ const renderText = function(lang) {
     if (location.href.includes('checkCoord')) {
         document.querySelector('#checkCoordHeader').innerHTML = textItems.checkCoordHeader[index]
     }
+
+    if (location.href.includes('dataErrors')) {
+        document.querySelector('#dataErrorHeader').innerHTML = textItems.dataErrorHeader[index]
+        document.querySelector('#select-collection-label').innerHTML = textItems.selectCollectionError[index] 
+        document.querySelector('#GBIF-header').innerHTML = textItems.GBIFHeader[index]
+        document.querySelector('#binomia-header').innerHTML = textItems.binomiaHeader[index]
+        document.querySelector('#GBIF-text').innerHTML = textItems.GBIFText[index]
+        document.querySelector('#binomia-text').innerHTML = textItems.binomiaText[index]
+    }
 }
 
 let language
@@ -337,7 +346,7 @@ document.querySelector('#language').addEventListener('click', (e) => {
     renderText(language)
     sessionStorage.setItem('language', language)
    
-    if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler') & !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools') & !location.href.includes('checkCoord')) {
+    if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler') & !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools') & !location.href.includes('checkCoord') & !location.href.includes('dataError')) {
         if (document.querySelector("#head-nb-hits").innerHTML) {
 
             if (language === "Norwegian") {

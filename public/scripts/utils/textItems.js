@@ -216,5 +216,16 @@ const textItems = {
     noUUID: ['Fant ikke UUIDen til samlingen, velg "Other" på museum og skriv inn key manuelt', 'Did not find the UUID to the collection, choose "Other" in musuem and enter key manually'],
     
     // checkCoord page
-    checkCoordHeader: ['Sjekk koordinater', 'Check coordinates']
+    checkCoordHeader: ['Sjekk koordinater', 'Check coordinates'],
+
+    // dataError page
+    dataErrorHeader: ['Finn feil i dataene', 'Find errors in the data'],
+    selectCollectionError: ['Velg samling', 'Choose a selection'],
+    GBIFHeader: ['Feilmeldinger fra GBIF', 'Error messages from GBIF'],
+    GBIFText: ['<br><br>Velg samling for å se feilmeldinger fra GBIF. Lenken bringer deg til gbif.org', '<br><br>Choose a collection to see error messages from GBIF. The link brings you to gbif.org'],
+    binomiaHeader: ['Sjekk mot binomia.net', 'Compare with binomia.net'],
+    binomiaText: ['<br><br>Innsamlingsdato sjekkes mot levetiden til innsamleren ved hjelp av "Frictionless Data" fra bionomia.net. Uoverensstemmelser kan lastes ned her:',
+                '<br><br>Collecting date is checked against the collector`s life span by the help of "Frictionless Data" from bionomia.net. Discrepancies can be downloaded here:'],
+    errorResultsHeaders: [['Problemer og flagg', 'Antall poster'],['Issues and flags', 'Number of records']]
+    
 }

@@ -21,7 +21,19 @@ const getMetics = async (museum, samling) => {
             const table = document.querySelector('#error-results')
             //empty table if  there is already content
             table.innerHTML = ''
-            const header = ['Issues and flags', 'Antall poster']
+            let language
+            if (sessionStorage.language) {
+                language = sessionStorage.getItem('language')
+            } else if (document.querySelector('#language').value) {
+                language = document.querySelector('#language').value
+            } else {
+                document.querySelector('#language').value = "Norwegian"
+                language = "Norwegian"
+            }
+            let index
+            if (language == "Norwegian") { index = 0} else { index = 1}
+
+            const header = textItems.errorResultsHeaders[index]
             const row = table.insertRow(0)
             row.style = "border: solid"
             const cell1 = row.insertCell(0)
