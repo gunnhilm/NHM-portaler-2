@@ -11,7 +11,6 @@ const nbHitsElement = document.getElementById('nb-hits')
 const nbHitsHeader = document.getElementById("head-nb-hits")
 const errorMessage = document.getElementById("error-message")
 
-
 // for the download button 
 const downloadButton = document.getElementById('download-button')
 const downloadPhotoButton = document.getElementById('download-photo-button')
@@ -32,25 +31,74 @@ if (sessionStorage.language) {
     language = document.querySelector('#language').value
     sessionStorage.setItem('language', language)
 }
+// empties session’s search-result (sessionStorage), removes elements from page, resets pagination variables
+// calls emptyTable() in resultElementsOnOff.js
+//      emptyResultElements() in resultElementsOnOff.js
+// is called by emptySearchButton.eventlistener, upateFooter() when error
+const emptySearch = () => {
+    
+    sessionStorage.removeItem('string')
+    sessionStorage.removeItem('collection')
+    sessionStorage.removeItem('searchLineNumber')
+    sessionStorage.removeItem('search-text')
+    sessionStorage.removeItem('currentPage')
+    sessionStorage.removeItem('numberPerPage')
+    
+    if (sessionStorage.getItem('organismGroup')) {
+        // gå gjennom alle knappene og aktiver den relevante
+        buttonArray.forEach(el => {
+            if (sessionStorage.getItem('organismGroup') == el.id) {
+                el.className = "blue-button"
+                
+            }
+        })
+    }
+
+    collection.value = "vennligst"
+    // let length = collection.options.length
+    // console.log(length)
+    // for (i = length-1; i >= 0; i--) {
+    //   collection.options[i] = null
+    // }
+    
+    // buttonArray.forEach(el => {
+    //     el.className = "white-button"
+    // })
+    
+    document.getElementById('search-form').style.display = "none"
+    document.getElementById("search-text").value = ""
+    
+    document.getElementById('hits-row').style.display = "none"
+    emptyTable()
+    
+    // remove old map if any and empty array
+    document.getElementById("map-search").innerHTML = "" 
+    emptyResultElements()
+
+    // set pagination variables to default / empty
+    list.length = 0;
+    pageList.length = 0;
+    currentPage = 1;
+    numberPerPage = 20;
+    numberOfPages = 0; // calculates the total number of pages
+    document.getElementById('number-per-page').value = '20'
+}
 
 // figures out which museum we are in
 // out: string, abbreviation for museum
 // is called by doSearch() and updateFooter()
 const getCurrentMuseum = () => {
-    console.log(window.location.pathname)
     const pathArray = window.location.pathname.split('/')
     const museum = pathArray[2]
-    console.log('museum er' + museum);
     return museum
 }
 
-let museum = getCurrentMuseum()   
-
+const museum = getCurrentMuseum()
+  
 
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1)
 }
-
 
 function addTextInOrgButtons(a) {
     if (a == 'botanikk') {return textItems.botanikk[index]}
@@ -73,7 +121,6 @@ function makeButtons() {
     buttonArray.forEach(el => {
         el.addEventListener('click', (e) => {
             if (document.getElementById('search-form').style.display == 'block') {
-              //  console.log('emtpy')
                 emptySearch()
             }
             addCollectionsToSelect(el.id)
@@ -115,10 +162,8 @@ function addOrgGroups() {
 
 // put organism-group-buttons into array
 let buttonArray = []
-//console.log(document.getElementById('button-cell').childNodes.length)
-//if (document.getElementById('button-cell').childNodes.length == 3) {
-    addOrgGroups()
-//}
+addOrgGroups()
+
 function addTextInCollSelect(a) {
     if (a == 'moser') {return textItems.moser[index]}
     else if (a == 'karplanter') {return textItems.karplanter[index]}
@@ -144,7 +189,6 @@ function addTextInCollSelect(a) {
     else if (a == 'utad') {return textItems.utad[index]}
     else if (a == 'bulk') {return textItems.bulk[index]}
 }
-
 
     
 function addCollectionsToSelect(orgGroup) {
@@ -214,19 +258,6 @@ function addCollectionsToSelect(orgGroup) {
         collection.value = 'vennligst'
     }
  }
-// create options for collection-select dependent on museum
-// when category of collection is chosen
-// buttonArray.forEach(el => {
-//     el.addEventListener('click', (e) => {
-//         if (document.getElementById('search-form').style.display) {
-//             emptySearch()
-//         }
-//         addCollectionsToSelect(el.id)
-//         e.preventDefault()
-//     })
-// })
-
-
 
 // download search-result to file
 // in: filename(string, name of outputfile)
@@ -244,7 +275,6 @@ function download(filename, text) {
     
     document.body.removeChild(element)
 }
-
 
 // when download-button is clicked
 downloadButton.addEventListener('click', (e) => {
@@ -280,28 +310,6 @@ const downloadImage = async (url) => {
   const downloadMany = urls => {
     return Promise.all(urls.map(url => downloadImage(url)))
   }
-// const exportZip = (blobs, urls) => {
-//     const zip = JSZip();
-//     console.log('heie');
-//     console.log(urls);
-//     blobs.forEach((blob, i) => {
-//       zip.file(`file-${i}.jpg`, blob);
-//     //   zip.file(urls[i], blob);
-//     });
-//     zip.generateAsync({type: 'blob'}).then(zipFile => {
-//       const currentDate = new Date().getTime();
-//       const fileName = `combined-${currentDate}.zip`;
-//       return saveAs(zipFile, fileName);
-//     });
-//   }
-
-// const downloadAndZip = async (urls) => {
-//     return downloadMany(urls).then(exportZip(urls));
-//   }
-
-const exportZip = (blobs, urls) => {
-
-  }
 
 const downloadAndZip = async (urls, catalogNo) => {
     document.getElementById("please-wait").style.display = "block"
@@ -320,6 +328,7 @@ const downloadAndZip = async (urls, catalogNo) => {
     } );
   }
 
+//   When someone clicks download images
 downloadPhotoButton.addEventListener('click', (e) => {
     e.preventDefault()
         
@@ -351,8 +360,6 @@ downloadPhotoButton.addEventListener('click', (e) => {
 })
 
 
-
-
 // deletes previous search results, resets value that says if search failed, resets Boolean sorting-values for result, hides buttons, performs search
 // in: limit (number, line number of search result where search stops)
 // calls resetSortedBoolean in paginateAndRender.js
@@ -377,9 +384,8 @@ const doSearch = (limit = 20) => {
     sessionStorage.setItem('limit', limit)
 
     let museum = getCurrentMuseum()   
+
     sessionStorage.setItem('museum',museum)
-    console.log(sessionStorage.getItem('museum'))
- 
     emptyTable()
 
     // Show please wait
@@ -470,6 +476,11 @@ collection.addEventListener('change', (e) => {
         //resultHeader.innerHTML = ""
     }
     sessionStorage.setItem('collection', collection.value)
+    // legg til samling i URL
+    // if( collection.value !== 'vennligst') {
+    // const newUrl = location.origin + '/museum/' + museum + '/' + collection.value
+    // history.replaceState({}, '', newUrl);
+    // } 
 })
 
 // when a collection is chosen a request is sent to the server about date of last change of the MUSIT-dump file
@@ -532,7 +543,6 @@ const oldSearch = () => {
     } else {
         collection.value = 'vennligst'
     }
-    // console.log(collection)
 
     document.querySelector('#select-cell').style.display = 'block'
     collection.style.display = 'block'
@@ -553,7 +563,6 @@ const oldSearch = () => {
             
             try {
                 document.getElementById('collection-select').value = sessionStorage.getItem('collection')
-                console.log('try')
                 document.getElementById('search-text').value = sessionStorage.getItem('searchTerm')
                 nbHitsElement.innerHTML = JSON.parse(sessionStorage.getItem('string')).length
             } catch (error) {
@@ -578,59 +587,8 @@ if (sessionStorage.getItem('organismGroup')) {
     oldSearch() 
 }
 
-// empties session’s search-result (sessionStorage), removes elements from page, resets pagination variables
-// calls emptyTable() in resultElementsOnOff.js
-//      emptyResultElements() in resultElementsOnOff.js
-// is called by emptySearchButton.eventlistener, upateFooter() when error
-const emptySearch = () => {
-    
-    sessionStorage.removeItem('string')
-    sessionStorage.removeItem('collection')
-    sessionStorage.removeItem('searchLineNumber')
-    sessionStorage.removeItem('search-text')
-    sessionStorage.removeItem('currentPage')
-    sessionStorage.removeItem('numberPerPage')
-    
-    if (sessionStorage.getItem('organismGroup')) {
-        // gå gjennom alle knappene og aktiver den relevante
-        buttonArray.forEach(el => {
-            if (sessionStorage.getItem('organismGroup') == el.id) {
-                console.log(el.id)
-                el.className = "blue-button"
-                
-            }
-        })
-    }
 
-    collection.value = "vennligst"
-    // let length = collection.options.length
-    // console.log(length)
-    // for (i = length-1; i >= 0; i--) {
-    //   collection.options[i] = null
-    // }
-    
-    // buttonArray.forEach(el => {
-    //     el.className = "white-button"
-    // })
-    
-    document.getElementById('search-form').style.display = "none"
-    document.getElementById("search-text").value = ""
-    
-    document.getElementById('hits-row').style.display = "none"
-    emptyTable()
-    
-    // remove old map if any and empty array
-    document.getElementById("map-search").innerHTML = "" 
-    emptyResultElements()
 
-    // set pagination variables to default / empty
-    list.length = 0;
-    pageList.length = 0;
-    currentPage = 1;
-    numberPerPage = 20;
-    numberOfPages = 0; // calculates the total number of pages
-    document.getElementById('number-per-page').value = '20'
-}
 emptySearchButton.addEventListener('click', (e) => {
     e.preventDefault()
     // erase the last search result
@@ -639,6 +597,7 @@ emptySearchButton.addEventListener('click', (e) => {
 
 document.getElementById('large-map-button').onclick = () => {
     window.open(href= urlPath + "/" + getCurrentMuseum() + "/map")
+    
 }
 
 //Download map as png-file
@@ -706,10 +665,7 @@ const checkSeveralBoxes = (subMusitData) => {
                 el.checked = true
             }
         })
-        console.log(searchResult[0])
         sessionStorage.setItem('string', JSON.stringify(searchResult))
-        
-        console.log(searchResult[0].checked)
     } else if (select.value == "none") {
         for (i = 0; i < max; i++) {
             document.getElementById(`checkbox${i}`).checked = false

@@ -2,64 +2,84 @@
 // creates an array propsSorted[] with Boolean values that keeps track of on which field the result table is sorted on.
 
 // array with booleans that keeps track of sorting for page rendering
-let propsSorted
+let propsSorted = []
 if (!sessionStorage.getItem('propsSorted')) {
-    propsSorted = [
-        {id: 'catalogNumber',
-        sortedOnce: false,
-        sortedTwice: false},
-        {id: 'scientificName',
-        sortedOnce: false,
-        sortedTwice: false},
-        {id: 'recordedBy',
-        sortedOnce: false,
-        sortedTwice: false},
-        {id: 'eventDate',
-        sortedOnce: false,
-        sortedTwice: false},
-        {id: 'country',
-        sortedOnce: false,
-        sortedTwice: false},
-        {id: 'county',
-        sortedOnce: false,
-        sortedTwice: false},
-        {id: 'locality',
-        sortedOnce: false,
-        sortedTwice: false},
-        {id: 'associatedMedia',
-        sortedOnce: false,
-        sortedTwice: false},
-        {id: 'decimalLongitude',
-        sortedOnce: false,
-        sortedTwice: false},
-        {id: 'coremaNo',
-        sortedOnce: false,
-        sortedTwice: false},
-        {id: 'sampleType',
-        sortedOnce: false,
-        sortedTwice: false},
-        {id: 'processID',
-        sortedOnce: false,
-        sortedTwice: false},
-        {id: 'preparations',
-        sortedOnce: false,
-        sortedTwice: false},
-        {id: 'placement',
-        sortedOnce: false,
-        sortedTwice: false},
-        // {id: 'unitType',
-        // sortedOnce: false,
-        // sortedTwice: false},
-        // {id: 'amount',
-        // sortedOnce: false,
-        // sortedTwice: false},
-        {id: 'stateProvince',
-        sortedOnce: false,
-        sortedTwice: false},
-        {id: 'note',
-        sortedOnce: false,
-        sortedTwice: false}
-    ]
+ 
+        propsSorted = [
+            {id: 'catalogNumber',
+            sortedOnce: false,
+            sortedTwice: false},
+            {id: 'scientificName',
+            sortedOnce: false,
+            sortedTwice: false},
+            {id: 'recordedBy',
+            sortedOnce: false,
+            sortedTwice: false},
+            {id: 'eventDate',
+            sortedOnce: false,
+            sortedTwice: false},
+            {id: 'country',
+            sortedOnce: false,
+            sortedTwice: false},
+            {id: 'county',
+            sortedOnce: false,
+            sortedTwice: false},
+            {id: 'locality',
+            sortedOnce: false,
+            sortedTwice: false},
+            {id: 'associatedMedia',
+            sortedOnce: false,
+            sortedTwice: false},
+            {id: 'decimalLongitude',
+            sortedOnce: false,
+            sortedTwice: false},
+            {id: 'coremaNo',
+            sortedOnce: false,
+            sortedTwice: false},
+            {id: 'sampleType',
+            sortedOnce: false,
+            sortedTwice: false},
+            {id: 'processID',
+            sortedOnce: false,
+            sortedTwice: false},
+            {id: 'preparations',
+            sortedOnce: false,
+            sortedTwice: false},
+            {id: 'placement',
+            sortedOnce: false,
+            sortedTwice: false},
+            // {id: 'unitType',
+            // sortedOnce: false,
+            // sortedTwice: false},
+            // {id: 'amount',
+            // sortedOnce: false,
+            // sortedTwice: false},
+            {id: 'stateProvince',
+            sortedOnce: false,
+            sortedTwice: false},
+            {id: 'note',
+            sortedOnce: false,
+            sortedTwice: false},
+            // UTAD tabell
+            {id: 'vernacularName',
+            sortedOnce: false,
+            sortedTwice: false},
+            {id: 'tilstand',
+            sortedOnce: false,
+            sortedTwice: false},
+            {id: 'basisOfRecord',
+            sortedOnce: false,
+            sortedTwice: false},
+            {id: 'bredde',
+            sortedOnce: false,
+            sortedTwice: false},
+            {id: 'hoyde',
+            sortedOnce: false,
+            sortedTwice: false},
+            {id: 'lengde',
+            sortedOnce: false,
+            sortedTwice: false}
+        ]
     sessionStorage.setItem('propsSorted', JSON.stringify(propsSorted))
 } else { 
     propsSorted = JSON.parse(sessionStorage.getItem('propsSorted'))
@@ -172,18 +192,20 @@ sort_by = (prop, reverse, primer) => {
 // calls sort_by(prop,reverse,primer)
 //  	resultTable(subMusitData, musitData)
 // is called by fillResultHeaders(…)
-function addSortingText(id, prop, musitData) { // her er musitData alle
+function addSortingText(id, prop, musitData, fromFunction) { // her er musitData alle
+    try {
+        
     document.getElementById(id).addEventListener("click", function() {
         // Show please wait
         document.getElementById("please-wait").style.display = "block"
 
         let reverse = false
-        console.log(propsSorted)
-        console.log(prop)
         if (propsSorted.find(x => x.id === prop).sortedOnce) { reverse = true }
-        if (id === 'musitIDButton' ) { 
+        if (id === 'musitIDButton') { 
             musitData.sort(sort_by(prop,reverse, parseInt))
-        } 
+        }  else if (id === 'breddeButton' || id === 'hoydeButton' || id === 'lengdeButton') {
+            musitData.sort(sort_by(prop,reverse))
+        }
         
         // else if (id === 'sampleTypeButton'){
         //     console.log('sampeltypebutton sort')
@@ -216,9 +238,19 @@ function addSortingText(id, prop, musitData) { // her er musitData alle
         sessionStorage.setItem('pageList', JSON.stringify(subMusitData))
         sessionStorage.setItem('string', JSON.stringify(musitData))
         sessionStorage.setItem('propsSorted', JSON.stringify(propsSorted))
-        resultTable(subMusitData, musitData) 
+        if(fromFunction === 'bulkResultTable') {
+            bulkResultTable(subMusitData, musitData)
+        } else if (fromFunction === 'UTADRestultTable') {
+            UTADRestultTable(subMusitData, musitData) 
+        } else {
+            resultTable(subMusitData, musitData) 
+        }
+        
         document.getElementById("please-wait").style.display = "none"
     })
+    } catch (error) {
+        console.log(error);    
+    }
 }
 
 // renders image of arrow-up or arrow-down in table –header when result-table is being sorted

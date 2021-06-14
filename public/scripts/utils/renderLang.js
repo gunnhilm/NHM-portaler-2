@@ -67,27 +67,27 @@ const renderText = function(lang) {
         if (document.querySelector('#vennligst')) {document.querySelector('#vennligst').innerHTML = textItems.vennligst[index]}
         if (document.querySelector('#karplanter')) {document.querySelector('#karplanter').innerHTML = textItems.karplanter[index]}
         if (document.querySelector('#sopp')) {document.querySelector('#sopp').innerHTML = textItems.sopp[index]}
-        if (document.querySelector('#moser')) {document.querySelector('#moser').innerHTML = textItems.moser[index]}
-        if (document.querySelector('#lav')) {document.querySelector('#lav').innerHTML = textItems.lav[index]}
-        if (document.querySelector('#alger')) {document.querySelector('#alger').innerHTML = textItems.alger[index]}
-        if (document.querySelector('#entomologi')) {document.querySelector('#insekter').innerHTML = textItems.insekter[index]}
-        if (document.querySelector('#evertebrater')) {document.querySelector('#evertebrater').innerHTML = textItems.evertebrater[index]}
-        if (document.querySelector('#fisk')) {document.querySelector('#fisk').innerHTML = textItems.fisk[index]}
-        if (document.querySelector('#coremaopt')) {document.querySelector('#coremaopt').label = textItems.coremaopt[index]}
-        if (document.querySelector('#birds')) {document.querySelector('#fugler').innerHTML = textItems.fugler[index]}
-        if (document.querySelector('#mammals')) {document.querySelector('#pattedyr').innerHTML = textItems.pattedyr[index]}
-        if (document.querySelector('#dna_karplanter')) {document.querySelector('#dna_karplanter').innerHTML = textItems.dna_karplanter[index]}
-        if (document.querySelector('#dna_insekter')) {document.querySelector('#dna_insekter').innerHTML = textItems.dna_insekter[index]}
-        if (document.querySelector('#dna_fish_herptiles')) {document.querySelector('#dna_fish_herptiles').innerHTML = textItems.fishHerp[index]}
-        if (document.querySelector('#dna_fungi_lichens')) {document.querySelector('#dna_fungi_lichens').innerHTML = textItems.fungiLichens[index]}
-        if (document.querySelector('#dna_other')) {document.querySelector('#dna_other').innerHTML = textItems.other[index]}
-        if (document.querySelector('#malmer')) {document.querySelector('#malmer').innerHTML = textItems.malmer[index]}
-        if (document.querySelector('#oslofeltet')) {document.querySelector('#oslofeltet').innerHTML = textItems.oslofeltet[index]}
-        if (document.querySelector('#utenlandskeBergarter')) {document.querySelector('#utenlandskeBergarter').innerHTML = textItems.utenlandskeBA[index]}
-        if (document.querySelector('#GeoPalOpt')) {document.querySelector('#GeoPalOpt').label = textItems.GeoPal[index]}
-        if (document.querySelector('#otherOpt')) {document.querySelector('#otherOpt').label = textItems.otherOpt[index]}
-        if (document.querySelector('#utad')) {document.querySelector('#utad').label = textItems.utad[index]}
-        if (document.querySelector('#bulk')) {document.querySelector('#bulk').label = textItems.bulk[index]}
+        if (document.querySelector('#moser')) {document.querySelector('#moser').innerHTML = textItems.moser[index]}
+        if (document.querySelector('#lav')) {document.querySelector('#lav').innerHTML = textItems.lav[index]}
+        if (document.querySelector('#alger')) {document.querySelector('#alger').innerHTML = textItems.alger[index]}
+        if (document.querySelector('#entomologi')) {document.querySelector('#insekter').innerHTML = textItems.insekter[index]}
+        if (document.querySelector('#evertebrater')) {document.querySelector('#evertebrater').innerHTML = textItems.evertebrater[index]}
+        if (document.querySelector('#fisk')) {document.querySelector('#fisk').innerHTML = textItems.fisk[index]}
+        if (document.querySelector('#coremaopt')) {document.querySelector('#coremaopt').label = textItems.coremaopt[index]}
+        if (document.querySelector('#birds')) {document.querySelector('#fugler').innerHTML = textItems.fugler[index]}
+        if (document.querySelector('#mammals')) {document.querySelector('#pattedyr').innerHTML = textItems.pattedyr[index]}
+        if (document.querySelector('#dna_karplanter')) {document.querySelector('#dna_karplanter').innerHTML = textItems.dna_karplanter[index]}
+        if (document.querySelector('#dna_insekter')) {document.querySelector('#dna_insekter').innerHTML = textItems.dna_insekter[index]}
+        if (document.querySelector('#dna_fish_herptiles')) {document.querySelector('#dna_fish_herptiles').innerHTML = textItems.fishHerp[index]}
+        if (document.querySelector('#dna_fungi_lichens')) {document.querySelector('#dna_fungi_lichens').innerHTML = textItems.fungiLichens[index]}
+        if (document.querySelector('#dna_other')) {document.querySelector('#dna_other').innerHTML = textItems.other[index]}
+        if (document.querySelector('#malmer')) {document.querySelector('#malmer').innerHTML = textItems.malmer[index]}
+        if (document.querySelector('#oslofeltet')) {document.querySelector('#oslofeltet').innerHTML = textItems.oslofeltet[index]}
+        if (document.querySelector('#utenlandskeBergarter')) {document.querySelector('#utenlandskeBergarter').innerHTML = textItems.utenlandskeBA[index]}
+        if (document.querySelector('#GeoPalOpt')) {document.querySelector('#GeoPalOpt').label = textItems.GeoPal[index]}
+        if (document.querySelector('#otherOpt')) {document.querySelector('#otherOpt').label = textItems.otherOpt[index]}
+        if (document.querySelector('#utad')) {document.querySelector('#utad').label = textItems.utad[index]}
+        if (document.querySelector('#bulk')) {document.querySelector('#bulk').label = textItems.bulk[index]}
         
     }
 
@@ -141,6 +141,9 @@ const renderText = function(lang) {
 
     // object page
     if (location.href.includes('object')) {
+        // Get the name of the collection
+        const coll = sessionStorage.getItem('collection')
+
         // read string and get the object from sessionStorage (for the object-page)
         const loadString = () => {
             
@@ -154,12 +157,26 @@ const renderText = function(lang) {
         }
         //get the object from session storage
         const allObject = loadString()
-        
+
         // get the id from the url
         const urlParams = new URLSearchParams(window.location.search)
         const id = urlParams.get('id')
         const object = allObject.find(x => x.catalogNumber === id)
         
+        if (coll === 'utad') {
+            document.querySelector("#head-vernacularName").innerHTML = textItems.vernacularName[index]
+            document.querySelector("#head-basisOfRecord").innerHTML = textItems.basisOfRecord[index]
+            document.querySelector("#head-lengde").innerHTML = textItems.lengde[index]
+            document.querySelector("#head-bredde").innerHTML = textItems.bredde[index]
+            document.querySelector("#head-høyde").innerHTML = textItems.høyde[index]
+            document.querySelector("#head-Vekt").innerHTML = textItems.Vekt[index]
+            document.querySelector("#head-Tilstand").innerHTML = textItems.Tilstand[index]
+            document.querySelector("#head-Utlån").innerHTML = textItems.Utlån[index]
+            document.querySelector("#head-Kommentar").innerHTML = textItems.Kommentar[index]
+        }
+
+
+
         document.querySelector("#head-species-name").innerHTML = textItems.headSpeciesName[index]
         document.querySelector("#head-det").innerHTML = textItems.headDet[index]
         document.querySelector("#head-det-date").innerHTML = textItems.headDetDate[index]

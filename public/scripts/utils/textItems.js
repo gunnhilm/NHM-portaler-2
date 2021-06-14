@@ -152,6 +152,17 @@ const textItems = {
     preparedBy: ['Ekstrahert av:','Prepared by:'],
     concentration: ['DNA konsentrasjon:','DNA concentration'],
     coordPlaceholder: ['&lt;Ingen koordinater&gt;', '&lt;No coordinates&gt;'],
+        // Objekctpage UTAD items
+        Kommentar: ['Kommentar', 'Comments'],
+        Tilstand: ['Tilstand', 'Condition'],
+        Utlån: ['Utlån', 'On loan'],
+        Vekt: ['Vekt', 'Mass'],
+        basisOfRecord: ['Type Objekt', ' Type of Object'],
+        bredde: ['Bredde', 'Width'],
+        høyde: ['Høyde', 'Height'],
+        lengde: ['Lengde', 'Length'],
+        vernacularName: ['Norsk navn', 'Vernacular name'],
+
 
     // Tools page
     showToolsHeader: ["Verktøy til bruk i samlingsforvaltningen", "Tools for managing the collections"],

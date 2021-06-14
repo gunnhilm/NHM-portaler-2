@@ -218,5 +218,19 @@ const GBifIdentifiers = {
             OccurrenceID: 'urn:uuid:',
             key: 'fcb19622-6d6d-470f-9371-86e1210f9ee3'
         }
+    },
+    nbh: {
+        Algae: {
+            source: 'musit',
+            CatalogueNumber: 'xxxxx',
+            OccurrenceID: 'urn:catalog:KMN:A:',
+            key: 'f60aa56f-cbb7-4f55-8a6d-67288d5ba9b1'
+        },      
+        Vascular_plants: {
+            source: 'musit',
+            CatalogueNumber: 'xxxxx',
+            OccurrenceID: 'urn:catalog:KMN:V:',
+            key: '30bc94f2-50aa-4688-8e87-a8e11d3d69ff'
+        }
     }
 }

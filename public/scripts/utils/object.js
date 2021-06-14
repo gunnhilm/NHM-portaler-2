@@ -8,6 +8,22 @@ if (sessionStorage.language) {
     sessionStorage.setItem('language', language)
 }
 
+// figures out which museum we are in
+// out: string, abbreviation for museum
+// is called by doSearch() and updateFooter()
+const getCurrentMuseum = () => {
+    const pathArray = window.location.pathname.split('/')
+    const museum = pathArray[2]
+    return museum
+}
+
+const getOrganismGruop = () => {
+    const orgGroup = sessionStorage.getItem('organismGroup')
+    return orgGroup
+}
+const orgGroup = getOrganismGruop()
+console.log(orgGroup);
+
 // reads last search-result from sessionStorage and puts it in an array
 // out: an array with JSON-objects that represents museumobjects in the last search result. Empty array if there is no search result in sessionStorage
 // is called in this file (object.js)
@@ -113,9 +129,7 @@ const coordinates = (obj) => {
 let prefix = object.institutionCode + '-' + object.collectionCode + '-'
 const regnoEl = `<span>${prefix}${object.catalogNumber}</span>` 
 
-
 // data only displayed if existing
-
 let headArtsobs = ''
 let artsobsID = ''
 if( object.ArtObsID ) {
@@ -139,41 +153,194 @@ if (object.samplingProtocol) { samplingProtocol =  `<span>${object.samplingProto
 let typeStatus = ''
 if (object.typeStatus) { typeStatus =  `<span>${object.typeStatus}</span>`}
 
-let taxonomy = ''
-if (object.kingdom || object.class || object.order || object.family) {
-    taxonomy = `<span>${object.kingdom} ${object.class} ${object.order} ${object.family}</span>`
+const taxonomyString = () => {
+    let string = ''
+    if (object.kingdom === true) {
+        string = object.kingdom
+    } 
+    if (object.class) {
+        string = string + ' ' + object.class
+    }
+    if (object.order) {
+        string = string + ' ' + object.order
+    }
+    if (object.family) {
+        string = string + ' ' + object.family
+    }
+    string = `<span>${string}</span>`
+    string = string.toString()
+ return string
 }
 
-console.log(sessionStorage.getItem('collection'))
-// put content in html-boxes
-renderText(language)
+let taxonomy = ''
+if (object.kingdom || object.class || object.order || object.family) {
+    taxonomy = taxonomyString()
+}
 
 
-if (!sessionStorage.getItem('collection').includes('dna') & !sessionStorage.getItem('collection').includes('birds') & !sessionStorage.getItem('collection').includes('mammals')) {
-    document.querySelector("#musit-regno").innerHTML = regnoEl
-} else {
+
+const makeBioTable = () => {
+    const table = document.getElementById("object-table");
+    const speciesName = table.insertRow(0)
+        const speciesNameHeader = speciesName.insertCell(0); speciesNameHeader.id = 'head-species-name'; speciesNameHeader.class = 'bold'; speciesNameHeader.style = 'white-space:pre';
+        const speciesNameCont = speciesName.insertCell(1); speciesNameCont.id = 'species-name'; speciesNameCont.style = 'border-spacing: 10px 0';
+    if (orgGroup === 'botanikk' || orgGroup === 'zoologi') {            
+        const detRow = table.insertRow(-1)
+        const detH =   detRow.insertCell(0); detH.id = 'head-det'; detH.class = 'bold'; detH.style = 'white-space:pre';
+        const detC =   detRow.insertCell(1); detC.id = 'det'; detC.style = 'border-spacing: 10px 0';
+        const detDate = table.insertRow(-1)
+        const detDH =   detDate.insertCell(0); detDH.id = 'head-det-date'; detDH.class = 'bold'; detDH.style = 'white-space:pre';
+        const detDC =   detDate.insertCell(1); detDC.id = 'det-date'; detDC.style = 'border-spacing: 10px 0';
+        const CollDate = table.insertRow(-1)
+        const CollD =   CollDate.insertCell(0); CollD.id = 'head-coll-date'; CollD.class = 'bold'; CollD.style = 'white-space:pre';
+        const CollDC =   CollDate.insertCell(1); CollDC.id = 'coll-date'; CollDC.style = 'border-spacing: 10px 0';
+        const coll = table.insertRow(-1)
+        const collH =   coll.insertCell(0); collH.id = 'head-coll'; collH.class = 'bold';
+        const collC =   coll.insertCell(1); collC.id = 'coll'; collC.style = 'border-spacing: 10px 0';
+        const loc = table.insertRow(-1)
+        const locH =   loc.insertCell(0); locH.id = 'head-locality'; locH.class = 'bold';
+        const locC =   loc.insertCell(1); locC.id = 'locality'; locC.style = 'border-spacing: 10px 0';
+        const coor = table.insertRow(-1)
+        const coorH =   coor.insertCell(0); coorH.id = 'head-coordinates'; coorH.class = 'bold';
+        const coorC =   coor.insertCell(1); coorC.id = 'coordinates'; coorC.style = 'border-spacing: 10px 0';
+        const arts = table.insertRow(-1)
+        const artsH =   arts.insertCell(0); artsH.id = 'head-artsobs'; artsH.class = 'bold'; artsH.style = 'white-space:pre'
+        const artsC =   arts.insertCell(1); artsC.id = 'artsobsID'; artsC.style = 'border-spacing: 10px 0';
+        const hab = table.insertRow(-1)
+        const habH =   hab.insertCell(0); habH.id = 'head-habitats'; habH.class = 'bold';
+        const habC =   hab.insertCell(1); habC.id = 'habitat'; habC.style = 'border-spacing: 10px 0';
+        const sex = table.insertRow(-1)
+        const sexH =   sex.insertCell(0); sexH.id = 'head-sex'; sexH.class = 'bold';
+        const sexC =   sex.insertCell(1); sexC.id = 'sex'; sexC.style = 'border-spacing: 10px 0';
+        const life = table.insertRow(-1)
+        const lifeH =   life.insertCell(0); lifeH.id = 'head-lifeStage'; lifeH.class = 'bold';
+        const lifeC =   life.insertCell(1); lifeC.id = 'lifeStage'; lifeC.style = 'border-spacing: 10px 0';
+        const samp = table.insertRow(-1)
+        const sampH =   samp.insertCell(0); sampH.id = 'head-samplingProtocol'; sampH.class = 'bold';
+        const sampC =   samp.insertCell(1); sampC.id = 'samplingProtocol'; sampC.style = 'border-spacing: 10px 0';
+        const tax = table.insertRow(-1)
+        const taxH =   tax.insertCell(0); taxH.id = 'head-taxonomy'; taxH.class = 'bold';
+        const taxC =   tax.insertCell(1); taxC.id = 'taxonomy'; taxC.style = 'border-spacing: 10px 0';
+        const type = table.insertRow(-1)
+        const typeH =   type.insertCell(0); typeH.id = 'head-typeStatus'; typeH.class = 'bold';
+        const typeC =   type.insertCell(1); typeC.id = 'typeStatus'; typeC.style = 'border-spacing: 10px 0';
+        
+    } else if (orgGroup === 'geologi') {
+        console.log('her hos geologene');
+        const loc = table.insertRow(-1)
+        const locH =   loc.insertCell(0); locH.id = 'head-locality'; locH.class = 'bold';
+        const locC =   loc.insertCell(1); locC.id = 'locality'; locC.style = 'border-spacing: 10px 0';
+        const coor = table.insertRow(-1)
+        const coorH =   coor.insertCell(0); coorH.id = 'head-coordinates'; coorH.class = 'bold';
+        const coorC =   coor.insertCell(1); coorC.id = 'coordinates'; coorC.style = 'border-spacing: 10px 0';
+        const type = table.insertRow(-1)
+        const typeH =   type.insertCell(0); typeH.id = 'head-typeStatus'; typeH.class = 'bold';
+        const typeC =   type.insertCell(1); typeC.id = 'typeStatus'; typeC.style = 'border-spacing: 10px 0';
+
+    } 
+}
+
+const makeTableHeader = (table) => {
+    const speciesName = table.insertRow(0)
+    const speciesNameHeader = speciesName.insertCell(0); speciesNameHeader.id = 'head-species-name'; speciesNameHeader.class = 'bold'; speciesNameHeader.style = 'white-space:pre';
+    const speciesNameCont = speciesName.insertCell(1); speciesNameCont.id = 'species-name'; speciesNameCont.style = 'border-spacing: 10px 0';
+    document.querySelector("#species-name").innerHTML = `<span class="italic">${object.scientificName}</span>`
     document.querySelector("#musit-regno").innerHTML = `<span>${object.catalogNumber}</span>`
 }
 
-document.querySelector("#species-name").innerHTML = `<span class="italic">${object.scientificName}</span>`
+const makeUTADTable = (specimenObject) => {
+    const table = document.getElementById("object-table");
+    const fieldsToShow = ['vernacularName', 'basisOfRecord', 'Hyllenr.', 'NHM objektbase', 'lengde', 'bredde', 'høyde', 'Vekt', 'Tilstand', 'Utlån', 'Kommentar']
 
-document.querySelector("#coll-date").innerHTML = `<span>${object.eventDate}</span>`
-document.querySelector("#coll").innerHTML = `<span>${object.recordedBy}</span>`
-document.querySelector("#locality").innerHTML = `<span>${concatLocality}</span>`
+    makeTableHeader(table)
+    const keyObj = []
+    // construct table
+    for (const [key, value] of Object.entries(specimenObject)) {
+        if (Object.hasOwnProperty.call(specimenObject, key) && fieldsToShow.includes(key)) {
+            const row = table.insertRow(-1)
+            const headKey = row.insertCell(0); headKey.id =  `head-${key}` ; headKey.class = 'bold';
+            const Content =   row.insertCell(1); Content.id = key; Content.style = 'border-spacing: 10px 0';
+            keyObj[key] = value
+        }
+    }
 
-document.querySelector("#det").innerHTML =  `<span>${object.identifiedBy}</span>`
-document.querySelector("#det-date").innerHTML = `<span>${object.dateIdentified}</span>`
+    // add data to table
+    for (const [key, value] of Object.entries(keyObj)) {
+            document.querySelector(`#${key}`).innerHTML = value
+    }
+}
 
-document.querySelector("#coordinates").innerHTML = `<span>${coordinates(object)}</span>`
-document.querySelector("#habitat").innerHTML = habitat
-document.querySelector("#artsobsID").innerHTML = artsobsID
+const makeGeoTable = (specimenObject) => {
+    const table = document.getElementById("object-table");
+    const fieldsToShow = ['', '', '' ,'']
+console.log(specimenObject);
+console.log(concatLocality);
 
-document.querySelector('#sex').innerHTML = sex
-document.querySelector('#lifeStage').innerHTML = lifeStage
-document.querySelector('#samplingProtocol').innerHTML = samplingProtocol
-document.querySelector('#taxonomy').innerHTML = taxonomy
-document.querySelector('#typeStatus').innerHTML = typeStatus
+    makeTableHeader(table)
+    // special rows
+    const loc = table.insertRow(-1)
+    const locH =   loc.insertCell(0); locH.id = 'head-locality'; locH.class = 'bold';
+    const locC =   loc.insertCell(1); locC.id = 'locality'; locC.style = 'border-spacing: 10px 0';
+    document.querySelector("#locality").innerHTML = `<span>${concatLocality}</span>`
+    const coor = table.insertRow(-1)
+    const coorH =   coor.insertCell(0); coorH.id = 'head-coordinates'; coorH.class = 'bold';
+    const coorC =   coor.insertCell(1); coorC.id = 'coordinates'; coorC.style = 'border-spacing: 10px 0';
+    document.querySelector("#coordinates").innerHTML = `<span>${coordinates(object)}</span>`
 
+
+    // construct table
+    for (let i = 0; i < fieldsToShow.length; i++) {
+        const element = fieldsToShow[i];
+        const row = table.insertRow(-1)
+        const headKey = row.insertCell(0); headKey.id =  `head-${element}` ; headKey.class = 'bold';
+        const Content =   row.insertCell(1); Content.id = element; Content.style = 'border-spacing: 10px 0';
+        
+    }
+
+
+    // add data to table
+  
+}
+
+const showData = () => {
+
+    if (orgGroup === 'other') {
+        makeUTADTable(object)
+    } else if (orgGroup === 'geologi') {
+        makeGeoTable(object)
+    } else {
+        makeBioTable()
+    }
+     
+
+
+    if (!sessionStorage.getItem('collection').includes('dna') & !sessionStorage.getItem('collection').includes('birds') & !sessionStorage.getItem('collection').includes('mammals')) {
+        document.querySelector("#musit-regno").innerHTML = regnoEl
+    } else {
+        document.querySelector("#musit-regno").innerHTML = `<span>${object.catalogNumber}</span>`
+    }
+    document.querySelector("#species-name").innerHTML = `<span class="italic">${object.scientificName}</span>`
+
+    if (orgGroup === 'botanikk' || orgGroup === 'zoologi') {
+        document.querySelector("#coll-date").innerHTML = `<span>${object.eventDate}</span>`
+        document.querySelector("#coll").innerHTML = `<span>${object.recordedBy}</span>`
+        document.querySelector("#det").innerHTML =  `<span>${object.identifiedBy}</span>`
+        document.querySelector("#det-date").innerHTML = `<span>${object.dateIdentified}</span>`
+        document.querySelector("#artsobsID").innerHTML = artsobsID
+        document.querySelector('#sex').innerHTML = sex
+        document.querySelector('#lifeStage').innerHTML = lifeStage
+        document.querySelector("#habitat").innerHTML = habitat
+        document.querySelector('#taxonomy').innerHTML = taxonomy
+        document.querySelector("#locality").innerHTML = `<span>${concatLocality}</span>`
+        document.querySelector("#coordinates").innerHTML = `<span>${coordinates(object)}</span>`
+        document.querySelector('#samplingProtocol').innerHTML = samplingProtocol
+    } else if (orgGroup === 'geologi') {
+        document.querySelector("#locality").innerHTML = `<span>${concatLocality}</span>`
+        document.querySelector("#coordinates").innerHTML = `<span>${coordinates(object)}</span>`
+        document.querySelector('#typeStatus').innerHTML = typeStatus
+    }
+}
+showData()
 //document.querySelector("#bold-link").innerHTML = `<span>${APIurlSpecimenEl}</span>`
 //document.querySelector("#head-coremaAccno").innerHTML = `<span>Corema Accno</span>`
 //document.querySelector("#coremaAccno").innerHTML = `<span>${coremaAccno}</span>`
@@ -200,23 +367,23 @@ if (!sessionStorage.getItem('collection').includes('dna') & !sessionStorage.getI
     }
 } 
 //else if(!window.location.href.includes('tmu') && !window.location.href.includes('/um')) {
-
+// 
 //     document.querySelector("#preservedSp").innerHTML = 'basisOfRecord:'
 //     document.querySelector("#corema-link").innerHTML = object.basisOfRecord
-
+// 
 //     document.querySelector("#head-preparation").innerHTML = 'preparation:'
 //     document.querySelector("#preparation").innerHTML = object.preparations
-
+// 
 //     document.querySelector("#head-disposition").innerHTML = 'disposition:'
 //     document.querySelector("#disposition").innerHTML = object.disposition
-
+// 
 // }
-
+// 
 //     // put items in itemArray as objects
 //     tempItemArray = object.itemNumbers.split(",")
 //     itemArray = []
 //     tempItemArray.forEach (element => itemArray.push({itemNumber: element}))
-    
+    // 
 //     // add properties to the item-objects
 //     itemTypeArray = object.items.split(",")
 //     dateArray = object.itemDates.split(",")
@@ -227,7 +394,7 @@ if (!sessionStorage.getItem('collection').includes('dna') & !sessionStorage.getI
 //     DNAConcArray = object.itemConcentrations.split(",")
 //     DNAConcUnitArray = object.itemUnits.split(",")
 //     preservationArray = object.itemPreservations.split(",")
-
+// 
 //     for (i=0; i<itemArray.length; i++) {
 //         itemArray[i].properties = itemTypeArray[i]
 //         itemArray[i].date = dateArray[i]
@@ -239,8 +406,6 @@ if (!sessionStorage.getItem('collection').includes('dna') & !sessionStorage.getI
 //         itemArray[i].DNAConcUnit = DNAConcUnitArray[i] 
 //         itemArray[i].preservation = preservationArray[i]
 //     }
-    
-    
 //     // add row in table with heading for items
 //     // addRow()
 //     // cell1.innerHTML = '<br>'
@@ -249,7 +414,6 @@ if (!sessionStorage.getItem('collection').includes('dna') & !sessionStorage.getI
 //     // cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.itemsHeader[index]}:</span>`
 //     // addRow()
 //     //cell1.innerHTML = '<br>'
-    
 //     // loop over array
 //     itemArray.forEach( item => {
 //         addRow()
@@ -276,8 +440,6 @@ if (!sessionStorage.getItem('collection').includes('dna') & !sessionStorage.getI
 //         } else {
 //             cell2.innerHTML = item.preservation
 //         }
-        
-        
 //         if (item.properties.includes("gDNA")) {
 //             addRow()
 //             cell1.innerHTML = textItems.method[index]
@@ -285,7 +447,6 @@ if (!sessionStorage.getItem('collection').includes('dna') & !sessionStorage.getI
 //             addRow()
 //             cell1.innerHTML = textItems.preparedBy[index]
 //             cell2.innerHTML = item.preparedBy
-
 //             addRow()
 //             cell1.innerHTML = textItems.concentration[index]
 //             cell2.innerHTML = item.DNAConc + ' ' + item.DNAConcUnit
@@ -311,6 +472,7 @@ if (!sessionStorage.getItem('collection').includes('dna') & !sessionStorage.getI
 // in: smallImageList (array with strings; names of small images)
 // in: imageList (array with strings; names of large images)
 // is called in next-photo-button.onclick and previous.photo.onclick
+
 function changeImage(index, direction, smallImageList, imageList) {
     //index = index + direction;
     if (direction == 'f') {
@@ -380,7 +542,6 @@ if (mediaLink) {
         document.getElementById("previous-photo").onclick = () => {
             index = changeImage(index, 'r', smallImageList, imageList)
             document.getElementById("nb-photos").innerHTML = (index+1)  + '/' + imageList.length 
-            console.log(index)
         }
         document.getElementById("nb-photos").innerHTML = index+1  + '/' + imageList.length 
     } else {
@@ -395,20 +556,11 @@ if (mediaLink) {
 //map
 drawMapObject(object)
 
-// figures out which museum we are in
-// out: string, abbreviation for museum
-// is called by doSearch() and updateFooter()
-const getCurrentMuseum = () => {
-    console.log(window.location.pathname)
-    let museum = window.location.pathname
-    museum = museum.slice(8)
-    return museum
-}
+
 
 
 // large map 
 document.getElementById('large-map-object-button').onclick = () => {
-    
     window.open(href=`${urlPath}/${getCurrentMuseum()}/mapObject/?id=${id}`)
 }
 
@@ -416,11 +568,17 @@ document.getElementById('large-map-object-button').onclick = () => {
 // document.getElementById('nextObject').onclick = () => {
 //     console.log('neste objekt')
 // }   
-
 // console.log(allObject)
 // const objIndex = allObject.findIndex(el =>  el.catalogNumber = id)
 // console.log(objIndex)
 // const nextObjCatNumber = allObject[objIndex + 1].catalogNumber
 // console.log(nextObjCatNumber)
 // document.getElementById('nextObjectCell').innerHTML = `<a id="next-object-link" href="${urlPath}/object/?id=${nextObjCatNumber}">Neste objekt ${nextObjCatNumber} </a>`
+
+// put content in html-boxes
+try {
+    renderText(language)
+} catch (error) {
+    console.log(error);
+}
 

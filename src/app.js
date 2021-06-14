@@ -127,7 +127,6 @@ app.get('/orgGroups', (req, res) => {
         throw new Error ('no museum...')
     } else {
         try {
-            console.log(req.query.museum)
             let orgGroup = fileRead.setOrgGroups(req.query.museum, (error, results) => {
 
             })

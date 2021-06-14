@@ -7,18 +7,22 @@ const fileListTmu = require('./fileListTmu')
 const fileListUm = require('./fileListUm')
 const fileListNbh = require('./fileListNbh')
 
-
-const setOrgGroups = (museum) => {
+const getFileList = (museum) => {
     let fileList
     if (museum == 'tmu') {
         fileList = fileListTmu
     } else if (museum == 'um') {
         fileList = fileListUm
-    }  else if (museum == 'nbh') {
+    } else if (museum == 'nbh') {
         fileList = fileListNbh
     } else {
         fileList = fileListNhm
     }
+    return fileList
+}
+
+const setOrgGroups = (museum) => {
+    const fileList = getFileList(museum)
     let orgGroups = []
     fileList.forEach(el => {
         if (!el.filMetadata) {
@@ -30,49 +34,25 @@ const setOrgGroups = (museum) => {
 }
 
 const setSubcollections = (museum, orgGroup) => {
-    let fileList
-    if (museum == 'tmu') {
-        fileList = fileListTmu
-    } else if (museum == 'um') {
-        fileList = fileListUm
-    } else if (museum == 'nbh') {
-        fileList = fileListNbh
-    } else {
-        fileList = fileListNhm
-    }
-    
+    const fileList = getFileList(museum)
     let coll = []
     fileList.forEach(el => {
         if (el.orgGroup === orgGroup) {
             coll.push(el.name)
         }
     })
-    console.log(coll)
     return coll
 }
 
 const setCollection = (museum, samling) => {
-    let fileList
-    if (museum == 'tmu') {
-        fileList = fileListTmu
-    } else if (museum == 'um') {
-        fileList = fileListUm
-    } else if (museum == 'nbh') {
-        fileList = fileListNbh
-    } else {
-        fileList = fileListNhm
-    }
-    
+    const fileList = getFileList(museum)
     let musitFile = ''
     const pathToMuseum = './src/data/' + museum + '/'
     if (samling === 'journaler') {
-        musitFile = './src/data/' + museum +'/journaler.txt'
-        console.log( 'fileread.js: musit fila: '+  musitFile);
-        
+        musitFile = './src/data/' + museum +'/journaler.txt'  
     } else {
         fileList.forEach(element => {
             if (element.name === samling){
-                console.log('her kommer element: ' + element.name)
                     musitFile = pathToMuseum + element.name + '_occurrence.txt'
             }
         })
@@ -83,17 +63,13 @@ const setCollection = (museum, samling) => {
 
 const search = (museum, samling, searchTerm, linjeNumber = 0, limit = 20, callback) => {
     // velg riktig MUSIT dump fil å lese
-      console.log('her kommer search museum: ' + museum);
     musitFile = setCollection(museum,samling)
-    console.log(musitFile)
     if (fs.existsSync(musitFile)) {
         // cleaning the searchterm before making the search so that we get a more precise
         // remove whiteSpace
         searchTerm = searchTerm.trim()
         // Case insensitve search
         searchTerm = searchTerm.toLowerCase()
-        console.log( 'Search Term: ' + searchTerm);
-        
         terms = searchTerm.split(' ')
         let results = ''
         const readInterface = readline.createInterface({
@@ -137,9 +113,7 @@ const search = (museum, samling, searchTerm, linjeNumber = 0, limit = 20, callba
             }
             
         }).on('close', function () {
-            
             const resulstAndLine = {results, count }
-            
             callback(undefined, resulstAndLine)
         })
        
@@ -237,7 +211,6 @@ const checkRegion = (region, lat, long, callback) => {
         } else if (body.error) {
             callback('Unable to find location.', undefined)
         } else {
-            console.log(body)
             callback(undefined, body.kommunenavn)
         }
     })

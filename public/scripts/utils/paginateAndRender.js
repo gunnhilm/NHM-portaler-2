@@ -1,9 +1,6 @@
 //paginateAndRender.js: Renders result table and contains functionality related to this, e.g. sorting of table and splitting of result into pages.
 
-//const { contentSecurityPolicy } = require("helmet")
-
 // urlPath is defined in textItems.js
-
 // rendered with result table (used in function resultTable())
 
 const hitsPerPage = document.querySelector('#number-per-page')
@@ -136,7 +133,7 @@ const resultTable = (subMusitData, musitData) => {
                 //     cell3.innerHTML = y + " et al."    
                 // } else {
                 
-                    cell3.innerHTML = subMusitData[i].recordedBy
+                cell3.innerHTML = subMusitData[i].recordedBy
                 //}
                 cell4.innerHTML = subMusitData[i].eventDate
                 cell5.innerHTML = subMusitData[i].country
@@ -216,7 +213,6 @@ const resultTable = (subMusitData, musitData) => {
         
     }  
     catch(error) {
-        console.log('er vi her?')
         errorMessage.innerHTML = textItems.errorRenderResult[index]
         searchFailed = true // is checked when map is drawn 
     }
@@ -230,6 +226,99 @@ const resultTable = (subMusitData, musitData) => {
 
 }
 
+const UTADRestultTable = (subUTADData, UTADData) => {
+//   try {
+    table.innerHTML = ""
+    for (let i = -1; i < pageList.length; i++) {
+        const row = table.insertRow(-1)
+        const cell1 = row.insertCell(0)
+        const cell2 = row.insertCell(1)
+        const cell3 = row.insertCell(2)
+        const cell4 = row.insertCell(3)
+        const cell5 = row.insertCell(4)
+        const cell6 = row.insertCell(5)
+        const cell7 = row.insertCell(6)
+        const cell8 = row.insertCell(7)
+        const cell9 = row.insertCell(8)
+        const cell10 = row.insertCell(9)
+        if (i === -1) { // her kommer tittellinjen
+            cell1.innerHTML = `<button id='musitIDButton' class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>`  
+            cell2.innerHTML = `<button id='vernacularNameButton' class='sort'>${textItems.vernacularName[index].bold()} ${getArrows('vernacularName')} </button>`
+            cell3.innerHTML = `<button id='tilstandButton' class='sort'>${textItems.Tilstand[index].bold()} ${getArrows('tilstand')} </button>`
+            cell4.innerHTML = `<button id='objektTypeButton' class='sort'>${textItems.basisOfRecord[index].bold()} ${getArrows('basisOfRecord')} </button>`
+            cell5.innerHTML = `<button id='noteButton' class='sort'>${textItems.Kommentar[index].bold()} ${getArrows('note')}</button>`
+            cell6.innerHTML = `<button id='breddeButton' class='sort'>${textItems.bredde[index].bold()} ${getArrows('bredde')}</button>`
+            cell7.innerHTML = `<button id='hoydeButton' class='sort'>${textItems.høyde[index].bold()} ${getArrows('hoyde')}</button>`
+            cell8.innerHTML = `<button id='lengdeButton' class='sort'>${textItems.lengde[index].bold()} ${getArrows('lengde')}</button>`
+            cell9.innerHTML = `<button id='photoButton' class='sort'><span class="fas fa-camera"></span>${getArrows('associatedMedia')}</button>`
+            cell10.innerHTML = `<select id='checkboxSelect' class='sort'>
+                <option value="select" id="select">${textItems.select[index].bold()}</option>
+                <option value="all" id="selectAll">${textItems.selectAll[index]}</option>
+                <option value="all_on_page" id="selectAllOnPage">${ textItems.selectAllOnPage[index]}</option>
+                <option value="none" id="selectNone">${ textItems.selectNone[index]}</option>
+            </select>`
+
+            addSortingText('musitIDButton', 'catalogNumber', UTADData, 'UTADRestultTable')  // Tabellen blir sortert på nummer
+            addSortingText('vernacularNameButton', 'vernacularName', UTADData, 'UTADRestultTable')
+            addSortingText('tilstandButton', 'tilstand', UTADData, 'UTADRestultTable')
+            addSortingText('objektTypeButton', 'basisOfRecord', UTADData, 'UTADRestultTable')
+            addSortingText('noteButton', 'note', UTADData, 'UTADRestultTable')
+            addSortingText('breddeButton', 'bredde', UTADData, 'UTADRestultTable')
+            addSortingText('hoydeButton', 'hoyde', UTADData, 'UTADRestultTable')
+            addSortingText('lengdeButton', 'lengde', UTADData, 'UTADRestultTable')
+            addSortingText('photoButton', 'associatedMedia', UTADData, 'UTADRestultTable')
+
+
+        } else { //her kommer tabell innholdet
+            let museumURLPath = ''
+            if (window.location.href.includes('/um')) { 
+                museumURLPath = urlPath + "/um"
+            } else if (window.location.href.includes('tmu')) {
+                museumURLPath = urlPath + "/tmu"
+            } else if (window.location.href.includes('nbh')) {
+                museumURLPath = urlPath + "/nbh"
+            } else {
+                museumURLPath = urlPath + "/nhm"
+            }
+
+            let prefix = ''
+            if (!(/[a-zA-Z]/).test(subUTADData[i].catalogNumber.charAt(0))) {  
+                prefix = subUTADData[i].institutionCode + '-' + subUTADData[i].collectionCode + '-'
+            } else {
+                prefix = ''
+            }
+            cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subUTADData[i].catalogNumber}"> ${prefix}${subUTADData[i].catalogNumber} </a>`
+            cell2.innerHTML = subUTADData[i].vernacularName
+            cell3.innerHTML = subUTADData[i].Tilstand
+            cell4.innerHTML = subUTADData[i].basisOfRecord
+            cell5.innerHTML = subUTADData[i].Kommentar
+            cell6.innerHTML = subUTADData[i].bredde
+            cell7.innerHTML = subUTADData[i].høyde
+            cell8.innerHTML = subUTADData[i].lengde
+            if( subUTADData[i].associatedMedia ) {   
+                cell9.innerHTML = `<span class="fas fa-camera"></span>`
+            } else if( subUTADData[i].photoIdentifiers ) {   
+                cell9.innerHTML = `<span class="fas fa-camera"></span>`
+            }
+            cell10.innerHTML = `<input type="checkbox" id=checkbox${i} onclick="registerChecked(${i})" ></input>`
+            if (investigateChecked(i)) {
+                document.getElementById(`checkbox${i}`).checked = true
+            } else {
+                document.getElementById(`checkbox${i}`).checked = false
+            }
+            
+        }
+        showResultElements()
+        document.getElementById("empty-search-button").style.display = "inline-block"
+        numberOfPages = getNumberOfPages(numberPerPage)
+    }
+//   } catch (error) {
+//     errorMessage.innerHTML = textItems.errorRenderResult[index]
+//     searchFailed = true // is checked when map is drawn 
+//   }
+}
+
+
 const bulkResultTable = (subBulkData, bulkData) => {
     try {
         table.innerHTML = ""
@@ -238,16 +327,13 @@ const bulkResultTable = (subBulkData, bulkData) => {
             const cell1 = row.insertCell(0)
             const cell2 = row.insertCell(1)
             const cell3 = row.insertCell(2)
-            //cell3.className += "cell3"
             const cell4 = row.insertCell(3)
             const cell5 = row.insertCell(4)
-            //cell5.className += "cell5";
             const cell6 = row.insertCell(5)
             const cell7 = row.insertCell(6)
             const cell8 = row.insertCell(7)
             const cell9 = row.insertCell(8)
             const cell10 = row.insertCell(9)
-            //cell10.className += "cell10";
             const cell11 = row.insertCell(10)
             if (i === -1) {     // her kommer tittellinjen
                 cell1.innerHTML = `<button id='musitIDButton' class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>`  
@@ -369,7 +455,6 @@ const bulkResultTable = (subBulkData, bulkData) => {
         
     }  
     catch(error) {
-        console.log('er vi her?')
         errorMessage.innerHTML = textItems.errorRenderResult[index]
         searchFailed = true // is checked when map is drawn 
     }
@@ -397,7 +482,6 @@ if (sessionStorage.getItem('currentPage')) {
 }
 let numberPerPage
 if (sessionStorage.getItem('numberPerPage')) {
-    console.log()
     numberPerPage = sessionStorage.getItem('numberPerPage')
 } else {
     numberPerPage = 20
@@ -429,7 +513,6 @@ function getNumberOfPages(numberPerPage) {
 // calls load()
 // is called in index.hbs when nextPage-button is created
 function nextPage() {
-    console.log('nextpage()')
     if (currentPage < numberOfPages) {
         currentPage += 1    
         sessionStorage.setItem('currentPage', currentPage)
@@ -473,18 +556,14 @@ function lastPage() {
 //  hitsPerPage eventlistener
 //  load()
 function loadList() {
-    
     const begin = ((currentPage - 1) * numberPerPage)
     const end = Number(begin) + Number(numberPerPage)
     pageList = list.slice(begin, end)
-    console.log(pageList)
-    console.log(begin)
-    console.log(end)
-    console.log(numberPerPage)
     sessionStorage.setItem('pageList', JSON.stringify(pageList)) // pageList is the same as subMusitData other places; the part of the search result that is listed on the current page
-    
     if (document.querySelector('#collection-select').value == 'bulk') {
         bulkResultTable(pageList, list)
+    } else if (document.querySelector('#collection-select').value === 'utad') {
+        UTADRestultTable(pageList, list)
     } else {
         resultTable(pageList, list)
     }
@@ -523,14 +602,11 @@ function load() {
 hitsPerPage.addEventListener('change', (e) => {
     e.preventDefault()
     if (hitsPerPage.value < 2000){
-        console.log('hitsperpage < 2000')
         numberPerPage = hitsPerPage.value
         numberPerPage = numberPerPage - 0 // to make it a number
-        console.log(JSON.parse(sessionStorage.getItem('string')).length)
         numberOfPages = getNumberOfPages(numberPerPage)
     } else {
         numberPerPage = 2000
-        console.log('setting numberperpage to 2000')
         numberOfPages = 1
     }
     currentPage = 1
