@@ -176,43 +176,62 @@ const renderText = function(lang) {
         }
 
 
+        if (document.querySelector("#head-species-name")) {
+            document.querySelector("#head-species-name").innerHTML = textItems.headSpeciesName[index].bold()
+            document.querySelector("#head-det").innerHTML = textItems.headDet[index].bold()
+            document.querySelector("#head-det-date").innerHTML = textItems.headDetDate[index].bold()
+            document.querySelector("#head-coll-date").innerHTML = textItems.headCollDate[index].bold()
+            document.querySelector("#head-coll").innerHTML = textItems.headColl[index].bold()
+            document.querySelector("#head-locality").innerHTML = textItems.headLocality[index].bold()
+            document.querySelector("#head-coordinates").innerHTML = textItems.headCoordinates[index].bold()
 
-        document.querySelector("#head-species-name").innerHTML = textItems.headSpeciesName[index]
-        document.querySelector("#head-det").innerHTML = textItems.headDet[index]
-        document.querySelector("#head-det-date").innerHTML = textItems.headDetDate[index]
-        document.querySelector("#head-coll-date").innerHTML = textItems.headCollDate[index]
-        document.querySelector("#head-coll").innerHTML = textItems.headColl[index]
-        document.querySelector("#head-locality").innerHTML = textItems.headLocality[index]
-        document.querySelector("#head-coordinates").innerHTML = textItems.headCoordinates[index]
-
-        document.querySelector("#photo-box").alt = textItems.photoAlt[index]
-        document.querySelector("#next-photo").innerHTML = textItems.nextPhoto[index]
-        document.querySelector("#previous-photo").innerHTML = textItems.previousPhoto[index]
+            document.querySelector("#photo-box").alt = textItems.photoAlt[index]
+            document.querySelector("#next-photo").innerHTML = textItems.nextPhoto[index]
+            document.querySelector("#previous-photo").innerHTML = textItems.previousPhoto[index]
+        }
+        
         
         if(!object.decimalLatitude | !object.decimalLongitude) {
-            document.querySelector("#map-object").innerHTML = textItems.mapAlt[index]
+            if (document.querySelector("#map-object")) {
+                document.querySelector("#map-object").innerHTML = textItems.mapAlt[index]
+            }
         }
 
         if (object.ArtObsID) {
-            document.querySelector("#head-artsobs").innerHTML = textItems.headArtsobs[index]
+            if (document.querySelector("#head-artsobs")) {
+                document.querySelector("#head-artsobs").innerHTML = textItems.headArtsobs[index].bold()
+            }
         }
         if (object.habitat ) {
-            document.querySelector("#head-habitat").innerHTML = "Habitat: "
+            if(document.querySelector("#head-habitat")) {
+                document.querySelector("#head-habitat").innerHTML = "Habitat: ".bold()
+            }
         }
         if (object.sex) {
-            document.querySelector("#head-sex").innerHTML = textItems.headSex[index]
+            if (document.querySelector("#head-sex")) {
+                document.querySelector("#head-sex").innerHTML = textItems.headSex[index].bold()
+            }
         }
         if (object.lifeStage) {
-            document.querySelector("#head-lifeStage").innerHTML = textItems.headLifeStage[index]
+            if (document.querySelector("#head-lifeStage")) {
+                document.querySelector("#head-lifeStage").innerHTML = textItems.headLifeStage[index].bold()
+            }
         }
         if (object.samplingProtocol) {
-            document.querySelector("#head-samplingProtocol").innerHTML = textItems.headSamplingProtocol[index]
+            if(document.querySelector("#head-samplingProtocol")) {
+                document.querySelector("#head-samplingProtocol").innerHTML = textItems.headSamplingProtocol[index].bold()
+            }
         }
-        if (object.kingdom || object.class || object.order || object.family) {
-            document.querySelector("#head-taxonomy").innerHTML = textItems.headTaxonomy[index]
+        if (document.querySelector("#head-taxonomy")) {
+            if (object.kingdom || object.class || object.order || object.family) {
+                document.querySelector("#head-taxonomy").innerHTML = textItems.headTaxonomy[index].bold()
+            }
         }
+        
         if (object.typeStatus) {
-            document.querySelector("#head-typeStatus").innerHTML = textItems.headTypeStatus[index]
+            if (document.querySelector("#head-typeStatus")) {
+                document.querySelector("#head-typeStatus").innerHTML = textItems.headTypeStatus[index]
+            }
         }
         
         //document.querySelector("#itemsHeader").innerHTML = textItems.itemsHeader[index]

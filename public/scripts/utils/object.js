@@ -182,7 +182,7 @@ if (object.kingdom || object.class || object.order || object.family) {
 const makeBioTable = () => {
     const table = document.getElementById("object-table");
     const speciesName = table.insertRow(0)
-        const speciesNameHeader = speciesName.insertCell(0); speciesNameHeader.id = 'head-species-name'; speciesNameHeader.class = 'bold'; speciesNameHeader.style = 'white-space:pre';
+        const speciesNameHeader = speciesName.insertCell(0); speciesNameHeader.id = 'head-species-name'; speciesNameHeader.style.fontWeight = 'bold'; speciesNameHeader.style = 'white-space:pre';
         const speciesNameCont = speciesName.insertCell(1); speciesNameCont.id = 'species-name'; speciesNameCont.style = 'border-spacing: 10px 0';
     if (orgGroup === 'botanikk' || orgGroup === 'zoologi') {            
         const detRow = table.insertRow(-1)
@@ -207,7 +207,7 @@ const makeBioTable = () => {
         const artsH =   arts.insertCell(0); artsH.id = 'head-artsobs'; artsH.class = 'bold'; artsH.style = 'white-space:pre'
         const artsC =   arts.insertCell(1); artsC.id = 'artsobsID'; artsC.style = 'border-spacing: 10px 0';
         const hab = table.insertRow(-1)
-        const habH =   hab.insertCell(0); habH.id = 'head-habitats'; habH.class = 'bold';
+        const habH =   hab.insertCell(0); habH.id = 'head-habitat'; habH.class = 'bold';
         const habC =   hab.insertCell(1); habC.id = 'habitat'; habC.style = 'border-spacing: 10px 0';
         const sex = table.insertRow(-1)
         const sexH =   sex.insertCell(0); sexH.id = 'head-sex'; sexH.class = 'bold';
@@ -337,7 +337,9 @@ const showData = () => {
     } else if (orgGroup === 'geologi') {
         document.querySelector("#locality").innerHTML = `<span>${concatLocality}</span>`
         document.querySelector("#coordinates").innerHTML = `<span>${coordinates(object)}</span>`
-        document.querySelector('#typeStatus').innerHTML = typeStatus
+        if (document.querySelector('#typeStatus')) {
+            document.querySelector('#typeStatus').innerHTML = typeStatus
+        }
     }
 }
 showData()
