@@ -148,6 +148,24 @@
 },
 {
     "source": "access",
+    "orgGroup": "paleontologi",
+    "name": "typesamling",
+    "zipFileName": "occurrence",
+    "mediaFile": "",
+    "url": "",
+    "akronym": "PMO"
+},
+{
+    "source": "access",
+    "orgGroup": "paleontologi",
+    "name": "fossiler",
+    "zipFileName": "occurrence",
+    "mediaFile": "",
+    "url": "",
+    "akronym": "PMO"
+},
+{
+    "source": "access",
     "orgGroup": "zoologi",
     "name": "fisk",
     "zipFileName": "occurrence",

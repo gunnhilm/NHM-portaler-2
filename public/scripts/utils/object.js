@@ -554,9 +554,9 @@ if (mediaLink) {
 }
 
 //map
-if(!sessionStorage.getItem('collection') === 'utad' || !sessionStorage.getItem('collection') === 'bulk' ){
+
 drawMapObject(object)
-} else if (sessionStorage.getItem('collection') === 'utad') {
+if (sessionStorage.getItem('collection') === 'utad') {
     const mapEl = document.getElementById('map-style'); 
     mapEl.style.display = "none";
 

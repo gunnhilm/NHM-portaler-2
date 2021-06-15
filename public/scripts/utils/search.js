@@ -36,7 +36,6 @@ if (sessionStorage.language) {
 //      emptyResultElements() in resultElementsOnOff.js
 // is called by emptySearchButton.eventlistener, upateFooter() when error
 const emptySearch = () => {
-    
     sessionStorage.removeItem('string')
     sessionStorage.removeItem('collection')
     sessionStorage.removeItem('searchLineNumber')
@@ -48,8 +47,7 @@ const emptySearch = () => {
         // gå gjennom alle knappene og aktiver den relevante
         buttonArray.forEach(el => {
             if (sessionStorage.getItem('organismGroup') == el.id) {
-                el.className = "blue-button"
-                
+                el.className = "blue-button"  
             }
         })
     }
@@ -450,7 +448,7 @@ const doSearch = (limit = 20) => {
             }
             document.getElementById("please-wait").style.display = "none"
         }).catch((error) => {
-            console.log('her er den nye feilen' + error);
+            console.log(error);
             errorMessage.innerHTML = textItems.serverError[index]
             document.getElementById("please-wait").style.display = "none"
         })
