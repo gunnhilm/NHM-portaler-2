@@ -18,15 +18,17 @@ const span = document.getElementsByClassName("close")[0];
 // in: parsedData (JSON, search result)
 // out: map with markers
 // is called by resultTable(..) in paginateAndRender.js
+// eslint-disable-next-line no-unused-vars
 const drawMap = (parsedData) => {
     // remove old map if any and empty array
     document.getElementById("map-search").innerHTML = "" 
     coordinateArray.length = 0
 
     try {
+        let coordString = ''
+        const regex = /,/i;
         // fill an array with coordinates for the map
         parsedData.forEach(function(item, index) {
-            
             if (Number(item.decimalLatitude) < 90 & Number(item.decimalLatitude) > -90 & Number(item.decimalLongitude) < 180 & Number(item.decimalLongitude) > -180) {
                 const object = { decimalLatitude: Number(item.decimalLatitude),
                     decimalLongitude: Number(item.decimalLongitude),
@@ -35,9 +37,11 @@ const drawMap = (parsedData) => {
                 coordinateArray.push(object) 
             } 
         })
+
         
         if (coordinateArray.length === 0) {
             document.querySelector("#map-search").innerHTML = textItems.mapSearchAlt[index]
+
         } else {
             const newArray = []
             coordinateArray.forEach(function(item) {
@@ -283,7 +287,9 @@ const drawMap = (parsedData) => {
 // in: object (JSON object)
 // out: map with marker
 // is called by object.js
+// eslint-disable-next-line no-unused-vars
 const drawMapObject = (object) => {
+
     const coordinatesView = [Number(object.decimalLongitude), Number(object.decimalLatitude)]
 
     function initialize_map() {
@@ -301,8 +307,7 @@ const drawMapObject = (object) => {
         })
     }
     
-    if (object.decimalLatitude && object.decimalLongitude) {
-        
+    if ((object.decimalLatitude && object.decimalLongitude) && (object.decimalLongitude !== '0' && object.decimalLatitude !== '0' )) {
         initialize_map()
         
         if (!location.href.includes('mapObject') && map) {

@@ -93,7 +93,7 @@ app.get('/nbh', (req, res) => {
              })
          })
     }
-})
+}) 
 
 
 // Søk er treff i MUSIT-dump fila

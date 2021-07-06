@@ -16,89 +16,14 @@
                 <p id="showStatText"></p>
                 <br>
 
-                
-
             {{!-- Tabellen med nøkkeltall --}}
-            <table class ="summaryTable" id = "statTable">
+            <table id = "statTable">
                 <tr style = "font-weight: bold">
                     <td id="Collection_header" style = "text-align: left"></td>
                     <td id="NbObj_header"></td>
                     <td id="NbPhoto_header"></td>
                     <td id= "NbCoord_header"></td>
                 </tr>
-                <tr>
-                    <td id="Vascular_header" style = "text-align: left"></td>
-                    <td id="Karplanter_n"></td>
-                    <td id="Karplanter_foto"></td>
-                    <td id="Karplanter_koord"></td>
-                </tr>
-                <tr>
-                    <td id="Mosses_header" style = "text-align: left"></td>
-                    <td id="Moser_n"></td>
-                    <td id="Moser_foto"></td>
-                    <td id="Moser_koord"></td>
-                </tr>
-                <tr>
-                    <td id="Fungi_header" style = "text-align: left"></td>
-                    <td id="Sopp_n"></td>
-                    <td id="Sopp_foto"></td>
-                    <td id="Sopp_koord"></td>
-                </tr>
-                <tr>
-                    <td id="Lichen_header" style = "text-align: left"></td>
-                    <td id="Lav_n"></td>
-                    <td id="Lav_foto"></td>
-                    <td id="Lav_koord"></td>
-                </tr>
-                <tr>
-                    <td id="Insects_header" style = "text-align: left"></td>
-                    <td id="Insekter_n"></td>
-                    <td id="Insekter_foto"></td>
-                    <td id="Insekter_koord"></td>
-                </tr>                   
-                <tr id="algae_row">
-                    <td id="Algae_header" style = "text-align: left"></td>
-                    <td id="Algae_n"></td>
-                    <td id="Algae_foto"></td>
-                    <td id="Algae_koord"></td>
-                </tr>
-                <tr id="bird_row">
-                    <td id="Birds_header" style = "text-align: left"></td>
-                    <td id="Fugler_n"></td>
-                    <td id="Fugler_foto"></td>
-                    <td id="Fugler_koord"></td>
-                </tr>                   
-                <tr id="mammal_row">
-                    <td id="Mammals_header" style = "text-align: left"></td>
-                    <td id="Pattedyr_n"></td>
-                    <td id="Pattedyr_foto"></td>
-                    <td id="Pattedyr_koord"></td>
-                </tr>
-                <tr id="evertebrat_row">
-                    <td id="Evertebrates_header" style = "text-align: left"></td>
-                    <td id="Evertebrater_n"></td>
-                    <td id="Evertebrater_foto"></td>
-                    <td id="Evertebrater_koord"></td>
-                </tr>
-                {{!-- <tr id="malmer_row">
-                    <td id="malmer_header" style = "text-align: left"></td>
-                    <td id="malmer_n"></td>
-                    <td id="malmer_foto"></td>
-                    <td id="malmer_koord"></td>
-                </tr> --}}
-                {{!-- <tr id="oslofeltet_row">
-                    <td id="oslofeltet_header" style = "text-align: left"></td>
-                    <td id="oslofeltet_n"></td>
-                    <td id="oslofeltet_foto"></td>
-                    <td id="oslofeltet_koord"></td>
-                </tr>
-                <tr id="utenlandskeBA_row">
-                    <td id="utenlandskeBA_header" style = "text-align: left"></td>
-                    <td id="utenlandskeBA_n"></td>
-                    <td id="utenlandskeBA_foto"></td>
-                    <td id="utenlandskeBA_koord"></td>
-                </tr> --}}
-
             </table>
             
             <br><br>
@@ -109,32 +34,7 @@
             </div>
             <label for="collection-select" id="select-collection-label"></label>
                 <select id="collection-select" style=" height:30px; border-radius:4px;">
-                    <option value="total" id="total"></option>
-                    <optgroup label="Specimens" id="specimensOptgroup">                                                
-                        <option value="karplanter" id="karplanter">Karplanter</option>
-                            <option value="sopp" id="sopp">Sopp</option>
-                            <option value="moser" id="moser">Moser</option>
-                            <option value="lav" id="lav">Lav</option>
-                            <option value="alger" id="alger">Alger</option>
-                            <option value="entomologi" id="insekter">Insekter</option>
-                            <option value="evertebrater" id="evertebrater">Evertebrater</option>
-                        </optgroup>
-                        <optgroup label ="Specimens og DNA" id ='coremaopt'>
-                            <option value="birds" id="fugler">Fugler</option>
-                            <option value="mammals" id="pattedyr">Pattedyr</option>
-                        </optgroup>
-                        <optgroup label="DNA" id="DNAopt">
-                            <option value="dna_karplanter" id="dna_karplanter">Karplanter</option>
-                            <option value="dna_entomologi" id="dna_insekter">Insekter</option>
-                            <option value="dna_fish_herptiles" id="dna_fish_herptiles">Fisk og herptiler</option>
-                            <option value="dna_fungi_lichens" id="dna_fungi_lichens">Sopp og lav</option>
-                            <option value="dna_other" id="dna_other">Andre grupper</option>
-                        </optgroup>
-                        {{!-- <optgroup label="GeoPal" id="GeoPalOpt">
-                            <option value="malmer" id="malmer">Malmer</option>
-                            {{!-- <option value="oslofeltet" id="oslofeltet">Oslofeltet</option>
-                            <option value="utenlandskeBergarter" id="utenlandskeBergarter">Utenlandske bergarter</option> --}}
-                        </optgroup> --}}
+                             <option value="total" id="total"></option>
                 </select>
                 <br><br><br>
             {{!-- Grafene på linje 1, Tilvekst, Akkumulativ størrelse og andel georeferete poster --}}

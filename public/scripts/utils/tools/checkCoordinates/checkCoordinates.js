@@ -8,12 +8,82 @@ let locArray = []
 // })
 
 
+const getMunicipalityList = async () => {
+return new Promise((resolve, reject) => {
+    const url = 'https://ws.geonorge.no/kommuneinfo/v1/kommuner'
+    const norskeKommuner = []
+    let options = ''
+    fetch(url, {
+        headers: {
+            'Accept': 'application/json',
+        },
+      })
+      .then(response => response.json())
+      .then(data => {
+          for (let i = 0; i < data.length; i++) {
+              norskeKommuner.push(data[i].kommunenavnNorsk)
+          }
+          norskeKommuner.sort()
+          for (let j = 0; j < norskeKommuner.length; j++) {
+            options += '<option value="' +norskeKommuner[j] + '" />' 
+          }
+          document.getElementById('norske-kommuner-list').innerHTML = options;
+          resolve(data)
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        reject(error)
+      });
+})
+}
 
+const getNeighbors = (valgtLKommune) => {
+    return new Promise((resolve, reject) => {
+        console.log('valget er: ' +  valgtLKommune);
+        let kommuneNummer = ''
+        for (let i = 0; i < kommuneListe.length; i++) {
+            if(kommuneListe[i].kommunenavnNorsk === valgtLKommune)
+            {
+                kommuneNummer = kommuneListe[i].kommunenummer
+                console.log(kommuneNummer);
+            }   
+        }
 
+    const url = 'https://ws.geonorge.no/kommuneinfo/v1/kommuner/' + kommuneNummer + '/nabokommuner'
+    const naboKommuner = []
+    fetch(url, {
+        headers: {
+            'Accept': 'application/json',
+        },
+      })
+      .then(response => response.json())
+      .then(data => {
+            
+            for (let j = 0; j < data.length; j++) {
+                naboKommuner.push(data[j].kommunenavnNorsk)
+                
+            }
+        resolve(naboKommuner)
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        reject(error)
+      });
+})
+}
 
-//ikke gøjr en  sjekk for hvert koordinat,  la heller backend plukke opp søket (?) og send array med booleans tilbake...
+const visNaboer = (naboKommuner) => {
+    document.querySelector("#naboer").innerHTML = '<p>Nabo kommuner</p>'.bold()
+    for (let i = 0; i < naboKommuner.length; i++) {
+        const element = naboKommuner[i] + '<br>'
+        document.querySelector("#naboer").innerHTML += element
+    }
+}
+
+//ikke gjør en  sjekk for hvert koordinat,  la heller backend plukke opp søket (?) og send array med booleans tilbake...
 
 document.querySelector('#coord-select').addEventListener('change',function(){
+
     const table = document.querySelector('#coord-results')
     const row = table.insertRow(0)
     row.style = "border: solid"
@@ -117,4 +187,18 @@ document.querySelector('#checkCoordMap').addEventListener('click',function(){
     console.log('map')
     
 })
+
+
+
+document.getElementById('norske-kommuner').addEventListener('change',function(){
+    const valgtLKommune = document.getElementById('norske-kommuner').value
+    getNeighbors(valgtLKommune).then((data) => visNaboer(data))
+})
+
+let kommuneListe = ''
+const main = async () => {
+    await getMunicipalityList().then((data) =>kommuneListe = data)
+}
+
+main()
 

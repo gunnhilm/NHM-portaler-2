@@ -27,12 +27,14 @@ let config5 = ""
 let chart5 = ""
 
 // for rendering language - not yet implemented (Aug 2020) - texts in graphs are in norwegian
-let langIndex
+let langIndex = ''
 if (language === "Norwegian") {
   langIndex = 0
 } else if (language === "English") {
   langIndex = 1
 }
+
+
 
 // formate numbers
 // in: integer n: length of decimal
@@ -46,85 +48,63 @@ Number.prototype.format = function(n, x, s, c) {
   return (c ? num.replace('.', c) : num).replace(new RegExp(re, 'g'), '$&' + (s || ','));
 }
 
-// show collections in select dependent on museum
-if(!window.location.href.includes('/nhm')) {
-  document.querySelector('#coremaopt').style.display = 'none'
-  document.querySelector('#DNAopt').style.display = 'none'
-  document.querySelector('#alger').style.display = 'none'
-  //document.querySelector('#GeoPalOpt').style.display = 'none'
-  document.querySelector('#algae_row').style.display = 'none'
-  document.querySelector('#mammal_row').style.display = 'none'
-  document.querySelector('#bird_row').style.display = 'none'
-  //document.querySelector('#malmer_row').style.display = 'none'
-  //document.querySelector('#oslofeltet_row').style.display = 'none'
-  //document.querySelector('#utenlandskeBA_row').style.display = 'none'
-  
 
-} else {
-  document.querySelector('#evertebrater').style.display = 'none'
-  document.querySelector('#evertebrat_row').style.display = 'none'
+
+
+// populate dropdown with list of collections
+const collSelcet = (data) => {
+  const selectElement = document.getElementById('collection-select');
+  const collections = data.total[3].collections.collectionsIncluded
+  for (let i = 0; i < collections.length; i++) {
+    selectElement.add(new Option(collections[i]));
+  }
+
+  // // show collections in select dependent on museum
+  // if(!window.location.href.includes('/nhm')) {
+  //   document.querySelector('#coremaopt').style.display = 'none'
+  //   document.querySelector('#DNAopt').style.display = 'none'
+  //   document.querySelector('#alger').style.display = 'none'
+  //   //document.querySelector('#GeoPalOpt').style.display = 'none'
+  //   document.querySelector('#algae_row').style.display = 'none'
+  //   document.querySelector('#mammal_row').style.display = 'none'
+  //   document.querySelector('#bird_row').style.display = 'none'
+    //document.querySelector('#malmer_row').style.display = 'none'
+    //document.querySelector('#oslofeltet_row').style.display = 'none'
+    //document.querySelector('#utenlandskeBA_row').style.display = 'none'
+    
+
+  // } else {
+  //   document.querySelector('#evertebrater').style.display = 'none'
+  //   document.querySelector('#evertebrat_row').style.display = 'none'
+  // }
+
+
+  
 }
+
+
 
 //puts data into the statistics-table with key value from each collection
 // in: data (JSON object with data from the collections)
 const populateTable = (data) => {
   try {
-    // karplanter    
-    document.getElementById('Karplanter_n').textContent = data.karplanter[3].collectionSize.format(0,3,' ')
-    document.getElementById('Karplanter_foto').textContent = data.karplanter[5].media.stillImage.format(0,3,' ')
-    document.getElementById('Karplanter_koord').textContent = data.karplanter[1].geography.coordinates[0].yes.format(0,3,' ')
-    // Moser
-    document.getElementById('Moser_n').textContent = data.moser[3].collectionSize.format(0,3,' ')
-    document.getElementById('Moser_foto').textContent = data.moser[5].media.stillImage.format(0,3,' ')
-    document.getElementById('Moser_koord').textContent = data.moser[1].geography.coordinates[0].yes.format(0,3,' ')
-    // Sopp
-    document.getElementById('Sopp_n').textContent = data.sopp[3].collectionSize.format(0,3,' ')
-    document.getElementById('Sopp_foto').textContent = data.sopp[5].media.stillImage.format(0,3,' ')
-    document.getElementById('Sopp_koord').textContent = data.sopp[1].geography.coordinates[0].yes.format(0,3,' ')
-    // Lav
-    document.getElementById('Lav_n').textContent = data.lav[3].collectionSize.format(0,3,' ')
-    document.getElementById('Lav_foto').textContent = data.lav[5].media.stillImage.format(0,3,' ')
-    document.getElementById('Lav_koord').textContent = data.lav[1].geography.coordinates[0].yes.format(0,3,' ')
-    // Insekter
-    document.getElementById('Insekter_n').textContent = data.entomologi[3].collectionSize.format(0,3,' ')
-    document.getElementById('Insekter_foto').textContent = data.entomologi[5].media.stillImage.format(0,3,' ')
-    document.getElementById('Insekter_koord').textContent = data.entomologi[1].geography.coordinates[0].yes.format(0,3,' ')
-    
-    if (window.location.href.includes('/nhm')) {
-      console.log(data)
-      // Alger
-      document.getElementById('Algae_n').textContent = data.alger[3].collectionSize.format(0,3,' ')
-      document.getElementById('Algae_foto').textContent = data.alger[5].media.stillImage.format(0,3,' ')
-      document.getElementById('Algae_koord').textContent = data.alger[1].geography.coordinates[0].yes.format(0,3,' ')
-      // Fugler
-      document.getElementById('Fugler_n').textContent = data.birds[3].collectionSize.format(0,3,' ')
-      document.getElementById('Fugler_foto').textContent = data.birds[5].media.stillImage.format(0,3,' ')
-      document.getElementById('Fugler_koord').textContent = data.birds[1].geography.coordinates[0].yes.format(0,3,' ')
-      // Pattedyr
-      document.getElementById('Pattedyr_n').textContent = data.mammals[3].collectionSize.format(0,3,' ')
-      document.getElementById('Pattedyr_foto').textContent = data.mammals[5].media.stillImage.format(0,3,' ')
-      document.getElementById('Pattedyr_koord').textContent = data.mammals[1].geography.coordinates[0].yes.format(0,3,' ')
-      // // Malmer
-      // document.getElementById('malmer_n').textContent = data.malmer[3].collectionSize.format(0,3,' ')
-      // document.getElementById('malmer_foto').textContent = data.malmer[5].media.stillImage.format(0,3,' ')
-      // document.getElementById('malmer_koord').textContent = data.malmer[1].geography.coordinates[0].yes.format(0,3,' ')
-      // // Bergarter Oslofeltet
-      // document.getElementById('oslofeltet_n').textContent = data.oslofeltet[3].collectionSize.format(0,3,' ')
-      // document.getElementById('oslofeltet_foto').textContent = data.oslofeltet[5].media.stillImage.format(0,3,' ')
-      // document.getElementById('oslofeltet_koord').textContent = data.oslofeltet[1].geography.coordinates[0].yes.format(0,3,' ')
-      // // utenlandske bergarter
-      // document.getElementById('utenlandskeBA_n').textContent = data.utenlandskeBA[3].collectionSize.format(0,3,' ')
-      // document.getElementById('utenlandskeBA_foto').textContent = data.utenlandskeBA[5].media.stillImage.format(0,3,' ')
-      // document.getElementById('utenlandskeBA_koord').textContent = data.utenlandskeBA[1].geography.coordinates[0].yes.format(0,3,' ')
+    const collections = data.total[3].collections.collectionsIncluded
+    const table = document.querySelector('#statTable')
+    for (let i = 0; i < collections.length; i++) {
+      const element = collections[i]
+      const row1 = table.insertRow(i+1)
+      const cell_1 = row1.insertCell(0)
+      const cell_2 = row1.insertCell(1)
+      const cell_3 = row1.insertCell(2)
+      const cell_4 = row1.insertCell(3)
 
-    } else {
-      // Evertebrater
-      document.getElementById('Evertebrater_n').textContent = data.evertebrater[3].collectionSize.format(0,3,' ')
-      document.getElementById('Evertebrater_foto').textContent = data.evertebrater[5].media.stillImage.format(0,3,' ')
-      document.getElementById('Evertebrater_koord').textContent = data.evertebrater[1].geography.coordinates[0].yes.format(0,3,' ')
-    }
-    
-    
+      cell_1.textContent = collections[i].replace(/\b\S/g, t => t.toUpperCase())
+      cell_1.style = 'text-align:left'  
+      cell_2.textContent = data[element][3].collectionSize.format(0,3,' ')
+      cell_3.textContent = data[element][5].media.stillImage.format(0,3,' ')
+      cell_4.textContent = data[element][1].geography.coordinates[0].yes.format(0,3,' ')
+    }    
+    table.setAttribute("class", "summaryTable");
   } catch (error) {
     console.log(error);
   }
@@ -277,7 +257,9 @@ const getData = () => {
           museum =  "um"
       } else if (window.location.href.includes('/tmu')) {
           museum =  "tmu"
-      } else {
+      } else if (window.location.href.includes('/nbh')) {
+        museum =  "nbh"
+    } else {
           museum = "nhm"
       }
                 
@@ -489,8 +471,12 @@ collection.addEventListener('change', () => {
 // is called in this file (showStat.js)
 async function main() {
   data = await getData() //Gjør en request til server omå få JSON datafila
+  console.log(data);
+  collSelcet(data)
   makeGraphs(data)  // Tegn opp grafene for første gang
   populateTable(data) // Lag hovedtabel med samlingstall
 }
+
+
 
 main()

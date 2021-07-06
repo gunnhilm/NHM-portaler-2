@@ -22,7 +22,7 @@ const getOrganismGruop = () => {
     return orgGroup
 }
 const orgGroup = getOrganismGruop()
-console.log(orgGroup);
+
 
 // reads last search-result from sessionStorage and puts it in an array
 // out: an array with JSON-objects that represents museumobjects in the last search result. Empty array if there is no search result in sessionStorage
@@ -54,6 +54,7 @@ const urlParams = new URLSearchParams(window.location.search)
 const id = urlParams.get('id')
 
 const object = allObject.find(x => x.catalogNumber === id)
+
 
 // facilitates correctly formatted locality information for a museum object
 // in: obj (a JSON-object that rerpresens the museum object that is to be shown)
@@ -105,7 +106,7 @@ const concatLocality = country(object) + stateProvince(object) + county(object) 
 // in: obj (JSON-object that represents the museum object that is to be shown)
 // out: string with the object’s coordinates
 const coordinates = (obj) => {
-    if (obj.decimalLongitude === '' | obj.decimalLatitude === '') {
+    if (obj.decimalLongitude === '' || obj.decimalLatitude === '' || obj.decimalLongitude === '0' || obj.decimalLatitude === '0' ) {
         return textItems.coordPlaceholder[index]
         
     } else {
@@ -177,7 +178,13 @@ if (object.kingdom || object.class || object.order || object.family) {
     taxonomy = taxonomyString()
 }
 
-
+const makeTableHeader = (table) => {
+    const speciesName = table.insertRow(0)
+    const speciesNameHeader = speciesName.insertCell(0); speciesNameHeader.id = 'head-species-name'; speciesNameHeader.class = 'bold'; speciesNameHeader.style = 'white-space:pre';
+    const speciesNameCont = speciesName.insertCell(1); speciesNameCont.id = 'species-name'; speciesNameCont.style = 'border-spacing: 10px 0';
+    document.querySelector("#species-name").innerHTML = `<span class="italic">${object.scientificName}</span>`
+    document.querySelector("#musit-regno").innerHTML = `<span>${object.catalogNumber}</span>`
+}
 
 const makeBioTable = () => {
     const table = document.getElementById("object-table");
@@ -240,13 +247,6 @@ const makeBioTable = () => {
     } 
 }
 
-const makeTableHeader = (table) => {
-    const speciesName = table.insertRow(0)
-    const speciesNameHeader = speciesName.insertCell(0); speciesNameHeader.id = 'head-species-name'; speciesNameHeader.class = 'bold'; speciesNameHeader.style = 'white-space:pre';
-    const speciesNameCont = speciesName.insertCell(1); speciesNameCont.id = 'species-name'; speciesNameCont.style = 'border-spacing: 10px 0';
-    document.querySelector("#species-name").innerHTML = `<span class="italic">${object.scientificName}</span>`
-    document.querySelector("#musit-regno").innerHTML = `<span>${object.catalogNumber}</span>`
-}
 
 const makeUTADTable = (specimenObject) => {
     const table = document.getElementById("object-table");
@@ -257,6 +257,7 @@ const makeUTADTable = (specimenObject) => {
     // construct table
     for (const [key, value] of Object.entries(specimenObject)) {
         if (Object.hasOwnProperty.call(specimenObject, key) && fieldsToShow.includes(key)) {
+
             const row = table.insertRow(-1)
             const headKey = row.insertCell(0); headKey.id =  `head-${key}` ; headKey.class = 'bold';
             const Content =   row.insertCell(1); Content.id = key; Content.style = 'border-spacing: 10px 0';
@@ -270,44 +271,74 @@ const makeUTADTable = (specimenObject) => {
     }
 }
 
-const makeGeoTable = (specimenObject) => {
+
+
+const makePalTable = (specimenObject) => {
+    // add special fiels to specimenobject
+    specimenObject.coordinates = coordinates(specimenObject)
+    specimenObject.concatLocality = concatLocality
     const table = document.getElementById("object-table");
-    const fieldsToShow = ['', '', '' ,'']
-console.log(specimenObject);
-console.log(concatLocality);
-
+    const fieldsToShow = ['higherClassification', 'geologicalContext', 'coordinates', 'concatLocality', 'coordinates', 'recordedBy', 'eventDate', 'remarks']
     makeTableHeader(table)
-    // special rows
-    const loc = table.insertRow(-1)
-    const locH =   loc.insertCell(0); locH.id = 'head-locality'; locH.class = 'bold';
-    const locC =   loc.insertCell(1); locC.id = 'locality'; locC.style = 'border-spacing: 10px 0';
-    document.querySelector("#locality").innerHTML = `<span>${concatLocality}</span>`
-    const coor = table.insertRow(-1)
-    const coorH =   coor.insertCell(0); coorH.id = 'head-coordinates'; coorH.class = 'bold';
-    const coorC =   coor.insertCell(1); coorC.id = 'coordinates'; coorC.style = 'border-spacing: 10px 0';
-    document.querySelector("#coordinates").innerHTML = `<span>${coordinates(object)}</span>`
 
-
+    const keyObj = []
+    const objectHeaders = []
     // construct table
-    for (let i = 0; i < fieldsToShow.length; i++) {
-        const element = fieldsToShow[i];
-        const row = table.insertRow(-1)
-        const headKey = row.insertCell(0); headKey.id =  `head-${element}` ; headKey.class = 'bold';
-        const Content =   row.insertCell(1); Content.id = element; Content.style = 'border-spacing: 10px 0';
-        
+    for (const [key, value] of Object.entries(specimenObject)) {
+        if (Object.hasOwnProperty.call(specimenObject, key) && fieldsToShow.includes(key)) {
+            const row = table.insertRow(-1)
+            const headKey = row.insertCell(0); headKey.id =  `head-${key}` ; headKey.class = 'bold';
+            const Content =   row.insertCell(1); Content.id = key; Content.style = 'border-spacing: 10px 0';
+            keyObj[key] = value
+            objectHeaders.push(key)
+        }
+    }
+    sessionStorage.setItem('objectHeaders', JSON.stringify(objectHeaders));
+    // add data to table
+    for (const [key, value] of Object.entries(keyObj)) {
+        document.querySelector(`#${key}`).innerHTML = value
     }
 
+}
 
+const makeGeoTable = (specimenObject) => {
+    const table = document.getElementById("object-table");
+    const fieldsToShow = ['scientificName', 'higherClassification', 'Dimensjon', 'mass', 'geologicalContext', 'coordinates', 'concatLocality', 'coordinates', 'recordedBy', 'eventDate', 'remarks']
+    specimenObject.coordinates = coordinates(specimenObject)
+    specimenObject.concatLocality = concatLocality
+    // makeTableHeader(table)
+
+
+    const keyObj = []
+    const objectHeaders = []
+    // construct table
+    for (const [key, value] of Object.entries(specimenObject)) {
+        if (Object.hasOwnProperty.call(specimenObject, key) && fieldsToShow.includes(key)) {
+            const row = table.insertRow(-1)
+            const headKey = row.insertCell(0); headKey.id =  `head-${key}` ; headKey.class = 'bold';
+            const Content =   row.insertCell(1); Content.id = key; Content.style = 'border-spacing: 10px 0';
+            keyObj[key] = value
+            objectHeaders.push(key)
+            console.log('obj');
+            console.log(key);
+        }
+    }
+
+    sessionStorage.setItem('objectHeaders', JSON.stringify(objectHeaders));
     // add data to table
+    for (const [key, value] of Object.entries(keyObj)) {
+        document.querySelector(`#${key}`).innerHTML = value
+    }
   
 }
 
 const showData = () => {
-
     if (orgGroup === 'other') {
         makeUTADTable(object)
     } else if (orgGroup === 'geologi') {
         makeGeoTable(object)
+    } else if (orgGroup === 'paleontologi') {
+        makePalTable(object)
     } else {
         makeBioTable()
     }
@@ -319,9 +350,10 @@ const showData = () => {
     } else {
         document.querySelector("#musit-regno").innerHTML = `<span>${object.catalogNumber}</span>`
     }
-    document.querySelector("#species-name").innerHTML = `<span class="italic">${object.scientificName}</span>`
+
 
     if (orgGroup === 'botanikk' || orgGroup === 'zoologi') {
+        document.querySelector("#species-name").innerHTML = `<span class="italic">${object.scientificName}</span>`
         document.querySelector("#coll-date").innerHTML = `<span>${object.eventDate}</span>`
         document.querySelector("#coll").innerHTML = `<span>${object.recordedBy}</span>`
         document.querySelector("#det").innerHTML =  `<span>${object.identifiedBy}</span>`
@@ -334,12 +366,6 @@ const showData = () => {
         document.querySelector("#locality").innerHTML = `<span>${concatLocality}</span>`
         document.querySelector("#coordinates").innerHTML = `<span>${coordinates(object)}</span>`
         document.querySelector('#samplingProtocol').innerHTML = samplingProtocol
-    } else if (orgGroup === 'geologi') {
-        document.querySelector("#locality").innerHTML = `<span>${concatLocality}</span>`
-        document.querySelector("#coordinates").innerHTML = `<span>${coordinates(object)}</span>`
-        if (document.querySelector('#typeStatus')) {
-            document.querySelector('#typeStatus').innerHTML = typeStatus
-        }
     }
 }
 showData()
@@ -362,6 +388,7 @@ if (!sessionStorage.getItem('collection').includes('dna') & !sessionStorage.getI
     if(object.coremaUUID) {
         document.querySelector("#preservedSp").innerHTML = textItems.preservedSp[index]
         document.querySelector("#corema-link").innerHTML = `<a id="object-link" href="#" onclick="searchInCorema(object.coremaNo);return false;"> ${object.coremaNo} </a>`
+        // eslint-disable-next-line no-inner-declarations
         function searchInCorema(coremaNo) {
             console.log(coremaNo)
             // vent til vi har sti med samlinger - kan peke rett på
@@ -557,11 +584,14 @@ if (mediaLink) {
 
 //map
 
-drawMapObject(object)
+    drawMapObject(object)
+
+
+
+
 if (sessionStorage.getItem('collection') === 'utad') {
     const mapEl = document.getElementById('map-style'); 
     mapEl.style.display = "none";
-
 }
 
 

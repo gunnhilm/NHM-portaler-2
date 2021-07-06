@@ -7,6 +7,7 @@ const getMuseum = () => {
 }
 
 // populate dropdown with list of collections
+// GBifIdentifiers is defined in dataObject.js
 const addCollectionsToSelect = () => {
     const museum = getMuseum()
     for (const property in GBifIdentifiers[museum]) {

@@ -21,6 +21,7 @@ const textItems = {
     botanikk: ["Botanikk og mykologi", "Botany and mycology"],
     zoologi: ["Zoologi", "Zoology"],
     geologi: ["Geologi", "Geology"],
+    paleontologi: ['Paleontologi', 'Paleontology'],
     otherCollections: ["Andre samlinger", "Other collections"],
     emptySearch: ["Tøm søk", "Empty search"],
     headerSearchPage: ["Søk i samlingene", "Search the collections"],
@@ -50,6 +51,8 @@ const textItems = {
     oslofeltet: ["Oslofeltet", "The Oslo field"],
     utenlandskeBA: ["Utenlandske bergarter", "Minerals from outside Norway"],
     mineraler: ["Mineraler", "Minerals"],
+    fossiler: ['Fossiler', 'Fossils'],
+    palTyper: ['Type Samlingen', 'Type collection'],
     otherOpt: ["Andre samlinger", "Other collections"],
     utad: ["Utads samling", "Exhibition collection"],
     bulk: ["Bulk- og prosjektmateriale", "Bulk- and project material"],
@@ -153,15 +156,30 @@ const textItems = {
     concentration: ['DNA konsentrasjon:','DNA concentration'],
     coordPlaceholder: ['&lt;Ingen koordinater&gt;', '&lt;No coordinates&gt;'],
         // Objekctpage UTAD items
-        Kommentar: ['Kommentar', 'Comments'],
-        Tilstand: ['Tilstand', 'Condition'],
-        Utlån: ['Utlån', 'On loan'],
-        Vekt: ['Vekt', 'Mass'],
-        basisOfRecord: ['Type Objekt', ' Type of Object'],
-        bredde: ['Bredde', 'Width'],
-        høyde: ['Høyde', 'Height'],
-        lengde: ['Lengde', 'Length'],
+        Kommentar: ['Kommentar:', 'Comments:'],
+        Tilstand: ['Tilstand:', 'Condition:'],
+        Utlån: ['Utlån:', 'On loan:'],
+        Vekt: ['Vekt:', 'Mass:'],
+        basisOfRecord: ['Type Objekt:', ' Type of Object:'],
+        bredde: ['Bredde:', 'Width:'],
+        høyde: ['Høyde:', 'Height:'],
+        lengde: ['Lengde:', 'Length:'],
         vernacularName: ['Norsk navn', 'Vernacular name'],
+        // Objekctpage Paleo items
+        higherClassification: ['Taxa:', 'Taxa:'],
+        geologicalContext: ['Stratigrafi:', 'Stratigraphy:'],
+        remarks: ['Kommentar:', 'Comments:'],
+        eventDate: ['Innsamlingsdato: ', 'Collection date: '],
+        recordedBy: ['Innsamler: ', 'Collector: '],
+        scientificName: ['Vitenskapelig navn: ', 'Scientific name: '],
+        concatLocality: ["Sted:", "Locality:"],
+        coordinates:  ['Koordinater: ', 'Coordinates: '],
+        // Objectpage Geo items
+        mass: ['Vekt:', 'Mass:'],
+        Dimensjon: ['Dimensjon:', 'Dimensjon:'],
+
+
+
 
 
     // Tools page

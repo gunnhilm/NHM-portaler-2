@@ -149,7 +149,7 @@
 {
     "source": "access",
     "orgGroup": "paleontologi",
-    "name": "typesamling",
+    "name": "palTyper",
     "zipFileName": "occurrence",
     "mediaFile": "",
     "url": "",

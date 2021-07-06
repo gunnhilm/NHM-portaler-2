@@ -13,6 +13,25 @@
                 <br><br><br><br>
                 <p class="page-header" id="checkCoordHeader"></p>
                 
+                <div>
+                    <table>
+                        <tr>
+                            <td>
+                                <p>
+                                <label for="norske-kommuner" id="norske-kommuner-label">Velg kommune</label>
+                                <input list="norske-kommuner-list" placeholder="Start typing..." id="norske-kommuner">
+                                <datalist id="norske-kommuner-list">
+                                </datalist>
+                                </p>
+                            </td>
+                            <td>
+                                <div id="naboer"></div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+
                 <br>
                     <label for="coord-select" id="select-coord-label"></label>
                     <select id="coord-select" style="height:30px; border-radius:4px;">
@@ -21,6 +40,7 @@
                         {{!-- <option value="um" id="um">UM</option>
                         <option value="vm" id="vm">VM</option>
                         <option value="tmu" id="tmu">TMU</option>
+                        <option value="nbh" id="nbh">NBH</option>
                         <option value="other-museum" id="other-museum">other</option> --}}
                     </select>
                     <br><br>

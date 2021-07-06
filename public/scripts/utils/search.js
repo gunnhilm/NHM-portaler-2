@@ -102,6 +102,7 @@ function addTextInOrgButtons(a) {
     if (a == 'botanikk') {return textItems.botanikk[index]}
     else if (a == 'zoologi') {return textItems.zoologi[index]}
     else if (a == 'geologi') {return textItems.geologi[index]}
+    else if (a == 'paleontologi') {return textItems.paleontologi[index]}
     else if (a == 'other') {return textItems.otherCollections[index]}
 }
 
@@ -137,8 +138,6 @@ function addOrgGroups() {
             throw 'noe er galt med respons til organismegrupper fra museum'
         } else {
             try {
-    
-              
                 response.text().then((data) => {
                     const JSONdata = JSON.parse(data)
                     JSONdata.forEach(el => {
@@ -146,7 +145,6 @@ function addOrgGroups() {
                     })
                     sessionStorage.setItem('organismGroups', orgGroups)
                     makeButtons()
-                    
                 })
             }
             catch (error) {
@@ -155,7 +153,6 @@ function addOrgGroups() {
             }
         }
     })
-    
 }
 
 // put organism-group-buttons into array
@@ -182,6 +179,8 @@ function addTextInCollSelect(a) {
     else if (a == 'oslofeltet') {return textItems.oslofeltet[index]}
     else if (a == 'utenlandskeBergarter') {return textItems.utenlandskeBA[index]}
     else if (a == 'mineraler') {return textItems.mineraler[index]}
+    else if (a == 'fossiler') {return textItems.fossiler[index]}
+    else if (a == 'palTyper') {return textItems.palTyper[index]}
     //else if (a == 'GeoPal') {return textItems.GeoPal[index]}
     //else if (a == 'otherOpt') {return textItems.otherOpt[index]}
     else if (a == 'utad') {return textItems.utad[index]}
@@ -408,6 +407,7 @@ const doSearch = (limit = 20) => {
                             return console.log(data.error)
                         } else {
                             const JSONdata = JSON.parse(data)  
+                            
                             sessionStorage.setItem('searchLineNumber', JSONdata.unparsed.count)
                             sessionStorage.setItem('searchTerm', searchTerm)
                             const parsedResults = Papa.parse(JSONdata.unparsed.results, {
@@ -422,13 +422,46 @@ const doSearch = (limit = 20) => {
                             } else {
                                 try {
                                     // hvis vi får flere enn 2000 treff må vi si i fra om det
-                                    if(parsedResults.data.length > 1999){
+                                    if(parsedResults.data.length > 999){
                                         nbHitsElement.textContent = textItems.tooManyHits[index]
                                         nbHitsElement.style.color = 'red'
                                     } else {
                                         nbHitsElement.textContent = parsedResults.data.length
                                     }
                                     nbHitsHeader.innerHTML = textItems.nbHitsText[index]
+                                    // replace , with . if necessary
+                                    if(chosenCollection === 'fossiler' || chosenCollection === 'palTyper') {
+                                        let coordString = ''
+                                        const regex = /,/i;
+                                        parsedResults.data.forEach(function(item, index) {
+
+                                            if(item.decimalLatitude){
+                                                coordString = item.decimalLatitude
+                                                if (coordString.includes(',')) {
+                                                    try {
+                                                        coordString = coordString.replace(regex, '.')
+                                                        coordString = coordString.trim()
+                                                        coordString = coordString + 0
+                                                    } finally {
+                                                        item.decimalLatitude = coordString
+                                                    }
+                                                }
+                                            }
+                                            if(item.decimalLongitude){
+                                                coordString = item.decimalLongitude
+                                                if (coordString.includes(',')) {
+                                                    try {
+                                                        coordString = coordString.replace(regex, '.')
+                                                        coordString = coordString.trim()
+                                                        coordString = coordString + 0
+                                                    } finally {
+                                                        item.decimalLongitude = coordString
+                                                    }
+                                                }
+                                            }
+                                        })
+                                    }
+
                                     sessionStorage.setItem('string', JSON.stringify(parsedResults.data))      
                                     
                                     load() 
@@ -458,7 +491,7 @@ const doSearch = (limit = 20) => {
 // when somebody clicks search-button
 searchForm.addEventListener('submit', (e) => {
     e.preventDefault()
-    doSearch(2000) // vi skal få tilbake maks 2000 linjer med svar
+    doSearch(1000) // vi skal få tilbake maks 1000 linjer med svar
 })  
 
 collection.addEventListener('change', (e) => {
@@ -624,6 +657,7 @@ document.getElementById('checkedInMap').addEventListener('click', function() {
     if (newArray.length == 0) {
         zoomModal.style.display = "block"
         zoomModalContent.innerHTML = textItems.mapCheckedMessage[index]
+
     } else {
         drawMap(newArray)
     }

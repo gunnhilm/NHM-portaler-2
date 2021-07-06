@@ -8,6 +8,7 @@
 // out: text or images in relevant HTML-elements
 // is called in renderLang.js
 const renderText = function(lang) {
+
     if (lang === "English") {
         index = 1
     } else {
@@ -100,6 +101,7 @@ const renderText = function(lang) {
         if (document.querySelector('#botanikk')) {document.querySelector('#botanikk').innerHTML = textItems.botanikk[index]}
         if (document.querySelector('#zoologi')) {document.querySelector('#zoologi').innerHTML = textItems.zoologi[index]}
         if (document.querySelector('#geologi')) {document.querySelector('#geologi').innerHTML = textItems.geologi[index]}
+        if (document.querySelector('#paleontologi')) {document.querySelector('#paleontologi').innerHTML = textItems.paleontologi[index]}
         if (document.querySelector('#other')) {document.querySelector('#other').innerHTML = textItems.otherCollections[index]}
         document.querySelector('#search-button').innerHTML = textItems.searchButton[index]
         document.querySelector('#empty-search-button').innerHTML = textItems.emptySearch[index]
@@ -143,11 +145,12 @@ const renderText = function(lang) {
     if (location.href.includes('object')) {
         // Get the name of the collection
         const coll = sessionStorage.getItem('collection')
+        const orgGroup = sessionStorage.getItem('organismGroup')
 
         // read string and get the object from sessionStorage (for the object-page)
-        const loadString = () => {
+        const loadString = (item) => {
             
-            const objectJSON = sessionStorage.getItem('string')
+            const objectJSON = sessionStorage.getItem(item)
             
             try {//object
                 return objectJSON ? JSON.parse(objectJSON) : []
@@ -156,14 +159,15 @@ const renderText = function(lang) {
             }
         }
         //get the object from session storage
-        const allObject = loadString()
-
+        const allObject = loadString('string')
+        const objectHeaders = loadString('objectHeaders')
         // get the id from the url
         const urlParams = new URLSearchParams(window.location.search)
         const id = urlParams.get('id')
         const object = allObject.find(x => x.catalogNumber === id)
         
         if (coll === 'utad') {
+            console.log('utad');
             document.querySelector("#head-vernacularName").innerHTML = textItems.vernacularName[index]
             document.querySelector("#head-basisOfRecord").innerHTML = textItems.basisOfRecord[index]
             document.querySelector("#head-lengde").innerHTML = textItems.lengde[index]
@@ -173,75 +177,91 @@ const renderText = function(lang) {
             document.querySelector("#head-Tilstand").innerHTML = textItems.Tilstand[index]
             document.querySelector("#head-Utlån").innerHTML = textItems.Utlån[index]
             document.querySelector("#head-Kommentar").innerHTML = textItems.Kommentar[index]
-        }
 
-
-        if (document.querySelector("#head-species-name")) {
+        } else if (orgGroup === 'paleontologi') {
             document.querySelector("#head-species-name").innerHTML = textItems.headSpeciesName[index].bold()
-            document.querySelector("#head-det").innerHTML = textItems.headDet[index].bold()
-            document.querySelector("#head-det-date").innerHTML = textItems.headDetDate[index].bold()
-            document.querySelector("#head-coll-date").innerHTML = textItems.headCollDate[index].bold()
-            document.querySelector("#head-coll").innerHTML = textItems.headColl[index].bold()
-            document.querySelector("#head-locality").innerHTML = textItems.headLocality[index].bold()
-            document.querySelector("#head-coordinates").innerHTML = textItems.headCoordinates[index].bold()
+            document.querySelector("#head-concatLocality").innerHTML = textItems.concatLocality[index].bold()
+            for (let i = 0; i < objectHeaders.length; i++) {
+                const element = objectHeaders[i];
+                document.querySelector(`#head-${element}`).innerHTML = textItems[element][index].bold()
+            }
 
-            document.querySelector("#photo-box").alt = textItems.photoAlt[index]
-            document.querySelector("#next-photo").innerHTML = textItems.nextPhoto[index]
-            document.querySelector("#previous-photo").innerHTML = textItems.previousPhoto[index]
-        }
-        
-        
-        if(!object.decimalLatitude | !object.decimalLongitude) {
-            if (document.querySelector("#map-object")) {
-                document.querySelector("#map-object").innerHTML = textItems.mapAlt[index]
+        } else if (orgGroup === 'geologi') {
+            console.log(objectHeaders);
+            for (let i = 0; i < objectHeaders.length; i++) {
+                
+                const element = objectHeaders[i];
+                console.log(element);
+                document.querySelector(`#head-${element}`).innerHTML = textItems[element][index].bold()
             }
-        }
+  
+        } else { // biologi objekter
 
-        if (object.ArtObsID) {
-            if (document.querySelector("#head-artsobs")) {
-                document.querySelector("#head-artsobs").innerHTML = textItems.headArtsobs[index].bold()
-            }
-        }
-        if (object.habitat ) {
-            if(document.querySelector("#head-habitat")) {
-                document.querySelector("#head-habitat").innerHTML = "Habitat: ".bold()
-            }
-        }
-        if (object.sex) {
-            if (document.querySelector("#head-sex")) {
-                document.querySelector("#head-sex").innerHTML = textItems.headSex[index].bold()
-            }
-        }
-        if (object.lifeStage) {
-            if (document.querySelector("#head-lifeStage")) {
-                document.querySelector("#head-lifeStage").innerHTML = textItems.headLifeStage[index].bold()
-            }
-        }
-        if (object.samplingProtocol) {
-            if(document.querySelector("#head-samplingProtocol")) {
-                document.querySelector("#head-samplingProtocol").innerHTML = textItems.headSamplingProtocol[index].bold()
-            }
-        }
-        if (document.querySelector("#head-taxonomy")) {
-            if (object.kingdom || object.class || object.order || object.family) {
-                document.querySelector("#head-taxonomy").innerHTML = textItems.headTaxonomy[index].bold()
-            }
-        }
-        
-        if (object.typeStatus) {
-            if (document.querySelector("#head-typeStatus")) {
-                document.querySelector("#head-typeStatus").innerHTML = textItems.headTypeStatus[index]
-            }
-        }
-        
-        //document.querySelector("#itemsHeader").innerHTML = textItems.itemsHeader[index]
+            if (document.querySelector("#head-species-name")) {
+                document.querySelector("#head-species-name").innerHTML = textItems.headSpeciesName[index].bold()
+                document.querySelector("#head-det").innerHTML = textItems.headDet[index].bold()
+                document.querySelector("#head-det-date").innerHTML = textItems.headDetDate[index].bold()
+                document.querySelector("#head-coll-date").innerHTML = textItems.headCollDate[index].bold()
+                document.querySelector("#head-coll").innerHTML = textItems.headColl[index].bold()
+                document.querySelector("#head-locality").innerHTML = textItems.headLocality[index].bold()
+                document.querySelector("#head-coordinates").innerHTML = textItems.headCoordinates[index].bold()
 
-        ////////////endre dette med stiched files
-        // if (!window.location.href.includes('/um') && !window.location.href.includes('tmu')) {
-        //     document.querySelector("#preservedSp").innerHTML = textItems.preservedSp[index]
-        // }
-        
+                document.querySelector("#photo-box").alt = textItems.photoAlt[index]
+                document.querySelector("#next-photo").innerHTML = textItems.nextPhoto[index]
+                document.querySelector("#previous-photo").innerHTML = textItems.previousPhoto[index]
+            }
+            
+            if(!object.decimalLatitude || !object.decimalLongitude) {
+                if (document.querySelector("#map-object")) {
+                    document.querySelector("#map-object").innerHTML = textItems.mapAlt[index]
+                }
+            }
 
+            if (object.ArtObsID) {
+                if (document.querySelector("#head-artsobs")) {
+                    document.querySelector("#head-artsobs").innerHTML = textItems.headArtsobs[index].bold()
+                }
+            }
+            if (object.habitat ) {
+                if(document.querySelector("#head-habitat")) {
+                    document.querySelector("#head-habitat").innerHTML = "Habitat: ".bold()
+                }
+            }
+            if (object.sex) {
+                if (document.querySelector("#head-sex")) {
+                    document.querySelector("#head-sex").innerHTML = textItems.headSex[index].bold()
+                }
+            }
+            if (object.lifeStage) {
+                if (document.querySelector("#head-lifeStage")) {
+                    document.querySelector("#head-lifeStage").innerHTML = textItems.headLifeStage[index].bold()
+                }
+            }
+            if (object.samplingProtocol) {
+                if(document.querySelector("#head-samplingProtocol")) {
+                    document.querySelector("#head-samplingProtocol").innerHTML = textItems.headSamplingProtocol[index].bold()
+                }
+            }
+            if (document.querySelector("#head-taxonomy")) {
+                if (object.kingdom || object.class || object.order || object.family) {
+                    document.querySelector("#head-taxonomy").innerHTML = textItems.headTaxonomy[index].bold()
+                }
+            }
+            
+            if (object.typeStatus) {
+                if (document.querySelector("#head-typeStatus")) {
+                    document.querySelector("#head-typeStatus").innerHTML = textItems.headTypeStatus[index]
+                }
+            }
+            
+            //document.querySelector("#itemsHeader").innerHTML = textItems.itemsHeader[index]
+
+            ////////////endre dette med stiched files
+            // if (!window.location.href.includes('/um') && !window.location.href.includes('tmu')) {
+            //     document.querySelector("#preservedSp").innerHTML = textItems.preservedSp[index]
+            // }
+        
+        }
 
         document.getElementById('zoom-expl-popup').innerHTML = textItems.mapHelpContent[index]
         document.getElementById('large-map-object-button').innerHTML = textItems.largeMapButton[index]
