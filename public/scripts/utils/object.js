@@ -344,8 +344,10 @@ const showData = () => {
     }
      
 
+    if (sessionStorage.getItem('organismGroup').includes('paleontologi') ) {
 
-    if (!sessionStorage.getItem('collection').includes('dna') & !sessionStorage.getItem('collection').includes('birds') & !sessionStorage.getItem('collection').includes('mammals')) {
+        document.querySelector("#musit-regno").innerHTML = `<span>PMO ${object.catalogNumber}</span>`
+    } else if (!sessionStorage.getItem('collection').includes('dna') & !sessionStorage.getItem('collection').includes('birds') & !sessionStorage.getItem('collection').includes('mammals')) {
         document.querySelector("#musit-regno").innerHTML = regnoEl
     } else {
         document.querySelector("#musit-regno").innerHTML = `<span>${object.catalogNumber}</span>`

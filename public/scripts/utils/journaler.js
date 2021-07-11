@@ -58,11 +58,14 @@ const journalResultTable = (children) => {
                 const cell = row.insertCell() 
                 //if(k.includes('FlipBook')) {
                 if (index === 0) {
-                    child[k] = '<a href ="https://data.gbif.no/ggbn/flipbook' + child[k] + '">FlipBook</a>'
+                    console.log(child[k]);
+                    // child[k] = '<a href ="https://data.gbif.no/ggbn/flipbook' + child[k] + '">FlipBook</a>'
+                    child[k] = '<a href ="https://samlingsportal.nhm.uio.no/journaler/nhm/' + child[k] + '">FlipBook</a>'
                     cell.appendChild(document.createTextNode(''));
                     cell.innerHTML = child[k] 
                 } else if (k.startsWith('PDF')) {
-                    child[k] = '<a href ="https://data.gbif.no/ggbn/flipbook' + child[k] + '"> PDF</a>'
+                    // child[k] = '<a href ="https://data.gbif.no/ggbn/flipbook' + child[k] + '"> PDF</a>'
+                    child[k] = '<a href ="https://samlingsportal.nhm.uio.no/journaler/nhm/' + child[k] + '"> PDF</a>'
                     cell.appendChild(document.createTextNode(''));
                     cell.innerHTML = child[k] 
                 } else  if (k.includes('NHM ID')) {

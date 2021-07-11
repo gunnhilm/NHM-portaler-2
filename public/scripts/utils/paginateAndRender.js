@@ -109,7 +109,10 @@ const resultTable = (subMusitData, musitData) => {
                 
                 
                 let prefix
-                if (!(/[a-zA-Z]/).test(subMusitData[i].catalogNumber.charAt(0))) {
+                if (sessionStorage.getItem('organismGroup').includes('paleontologi')) {
+                    prefix = 'PMO '
+
+                } else if (!(/[a-zA-Z]/).test(subMusitData[i].catalogNumber.charAt(0))) {
                     
                     prefix = subMusitData[i].institutionCode + '-' + subMusitData[i].collectionCode + '-'
                 } else {

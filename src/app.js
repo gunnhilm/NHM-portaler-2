@@ -21,6 +21,7 @@ const port = process.env.PORT || 3000
 
 // define paths for Express
 const publicDirectoryPath = path.join(__dirname, '../public')
+const publicJournalPath = path.join(__dirname, '../src/data/journaler')
 const viewsPath = path.join(__dirname, '../templates/views')
 const partialsPath = path.join(__dirname, '../templates/partials')
 
@@ -31,6 +32,7 @@ hbs.registerPartials(partialsPath)
 
 // set up static directory to serve
 app.use(express.static(publicDirectoryPath))
+app.use(express.static(publicJournalPath))
 
 app.get('', (req, res) => {
     if (!req.query.search) {
