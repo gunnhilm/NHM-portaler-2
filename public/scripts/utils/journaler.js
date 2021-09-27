@@ -58,7 +58,6 @@ const journalResultTable = (children) => {
                 const cell = row.insertCell() 
                 //if(k.includes('FlipBook')) {
                 if (index === 0) {
-                    console.log(child[k]);
                     // child[k] = '<a href ="https://data.gbif.no/ggbn/flipbook' + child[k] + '">FlipBook</a>'
                     child[k] = '<a href ="https://samlingsportal.nhm.uio.no/journaler/nhm/' + child[k] + '">FlipBook</a>'
                     cell.appendChild(document.createTextNode(''));

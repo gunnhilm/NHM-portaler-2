@@ -1,4 +1,5 @@
 const lastSearch = JSON.parse(sessionStorage.getItem('string'))
+ 
 
 let locArray = []
 // lastSearch.forEach(element => {
@@ -6,7 +7,37 @@ let locArray = []
 //     //console.log(coordinates)
 //     locArray.push(coordinates)
 // })
+const getMuseum = () => {
+    const path = window.location.pathname
+    const  museum = path.split('/')
+    return museum[2]
+}
 
+const getFileList = () => {
+    const museum = getMuseum()
+    // hent lista over feilfiler fra server
+    const url = 'checkCoord?museum=' + museum 
+        fetch(url).then((response) => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            } else {
+                return response.text()
+            }
+        }).then ((data) => {
+            data = JSON.parse(data)
+            addCollectionsToSelect(data.results)
+        })
+}
+
+const addCollectionsToSelect = (errorList) => {
+    for (const [key, value] of Object.entries(errorList)) {
+        elOption = document.createElement("option")
+        elOption.text = key
+        elOption.value = key
+        elOption.id = value
+        document.querySelector('#error-filer-list').add(elOption)
+    }
+}
 
 const getMunicipalityList = async () => {
 return new Promise((resolve, reject) => {
@@ -48,6 +79,7 @@ const getNeighbors = (valgtLKommune) => {
                 console.log(kommuneNummer);
             }   
         }
+        console.log(kommuneNummer);
 
     const url = 'https://ws.geonorge.no/kommuneinfo/v1/kommuner/' + kommuneNummer + '/nabokommuner'
     const naboKommuner = []
@@ -79,6 +111,27 @@ const visNaboer = (naboKommuner) => {
         document.querySelector("#naboer").innerHTML += element
     }
 }
+
+// Hvis noe velger en fil med feil
+document.querySelector('#error-filer-list').addEventListener('click',function(e){
+    const dd =  document.getElementById("error-filer-list")
+    const file = dd.options[dd.selectedIndex].id
+    const item = dd.options[dd.selectedIndex].value
+    console.log(file);
+    console.log(item);
+    const museum = getMuseum()
+    const url = 'checkCoord?museum=' + museum + '&download=' + file
+    fetch(url).then((response) => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        } else {
+            console.log('her kommer fila');
+            console.log(response);
+            // window.open(response);
+            // return response
+        }
+    })
+})
 
 //ikke gjør en  sjekk for hvert koordinat,  la heller backend plukke opp søket (?) og send array med booleans tilbake...
 
@@ -199,6 +252,6 @@ let kommuneListe = ''
 const main = async () => {
     await getMunicipalityList().then((data) =>kommuneListe = data)
 }
-
+getFileList()
 main()
 

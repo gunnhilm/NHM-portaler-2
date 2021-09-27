@@ -2,6 +2,7 @@ const path = require('path')
 const express = require('express')
 const fileRead = require('./utils/fileread')
 const getStatFile = require('./utils/getStatFile')
+const checkCoord = require('./utils/checkCoords')
 //const coremaFileread = require('./utils/coremaFileread')
 const footerDate = require('./utils/footerDate')
 const hbs = require('hbs')
@@ -294,8 +295,25 @@ app.get('*/getDOI', (req, res) => {
 
 // tool-page for checking if coordinates are within correct region
 app.get('*/checkCoord', (req, res) => {
-    console.log('checkCoord')
-    res.render('checkCoord', {})
+    if (!req.query.museum) {
+        return res.render('checkCoord', {
+        })
+    } else if (req.query.download) {
+        console.log('vi starter download');
+        const filePath = 'src/data/' + req.query.museum + '/geoError/' + req.query.download
+        console.log(filePath);
+        res.download(filePath)
+    } else {
+        checkCoord.startUp(req, (error, results) => {
+            if(error){
+                console.log(error);
+            } else {
+                res.send({
+                    results: results
+                })
+            }
+        })
+    }
 })
 
 // tool-page for getting error from GBiF
