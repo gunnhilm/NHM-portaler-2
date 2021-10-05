@@ -3,6 +3,34 @@
 // urlPath er definert i textItems.js
 // textItems[] is in separate file textItems.js
 
+// enables species name in italic and author in non-italic
+// in: scientific species name; string
+// out: two strings (in an array); name in one string and 
+// author in another
+// is called in showData()
+const italicSpeciesname = (string) => {
+    let author = ''
+    let array = string.split(" ")
+    let name = array[0]
+    let nameFinished = false
+    for (let i = 1; i< array.length; i++) {
+        characters = array[i].split('')
+        if (characters[0] == characters[0].toUpperCase()) {
+            nameFinished = true
+            author = author + ' ' + array[i]
+        } else {
+            if (nameFinished == false) {
+                name = name + ' ' + array[i]
+            } else {
+                author = author + ' ' + array[i]
+            }
+        }
+    }
+    let nameAuthor = [name, author]
+    
+    return(nameAuthor)
+}
+
 // renders text and images in html-elements
 // in: lang (string, «Norwegian» or «English»)
 // out: text or images in relevant HTML-elements
@@ -71,14 +99,14 @@ const renderText = function(lang) {
         if (document.querySelector('#moser')) {document.querySelector('#moser').innerHTML = textItems.moser[index]}
         if (document.querySelector('#lav')) {document.querySelector('#lav').innerHTML = textItems.lav[index]}
         if (document.querySelector('#alger')) {document.querySelector('#alger').innerHTML = textItems.alger[index]}
-        if (document.querySelector('#entomologi')) {document.querySelector('#insekter').innerHTML = textItems.insekter[index]}
+        if (document.querySelector('#entomologi')) {document.querySelector('#entomologi').innerHTML = textItems.insekter[index]}
         if (document.querySelector('#evertebrater')) {document.querySelector('#evertebrater').innerHTML = textItems.evertebrater[index]}
         if (document.querySelector('#fisk')) {document.querySelector('#fisk').innerHTML = textItems.fisk[index]}
         if (document.querySelector('#coremaopt')) {document.querySelector('#coremaopt').label = textItems.coremaopt[index]}
-        if (document.querySelector('#birds')) {document.querySelector('#fugler').innerHTML = textItems.fugler[index]}
-        if (document.querySelector('#mammals')) {document.querySelector('#pattedyr').innerHTML = textItems.pattedyr[index]}
+        if (document.querySelector('#birds')) {document.querySelector('#birds').innerHTML = textItems.fugler[index]}
+        if (document.querySelector('#mammals')) {document.querySelector('#mammals').innerHTML = textItems.pattedyr[index]}
         if (document.querySelector('#dna_karplanter')) {document.querySelector('#dna_karplanter').innerHTML = textItems.dna_karplanter[index]}
-        if (document.querySelector('#dna_insekter')) {document.querySelector('#dna_insekter').innerHTML = textItems.dna_insekter[index]}
+        if (document.querySelector('#dna_entomologi')) {document.querySelector('#dna_entomologi').innerHTML = textItems.dna_insekter[index]}
         if (document.querySelector('#dna_fish_herptiles')) {document.querySelector('#dna_fish_herptiles').innerHTML = textItems.fishHerp[index]}
         if (document.querySelector('#dna_fungi_lichens')) {document.querySelector('#dna_fungi_lichens').innerHTML = textItems.fungiLichens[index]}
         if (document.querySelector('#dna_other')) {document.querySelector('#dna_other').innerHTML = textItems.other[index]}
@@ -168,31 +196,30 @@ const renderText = function(lang) {
         
         if (coll === 'utad') {
             console.log('utad');
-            document.querySelector("#head-vernacularName").innerHTML = textItems.vernacularName[index]
-            document.querySelector("#head-basisOfRecord").innerHTML = textItems.basisOfRecord[index]
-            document.querySelector("#head-lengde").innerHTML = textItems.lengde[index]
-            document.querySelector("#head-bredde").innerHTML = textItems.bredde[index]
-            document.querySelector("#head-høyde").innerHTML = textItems.høyde[index]
-            document.querySelector("#head-Vekt").innerHTML = textItems.Vekt[index]
-            document.querySelector("#head-Tilstand").innerHTML = textItems.Tilstand[index]
-            document.querySelector("#head-Utlån").innerHTML = textItems.Utlån[index]
-            document.querySelector("#head-Kommentar").innerHTML = textItems.Kommentar[index]
-
+            //document.querySelector("#head-species-name").innerHTML = textItems.speciesName[index].bold()
+            if (document.querySelector("#head-vernacularName")) {document.querySelector("#head-vernacularName").innerHTML = textItems.vernacularName[index]}
+            if (document.querySelector("#head-basisOfRecord")) {document.querySelector("#head-basisOfRecord").innerHTML = textItems.basisOfRecord[index]}
+            if (document.querySelector("#head-lengde")) {document.querySelector("#head-lengde").innerHTML = textItems.lengde[index]}
+            if (document.querySelector("#head-bredde")) {document.querySelector("#head-bredde").innerHTML = textItems.bredde[index]}
+            if (document.querySelector("#head-høyde")) {document.querySelector("#head-høyde").innerHTML = textItems.høyde[index]}
+            if (document.querySelector("#head-Vekt")) {document.querySelector("#head-Vekt").innerHTML = textItems.Vekt[index]}
+            if (document.querySelector("#head-Tilstand")) {document.querySelector("#head-Tilstand").innerHTML = textItems.Tilstand[index]}
+            if (document.querySelector("#head-Utlån")) {document.querySelector("#head-Utlån").innerHTML = textItems.Utlån[index]}
+            if (document.querySelector("#head-Kommentar")) {document.querySelector("#head-Kommentar").innerHTML = textItems.Kommentar[index]}
+            
         } else if (orgGroup === 'paleontologi') {
-            document.querySelector("#head-species-name").innerHTML = textItems.headSpeciesName[index].bold()
-            document.querySelector("#head-concatLocality").innerHTML = textItems.concatLocality[index].bold()
+            if (document.querySelector("#head-species-name")) {document.querySelector("#head-species-name").innerHTML = textItems.headSpeciesName[index].bold()}
+            if (document.querySelector("#head-concatLocality")) {document.querySelector("#head-concatLocality").innerHTML = textItems.concatLocality[index].bold()}
             for (let i = 0; i < objectHeaders.length; i++) {
                 const element = objectHeaders[i];
-                document.querySelector(`#head-${element}`).innerHTML = textItems[element][index].bold()
+                if (document.querySelector(`#head-${element}`)) {document.querySelector(`#head-${element}`).innerHTML = textItems[element][index].bold()}
             }
 
         } else if (orgGroup === 'geologi') {
-            console.log(objectHeaders);
             for (let i = 0; i < objectHeaders.length; i++) {
                 
                 const element = objectHeaders[i];
-                console.log(element);
-                document.querySelector(`#head-${element}`).innerHTML = textItems[element][index].bold()
+                if (document.querySelector(`#head-${element}`)) {document.querySelector(`#head-${element}`).innerHTML = textItems[element][index].bold()}
             }
   
         } else { // biologi objekter
@@ -414,8 +441,16 @@ document.querySelector('#language').addEventListener('click', (e) => {
  
             stringData = sessionStorage.getItem('string')
             musitData = JSON.parse(stringData)      
+            const coll = sessionStorage.getItem('collection')
+            if (coll === 'utad') { 
+                fillResultHeadersUTAD(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell11,musitData)
+            } else if (coll === 'bulk') {
+                fillResultHeadersBulk(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell11,musitData)
+            } else {
+                fillResultHeaders(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell10,cell11,musitData)
+            }
+        
             
-            fillResultHeaders(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell10,cell11,musitData)
             
             const select = document.getElementById('checkboxSelect')
             pageList = JSON.parse(sessionStorage.getItem('pageList'))

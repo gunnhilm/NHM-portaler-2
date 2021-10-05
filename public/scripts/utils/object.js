@@ -10,18 +10,21 @@ if (sessionStorage.language) {
 
 // figures out which museum we are in
 // out: string, abbreviation for museum
-// is called by doSearch() and updateFooter()
+// is called by document.getElementById('large-map-object-button').onclick
 const getCurrentMuseum = () => {
     const pathArray = window.location.pathname.split('/')
     const museum = pathArray[2]
     return museum
 }
 
-const getOrganismGruop = () => {
+//figures out which organism group we are in
+// out: string
+// is called below function to fill variable orgGroup
+const getOrganismGroup = () => {
     const orgGroup = sessionStorage.getItem('organismGroup')
     return orgGroup
 }
-const orgGroup = getOrganismGruop()
+const orgGroup = getOrganismGroup()
 
 
 // reads last search-result from sessionStorage and puts it in an array
@@ -154,6 +157,9 @@ if (object.samplingProtocol) { samplingProtocol =  `<span>${object.samplingProto
 let typeStatus = ''
 if (object.typeStatus) { typeStatus =  `<span>${object.typeStatus}</span>`}
 
+// fills variable taxonomy with content
+// out: string with taxonomic hierarchy
+// is called below to fill variable taxonomy
 const taxonomyString = () => {
     let string = ''
     if (object.kingdom === true) {
@@ -178,19 +184,36 @@ if (object.kingdom || object.class || object.order || object.family) {
     taxonomy = taxonomyString()
 }
 
+
+// make first line in table for object-information, fills the cells (scientific name),
+// and fills musit-regno-box
+// in: table; html-element
+ 
+// is called in makeUTADTable() and makePalTable()
 const makeTableHeader = (table) => {
-    const speciesName = table.insertRow(0)
-    const speciesNameHeader = speciesName.insertCell(0); speciesNameHeader.id = 'head-species-name'; speciesNameHeader.class = 'bold'; speciesNameHeader.style = 'white-space:pre';
-    const speciesNameCont = speciesName.insertCell(1); speciesNameCont.id = 'species-name'; speciesNameCont.style = 'border-spacing: 10px 0';
-    document.querySelector("#species-name").innerHTML = `<span class="italic">${object.scientificName}</span>`
-    document.querySelector("#musit-regno").innerHTML = `<span>${object.catalogNumber}</span>`
+    const speciesNameRow = table.insertRow(0)
+    const speciesNameHeader = speciesNameRow.insertCell(0); speciesNameHeader.id = 'head-species-name'; speciesNameHeader.class = 'bold'; speciesNameHeader.style = 'white-space:pre';
+    const speciesNameCont = speciesNameRow.insertCell(1); speciesNameCont.id = 'species-name'; speciesNameCont.style = 'border-spacing: 10px 0'; //font-style:italic';
+    // mener her å ta vekk italic fra geologisk artsnavn på obj-sida, men den er ikke italic nå, vet ikke hvorfor
+    if (sessionStorage.getItem('organismGroup').includes('geologi') ) {
+        console.log('geologi')
+    }
+    let nameArray = italicSpeciesname(object.scientificName)
+    document.querySelector('#head-species-name').innerHTML = `<span>${textItems.scientificName[index]}</span>`
+    document.querySelector("#species-name").innerHTML = `<span style=font-style:italic>${nameArray[0]}</span>` + ' ' + `<span>${nameArray[1]}</span>`
+    //document.querySelector("#musit-regno").innerHTML = `<span>${object.catalogNumber}</span>`
 }
 
+// builds table for object-data for botany and zoology
+// - inserts rows, add cells, with id, class and style
+// - 
+// is called in showData()
 const makeBioTable = () => {
     const table = document.getElementById("object-table");
-    const speciesName = table.insertRow(0)
-        const speciesNameHeader = speciesName.insertCell(0); speciesNameHeader.id = 'head-species-name'; speciesNameHeader.style.fontWeight = 'bold'; speciesNameHeader.style = 'white-space:pre';
-        const speciesNameCont = speciesName.insertCell(1); speciesNameCont.id = 'species-name'; speciesNameCont.style = 'border-spacing: 10px 0';
+    const speciesNameRow = table.insertRow(0)
+    const speciesNameHeader = speciesNameRow.insertCell(0); speciesNameHeader.id = 'head-species-name'; speciesNameHeader.style.fontWeight = 'bold'; speciesNameHeader.style = 'white-space:pre';
+    const speciesNameCont = speciesNameRow.insertCell(1); speciesNameCont.id = 'species-name'; speciesNameCont.style = 'border-spacing: 10px 0;' //font-style:italic'; 
+        
     if (orgGroup === 'botanikk' || orgGroup === 'zoologi') {            
         const detRow = table.insertRow(-1)
         const detH =   detRow.insertCell(0); detH.id = 'head-det'; detH.class = 'bold'; detH.style = 'white-space:pre';
@@ -232,39 +255,49 @@ const makeBioTable = () => {
         const typeH =   type.insertCell(0); typeH.id = 'head-typeStatus'; typeH.class = 'bold';
         const typeC =   type.insertCell(1); typeC.id = 'typeStatus'; typeC.style = 'border-spacing: 10px 0';
         
-    } else if (orgGroup === 'geologi') {
-        console.log('her hos geologene');
-        const loc = table.insertRow(-1)
-        const locH =   loc.insertCell(0); locH.id = 'head-locality'; locH.class = 'bold';
-        const locC =   loc.insertCell(1); locC.id = 'locality'; locC.style = 'border-spacing: 10px 0';
-        const coor = table.insertRow(-1)
-        const coorH =   coor.insertCell(0); coorH.id = 'head-coordinates'; coorH.class = 'bold';
-        const coorC =   coor.insertCell(1); coorC.id = 'coordinates'; coorC.style = 'border-spacing: 10px 0';
-        const type = table.insertRow(-1)
-        const typeH =   type.insertCell(0); typeH.id = 'head-typeStatus'; typeH.class = 'bold';
-        const typeC =   type.insertCell(1); typeC.id = 'typeStatus'; typeC.style = 'border-spacing: 10px 0';
-
     } 
+    // else if (orgGroup === 'geologi') {
+    //     console.log('her hos geologene');
+    //     const loc = table.insertRow(-1)
+    //     const locH =   loc.insertCell(0); locH.id = 'head-locality'; locH.class = 'bold';
+    //     const locC =   loc.insertCell(1); locC.id = 'locality'; locC.style = 'border-spacing: 10px 0';
+    //     const coor = table.insertRow(-1)
+    //     const coorH =   coor.insertCell(0); coorH.id = 'head-coordinates'; coorH.class = 'bold';
+    //     const coorC =   coor.insertCell(1); coorC.id = 'coordinates'; coorC.style = 'border-spacing: 10px 0';
+    //     const type = table.insertRow(-1)
+    //     const typeH =   type.insertCell(0); typeH.id = 'head-typeStatus'; typeH.class = 'bold';
+    //     const typeC =   type.insertCell(1); typeC.id = 'typeStatus'; typeC.style = 'border-spacing: 10px 0';
+
+    // } 
 }
 
-
+// builds table for object-data for UTAD's collections
+// - inserts row for each property the object has, and that we decided to show
+// - add cells, with id, class and style
+// fills cells with data (not header-cells)
+// in: specimenObject; collection-object
+// calls makeTableHeader(table)
 const makeUTADTable = (specimenObject) => {
+    console.log(specimenObject)
     const table = document.getElementById("object-table");
-    const fieldsToShow = ['vernacularName', 'basisOfRecord', 'Hyllenr.', 'NHM objektbase', 'lengde', 'bredde', 'høyde', 'Vekt', 'Tilstand', 'Utlån', 'Kommentar']
+    const fieldsToShow = [/*'scientificName',*/ 'vernacularName', 'basisOfRecord', 'Hyllenr.', 'NHM objektbase', 'lengde', 'bredde', 'høyde', 'Vekt', 'Tilstand', 'Utlån', 'Kommentar']
 
     makeTableHeader(table)
     const keyObj = []
     // construct table
+    // "The Object.entries() method returns an array of a given object's own enumerable string-keyed property [key, value] pairs.
     for (const [key, value] of Object.entries(specimenObject)) {
+        // The hasOwnProperty() method returns a boolean indicating whether the object has the specified property as its own property (as opposed to inheriting it).
         if (Object.hasOwnProperty.call(specimenObject, key) && fieldsToShow.includes(key)) {
 
             const row = table.insertRow(-1)
             const headKey = row.insertCell(0); headKey.id =  `head-${key}` ; headKey.class = 'bold';
             const Content =   row.insertCell(1); Content.id = key; Content.style = 'border-spacing: 10px 0';
             keyObj[key] = value
+            console.log(headKey)
         }
+        
     }
-
     // add data to table
     for (const [key, value] of Object.entries(keyObj)) {
             document.querySelector(`#${key}`).innerHTML = value
@@ -272,10 +305,19 @@ const makeUTADTable = (specimenObject) => {
 }
 
 
+// builds table for object-data for pal-collection
+// - inserts row for each property the object has, and that we decided to show
+// - add cells, with id, class and style
+// fills cells with data (not header-cells)
+// in: specimenObject; collection-object
+// calls makeTableHeader(table)
 
 const makePalTable = (specimenObject) => {
-    // add special fiels to specimenobject
+    // add special fields to specimenobject
+    console.log(specimenObject)
+    // legg til formaterte koordinater og lokalitet som .. på objektet
     specimenObject.coordinates = coordinates(specimenObject)
+    console.log(specimenObject)
     specimenObject.concatLocality = concatLocality
     const table = document.getElementById("object-table");
     const fieldsToShow = ['higherClassification', 'geologicalContext', 'coordinates', 'concatLocality', 'coordinates', 'recordedBy', 'eventDate', 'remarks']
@@ -301,6 +343,12 @@ const makePalTable = (specimenObject) => {
 
 }
 
+// builds table for object-data for geo-collection
+// - inserts row for each property the object has, and that we decided to show
+// - add cells, with id, class and style
+// fills cells with data (not header-cells)
+// in: specimenObject; collection-object
+// calls makeTableHeader(table)
 const makeGeoTable = (specimenObject) => {
     const table = document.getElementById("object-table");
     const fieldsToShow = ['scientificName', 'higherClassification', 'Dimensjon', 'mass', 'geologicalContext', 'coordinates', 'concatLocality', 'coordinates', 'recordedBy', 'eventDate', 'remarks']
@@ -319,8 +367,6 @@ const makeGeoTable = (specimenObject) => {
             const Content =   row.insertCell(1); Content.id = key; Content.style = 'border-spacing: 10px 0';
             keyObj[key] = value
             objectHeaders.push(key)
-            console.log('obj');
-            console.log(key);
         }
     }
 
@@ -332,6 +378,10 @@ const makeGeoTable = (specimenObject) => {
   
 }
 
+// calls function that build table and fill headers,
+// and fills data in table for zoology and botany
+// calls makeUTADTable(obj) or makeGeoTable(obj) or makePalTable(obj) or makeBioTable(obj)
+// is called below
 const showData = () => {
     if (orgGroup === 'other') {
         makeUTADTable(object)
@@ -355,7 +405,8 @@ const showData = () => {
 
 
     if (orgGroup === 'botanikk' || orgGroup === 'zoologi') {
-        document.querySelector("#species-name").innerHTML = `<span class="italic">${object.scientificName}</span>`
+        let nameArray = italicSpeciesname(object.scientificName)
+        document.querySelector("#species-name").innerHTML = `<span style=font-style:italic>${nameArray[0]}</span>` + ' ' + `<span>${nameArray[1]}</span>`
         document.querySelector("#coll-date").innerHTML = `<span>${object.eventDate}</span>`
         document.querySelector("#coll").innerHTML = `<span>${object.recordedBy}</span>`
         document.querySelector("#det").innerHTML =  `<span>${object.identifiedBy}</span>`

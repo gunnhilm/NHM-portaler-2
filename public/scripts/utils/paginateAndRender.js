@@ -67,6 +67,7 @@ function hide_column(col_no) {
 //	addSortingText(…)
 const resultTable = (subMusitData, musitData) => {    
     try {
+        
         table.innerHTML = "";
         for (let i = -1; i < pageList.length; i++) { // vis en tabell med resultater som er like lang som det vi ba om pageList.length; 
             const row = table.insertRow(-1)
@@ -119,25 +120,23 @@ const resultTable = (subMusitData, musitData) => {
                     prefix = ''
                 }
                 
-                // collectionCodes = ['V','F','L','B','A','ENT','M','BU','GM-BU']
-                // if ( !window.location.href.includes('/um') && !window.location.href.includes('tmu')) {
-                //     if( !collectionCodes.includes(subMusitData[i].collectionCode) )  {
-                //         prefix = ''
-                //     } else {
-                //         prefix = subMusitData[i].institutionCode + '-' + subMusitData[i].collectionCode + '-'
-                //     }
-                // }
                 cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}"> ${prefix}${subMusitData[i].catalogNumber} </a>`
-                cell2.innerHTML = subMusitData[i].scientificName
-                // // to avoid lots of text in collector-field I tried to cut it down to one name et al. but in corema collector is often "Johannessen, Lars Erik", so looking for comma does not work
-                // if (subMusitData[i].recordedBy.includes(",")) {
-                //     let x = subMusitData[i].recordedBy.indexOf(",")
-                //     let y = subMusitData[i].recordedBy.substr(0,x)
-                //     cell3.innerHTML = y + " et al."    
-                // } else {
+                if (!sessionStorage.getItem('organismGroup').includes('geologi')) {
+                    let nameArray = italicSpeciesname(subMusitData[i].scientificName)
+                    cell2.innerHTML = `<span style=font-style:italic>${nameArray[0]}</span>` + ' ' + `<span>${nameArray[1]}</span>`
+                } else {cell2.innerHTML = `<span>${subMusitData[i].scientificName}</span>`}
+                // to avoid lots of text in collector-field: replace more than two names with et al. 
+                // when  collector is written "lastName, firstName", only first name is included, followed by et al. if more names
+                let recByArray = subMusitData[i].recordedBy.split(' ')
+                
+                if ((subMusitData[i].recordedBy.match(/,/g) || []).length > 1) {
+                    let x = subMusitData[i].recordedBy.indexOf(",")
+                    let y = subMusitData[i].recordedBy.substr(0,x)
+                    cell3.innerHTML = y + " et al."    
+                } else {
                 
                 cell3.innerHTML = subMusitData[i].recordedBy
-                //}
+                }
                 cell4.innerHTML = subMusitData[i].eventDate
                 cell5.innerHTML = subMusitData[i].country
                 if (subMusitData[i].county) {cell6.innerHTML = subMusitData[i].county}
@@ -194,7 +193,7 @@ const resultTable = (subMusitData, musitData) => {
         if (!window.location.href.includes('/nhm') ) {
             hide_column(9)
         }
-
+        
         ////////////// remove when stiched files are in place
         if (window.location.href.includes('/nhm')) {
             hide_column(9)
@@ -230,100 +229,77 @@ const resultTable = (subMusitData, musitData) => {
 }
 
 const UTADRestultTable = (subUTADData, UTADData) => {
-//   try {
-    table.innerHTML = ""
-    for (let i = -1; i < pageList.length; i++) {
-        const row = table.insertRow(-1)
-        const cell1 = row.insertCell(0)
-        const cell2 = row.insertCell(1)
-        const cell3 = row.insertCell(2)
-        const cell4 = row.insertCell(3)
-        const cell5 = row.insertCell(4)
-        const cell6 = row.insertCell(5)
-        const cell7 = row.insertCell(6)
-        const cell8 = row.insertCell(7)
-        const cell9 = row.insertCell(8)
-        const cell10 = row.insertCell(9)
-        if (i === -1) { // her kommer tittellinjen
-            cell1.innerHTML = `<button id='musitIDButton' class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>`  
-            cell2.innerHTML = `<button id='vernacularNameButton' class='sort'>${textItems.vernacularName[index].bold()} ${getArrows('vernacularName')} </button>`
-            cell3.innerHTML = `<button id='tilstandButton' class='sort'>${textItems.Tilstand[index].bold()} ${getArrows('tilstand')} </button>`
-            cell4.innerHTML = `<button id='objektTypeButton' class='sort'>${textItems.basisOfRecord[index].bold()} ${getArrows('basisOfRecord')} </button>`
-            cell5.innerHTML = `<button id='noteButton' class='sort'>${textItems.Kommentar[index].bold()} ${getArrows('note')}</button>`
-            cell6.innerHTML = `<button id='breddeButton' class='sort'>${textItems.bredde[index].bold()} ${getArrows('bredde')}</button>`
-            cell7.innerHTML = `<button id='hoydeButton' class='sort'>${textItems.høyde[index].bold()} ${getArrows('hoyde')}</button>`
-            cell8.innerHTML = `<button id='lengdeButton' class='sort'>${textItems.lengde[index].bold()} ${getArrows('lengde')}</button>`
-            cell9.innerHTML = `<button id='photoButton' class='sort'><span class="fas fa-camera"></span>${getArrows('associatedMedia')}</button>`
-            cell10.innerHTML = `<select id='checkboxSelect' class='sort'>
-                <option value="select" id="select">${textItems.select[index].bold()}</option>
-                <option value="all" id="selectAll">${textItems.selectAll[index]}</option>
-                <option value="all_on_page" id="selectAllOnPage">${ textItems.selectAllOnPage[index]}</option>
-                <option value="none" id="selectNone">${ textItems.selectNone[index]}</option>
-            </select>`
+    try {
+        table.innerHTML = ""
+        for (let i = -1; i < pageList.length; i++) {
+            const row = table.insertRow(-1)
+            const cell1 = row.insertCell(0)
+            const cell2 = row.insertCell(1)
+            const cell3 = row.insertCell(2)
+            const cell4 = row.insertCell(3)
+            const cell5 = row.insertCell(4)
+            const cell6 = row.insertCell(5)
+            const cell7 = row.insertCell(6)
+            const cell8 = row.insertCell(7)
+            const cell9 = row.insertCell(8)
+            const cell10 = row.insertCell(9)
+            const cell11 = row.insertCell(10)
+            if (i === -1) { // her kommer tittellinjen
+                fillResultHeadersUTAD(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell11,UTADData)
 
-            addSortingText('musitIDButton', 'catalogNumber', UTADData, 'UTADRestultTable')  // Tabellen blir sortert på nummer
-            addSortingText('vernacularNameButton', 'vernacularName', UTADData, 'UTADRestultTable')
-            addSortingText('tilstandButton', 'tilstand', UTADData, 'UTADRestultTable')
-            addSortingText('objektTypeButton', 'basisOfRecord', UTADData, 'UTADRestultTable')
-            addSortingText('noteButton', 'note', UTADData, 'UTADRestultTable')
-            addSortingText('breddeButton', 'bredde', UTADData, 'UTADRestultTable')
-            addSortingText('hoydeButton', 'hoyde', UTADData, 'UTADRestultTable')
-            addSortingText('lengdeButton', 'lengde', UTADData, 'UTADRestultTable')
-            addSortingText('photoButton', 'associatedMedia', UTADData, 'UTADRestultTable')
+            } else { //her kommer tabell innholdet
+                let museumURLPath = ''
+                if (window.location.href.includes('/um')) { 
+                    museumURLPath = urlPath + "/um"
+                } else if (window.location.href.includes('tmu')) {
+                    museumURLPath = urlPath + "/tmu"
+                } else if (window.location.href.includes('nbh')) {
+                    museumURLPath = urlPath + "/nbh"
+                } else {
+                    museumURLPath = urlPath + "/nhm"
+                }
 
-
-        } else { //her kommer tabell innholdet
-            let museumURLPath = ''
-            if (window.location.href.includes('/um')) { 
-                museumURLPath = urlPath + "/um"
-            } else if (window.location.href.includes('tmu')) {
-                museumURLPath = urlPath + "/tmu"
-            } else if (window.location.href.includes('nbh')) {
-                museumURLPath = urlPath + "/nbh"
-            } else {
-                museumURLPath = urlPath + "/nhm"
+                let prefix = ''
+                if (!(/[a-zA-Z]/).test(subUTADData[i].catalogNumber.charAt(0))) {  
+                    prefix = subUTADData[i].institutionCode + '-' + subUTADData[i].collectionCode + '-'
+                } else {
+                    prefix = ''
+                }
+                cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subUTADData[i].catalogNumber}"> ${prefix}${subUTADData[i].catalogNumber} </a>`
+                cell2.innerHTML = subUTADData[i].vernacularName
+                cell3.innerHTML = subUTADData[i].Tilstand
+                cell4.innerHTML = subUTADData[i].basisOfRecord
+                cell5.innerHTML = subUTADData[i].Kommentar
+                cell6.innerHTML = subUTADData[i].bredde
+                cell7.innerHTML = subUTADData[i].høyde
+                cell8.innerHTML = subUTADData[i].lengde
+                if( subUTADData[i].associatedMedia ) {   
+                    cell9.innerHTML = `<span class="fas fa-camera"></span>`
+                } else if( subUTADData[i].photoIdentifiers ) {   
+                    cell9.innerHTML = `<span class="fas fa-camera"></span>`
+                }
+                cell11.innerHTML = `<input type="checkbox" id=checkbox${i} onclick="registerChecked(${i})" ></input>`
+                if (investigateChecked(i)) {
+                    document.getElementById(`checkbox${i}`).checked = true
+                } else {
+                    document.getElementById(`checkbox${i}`).checked = false
+                }
+                
             }
-
-            let prefix = ''
-            if (!(/[a-zA-Z]/).test(subUTADData[i].catalogNumber.charAt(0))) {  
-                prefix = subUTADData[i].institutionCode + '-' + subUTADData[i].collectionCode + '-'
-            } else {
-                prefix = ''
-            }
-            cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subUTADData[i].catalogNumber}"> ${prefix}${subUTADData[i].catalogNumber} </a>`
-            cell2.innerHTML = subUTADData[i].vernacularName
-            cell3.innerHTML = subUTADData[i].Tilstand
-            cell4.innerHTML = subUTADData[i].basisOfRecord
-            cell5.innerHTML = subUTADData[i].Kommentar
-            cell6.innerHTML = subUTADData[i].bredde
-            cell7.innerHTML = subUTADData[i].høyde
-            cell8.innerHTML = subUTADData[i].lengde
-            if( subUTADData[i].associatedMedia ) {   
-                cell9.innerHTML = `<span class="fas fa-camera"></span>`
-            } else if( subUTADData[i].photoIdentifiers ) {   
-                cell9.innerHTML = `<span class="fas fa-camera"></span>`
-            }
-            cell10.innerHTML = `<input type="checkbox" id=checkbox${i} onclick="registerChecked(${i})" ></input>`
-            if (investigateChecked(i)) {
-                document.getElementById(`checkbox${i}`).checked = true
-            } else {
-                document.getElementById(`checkbox${i}`).checked = false
-            }
-            
+            showResultElements()
+            document.getElementById("empty-search-button").style.display = "inline-block"
+            numberOfPages = getNumberOfPages(numberPerPage)
         }
-        showResultElements()
-        document.getElementById("empty-search-button").style.display = "inline-block"
-        numberOfPages = getNumberOfPages(numberPerPage)
+    } catch (error) {
+        errorMessage.innerHTML = textItems.errorRenderResult[index]
+        searchFailed = true // is checked when map is drawn 
     }
-//   } catch (error) {
-//     errorMessage.innerHTML = textItems.errorRenderResult[index]
-//     searchFailed = true // is checked when map is drawn 
-//   }
 }
 
 
 const bulkResultTable = (subBulkData, bulkData) => {
     try {
+        console.log('calling  bulkresulttable')
         table.innerHTML = ""
         for (let i = -1; i < pageList.length; i++) { // vis en tabell med resultater som er like lang som det vi ba om pageList.length; 
             const row = table.insertRow(-1)
@@ -339,35 +315,36 @@ const bulkResultTable = (subBulkData, bulkData) => {
             const cell10 = row.insertCell(9)
             const cell11 = row.insertCell(10)
             if (i === -1) {     // her kommer tittellinjen
-                cell1.innerHTML = `<button id='musitIDButton' class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>`  
-                cell2.innerHTML = `<button id='scientificNameButton' class='sort'>${textItems.headerTaxon[index].bold()} ${getArrows('scientificName')} </button>`
-                cell3.innerHTML = `<button id='collectorButton' class='sort'>${textItems.headerCollector[index].bold()} ${getArrows('recordedBy')}</button>`
-                cell4.innerHTML = `<button id='dateButton' class='sort'>${textItems.headerDate[index].bold()} ${getArrows('eventDate')}</button>`
-                cell5.innerHTML = `<button id='preparationsButton' class='sort'>${textItems.headerPreparations[index].bold()} ${getArrows('preparations')} </button>`
-                //cell6.innerHTML = `<button id='unitTypeButton' class='sort'>${textItems.headerUnitType[index].bold()} ${getArrows('unitType')}</button>`
-                cell6.innerHTML = `<button id='localityButton' class='sort'>${textItems.headerLocality[index].bold()} ${getArrows('locality')}</button>`
-                //cell7.innerHTML = `<button id='placementButton' class='sort'>${textItems.headerPlacement[index].bold()} ${getArrows('placement')}</button>`
-                cell7.style.display = 'none'
-                //cell7.innerHTML = `<button id='stateProvinceButton' class='sort'>${textItems.headerStateProvince[index].bold()} ${getArrows('stateProvince')}</button>`
-                cell8.innerHTML = `<button id='noteButton' class='sort'>${textItems.headerNotes[index].bold()} ${getArrows('note')}</button>`
-                cell9.style.display = 'none'
-                cell11.innerHTML = `<select id='checkboxSelect' class='sort'>
-                    <option value="select" id="select">${textItems.select[index].bold()}</option>
-                    <option value="all" id="selectAll">${textItems.selectAll[index]}</option>
-                    <option value="all_on_page" id="selectAllOnPage">${ textItems.selectAllOnPage[index]}</option>
-                    <option value="none" id="selectNone">${ textItems.selectNone[index]}</option>
-                </select>`
+                fillResultHeadersBulk(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell11,bulkData)
+                // cell1.innerHTML = `<button id='musitIDButton' class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>`  
+                // cell2.innerHTML = `<button id='scientificNameButton' class='sort'>${textItems.headerTaxon[index].bold()} ${getArrows('scientificName')} </button>`
+                // cell3.innerHTML = `<button id='collectorButton' class='sort'>${textItems.headerCollector[index].bold()} ${getArrows('recordedBy')}</button>`
+                // cell4.innerHTML = `<button id='dateButton' class='sort'>${textItems.headerDate[index].bold()} ${getArrows('eventDate')}</button>`
+                // cell5.innerHTML = `<button id='preparationsButton' class='sort'>${textItems.headerPreparations[index].bold()} ${getArrows('preparations')} </button>`
+                // //cell6.innerHTML = `<button id='unitTypeButton' class='sort'>${textItems.headerUnitType[index].bold()} ${getArrows('unitType')}</button>`
+                // cell6.innerHTML = `<button id='localityButton' class='sort'>${textItems.headerLocality[index].bold()} ${getArrows('locality')}</button>`
+                // //cell7.innerHTML = `<button id='placementButton' class='sort'>${textItems.headerPlacement[index].bold()} ${getArrows('placement')}</button>`
+                // cell7.style.display = 'none'
+                // //cell7.innerHTML = `<button id='stateProvinceButton' class='sort'>${textItems.headerStateProvince[index].bold()} ${getArrows('stateProvince')}</button>`
+                // cell8.innerHTML = `<button id='noteButton' class='sort'>${textItems.headerNotes[index].bold()} ${getArrows('note')}</button>`
+                // cell9.style.display = 'none'
+                // cell11.innerHTML = `<select id='checkboxSelect' class='sort'>
+                //     <option value="select" id="select">${textItems.select[index].bold()}</option>
+                //     <option value="all" id="selectAll">${textItems.selectAll[index]}</option>
+                //     <option value="all_on_page" id="selectAllOnPage">${ textItems.selectAllOnPage[index]}</option>
+                //     <option value="none" id="selectNone">${ textItems.selectNone[index]}</option>
+                // </select>`
                 
             
-                addSortingText('musitIDButton', 'catalogNumber', bulkData, 'bulkResultTable')  // Tabellen blir sortert på nummer
-                addSortingText('scientificNameButton', 'scientificName', bulkData, 'bulkResultTable')
-                addSortingText('preparationsButton', 'preparations', bulkData, 'bulkResultTable')
-                addSortingText('collectorButton', 'recordedBy', bulkData, 'bulkResultTable')
-                addSortingText('dateButton', 'eventDate', bulkData, 'bulkResultTable')
-                // fix!!!!!!
-                //addSortingText('localityButton', 'locality', bulkData, 'bulkResultTable')
-                //addSortingText('placementButton', 'placement', bulkData, 'bulkResultTable')
-                addSortingText('noteButton', 'note', bulkData, 'bulkResultTable')
+                // addSortingText('musitIDButton', 'catalogNumber', bulkData, 'bulkResultTable')  // Tabellen blir sortert på nummer
+                // addSortingText('scientificNameButton', 'scientificName', bulkData, 'bulkResultTable')
+                // addSortingText('preparationsButton', 'preparations', bulkData, 'bulkResultTable')
+                // addSortingText('collectorButton', 'recordedBy', bulkData, 'bulkResultTable')
+                // addSortingText('dateButton', 'eventDate', bulkData, 'bulkResultTable')
+                // // fix!!!!!!
+                // addSortingText('localityButton', 'locality', bulkData, 'bulkResultTable')
+                // //addSortingText('placementButton', 'placement', bulkData, 'bulkResultTable')
+                // addSortingText('noteButton', 'note', bulkData, 'bulkResultTable')
                 
             
             } else {        // Her kommer innmaten i tabellen, selve resultatene

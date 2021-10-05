@@ -91,8 +91,8 @@ const textItems = {
      "Sorry, something is wrong with the chosen collection. Choose another collection, come back later, or contact us (see help page)"],
     mapError: ["Noe er feil i kartmodul", "Something is wrong in map module"],
     zoomButton: ["Informasjon om kart", "Information on map"],
-    mapHelpContent: ["Bruk mushjul, eller dobbelklikk for å zoome inn, Shift + dobbelklikk  for å zoome ut. Klikk og dra for å flytte kartutsnitt. <br><br> Bare treff som er listet på sida vises i kartet. For å se alle resultater i kart, velg 'All' i Treff per side.",
-    "Use mouse-wheel, or double click to zoom in, Shift + double click to zoom out. Click and drag to move map. <br><br> Only results listed on page are shown in map. To see all hits in map, choose 'All' in Hits per page."],
+    mapHelpContent: ["Bruk mushjul, eller dobbelklikk for å zoome inn, Shift + dobbelklikk  for å zoome ut. Klikk og dra for å flytte kartutsnitt.",// <br><br> Bare treff som er listet på sida vises i kartet. For å se alle resultater i kart, velg 'All' i Treff per side.
+    "Use mouse-wheel, or double click to zoom in, Shift + double click to zoom out. Click and drag to move map."], // <br><br> Only results listed on page are shown in map. To see all hits in map, choose 'All' in Hits per page.
     mapCheckedMessage: ["Velg post(er) fra listen", "Select record(s) from list"],
     noPhotoMessage: ["Ingen av de valge postene har bilde", "None of the selected posts have photo"],
     mapHelpContentObjPage: ["Bruk mushjul, eller dobbelklikk for å zoome inn, Shift + dobbelklikk  for å zoome ut. Klikk og dra for å flytte kartutsnitt.", "Use mouse-wheel, or double click to zoom in, Shift + double click to zoom out. Click and drag to move map."],
@@ -155,16 +155,16 @@ const textItems = {
     preparedBy: ['Ekstrahert av:','Prepared by:'],
     concentration: ['DNA konsentrasjon:','DNA concentration'],
     coordPlaceholder: ['&lt;Ingen koordinater&gt;', '&lt;No coordinates&gt;'],
-        // Objekctpage UTAD items
+        // Objectpage UTAD items
         Kommentar: ['Kommentar:', 'Comments:'],
         Tilstand: ['Tilstand:', 'Condition:'],
         Utlån: ['Utlån:', 'On loan:'],
         Vekt: ['Vekt:', 'Mass:'],
-        basisOfRecord: ['Type Objekt:', ' Type of Object:'],
+        basisOfRecord: ['Type objekt:', ' Type of object:'],
         bredde: ['Bredde:', 'Width:'],
-        høyde: ['Høyde:', 'Height:'],
+        hoyde: ['Høyde:', 'Height:'],
         lengde: ['Lengde:', 'Length:'],
-        vernacularName: ['Norsk navn', 'Vernacular name'],
+        vernacularName: ['Norsk navn:', 'Vernacular name:'],
         // Objekctpage Paleo items
         higherClassification: ['Taxa:', 'Taxa:'],
         geologicalContext: ['Stratigrafi:', 'Stratigraphy:'],
