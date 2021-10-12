@@ -7,17 +7,6 @@ header {
     padding: 5px;
 }
 
-#logo {
-    height: 40px;
-    padding: 5px;
-}
-
-#logo {
-    height: 40px;
-    padding: 5px;
-}
-
-
 /* footer.hbs */
 footer {
     background-color: #387f33;
@@ -37,7 +26,7 @@ footer {
 }
 
 .headerLink:hover {
-    background-color: #387f33;
+    background-color: #82b373;
 }
 
 /* Dropdown Button */
@@ -48,7 +37,7 @@ footer {
 
 /* Dropdown Content (Hidden by Default) */
 .dropdown-content {
-    background-color: #005173;
+    background-color: #387f33;
 }
 
 /* Links inside the dropdown */
@@ -57,7 +46,7 @@ footer {
   }
 
   /* Change color of dropdown links on hover */
-.dropdown-content a:hover {background-color: #213a47;}
+.dropdown-content a:hover {background-color: #82b373;}
 
 @media only screen and (max-width: 670px) {
 

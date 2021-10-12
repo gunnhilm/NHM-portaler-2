@@ -347,7 +347,7 @@ const makePalTable = (specimenObject) => {
 // - inserts row for each property the object has, and that we decided to show
 // - add cells, with id, class and style
 // fills cells with data (not header-cells)
-// in: specimenObject; collection-object
+// parameter: specimenObject; collection-object
 // calls makeTableHeader(table)
 const makeGeoTable = (specimenObject) => {
     const table = document.getElementById("object-table");

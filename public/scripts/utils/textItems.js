@@ -85,7 +85,7 @@ const textItems = {
     placeholder: [" Søk etter latinsk artsnavn, katalognummer, person, sted... ", " Search for latin species name, catalognumber, person, place... "],
     serverError: ["Serverfeil, prøv nytt søk", "Server error, try new search"],
     noHits: ["Ingen treff, prøv nytt søk", "No hits, try new search"],
-    tooManyHits: ["Mer enn 2000, kan ikke vise flere", "More than 2000, cannot show more"],
+    tooManyHits: ["Mer enn 1000, kan ikke vise flere", "More than 1000, cannot show more"],
     errorRenderResult: ["Noe gikk feil, søk igjen, begrens ev. søket med f.eks. flere søkeord", "Something went wrong, try a new search, possibly limit the seach by e.g. more search terms"],
     errorFileNotExisting: ["Beklager, noe er feil med valgte samling. Velg en annen samling, kom tilbake senere, eller kontakt oss (se hjelpesiden)",
      "Sorry, something is wrong with the chosen collection. Choose another collection, come back later, or contact us (see help page)"],

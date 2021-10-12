@@ -217,16 +217,11 @@ function addSortingText(id, prop, musitData, fromFunction) { // her er musitData
                 musitData.sort(sort_by(prop,reverse))
             }
             
-            // else if (id === 'sampleTypeButton'){
-            //     console.log('sampeltypebutton sort')
-            // } 
             else {
                 if (id === 'photoButton' | id === 'coordinateButton') {
                     reverse = !reverse
                 } 
-                //console.log(prop + reverse )
-                musitData.sort(sort_by(prop,reverse/*, (a) => a.toLowerCase()*/))
-                //console.log(musitData[0])
+                musitData.sort(sort_by(prop,reverse, (a) => a.toLowerCase()))
             } 
             
             if (propsSorted.find(x => x.id === prop).sortedOnce === propsSorted.find(x => x.id === prop).sortedTwice) {

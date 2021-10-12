@@ -38,20 +38,6 @@ function hide_column(col_no) {
     }
 }
 
-// // renders result table for bulk- and project collection
-// // input: subMusitData
-// // input: musitData
-
-// const resultTableBulk = (subMusitData, musitData) => {
-//     try {
-//         table.innerHTML = ""
-//         for (let i = -1; i < pageList.length; i++) {
-//             const row = 
-//         }
-//     }
-// }
-
-
 
 // renders result table
 // input: subMusitData (JSON; part of search result that is rendered on page)
@@ -316,35 +302,6 @@ const bulkResultTable = (subBulkData, bulkData) => {
             const cell11 = row.insertCell(10)
             if (i === -1) {     // her kommer tittellinjen
                 fillResultHeadersBulk(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell11,bulkData)
-                // cell1.innerHTML = `<button id='musitIDButton' class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>`  
-                // cell2.innerHTML = `<button id='scientificNameButton' class='sort'>${textItems.headerTaxon[index].bold()} ${getArrows('scientificName')} </button>`
-                // cell3.innerHTML = `<button id='collectorButton' class='sort'>${textItems.headerCollector[index].bold()} ${getArrows('recordedBy')}</button>`
-                // cell4.innerHTML = `<button id='dateButton' class='sort'>${textItems.headerDate[index].bold()} ${getArrows('eventDate')}</button>`
-                // cell5.innerHTML = `<button id='preparationsButton' class='sort'>${textItems.headerPreparations[index].bold()} ${getArrows('preparations')} </button>`
-                // //cell6.innerHTML = `<button id='unitTypeButton' class='sort'>${textItems.headerUnitType[index].bold()} ${getArrows('unitType')}</button>`
-                // cell6.innerHTML = `<button id='localityButton' class='sort'>${textItems.headerLocality[index].bold()} ${getArrows('locality')}</button>`
-                // //cell7.innerHTML = `<button id='placementButton' class='sort'>${textItems.headerPlacement[index].bold()} ${getArrows('placement')}</button>`
-                // cell7.style.display = 'none'
-                // //cell7.innerHTML = `<button id='stateProvinceButton' class='sort'>${textItems.headerStateProvince[index].bold()} ${getArrows('stateProvince')}</button>`
-                // cell8.innerHTML = `<button id='noteButton' class='sort'>${textItems.headerNotes[index].bold()} ${getArrows('note')}</button>`
-                // cell9.style.display = 'none'
-                // cell11.innerHTML = `<select id='checkboxSelect' class='sort'>
-                //     <option value="select" id="select">${textItems.select[index].bold()}</option>
-                //     <option value="all" id="selectAll">${textItems.selectAll[index]}</option>
-                //     <option value="all_on_page" id="selectAllOnPage">${ textItems.selectAllOnPage[index]}</option>
-                //     <option value="none" id="selectNone">${ textItems.selectNone[index]}</option>
-                // </select>`
-                
-            
-                // addSortingText('musitIDButton', 'catalogNumber', bulkData, 'bulkResultTable')  // Tabellen blir sortert på nummer
-                // addSortingText('scientificNameButton', 'scientificName', bulkData, 'bulkResultTable')
-                // addSortingText('preparationsButton', 'preparations', bulkData, 'bulkResultTable')
-                // addSortingText('collectorButton', 'recordedBy', bulkData, 'bulkResultTable')
-                // addSortingText('dateButton', 'eventDate', bulkData, 'bulkResultTable')
-                // // fix!!!!!!
-                // addSortingText('localityButton', 'locality', bulkData, 'bulkResultTable')
-                // //addSortingText('placementButton', 'placement', bulkData, 'bulkResultTable')
-                // addSortingText('noteButton', 'note', bulkData, 'bulkResultTable')
                 
             
             } else {        // Her kommer innmaten i tabellen, selve resultatene

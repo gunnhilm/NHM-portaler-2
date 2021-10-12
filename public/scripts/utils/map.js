@@ -235,6 +235,8 @@ const drawMap = (parsedData) => {
                     map.getView().fit(extent, {padding: [30, 30, 30, 30], minResolution: 30})
                     return false;
                 }
+
+                
             } else {
                 document.querySelector("#map-search").innerHTML = textItems.mapSearchAlt[index]
             }

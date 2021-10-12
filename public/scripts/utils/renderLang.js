@@ -139,6 +139,9 @@ const renderText = function(lang) {
         if (sessionStorage.getItem('string')) {
             document.getElementById("head-nb-hits").innerHTML = textItems.nbHitsText[index]
         }
+        if (document.getElementById("nb-hits").innerHTML.includes('1000')) {
+            document.getElementById("nb-hits").innerHTML = textItems.tooManyHits[index]
+        }
         document.querySelector('#download-button').innerHTML = textItems.downloadLink[index]
         document.querySelector('#download-photo-button').innerHTML = textItems.downloadPhoto[index]
         document.querySelector('#search-text').placeholder = textItems.placeholder[index]
@@ -219,7 +222,9 @@ const renderText = function(lang) {
             for (let i = 0; i < objectHeaders.length; i++) {
                 
                 const element = objectHeaders[i];
-                if (document.querySelector(`#head-${element}`)) {document.querySelector(`#head-${element}`).innerHTML = textItems[element][index].bold()}
+                if (element === "eventDate") {
+                    if (document.querySelector(`#head-${element}`)) {document.querySelector(`#head-${element}`).innerHTML = textItems.headerDate[index].bold()+":".bold()}
+                } else if (document.querySelector(`#head-${element}`)) {document.querySelector(`#head-${element}`).innerHTML = textItems[element][index].bold()}
             }
   
         } else { // biologi objekter
@@ -317,22 +322,22 @@ const renderText = function(lang) {
         document.querySelector('#NbObj_header').innerHTML = textItems.nbObjHeader[index]
         document.querySelector('#NbPhoto_header').innerHTML = textItems.nbPhotoHeader[index]
         document.querySelector('#NbCoord_header').innerHTML = textItems.nbCoordHeader[index]
-        document.querySelector('#Vascular_header').innerHTML = textItems.karplanter[index]
-        document.querySelector('#Mosses_header').innerHTML = textItems.moser[index]
-        document.querySelector('#Fungi_header').innerHTML = textItems.sopp[index]
-        document.querySelector('#Lichen_header').innerHTML = textItems.lav[index]
-        document.querySelector('#Insects_header').innerHTML = textItems.insekter[index]
+//        document.querySelector('#Vascular_header').innerHTML = textItems.karplanter[index]
+ //       document.querySelector('#Mosses_header').innerHTML = textItems.moser[index]
+   //     document.querySelector('#Fungi_header').innerHTML = textItems.sopp[index]
+//        document.querySelector('#Lichen_header').innerHTML = textItems.lav[index]
+//        document.querySelector('#Insects_header').innerHTML = textItems.insekter[index]
         if(window.location.href.includes('/nhm')) {
             //document.querySelector('#Fish_header').innerHTML = textItems.fisk[index]
-            document.querySelector('#Algae_header').innerHTML = textItems.alger[index]
-            document.querySelector('#Birds_header').innerHTML = textItems.fugler[index]
-            document.querySelector('#Mammals_header').innerHTML = textItems.pattedyr[index]
+            //document.querySelector('#Algae_header').innerHTML = textItems.alger[index]
+            //document.querySelector('#Birds_header').innerHTML = textItems.fugler[index]
+            //document.querySelector('#Mammals_header').innerHTML = textItems.pattedyr[index]
             //document.querySelector('#malmer_header').innerHTML = textItems.malmer[index]
             //document.querySelector('#oslofeltet_header').innerHTML = textItems.oslofeltet[index]
             //document.querySelector('#utenlandskeBA_header').innerHTML = textItems.utenlandskeBA[index]
         }
         if(!window.location.href.includes('/nhm')) {
-            document.querySelector('#Evertebrates_header').innerHTML = textItems.evertebrater[index]
+  //          document.querySelector('#Evertebrates_header').innerHTML = textItems.evertebrater[index]
         }
         document.querySelector('#graph_header').innerHTML = textItems.graphHeader[index]
     }
@@ -404,7 +409,6 @@ if (language === "Norwegian") {
 
 
 renderText(language)
-
 
 document.querySelector('#language').addEventListener('click', (e) => {
     if (language === "Norwegian") {

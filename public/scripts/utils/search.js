@@ -62,7 +62,7 @@ const emptySearch = () => {
     // buttonArray.forEach(el => {
     //     el.className = "white-button"
     // })
-    
+    document.getElementById('head-nb-hits').style.display = "none"
     document.getElementById('search-form').style.display = "none"
     document.getElementById("search-text").value = ""
     
@@ -156,8 +156,10 @@ function addOrgGroups() {
 }
 
 // put organism-group-buttons into array
+
 let buttonArray = []
 addOrgGroups()
+
 
 function addTextInCollSelect(a) {
     if (a == 'moser') {return textItems.moser[index]}
@@ -570,12 +572,14 @@ const oldSearch = () => {
         collection.add(elOption)
     })
     if (sessionStorage.getItem('collection')) {
+        
         collection.value = sessionStorage.getItem('collection')
     } else {
         collection.value = 'vennligst'
     }
 
     document.querySelector('#select-cell').style.display = 'block'
+    console.log('her i old search')
     collection.style.display = 'block'
     
     if (sessionStorage.getItem('collection')) {
@@ -589,6 +593,7 @@ const oldSearch = () => {
             }
             
         document.getElementById("search-form").style.display = "block" 
+        console.log('her')
         document.querySelector('#hits-row').style.display = 'block'
         renderText(language)
             
@@ -718,3 +723,40 @@ if(select) {
         checkSeveralBoxes(pageList)
     }
 }
+
+
+window.onload = function () {
+    let museum = getCurrentMuseum()
+    if (museum === "um") {
+        if (sessionStorage.getItem("umRunBefore") === null) {
+            sessionStorage.removeItem('organismGroup')
+            document.getElementById("collection-select").style.display = "none"
+            emptySearch()
+            localStorage.setItem("umRunBefore", true)
+        }    
+    } else if (museum === "tmu") {
+        if (sessionStorage.getItem("tmuRunBefore") === null) {
+            sessionStorage.removeItem('organismGroup')
+            document.getElementById("collection-select").style.display = "none"
+            emptySearch()
+            sessionStorage.setItem("tmuRunBefore", true)
+        }
+    } else if (museum === "nbh") {
+        if (sessionStorage.getItem("nbhRunBefore") === null) {
+            sessionStorage.removeItem('organismGroup')
+            document.getElementById("collection-select").style.display = "none"
+            emptySearch()
+            sessionStorage.setItem("nbhRunBefore", true)
+        }
+    } else if (museum === "nhm") {
+        if (sessionStorage.getItem("nhmRunBefore") === null) {
+            sessionStorage.removeItem('organismGroup')
+            document.getElementById("collection-select").style.display = "none"
+            emptySearch()
+            sessionStorage.setItem("nhmRunBefore", true)
+        }
+    }
+}
+
+//emptySearch()
+//document.getElementById("collection-select").style.display = "none"
