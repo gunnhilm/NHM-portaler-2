@@ -341,7 +341,6 @@ downloadPhotoButton.addEventListener('click', (e) => {
     })
     
     if (newArray.length === 0) {
-        console.log('velg bilder å laste ned')
         zoomModal.style.display = "block";
         zoomModalContent.innerHTML = textItems.mapCheckedMessage[index]
     } else {
@@ -406,6 +405,7 @@ const doSearch = (limit = 20) => {
                     response.text().then((data) => {
                         if(data.error) {
                             errorMessage.innerHTML = textItems.serverError[index]
+                            console.log(error);
                             return console.log(data.error)
                         } else {
                             const JSONdata = JSON.parse(data)  
@@ -469,6 +469,7 @@ const doSearch = (limit = 20) => {
                                     load() 
                                     
                                     } catch (error) {
+                                        console.log(error);
                                         errorMessage.innerHTML = textItems.errorRenderResult[index]
                                         searchFailed = true // is checked when map is drawn 
                                     }        
@@ -579,8 +580,7 @@ const oldSearch = () => {
     }
 
     document.querySelector('#select-cell').style.display = 'block'
-    console.log('her i old search')
-    collection.style.display = 'block'
+     collection.style.display = 'block'
     
     if (sessionStorage.getItem('collection')) {
         if (sessionStorage.getItem('string')) { //hvis det er søkeresultater i sesion storage, så skal disse vises
@@ -593,8 +593,7 @@ const oldSearch = () => {
             }
             
         document.getElementById("search-form").style.display = "block" 
-        console.log('her')
-        document.querySelector('#hits-row').style.display = 'block'
+         document.querySelector('#hits-row').style.display = 'block'
         renderText(language)
             
             try {

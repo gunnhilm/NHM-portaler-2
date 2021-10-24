@@ -201,6 +201,7 @@ const resultTable = (subMusitData, musitData) => {
         
     }  
     catch(error) {
+        console.log(error);
         errorMessage.innerHTML = textItems.errorRenderResult[index]
         searchFailed = true // is checked when map is drawn 
     }
@@ -285,7 +286,6 @@ const UTADRestultTable = (subUTADData, UTADData) => {
 
 const bulkResultTable = (subBulkData, bulkData) => {
     try {
-        console.log('calling  bulkresulttable')
         table.innerHTML = ""
         for (let i = -1; i < pageList.length; i++) { // vis en tabell med resultater som er like lang som det vi ba om pageList.length; 
             const row = table.insertRow(-1)

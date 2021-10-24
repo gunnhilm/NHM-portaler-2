@@ -9,6 +9,8 @@
 // author in another
 // is called in showData()
 const italicSpeciesname = (string) => {
+    string = string.trim()
+try {
     let author = ''
     let array = string.split(" ")
     let name = array[0]
@@ -27,8 +29,11 @@ const italicSpeciesname = (string) => {
         }
     }
     let nameAuthor = [name, author]
-    
     return(nameAuthor)
+}  catch (error) {
+        console.log(error);
+        return('UnKnown')
+}
 }
 
 // renders text and images in html-elements
@@ -198,7 +203,6 @@ const renderText = function(lang) {
         const object = allObject.find(x => x.catalogNumber === id)
         
         if (coll === 'utad') {
-            console.log('utad');
             //document.querySelector("#head-species-name").innerHTML = textItems.speciesName[index].bold()
             if (document.querySelector("#head-vernacularName")) {document.querySelector("#head-vernacularName").innerHTML = textItems.vernacularName[index]}
             if (document.querySelector("#head-basisOfRecord")) {document.querySelector("#head-basisOfRecord").innerHTML = textItems.basisOfRecord[index]}
