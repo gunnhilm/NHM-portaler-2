@@ -12,6 +12,7 @@ The portal is setup to run behind a apache server. To run the portal locally on 
 in the httpd.conf file uncomment the lines:
 
 LoadModule proxy_module modules/mod_proxy.so
+
 LoadModule proxy_http_module modules/mod_proxy_http.so
 
 in the http-vhost.conf file add this:
