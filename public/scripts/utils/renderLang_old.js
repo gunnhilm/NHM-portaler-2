@@ -10,6 +10,7 @@
 // is called in showData()
 const italicSpeciesname = (string) => {
     string = string.trim()
+try {
     let author = ''
     let array = string.split(" ")
     let name = array[0]
@@ -28,34 +29,13 @@ const italicSpeciesname = (string) => {
         }
     }
     let nameAuthor = [name, author]
-    
     return(nameAuthor)
+}  catch (error) {
+        console.log(error);
+        return('UnKnown')
+}
 }
 
-// puts placeholder text in search fields in "Advanced Search"
-//
-const fillSearchFields = () => {
-    const orgGroup = sessionStorage.getItem('organismGroup')
-    if (orgGroup === 'geologi') {
-        if (document.querySelector('#adv-species')) {document.querySelector('#adv-species').placeholder = textItems.placeholderGeoSpecies[index]}    
-    } else if (orgGroup === 'paleontologi') {
-        if (document.querySelector('#adv-species')) {document.querySelector('#adv-species').placeholder = textItems.placeholderPalSpecies[index]}    
-    } else {
-        if (document.querySelector('#adv-species')) {document.querySelector('#adv-species').placeholder = textItems.placeholderSpecies[index]}
-    }
-    
-    if (document.querySelector('#adv-collector')) {document.querySelector('#adv-collector').placeholder = textItems.placeholderCollector[index]}
-    if (document.querySelector('#adv-date')) {document.querySelector('#adv-date').placeholder = textItems.placeholderDate[index]}
-    if (document.querySelector('#adv-country')) {document.querySelector('#adv-country').placeholder = textItems.placeholderCountry[index]}
-    if (document.querySelector('#adv-county')) {document.querySelector('#adv-county').placeholder = textItems.placeholderCounty[index]}
-    if (document.querySelector('#adv-municipality')) {document.querySelector('#adv-municipality').placeholder = textItems.placeholderMunicipality[index]}
-    if (document.querySelector('#adv-locality')) {document.querySelector('#adv-locality').placeholder = textItems.placeholderLocality[index]}
-    // if (document.querySelector('#has-photo-text')) {document.querySelector('#has-photo-text').innerHTML = textItems.hasPhoto[index]}
-    // if (document.querySelector('#has-not-photo-text')) {document.querySelector('#has-not-photo-text').innerHTML = textItems.hasNotPhoto[index]}
-    if (document.querySelector('#hasPhotoLabel')) {document.querySelector('#hasPhotoLabel').innerHTML = textItems.hasPhoto[index]}
-    if (document.querySelector('#hasNotPhotoLabel')) {document.querySelector('#hasNotPhotoLabel').innerHTML = textItems.hasNotPhoto[index]}
-    if (document.querySelector('#irrPhotoLabel')) {document.querySelector('#irrPhotoLabel').innerHTML = textItems.irrPhoto[index]}
-}
 // renders text and images in html-elements
 // in: lang (string, «Norwegian» or «English»)
 // out: text or images in relevant HTML-elements
@@ -114,7 +94,7 @@ const renderText = function(lang) {
     }
     
     //Dropdown med valg av samlinger, index page og stat page
-    if (!location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler') & !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools') & !location.href.includes('checkCoord') & !location.href.includes('dataError') & !location.href.includes('advancedSearch')) {
+    if (!location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler') & !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools') & !location.href.includes('checkCoord') & !location.href.includes('dataError')) {
     //if (location.href.substring(location.href.split('/',3).join('/').length).lengt === 12) { 
     
     // document.querySelector('#specimensOptgroup').innerHTML = textItems.specimensOptgroup[index]
@@ -151,35 +131,17 @@ const renderText = function(lang) {
 
         //document.querySelector('#vennligst').innerHTML = textItems.vennligst[index] 
         
-        // advanced search page
-        if (location.href.includes('advancedSearch')) {
-            console.log('her')
-            if(document.querySelector('#header-advSearch-page')) { document.querySelector('#header-advSearch-page').innerHTML = textItems.headerAdvSearchPage[index]}
-            if(document.querySelector('#adv-search-button')) {
-                document.querySelector('#adv-search-button').innerHTML = textItems.searchButton[index]
-            }
-            // const orgGroup = sessionStorage.getItem('organismGroup')
-            // console.log(orgGroup)
-            fillSearchFields()
-        }
-        if (!location.href.includes('advancedSearch')) {
-            document.querySelector('#search-button').innerHTML = textItems.searchButton[index]
-            document.querySelector('#header-search-page').innerHTML = textItems.headerSearchPage[index]
-            document.querySelector('#search-text').placeholder = textItems.placeholder[index]
-        
-        }
         if (document.querySelector('#botanikk')) {document.querySelector('#botanikk').innerHTML = textItems.botanikk[index]}
         if (document.querySelector('#zoologi')) {document.querySelector('#zoologi').innerHTML = textItems.zoologi[index]}
         if (document.querySelector('#geologi')) {document.querySelector('#geologi').innerHTML = textItems.geologi[index]}
         if (document.querySelector('#paleontologi')) {document.querySelector('#paleontologi').innerHTML = textItems.paleontologi[index]}
         if (document.querySelector('#other')) {document.querySelector('#other').innerHTML = textItems.otherCollections[index]}
+        document.querySelector('#search-button').innerHTML = textItems.searchButton[index]
         document.querySelector('#empty-search-button').innerHTML = textItems.emptySearch[index]
+        document.querySelector('#header-search-page').innerHTML = textItems.headerSearchPage[index]
         //document.querySelector('#select-collection-label').innerHTML = textItems.selectCollection[index]
         document.querySelector('#hits-per-page').innerHTML = textItems.hitsPerPage[index]
-        //console.log(sessionStorage.getItem('string'))
-        console.log('her')
         if (sessionStorage.getItem('string')) {
-            
             document.getElementById("head-nb-hits").innerHTML = textItems.nbHitsText[index]
         }
         if (document.getElementById("nb-hits").innerHTML.includes('1000')) {
@@ -187,6 +149,7 @@ const renderText = function(lang) {
         }
         document.querySelector('#download-button').innerHTML = textItems.downloadLink[index]
         document.querySelector('#download-photo-button').innerHTML = textItems.downloadPhoto[index]
+        document.querySelector('#search-text').placeholder = textItems.placeholder[index]
         document.getElementById('zoom-expl-popup').innerHTML = textItems.mapHelpContent[index]
         document.querySelector('#zoom-button').innerHTML = textItems.zoomButton[index]
         document.querySelector('#large-map-button').innerHTML = textItems.largeMapButton[index]
@@ -213,8 +176,6 @@ const renderText = function(lang) {
             document.getElementById("resultPageAlert1").innerHTML = textItems.lastPageAlert[index]
         }
     }
-    
-    
 
     // object page
     if (location.href.includes('object')) {
@@ -241,18 +202,13 @@ const renderText = function(lang) {
         const id = urlParams.get('id')
         const object = allObject.find(x => x.catalogNumber === id)
         
-        document.querySelector("#photo-box").alt = textItems.photoAlt[index]
-        document.querySelector("#next-photo").innerHTML = textItems.nextPhoto[index]
-        document.querySelector("#previous-photo").innerHTML = textItems.previousPhoto[index]
-
         if (coll === 'utad') {
-            console.log('utad');
             //document.querySelector("#head-species-name").innerHTML = textItems.speciesName[index].bold()
             if (document.querySelector("#head-vernacularName")) {document.querySelector("#head-vernacularName").innerHTML = textItems.vernacularName[index]}
             if (document.querySelector("#head-basisOfRecord")) {document.querySelector("#head-basisOfRecord").innerHTML = textItems.basisOfRecord[index]}
             if (document.querySelector("#head-lengde")) {document.querySelector("#head-lengde").innerHTML = textItems.lengde[index]}
             if (document.querySelector("#head-bredde")) {document.querySelector("#head-bredde").innerHTML = textItems.bredde[index]}
-            if (document.querySelector("#head-høyde")) {document.querySelector("#head-høyde").innerHTML = textItems.hoyde[index]}
+            if (document.querySelector("#head-høyde")) {document.querySelector("#head-høyde").innerHTML = textItems.høyde[index]}
             if (document.querySelector("#head-Vekt")) {document.querySelector("#head-Vekt").innerHTML = textItems.Vekt[index]}
             if (document.querySelector("#head-Tilstand")) {document.querySelector("#head-Tilstand").innerHTML = textItems.Tilstand[index]}
             if (document.querySelector("#head-Utlån")) {document.querySelector("#head-Utlån").innerHTML = textItems.Utlån[index]}
@@ -286,9 +242,9 @@ const renderText = function(lang) {
                 document.querySelector("#head-locality").innerHTML = textItems.headLocality[index].bold()
                 document.querySelector("#head-coordinates").innerHTML = textItems.headCoordinates[index].bold()
 
-                // document.querySelector("#photo-box").alt = textItems.photoAlt[index]
-                // document.querySelector("#next-photo").innerHTML = textItems.nextPhoto[index]
-                // document.querySelector("#previous-photo").innerHTML = textItems.previousPhoto[index]
+                document.querySelector("#photo-box").alt = textItems.photoAlt[index]
+                document.querySelector("#next-photo").innerHTML = textItems.nextPhoto[index]
+                document.querySelector("#previous-photo").innerHTML = textItems.previousPhoto[index]
             }
             
             if(!object.decimalLatitude || !object.decimalLongitude) {

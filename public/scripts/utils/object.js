@@ -278,7 +278,6 @@ const makeBioTable = () => {
 // in: specimenObject; collection-object
 // calls makeTableHeader(table)
 const makeUTADTable = (specimenObject) => {
-    console.log(specimenObject)
     const table = document.getElementById("object-table");
     const fieldsToShow = [/*'scientificName',*/ 'vernacularName', 'basisOfRecord', 'Hyllenr.', 'NHM objektbase', 'lengde', 'bredde', 'høyde', 'Vekt', 'Tilstand', 'Utlån', 'Kommentar']
 
@@ -287,6 +286,7 @@ const makeUTADTable = (specimenObject) => {
     // construct table
     // "The Object.entries() method returns an array of a given object's own enumerable string-keyed property [key, value] pairs.
     for (const [key, value] of Object.entries(specimenObject)) {
+        //console.log(key)
         // The hasOwnProperty() method returns a boolean indicating whether the object has the specified property as its own property (as opposed to inheriting it).
         if (Object.hasOwnProperty.call(specimenObject, key) && fieldsToShow.includes(key)) {
 
@@ -294,7 +294,7 @@ const makeUTADTable = (specimenObject) => {
             const headKey = row.insertCell(0); headKey.id =  `head-${key}` ; headKey.class = 'bold';
             const Content =   row.insertCell(1); Content.id = key; Content.style = 'border-spacing: 10px 0';
             keyObj[key] = value
-            console.log(headKey)
+            //console.log(headKey)
         }
         
     }

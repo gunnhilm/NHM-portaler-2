@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+
+<html lang="no">
+    <head>
+        <title>Advanced search</title> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        
+        <link rel="stylesheet" href="/museum/styles/styles.css">
+        <link id="museumStyle" rel="stylesheet" type="text/css" href= "">
+
+
+
+    </head>
+  
+    <body>
+        <div class="wrapper">
+            {{>header}}
+            <div class="content">
+                <table width="100%">
+                    <tr>
+                        <td>
+                        <br><br><br><br>
+                        </td>
+                    </tr>
+                    <tr>
+                        {{!-- cell with all text-fields to the left --}}
+                         <td width="100%">
+                            <div  style="width:50%; float:left">
+                                <p class="page-header" id="header-advSearch-page"></p>
+                                {{!-- table with all text-fields to the left except title --}}
+                                <table width="100%"> 
+                                    <tr>
+                                        <td style="vertical-align: middle" colspan="2" id ="button-cell">
+                                            
+                                            <br>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        {{!-- cell-row with select-collection and search -button --}}
+                                        <td id = 'select-cell' style="vertical-align: middle; display: none;" colspan="2">
+                                            <br>
+                                            <label for="collection-select" id="select-collection-label" style="display:none"></label>
+                                            <select id="collection-select"  style=" height:30px; border-radius:4px; overflow-y:auto; display:none" ></select>
+                                        </td>
+                                        <td  colspan="2">
+                                            <button class="blue-button" id="empty-search-button" style="display:none" title="Slett søke resultater">Tøm søk</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan = "3">
+                                            <br>
+                                            <br>
+                                            <form style="display:none" id="adv-search-form">
+                                                <div  style="float: left; width:100%">
+                                                    <input id="adv-species" type="text" class="input" style="height:30px;  width:99%; border-radius:4px; border-width: 1px; "   title="Skriv inn søkeord"><br><br>
+                                                    <input id="adv-collector" type="text" class="input" style="height:30px;  width:99%; border-radius:4px; border-width: 1px; "   title="Skriv inn søkeord"><br><br>
+                                                    <input id="adv-date" type="text" class="input" style="height:30px;  width:99%; border-radius:4px; border-width: 1px; "   title="Skriv inn søkeord"><br><br>
+                                                    <input id="adv-country" type="text" class="input" style="height:30px;  width:99%; border-radius:4px; border-width: 1px; "   title="Skriv inn søkeord"><br><br>
+                                                    <input id="adv-county" type="text" class="input" style="height:30px;  width:99%; border-radius:4px; border-width: 1px; "   title="Skriv inn søkeord"><br><br>
+                                                    <input id="adv-municipality" type="text" class="input" style="height:30px;  width:99%; border-radius:4px; border-width: 1px; "   title="Skriv inn søkeord"><br><br>
+                                                    <input id="adv-locality" type="text" class="input" style="height:30px;  width:99%; border-radius:4px; border-width: 1px; "   title="Skriv inn søkeord"><br><br>
+                                                    <div id="radio-form">
+                                                        <input type="radio" name="hasPhotoRadio" value="has" id="hasPhoto">
+                                                        <label for="hasPhoto" id="hasPhotoLabel"></label>
+                                                        <input type="radio" name="hasPhotoRadio" value="hasNot" id="hasNotPhoto">
+                                                        <label for="hasNotPhoto" id="hasNotPhotoLabel"></label>
+                                                        <input type="radio" name="hasPhotoRadio" value="irr" id="irrPhoto">
+                                                        <label for="irrPhoto" id="irrPhotoLabel"></label>
+                                                    </div>
+                                                    {{!-- <div id="has-photo-text" style="display: inline-block">Har bilde</div>
+                                                    <input type="checkbox" id="hasPhoto" style="display: inline-block"></input>
+                                                    <div id="has-not-photo-text" style="display: inline-block">Har ikke bilde</div>
+                                                    <input type="checkbox" id="hasNotPhoto" style="display: inline-block"></input> --}}
+                                                    <br><br>
+                                                </div>
+                                                <br><br><br>
+                                                <div style="float: right">
+                                                    <button class="blue-button" id="adv-search-button" style="display=none"></button>
+                                                </div>
+                                            </form>
+                                            <br>
+                                            <img id="please-wait" src="/museum/images/ajax-loader.gif" alt="Please Wait"  style="display:none" valign="top">
+                                        </td>
+                                    </tr>
+                                    <tr id="hits-row" style="display:none">    
+                                        <td id="hits-per-page" style="vertical-align:middle; white-space: nowrap; width: 110px; " title="Antall treff per side"></td>
+                                        <td  style="vertical-align:middle;  " >
+                                            <select id="number-per-page" style=" height:30px; border-radius:4px;" title="Antall treff per side">
+                                                <option value="10">10</option>
+                                                <option value="20" selected="selected">20</option>
+                                                <option value="50">50</option>
+                                                <option value="100">100</option>
+                                                <option value="4000">All (max 1000)</option>
+                                            </select>
+                                        </td>
+                                        <td id="error-message" title="Feil melding"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><br><br></td>
+                                        
+                                    </tr>
+                                    <tr>    
+                                        <td style="vertical-align:middle; white-space: nowrap; ">
+                                            <div id="head-nb-hits"style="display: inline-block"></div>
+                                            <div id= "nb-hits"style="display: inline-block"></div>
+                                        </td>
+                                        <td  style="vertical-align:middle; white-space: nowrap;" ></td>
+                                        <td style="vertical-align: middle; ">
+                                            <button class="blue-button" id="download-button"  style="display:none" title="Last ned resultater">Last ned resultat<i class="fa fa-download"></i></button>
+                                        </td>
+                                   
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td style="vertical-align: middle;">
+                                            <button class="blue-button" id="download-photo-button"  style="display:none" title="Last ned bilder"><i class="fa fa-download"></i>Last ned bilder</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        {{!-- table cell with map --}}
+                            <div id="mapDiv" style="width:49%; min-width:254px;  float:left; margin-left:5px; ">
+                                <br>
+                                <div id="map-search" class="map-search"></div>
+                                <div id="popup" class="ol-popup">
+                                    <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                                    <div id="popup-content"></div>
+                                </div>
+        
+                                <table align="right" >
+                                    <tr >
+                                        <td >
+                                            <button id="zoom-button" style="display:none" title="Bruksanvisning kart">Zoom</button>
+                                            <div id="zoom-modal" class="modal">
+                                                <div class="modal-content">
+                                                    <span class="close">&times;</span>
+                                                    <span class="popuptext" id="zoom-expl-popup"></span>
+                                                </div>    
+                                            </div>
+                                        </td>
+                                        <td >
+                                            <button id="large-map-button" style="display:none" title="Vis stort kart">Større kart</button>
+                                            <br>
+                                        </td>
+                                        <td>
+                                            {{!-- downloadmap --}}
+                                            <button id="export-png" style="display:none" title="Last ned kart som bilde">Last ned kart</button>
+                                            <a id="image-download" download="map.png"></a>
+                                        </td>
+                                        <td>
+                                            <button id="checkedInMap" style = "display:none" title="Vis valgt poster i kart">Vis valgte poster i kart</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+                <div style="text-align:center;">
+                    <div class="pagination-container1">
+                        <div class="pagination-div1">
+                            <input type="button" id="first1" onclick="firstPage()" class="descrete-button" style="display:none" value="Vis første side"/>
+                            <input type="button" id="previous1" onclick="previousPage()" class="descrete-button" style="display:none" value="Vis forrige side"/>
+                            <input type="button" id="next1" onclick="nextPage()" class="descrete-button" style="display:none" value="Vis neste side"/>
+                            <input type="button" id="last1" onclick="lastPage()" class="descrete-button" style="display:none" value="Vis siste side"/>
+                            <p style="display: none" class="small-text" id = "resultPageText1"></p> 
+                            <p style="display: none"  class="small-text"id = "resultPageNb1"></p>
+                            <p style="display: inline-block"  class="small-text" id = "resultPageAlert1"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="overflow-x:auto">
+                    <table class="result-table" id="myTable"></table>
+                </div>
+                <br><br>
+
+                <div style="text-align:center;">
+                    <div class="pagination-container">
+                        <div class="pagination-div">
+                            <input type="button" id="first" onclick="firstPage()" class="descrete-button" style="display:none" value="Vis første side"/>
+                            <input type="button" id="previous" onclick="previousPage()" class="descrete-button" style="display:none" value="Vis forrige side"/>
+                            <input type="button" id="next" onclick="nextPage()" class="descrete-button" style="display:none" value="Vis neste side"/>
+                            <input type="button" id="last" onclick="lastPage()" class="descrete-button" style="display:none" value="Vis siste side"/>
+                            <p style="display: none" class="small-text" id = "resultPageText"></p> 
+                            <p style="display: none" class="small-text" id = "resultPageNb"></p>
+                            <p style="display: inline-block" class="small-text" id = "resultPageAlert"></p>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            
+            </div>
+            {{>footer}}
+        </div>
+
+        <script src="/museum/scripts/utils/textItems.js"></script>
+        <script src="/museum/scripts/utils/renderLang.js"></script>
+        <script src="/museum/scripts/utils/showCorrectMuseum.js"></script>
+
+        <script src="/museum/scripts/utils/font/409783eafe.js"></script>
+        <script src="/museum/scripts/utils/papaparse/papaparse.min.js"></script>
+        
+        <script src="/museum/scripts/utils/ol/ol.js"></script>
+        <script src="/museum/scripts/utils/jszip/jszip.js"></script>
+        <script src="/museum/scripts/utils/file-saver/FileSaver.min.js"></script>
+        <script src="/museum/scripts/utils/map.js"></script>
+        <script src="/museum/scripts/utils/resultElementsOnOff.js"></script>   
+        <script src="/museum/scripts/utils/paginateAndRender.js"></script>
+        <script src="/museum/scripts/utils/advancedSearch.js"></script>   
+    </body>
+</html>v

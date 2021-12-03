@@ -41,7 +41,10 @@ const drawMap = (parsedData) => {
         
         if (coordinateArray.length === 0) {
             document.querySelector("#map-search").innerHTML = textItems.mapSearchAlt[index]
-
+            zoomButton.style.display = "none"
+            largeMapButton.style.display = "none"
+            downloadMapButton.style.display = "none"
+            checkedInMap.style.display = "none"
         } else {
             const newArray = []
             coordinateArray.forEach(function(item) {

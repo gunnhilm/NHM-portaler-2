@@ -1,7 +1,7 @@
 {
   "name": "web-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "Make sure you have [NodeJS](https://nodejs.org/en/) installed.",
   "main": "index.js",
   "scripts": {
     "start": "node src/app.js",
@@ -9,7 +9,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "CC-4.0",
+  "license": "UNLICENSED",
   "dependencies": {
     "csv-parser": "^2.3.3",
     "dompurify": "^2.2.6",
@@ -24,5 +24,16 @@
   "devDependencies": {
     "eslint": "^6.8.0",
     "nodemon": "^2.0.3"
-  }
+  },
+  "directories": {
+    "doc": "doc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gunnhilm/NHM-portaler-2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gunnhilm/NHM-portaler-2/issues"
+  },
+  "homepage": "https://github.com/gunnhilm/NHM-portaler-2#readme"
 }

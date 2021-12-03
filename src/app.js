@@ -125,6 +125,25 @@ app.get('/search', (req, res) => {
     }
 })
 
+app.get('/advSearch', (req, res) => {
+    if (!req.query.samling) {
+        throw new Error ('collection not chosen') 
+    } else {
+        try {
+            fileRead.advSearch(req.query.museum, req.query.samling, req.query.searchSpecies, req.query.searchCollector, req.query.searchDate, req.query.searchCountry, req.query.searchCounty, req.query.searchMunicipality, req.query.searchLocality, req.query.linjeNumber,req.query.limit,req.query.hasPhoto , (error, results) => {
+                res.send({
+                    unparsed: results
+                })
+            })
+        }
+        catch(error) {
+            console.log('error in fileread.js ' + error)
+            throw new Error ('File not found ')
+        }
+    }
+})
+
+
 app.get('/orgGroups', (req, res) => {
     if (!req.query.museum) {
         throw new Error ('no museum...')
@@ -240,6 +259,11 @@ app.get('*/object', (req, res) => {
         })
     }
 })
+
+app.get('*/advancedSearch', (req, res) => {
+    res.render('advancedSearch', {
+     })
+ })
 
 app.get('*/tools', (req, res) => {
     res.render('tools', {

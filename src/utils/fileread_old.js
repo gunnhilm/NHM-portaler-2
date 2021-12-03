@@ -122,88 +122,6 @@ const search = (museum, samling, searchTerm, linjeNumber = 0, limit = 20, callba
     }
 }
 
-// advanced search
-const advSearch = (museum, samling, searchSpecies, searchCollector, searchDate, searchCountry, searchCounty, searchMunicipality, searchLocality, linjeNumber = 0, limit = 20, hasPhoto, callback) => {
-    // velg riktig MUSIT dump fil å lese
-    musitFile = setCollection(museum,samling)
-    if (fs.existsSync(musitFile)) {
-        // cleaning the searchterm before making the search so that we get a more precise
-        // remove whiteSpace,
-        let termsArray = [searchSpecies, searchCollector, searchDate, searchCountry, searchCounty, searchMunicipality, searchLocality, hasPhoto]
-        for (var i = 0; i < termsArray.length; i++) {
-            termsArray[i] = termsArray[i].trim().toLowerCase()
-        }
-        let results = ''
-        const readInterface = readline.createInterface({
-            input: fs.createReadStream(musitFile),
-            console: false
-        })
-
-        let count = 0  // iterates over each line of the current file
-        let resultCount = 0
-        // array med overskrifter på de kolonnene vi skal søke i
-        let headerTerms
-        // for advanced search in utad and bulk:
-        // if (samling === 'utad') {
-        //     headerTerms = ['vernacularName','scientificName','basisOfRecord']
-        // } else if (samling = 'bulk') {
-        //     headerTerms = ['scientificName','recordedBy','eventDate','country','stateProvince','county','locality','preparations']
-        // } else {
-            headerTerms = ['scientificName','recordedBy','eventDate','country','stateProvince','county','locality','associatedMedia']
-        // }
-        let headers = []
-        readInterface.on('line', function(line) {
-            count++
-            if (resultCount == limit) {
-                readInterface.close()
-            }
-            if (count === 1) {
-                results = line
-                headers = line.split('\t')
-            } else {
-                let lineArray = line.split('\t')
-                if (lineArray[headers.indexOf(headerTerms[0])].toLowerCase().indexOf(termsArray[0]) !== -1) {
-                    // Hvis linja inneholder det først søkeordet, sjekk om det også inneholder de andre
-                    for(let i = 1; i < termsArray.length; i++){
-                        if (i < (termsArray.length - 1)) {
-                            if(lineArray[headers.indexOf(headerTerms[i])].toLowerCase().indexOf(termsArray[i]) === -1){
-                            // hvis vi ikke får treff så bryter vi loopen (-1 = fant ikke),
-                                break;
-                            } 
-                } else if (i === (termsArray.length -1) ) {
-                            // check for last searchTerm; associatedMedia
-                            if (termsArray[i] === 'hasphoto') {
-                                if (!lineArray[headers.indexOf(headerTerms[i])]) {
-                                    break;
-                                } else {
-                                    results =  results +  '\n' + line
-                                    resultCount++  
-                                }
-                            } else if (termsArray[i] === 'hasnotphoto') {
-                                if (lineArray[headers.indexOf(headerTerms[i])]) {
-                                    break;
-                                } else {
-                                    results =  results +  '\n' + line
-                                    resultCount++  
-                                }
-                            } else {
-                                results =  results +  '\n' + line
-                                resultCount++  
-                            }
-                        }
-                    }
-                }
-            }
-        }).on('close', function () {
-            const resulstAndLine = {results, count }
-            callback(undefined, resulstAndLine)
-        })
-       
-    } else {
-        throw new Error ('File not found ')
-    }
-}
-
 
 
 // const checkRegion = (museum, samling, searchTerm, linjeNumber = 0, limit = 20, callback) => {
@@ -301,7 +219,6 @@ const checkRegion = (region, lat, long, callback) => {
  
 module.exports = { 
     search,
-    advSearch,
     setCollection,
     setOrgGroups,
     setSubcollections,

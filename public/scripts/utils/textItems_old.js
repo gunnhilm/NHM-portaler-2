@@ -123,20 +123,7 @@ const textItems = {
     u: ["Ukjent", "Unknown"],
     cf: ["Kloakkvæske", "Cloacal fluids"],
 
-    // advanced search page
-    headerAdvSearchPage: ["Avansert søk", "Advanced search the collections"],
-    placeholderSpecies: ["Latinsk artsnavn", "Scientific species name"],
-    placeholderGeoSpecies: ["Taxon (navn på bergart, mineral)", "Taxon (name of mineral)"],
-    placeholderPalSpecies: ["Latinsk artsnavn eller type prøve, f.eks. \'Rock\'", "Scientific species name or type of sample, e.g. \'Rock\'"],
-    placeholderCollector: ["Innsamler", "Collector"],
-    placeholderDate: ["Innsamlingsdato", "Collecting date"],
-    placeholderCountry: ["Land (på engelsk)", "Country (in English)"],
-    placeholderCounty: ["Fylke", "County"],
-    placeholderMunicipality: ["Kommune", "Municipality"],
-    placeholderLocality: ["Lokalitet", "Locality"],
-    hasPhoto: ["Har bilde", "Has photo"],
-    hasNotPhoto: ["Har ikke bilde", "Has not photo"],
-    irrPhoto: ["Med og uten bilde", "With or without photo"],
+    
     // object page
     searchButtonHeader: ["Tilbake til søkeresultat", "Back to search result"],
     objectPageHeader: ['Objektvisning', 'Object view'],

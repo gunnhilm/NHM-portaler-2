@@ -177,7 +177,7 @@ showResultElements = () => {
 // out: sorting order of two elements (?)
 // is called by addSortingText(…)
 sort_by = (prop, reverse, primer) => {
-        const key = primer ?
+    const key = primer ?
     function(x) {
         return primer(x[prop])
     } :
@@ -221,7 +221,10 @@ function addSortingText(id, prop, musitData, fromFunction) { // her er musitData
                 if (id === 'photoButton' | id === 'coordinateButton') {
                     reverse = !reverse
                 } 
-                musitData.sort(sort_by(prop,reverse, (a) => a.toLowerCase()))
+                if (musitData[0][prop]) {
+                    musitData.sort(sort_by(prop,reverse, (a) => a.toLowerCase()))
+                }
+                
             } 
             
             if (propsSorted.find(x => x.id === prop).sortedOnce === propsSorted.find(x => x.id === prop).sortedTwice) {

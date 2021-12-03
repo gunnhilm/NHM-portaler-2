@@ -54,7 +54,7 @@ function hide_column(col_no) {
 const resultTable = (subMusitData, musitData) => {    
     try {
         
-        table.innerHTML = "";
+        table.innerHTML = ""
         for (let i = -1; i < pageList.length; i++) { // vis en tabell med resultater som er like lang som det vi ba om pageList.length; 
             const row = table.insertRow(-1)
             const cell1 = row.insertCell(0)
@@ -271,7 +271,17 @@ const UTADRestultTable = (subUTADData, UTADData) => {
                 } else {
                     document.getElementById(`checkbox${i}`).checked = false
                 }
-                
+                cell1.className = 'row-1 row-ID'
+                cell2.className = 'row-2 row-name'
+                cell3.className = 'row-3 row-innsamler'
+                cell4.className = 'row-4 row-dato'
+                cell5.className = 'row-5 row-land'
+                cell6.className = 'row-6 row-kommune'
+                cell7.className = 'row-7 row-sted'
+                cell8.className = 'row-8 row-photo'
+                cell9.className = 'row-9 row-coordinates'
+                //cell10.className = 'row-10 row-sampleType'
+                cell11.className = 'row-11 row-checkbox'
             }
             showResultElements()
             document.getElementById("empty-search-button").style.display = "inline-block"
@@ -445,6 +455,9 @@ function getNumberOfPages(numberPerPage) {
 // calls load()
 // is called in index.hbs when nextPage-button is created
 function nextPage() {
+    console.log('np function')
+    console.log(currentPage)
+    console.log(sessionStorage.getItem('currentPage'))
     if (currentPage < numberOfPages) {
         currentPage += 1    
         sessionStorage.setItem('currentPage', currentPage)

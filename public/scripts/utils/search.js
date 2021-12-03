@@ -35,13 +35,19 @@ if (sessionStorage.language) {
 // calls emptyTable() in resultElementsOnOff.js
 //      emptyResultElements() in resultElementsOnOff.js
 // is called by emptySearchButton.eventlistener, upateFooter() when error
-const emptySearch = () => {
+const emptySearch = (comesFrom) => {
+    console.log(comesFrom)
+    if (comesFrom !== "collection_listener") {
+        sessionStorage.removeItem('collection')
+        collection.value = "vennligst"
+    }
+    
     sessionStorage.removeItem('string')
-    sessionStorage.removeItem('collection')
     sessionStorage.removeItem('searchLineNumber')
     sessionStorage.removeItem('search-text')
-    sessionStorage.removeItem('currentPage')
     sessionStorage.removeItem('numberPerPage')
+    sessionStorage.setItem('currentPage',1)
+    currentPage = 1
     
     if (sessionStorage.getItem('organismGroup')) {
         // gå gjennom alle knappene og aktiver den relevante
@@ -52,16 +58,7 @@ const emptySearch = () => {
         })
     }
 
-    collection.value = "vennligst"
-    // let length = collection.options.length
-    // console.log(length)
-    // for (i = length-1; i >= 0; i--) {
-    //   collection.options[i] = null
-    // }
     
-    // buttonArray.forEach(el => {
-    //     el.className = "white-button"
-    // })
     document.getElementById('head-nb-hits').style.display = "none"
     document.getElementById('search-form').style.display = "none"
     document.getElementById("search-text").value = ""
@@ -222,6 +219,7 @@ function addCollectionsToSelect(orgGroup) {
 
         document.querySelector('#'+ orgGroup).style.marginRight = "10px"
         const url_coll = urlPath + '/collections/?museum=' + museum + '&orgGroup=' + orgGroup
+        console.log(url_coll)
         
         fetch(url_coll).then((response) => {
             if (!response.ok) {
@@ -367,7 +365,8 @@ downloadPhotoButton.addEventListener('click', (e) => {
 const doSearch = (limit = 20) => {
     // delete the previous search results
     sessionStorage.removeItem('string')
-    sessionStorage.removeItem('currentPage')
+    sessionStorage.setItem('currentPage',1)
+    currentPage = 1
     sessionStorage.removeItem('numberPerPage')
     sessionStorage.removeItem('propsSorted')
     document.getElementById("map-search").innerHTML = ""  
@@ -429,8 +428,11 @@ const doSearch = (limit = 20) => {
                                         nbHitsElement.style.color = 'red'
                                     } else {
                                         nbHitsElement.textContent = parsedResults.data.length
+                                        nbHitsElement.style.color = 'black'
                                     }
+                                    
                                     nbHitsHeader.innerHTML = textItems.nbHitsText[index]
+                                    nbHitsHeader.style.display = 'inline'
                                     // replace , with . if necessary
                                     if(chosenCollection === 'fossiler' || chosenCollection === 'palTyper') {
                                         let coordString = ''
@@ -500,6 +502,7 @@ searchForm.addEventListener('submit', (e) => {
 collection.addEventListener('change', (e) => {
     e.preventDefault()
     updateFooter()
+    emptySearch("collection_listener")
     searchForm.style.display = "block"
     document.querySelector('#hits-row').style.display = 'block'
     errorMessage.innerHTML = ""
@@ -627,7 +630,7 @@ if (sessionStorage.getItem('organismGroup')) {
 emptySearchButton.addEventListener('click', (e) => {
     e.preventDefault()
     // erase the last search result
-    emptySearch()
+    emptySearch('button')
 })
 
 document.getElementById('large-map-button').onclick = () => {
