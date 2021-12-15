@@ -19,14 +19,14 @@
                 <table width="100%">
                     <tr>
                         <td>
-                        <br><br><br><br>
+                        <br>
                         </td>
                     </tr>
                     <tr>
                         {{!-- cell with all text-fields to the left --}}
                          <td width="100%">
                             <div  style="width:50%; float:left">
-                                <p class="page-header" id="header-advSearch-page"></p>
+                                <p class="page-header-tighter" id="header-advSearch-page"></p>
                                 {{!-- table with all text-fields to the left except title --}}
                                 <table width="100%"> 
                                     <tr>
@@ -52,20 +52,26 @@
                                             <br>
                                             <form style="display:none" id="adv-search-form">
                                                 <div  style="float: left; width:100%">
-                                                    <input id="adv-species" type="text" class="input" style="height:30px;  width:99%; border-radius:4px; border-width: 1px; "   title="Skriv inn søkeord"><br><br>
-                                                    <input id="adv-collector" type="text" class="input" style="height:30px;  width:99%; border-radius:4px; border-width: 1px; "   title="Skriv inn søkeord"><br><br>
-                                                    <input id="adv-date" type="text" class="input" style="height:30px;  width:99%; border-radius:4px; border-width: 1px; "   title="Skriv inn søkeord"><br><br>
-                                                    <input id="adv-country" type="text" class="input" style="height:30px;  width:99%; border-radius:4px; border-width: 1px; "   title="Skriv inn søkeord"><br><br>
-                                                    <input id="adv-county" type="text" class="input" style="height:30px;  width:99%; border-radius:4px; border-width: 1px; "   title="Skriv inn søkeord"><br><br>
-                                                    <input id="adv-municipality" type="text" class="input" style="height:30px;  width:99%; border-radius:4px; border-width: 1px; "   title="Skriv inn søkeord"><br><br>
-                                                    <input id="adv-locality" type="text" class="input" style="height:30px;  width:99%; border-radius:4px; border-width: 1px; "   title="Skriv inn søkeord"><br><br>
+                                                    
+                                                    <input id="adv-object" type="text" class="input-tight"    title="Skriv inn søkeord"><br><br>
+                                                    <input id="adv-species" type="text" class="input-tight"    title="Skriv inn søkeord"><br><br>
+                                                    <input id="adv-collector" type="text" class="input-tight"    title="Skriv inn søkeord"><br><br>
+                                                    <input id="adv-date" type="text" class="input-tight"    title="Skriv inn søkeord"><br><br>
+                                                    <input id="adv-country" type="text" class="input-tight"    title="Skriv inn søkeord"><br><br>
+                                                    <input id="adv-county" type="text" class="input-tight"    title="Skriv inn søkeord"><br><br>
+                                                    <input id="adv-municipality" type="text" class="input-tight"    title="Skriv inn søkeord"><br><br>
+                                                    <input id="adv-locality" type="text" class="input-tight"    title="Skriv inn søkeord"><br><br>
+                                                    
+                                                    <input id="adv-collNo" type="text" class="input-tight"    title="Skriv inn søkeord"><br><br>
+                                                    <input id="adv-taxType" type="text" class="input-tight"    title="Skriv inn søkeord"><br><br>
+
                                                     <div id="radio-form">
                                                         <input type="radio" name="hasPhotoRadio" value="has" id="hasPhoto">
-                                                        <label for="hasPhoto" id="hasPhotoLabel"></label>
+                                                        <label for="hasPhoto" id="hasPhotoLabel" class="label-tight"></label>
                                                         <input type="radio" name="hasPhotoRadio" value="hasNot" id="hasNotPhoto">
-                                                        <label for="hasNotPhoto" id="hasNotPhotoLabel"></label>
+                                                        <label for="hasNotPhoto" id="hasNotPhotoLabel" class="label-tight"></label>
                                                         <input type="radio" name="hasPhotoRadio" value="irr" id="irrPhoto">
-                                                        <label for="irrPhoto" id="irrPhotoLabel"></label>
+                                                        <label for="irrPhoto" id="irrPhotoLabel" class="label-tight"></label>
                                                     </div>
                                                     {{!-- <div id="has-photo-text" style="display: inline-block">Har bilde</div>
                                                     <input type="checkbox" id="hasPhoto" style="display: inline-block"></input>

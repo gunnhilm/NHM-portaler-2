@@ -5,7 +5,7 @@
 const collection = document.querySelector('#collection-select') 
 const searchForm = document.querySelector('#adv-search-form') 
 //const search = document.querySelector('input')
-const termNameArray = ["adv-species", "adv-collector", "adv-date", "adv-country", "adv-county", "adv-municipality", "adv-locality"]
+const termNameArray = ["adv-object", "adv-species", "adv-collector", "adv-date", "adv-country", "adv-county", "adv-municipality", "adv-locality", "adv-collNo", "adv-taxType"]
 // for advanced search in utad and bulk:
 // const termNameArrayUtad = ['adv-species', 'adv-collector','adv-date']
 // const termNameArrayBulk = ["adv-species", "adv-collector", "adv-date", "adv-country", "adv-county", "adv-municipality", "adv-locality", "adv-preparations"]
@@ -54,7 +54,7 @@ const emptyAdvSearch = () => {
         // gå gjennom alle knappene og aktiver den relevante
         buttonArray.forEach(el => {
             if (sessionStorage.getItem('organismGroup') == el.id) {
-                el.className = "blue-button"  
+                el.className = "blue-button-tighter"  
             }
         })
     }
@@ -127,7 +127,7 @@ function makeButtons() {
             addCollectionsToSelect(el.id)
             e.preventDefault()
         })
-        el.className = "white-button"
+        el.className = "white-button-tighter"
     })
 }
 
@@ -219,9 +219,9 @@ function addCollectionsToSelect(orgGroup) {
         orgGroups.forEach(el => {
             if (el != 'other') {
                 if (el == orgGroup) { 
-                    document.querySelector('#' + el).className = "blue-button" 
+                    document.querySelector('#' + el).className = "blue-button-tighter" 
                 } else {
-                    document.querySelector('#' + el).className = "white-button" 
+                    document.querySelector('#' + el).className = "white-button-tighter" 
                 }
             }
         })
@@ -382,7 +382,7 @@ const doAdvancedSearch = (limit = 20) => {
     searchFailed = false
     resetSortedBoolean() // set all booleans in propsSorted-array in PaginateAndRender.js to false
 
-
+    const searchObj = document.querySelector('#adv-object').value
     const searchSpecies = document.querySelector('#adv-species').value
     const searchCollector = document.querySelector('#adv-collector').value
     const searchDate = document.querySelector('#adv-date').value
@@ -390,6 +390,8 @@ const doAdvancedSearch = (limit = 20) => {
     const searchCounty = document.querySelector('#adv-county').value
     const searchMunicipality = document.querySelector('#adv-municipality').value
     const searchLocality = document.querySelector('#adv-locality').value
+    const searchCollNo = document.querySelector('#adv-collNo').value
+    const searchTaxType = document.querySelector('#adv-taxType').value
     let hasPhoto
     if (document.querySelector('#hasPhoto').checked) {
         hasPhoto = "hasPhoto"
@@ -400,7 +402,7 @@ const doAdvancedSearch = (limit = 20) => {
     }
 
     
-    sessionStorage.setItem('advSearchArray', [searchSpecies,searchCollector,searchDate,searchCountry,searchMunicipality,searchLocality])
+    sessionStorage.setItem('advSearchArray', [searchObj,searchSpecies,searchCollector,searchDate,searchCountry,searchMunicipality,searchLocality,searchCollNo,searchTaxType])
     const chosenCollection = collection.value
     sessionStorage.setItem('chosenCollection', JSON.stringify(chosenCollection))
     searchLineNumber = limit
@@ -426,9 +428,9 @@ const doAdvancedSearch = (limit = 20) => {
       //  const  url = urlPath + 
     //} 
     else {
-        const url = urlPath + '/advSearch/?searchSpecies=' + searchSpecies + '&searchCollector=' + searchCollector + 
+        const url = urlPath + '/advSearch/?searchObj=' + searchObj + '&searchSpecies=' + searchSpecies + '&searchCollector=' + searchCollector + 
         '&searchDate=' + searchDate + '&searchCountry=' + searchCountry + '&searchCounty=' + searchCounty + 
-        '&searchMunicipality=' + searchMunicipality + '&searchLocality=' + searchLocality + '&museum=' + museum + 
+        '&searchMunicipality=' + searchMunicipality + '&searchLocality=' + searchLocality + '&searchCollNo=' + searchCollNo + '&searchTaxType=' + searchTaxType + '&museum=' + museum + 
         '&samling=' + chosenCollection + '&linjeNumber=0' + '&limit=' + limit  + '&hasPhoto=' + hasPhoto
         fetch(url).then((response) => {
             if (!response.ok) {
@@ -446,7 +448,7 @@ const doAdvancedSearch = (limit = 20) => {
                             const JSONdata = JSON.parse(data)  
                             
                             sessionStorage.setItem('searchLineNumber', JSONdata.unparsed.count)
-                            sessionStorage.setItem('advSearchArray', [searchSpecies,searchCollector,searchDate,searchCountry,searchMunicipality,searchLocality])
+                            sessionStorage.setItem('advSearchArray', [searchObj,searchSpecies,searchCollector,searchDate,searchCountry,searchMunicipality,searchLocality,searchCollNo,searchTaxType])
     
                             // sessionStorage.setItem('searchSpecies', searchSpecies)
                             // sessionStorage.setItem('searchCounty', searchCounty)

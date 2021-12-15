@@ -123,13 +123,14 @@ const search = (museum, samling, searchTerm, linjeNumber = 0, limit = 20, callba
 }
 
 // advanced search
-const advSearch = (museum, samling, searchSpecies, searchCollector, searchDate, searchCountry, searchCounty, searchMunicipality, searchLocality, linjeNumber = 0, limit = 20, hasPhoto, callback) => {
+const advSearch = (museum, samling, searchObj, searchSpecies, searchCollector, searchDate, searchCountry, searchCounty, searchMunicipality, searchLocality, searchCollNo, searchTaxType, linjeNumber = 0, limit = 20, hasPhoto, callback) => {
     // velg riktig MUSIT dump fil å lese
     musitFile = setCollection(museum,samling)
+    console.log('here')
     if (fs.existsSync(musitFile)) {
         // cleaning the searchterm before making the search so that we get a more precise
         // remove whiteSpace,
-        let termsArray = [searchSpecies, searchCollector, searchDate, searchCountry, searchCounty, searchMunicipality, searchLocality, hasPhoto]
+        let termsArray = [searchObj, searchSpecies, searchCollector, searchDate, searchCountry, searchCounty, searchMunicipality, searchLocality, searchCollNo, searchTaxType, hasPhoto]
         for (var i = 0; i < termsArray.length; i++) {
             termsArray[i] = termsArray[i].trim().toLowerCase()
         }
@@ -149,7 +150,7 @@ const advSearch = (museum, samling, searchSpecies, searchCollector, searchDate, 
         // } else if (samling = 'bulk') {
         //     headerTerms = ['scientificName','recordedBy','eventDate','country','stateProvince','county','locality','preparations']
         // } else {
-            headerTerms = ['scientificName','recordedBy','eventDate','country','stateProvince','county','locality','associatedMedia']
+            headerTerms = ['catalogNumber','scientificName','recordedBy','eventDate','country','stateProvince','county','locality','recordNumber','typeStatus','associatedMedia']
         // }
         let headers = []
         readInterface.on('line', function(line) {
@@ -162,6 +163,7 @@ const advSearch = (museum, samling, searchSpecies, searchCollector, searchDate, 
                 headers = line.split('\t')
             } else {
                 let lineArray = line.split('\t')
+                
                 if (lineArray[headers.indexOf(headerTerms[0])].toLowerCase().indexOf(termsArray[0]) !== -1) {
                     // Hvis linja inneholder det først søkeordet, sjekk om det også inneholder de andre
                     for(let i = 1; i < termsArray.length; i++){

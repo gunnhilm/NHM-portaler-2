@@ -212,9 +212,10 @@ const top20Land = (data, currentCollection) => {
 // out: an array with labels and data for coordinate pie?
 // is called by makeGraphs(..) updateGraph()
 const harKoordinater = (data, currentCollection) => {
-  let koordintLabels = ['Yes', 'No']
+  let koordinatLabels
+  if (langIndex === 0) {koordinatLabels = ['Ja', 'Nei']} else {koordinatLabels = ['Yes', 'No']}
   let koordinatData = [data[currentCollection][1].geography.coordinates[0].yes,data[currentCollection][1].geography.coordinates[1].no]
-  return [koordintLabels, koordinatData]
+  return [koordinatLabels, koordinatData]
 }
 
 // returns label and data for Norwegian data
@@ -229,7 +230,8 @@ const fraNorge = (data, currentCollection) => {
     break
   }     
   restenAvVerden = data[currentCollection][3].collectionSize - norske // alle poster minus de fra Norge
-  let andelNorgelabels = ['Norge', 'Verden']
+  let andelNorgelabels
+  if (langIndex === 0) {andelNorgelabels = ['Norge', 'Verden']} else {andelNorgelabels = ['Norway', 'The world']}
   let andelNorgedata = [norske, restenAvVerden]
   return [andelNorgelabels, andelNorgedata]
 }
@@ -313,7 +315,7 @@ const makeGraphs = (data) => {
     data: {
         labels: aarligTilvekst[0],
         datasets: [{
-          label: 'Tilvekst per år (som er registert i databasen)',
+          label: textItems.addGrowth[langIndex],
           data: aarligTilvekst[1],
           backgroundColor: 'rgba(0, 119, 204, 0.3)'
         }]
@@ -337,7 +339,7 @@ const makeGraphs = (data) => {
     data: {
         labels: accumulativeSize[0],
         datasets: [{
-          label: 'Akkumulativ samlingstørrelse',
+          label: textItems.accSize[langIndex],
           data: accumulativeSize[1],
           backgroundColor: 'rgba(0, 119, 204, 0.3)'
         }]
@@ -354,7 +356,7 @@ const makeGraphs = (data) => {
     options: {
     title: {
       display: true,
-      text: 'Georefererte poster', //textItems.nbCoordHeader[langIndex],
+      text: textItems.nbCoordHeader[langIndex],
       align: "left"
     },
     legend: {
@@ -382,7 +384,7 @@ const makeGraphs = (data) => {
     options: {
     title: {
       display: true,
-      text: 'Andelen poster fra Norge'
+      text: textItems.propFromNorway[langIndex],
     }, 
     legend: {
       position: "right",
@@ -409,7 +411,7 @@ const makeGraphs = (data) => {
     data: {
         labels: country20[0].slice(0,20), // bare de 20 første postene
         datasets: [{
-          label: 'Objekter per land (top 20) untatt Norge',
+          label: textItems.objPerCountry[langIndex],
           backgroundColor: "rgba(14,72,100,1)", 
           data: country20[1].slice(0,20),
         }]

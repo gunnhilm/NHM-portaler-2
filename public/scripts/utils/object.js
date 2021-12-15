@@ -44,6 +44,7 @@ const loadStringObject = () => {
     }
 }
 
+
 //hide next-photo-button, only in use when more than one photo
 document.getElementById("next-photo").style.display = "none"
 document.getElementById("previous-photo").style.display = "none"
@@ -134,6 +135,13 @@ let prefix = object.institutionCode + '-' + object.collectionCode + '-'
 const regnoEl = `<span>${prefix}${object.catalogNumber}</span>` 
 
 // data only displayed if existing
+
+let headCollNo = ''
+let collNo = ''
+if( object.recordNumber ) {
+    collNo = `<span>${object.recordNumber}</span>`
+} 
+
 let headArtsobs = ''
 let artsobsID = ''
 if( object.ArtObsID ) {
@@ -227,6 +235,9 @@ const makeBioTable = () => {
         const coll = table.insertRow(-1)
         const collH =   coll.insertCell(0); collH.id = 'head-coll'; collH.class = 'bold';
         const collC =   coll.insertCell(1); collC.id = 'coll'; collC.style = 'border-spacing: 10px 0';
+        const collNoRow = table.insertRow(-1)
+        const collNoH =   collNoRow.insertCell(0); collNoH.id = 'head-collNo'; collNoH.class = 'bold';
+        const collNoC =   collNoRow.insertCell(1); collNoC.id = 'collNo'; collNoH.style = 'border-spacing: 10px 0';
         const loc = table.insertRow(-1)
         const locH =   loc.insertCell(0); locH.id = 'head-locality'; locH.class = 'bold';
         const locC =   loc.insertCell(1); locC.id = 'locality'; locC.style = 'border-spacing: 10px 0';
@@ -409,6 +420,7 @@ const showData = () => {
         document.querySelector("#species-name").innerHTML = `<span style=font-style:italic>${nameArray[0]}</span>` + ' ' + `<span>${nameArray[1]}</span>`
         document.querySelector("#coll-date").innerHTML = `<span>${object.eventDate}</span>`
         document.querySelector("#coll").innerHTML = `<span>${object.recordedBy}</span>`
+        document.querySelector("#collNo").innerHTML = collNo
         document.querySelector("#det").innerHTML =  `<span>${object.identifiedBy}</span>`
         document.querySelector("#det-date").innerHTML = `<span>${object.dateIdentified}</span>`
         document.querySelector("#artsobsID").innerHTML = artsobsID
@@ -416,6 +428,7 @@ const showData = () => {
         document.querySelector('#lifeStage').innerHTML = lifeStage
         document.querySelector("#habitat").innerHTML = habitat
         document.querySelector('#taxonomy').innerHTML = taxonomy
+        document.querySelector('#typeStatus').innerHTML = typeStatus
         document.querySelector("#locality").innerHTML = `<span>${concatLocality}</span>`
         document.querySelector("#coordinates").innerHTML = `<span>${coordinates(object)}</span>`
         document.querySelector('#samplingProtocol').innerHTML = samplingProtocol

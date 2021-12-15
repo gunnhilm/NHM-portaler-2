@@ -206,6 +206,7 @@ function addSortingText(id, prop, musitData, fromFunction) { // her er musitData
             // Show please wait
             document.getElementById("please-wait").style.display = "block"
             
+            
             let reverse = false
             if (propsSorted.find(x => x.id === prop).sortedOnce) { reverse = true }
             if (id === 'musitIDButton') { 
@@ -221,9 +222,11 @@ function addSortingText(id, prop, musitData, fromFunction) { // her er musitData
                 if (id === 'photoButton' | id === 'coordinateButton') {
                     reverse = !reverse
                 } 
-                if (musitData[0][prop]) {
+                console.log(prop)
+                console.log(musitData[0][prop])
+                //if (musitData[0][prop]) {
                     musitData.sort(sort_by(prop,reverse, (a) => a.toLowerCase()))
-                }
+                //}
                 
             } 
             
@@ -248,6 +251,7 @@ function addSortingText(id, prop, musitData, fromFunction) { // her er musitData
             sessionStorage.setItem('string', JSON.stringify(musitData))
             sessionStorage.setItem('propsSorted', JSON.stringify(propsSorted))
             if(fromFunction === 'bulkResultTable') {
+                console.log('sort ' + prop)
                 bulkResultTable(subMusitData, musitData)
             } else if (fromFunction === 'UTADRestultTable') {
                 UTADRestultTable(subMusitData, musitData) 
@@ -280,10 +284,14 @@ function getArrows(prop) {
 // puts content in headerbuttons in result-table
 // calls getArrows(..) for table-header-buttons
 // addSortingText(..) for tabel-header-buttons
-fillResultHeaders = (cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell10,cell11,musitData) => {
+fillResultHeaders = (org,cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell10,cell11,musitData) => {
     cell1.innerHTML = `<button id='musitIDButton' class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>` 
     cell2.innerHTML = `<button id='scientificNameButton' class='sort'>${textItems.headerTaxon[index].bold()} ${getArrows('scientificName')} </button>`
-    cell3.innerHTML = `<button id='collectorButton' class='sort'>${textItems.headerCollector[index].bold()} ${getArrows('recordedBy')}</button>`
+    if (org === 'geologi') {
+        cell3.innerHTML = `<button id='collectorButton' class='sort'>${textItems.headerCollectorGeo[index].bold()} ${getArrows('recordedBy')}</button>`    
+    } else {
+        cell3.innerHTML = `<button id='collectorButton' class='sort'>${textItems.headerCollector[index].bold()} ${getArrows('recordedBy')}</button>`
+    }
     cell4.innerHTML = `<button id='dateButton' class='sort'>${textItems.headerDate[index].bold()} ${getArrows('eventDate')}</button>`
     cell5.innerHTML = `<button id='countryButton' class='sort'>${textItems.headerCountry[index].bold()} ${getArrows('country')}</button>`
     cell6.innerHTML = `<button id='municipalityButton' class='sort'>${textItems.headerMunicipality[index].bold()} ${getArrows('county')}</button>`
@@ -344,7 +352,7 @@ fillResultHeadersBulk = (cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,c
     addSortingText('collectorButton', 'recordedBy', musitData, 'bulkResultTable')
     addSortingText('dateButton', 'eventDate', musitData, 'bulkResultTable')
     //addSortingText('unitTypeButton', 'unitType', musitData)
-    addSortingText('localityButton', 'locality', musitData, 'bulkResultTable')
+    addSortingText('localityButton', 'locality_concatenated', musitData, 'bulkResultTable')
     //addSortingText('amountButton', 'amount', musitData)
     addSortingText('noteButton', 'note', musitData, 'bulkResultTable')
 }

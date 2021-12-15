@@ -16,14 +16,16 @@ const italicSpeciesname = (string) => {
     let nameFinished = false
     for (let i = 1; i< array.length; i++) {
         characters = array[i].split('')
-        if (characters[0] == characters[0].toUpperCase()) {
-            nameFinished = true
-            author = author + ' ' + array[i]
-        } else {
-            if (nameFinished == false) {
-                name = name + ' ' + array[i]
-            } else {
+        if (characters.length > 0) {
+            if (characters[0] == characters[0].toUpperCase()) {
+                nameFinished = true
                 author = author + ' ' + array[i]
+            } else {
+                if (nameFinished == false) {
+                    name = name + ' ' + array[i]
+                } else {
+                    author = author + ' ' + array[i]
+                }
             }
         }
     }
@@ -35,6 +37,8 @@ const italicSpeciesname = (string) => {
 // puts placeholder text in search fields in "Advanced Search"
 //
 const fillSearchFields = () => {
+    if (document.querySelector('#adv-object')) {document.querySelector('#adv-object').placeholder = textItems.placeholderObject[index]}
+    
     const orgGroup = sessionStorage.getItem('organismGroup')
     if (orgGroup === 'geologi') {
         if (document.querySelector('#adv-species')) {document.querySelector('#adv-species').placeholder = textItems.placeholderGeoSpecies[index]}    
@@ -50,8 +54,8 @@ const fillSearchFields = () => {
     if (document.querySelector('#adv-county')) {document.querySelector('#adv-county').placeholder = textItems.placeholderCounty[index]}
     if (document.querySelector('#adv-municipality')) {document.querySelector('#adv-municipality').placeholder = textItems.placeholderMunicipality[index]}
     if (document.querySelector('#adv-locality')) {document.querySelector('#adv-locality').placeholder = textItems.placeholderLocality[index]}
-    // if (document.querySelector('#has-photo-text')) {document.querySelector('#has-photo-text').innerHTML = textItems.hasPhoto[index]}
-    // if (document.querySelector('#has-not-photo-text')) {document.querySelector('#has-not-photo-text').innerHTML = textItems.hasNotPhoto[index]}
+    if (document.querySelector('#adv-collNo')) {document.querySelector('#adv-collNo').placeholder = textItems.placeholderCollNo[index]}
+    if (document.querySelector('#adv-taxType')) {document.querySelector('#adv-taxType').placeholder = textItems.placeholderTaxType[index]}
     if (document.querySelector('#hasPhotoLabel')) {document.querySelector('#hasPhotoLabel').innerHTML = textItems.hasPhoto[index]}
     if (document.querySelector('#hasNotPhotoLabel')) {document.querySelector('#hasNotPhotoLabel').innerHTML = textItems.hasNotPhoto[index]}
     if (document.querySelector('#irrPhotoLabel')) {document.querySelector('#irrPhotoLabel').innerHTML = textItems.irrPhoto[index]}
@@ -165,6 +169,7 @@ const renderText = function(lang) {
         if (!location.href.includes('advancedSearch')) {
             document.querySelector('#search-button').innerHTML = textItems.searchButton[index]
             document.querySelector('#header-search-page').innerHTML = textItems.headerSearchPage[index]
+            document.querySelector('#adv-search-link').innerHTML = textItems.headerAdvSearchPage[index]
             document.querySelector('#search-text').placeholder = textItems.placeholder[index]
         
         }
@@ -283,6 +288,7 @@ const renderText = function(lang) {
                 document.querySelector("#head-det-date").innerHTML = textItems.headDetDate[index].bold()
                 document.querySelector("#head-coll-date").innerHTML = textItems.headCollDate[index].bold()
                 document.querySelector("#head-coll").innerHTML = textItems.headColl[index].bold()
+                document.querySelector("#head-collNo").innerHTML = textItems.headCollNo[index].bold()
                 document.querySelector("#head-locality").innerHTML = textItems.headLocality[index].bold()
                 document.querySelector("#head-coordinates").innerHTML = textItems.headCoordinates[index].bold()
 
@@ -291,6 +297,11 @@ const renderText = function(lang) {
                 // document.querySelector("#previous-photo").innerHTML = textItems.previousPhoto[index]
             }
             
+            if (object.recordNumber) {
+                if (document.querySelector("#head-collNo")) {
+                    document.querySelector("#head-collNo").innerHTML = textItems.headCollNo[index].bold()
+                }
+            }
             if(!object.decimalLatitude || !object.decimalLongitude) {
                 if (document.querySelector("#map-object")) {
                     document.querySelector("#map-object").innerHTML = textItems.mapAlt[index]
@@ -330,7 +341,7 @@ const renderText = function(lang) {
             
             if (object.typeStatus) {
                 if (document.querySelector("#head-typeStatus")) {
-                    document.querySelector("#head-typeStatus").innerHTML = textItems.headTypeStatus[index]
+                    document.querySelector("#head-typeStatus").innerHTML = textItems.headTypeStatus[index].bold()
                 }
             }
             
@@ -388,6 +399,7 @@ const renderText = function(lang) {
   //          document.querySelector('#Evertebrates_header').innerHTML = textItems.evertebrater[index]
         }
         document.querySelector('#graph_header').innerHTML = textItems.graphHeader[index]
+
     }
 
     // about page

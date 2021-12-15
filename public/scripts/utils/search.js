@@ -31,6 +31,8 @@ if (sessionStorage.language) {
     language = document.querySelector('#language').value
     sessionStorage.setItem('language', language)
 }
+
+
 // empties session’s search-result (sessionStorage), removes elements from page, resets pagination variables
 // calls emptyTable() in resultElementsOnOff.js
 //      emptyResultElements() in resultElementsOnOff.js
@@ -370,6 +372,7 @@ const doSearch = (limit = 20) => {
     sessionStorage.removeItem('numberPerPage')
     sessionStorage.removeItem('propsSorted')
     document.getElementById("map-search").innerHTML = ""  
+    sessionStorage.removeItem('advSearchArray')
     // reset searchFailed value
     searchFailed = false
     resetSortedBoolean() // set all booleans in propsSorted-array in PaginateAndRender.js to false

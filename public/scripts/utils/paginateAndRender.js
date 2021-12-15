@@ -72,7 +72,11 @@ const resultTable = (subMusitData, musitData) => {
             cell10.className += "cell10";
             const cell11 = row.insertCell(10)
             if (i === -1) {     // her kommer tittellinjen
-                fillResultHeaders(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell10,cell11,musitData)
+                let org
+                if (sessionStorage.getItem('organismGroup').includes('geologi')) {
+                    org = 'geologi'
+                } else { org = 'other'}
+                fillResultHeaders(org,cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell10,cell11,musitData)
                 
                 // if (document.querySelector('#collection-select option:checked').parentElement.label === 'Specimens') {
                 //     addSortingText('coremaNoButton', 10, 'coremaNo', musitData)
@@ -229,8 +233,8 @@ const UTADRestultTable = (subUTADData, UTADData) => {
             const cell7 = row.insertCell(6)
             const cell8 = row.insertCell(7)
             const cell9 = row.insertCell(8)
-            const cell10 = row.insertCell(9)
-            const cell11 = row.insertCell(10)
+            //const cell10 = row.insertCell(9)
+            const cell11 = row.insertCell(9)
             if (i === -1) { // her kommer tittellinjen
                 fillResultHeadersUTAD(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell11,UTADData)
 
@@ -278,8 +282,8 @@ const UTADRestultTable = (subUTADData, UTADData) => {
                 cell5.className = 'row-5 row-land'
                 cell6.className = 'row-6 row-kommune'
                 cell7.className = 'row-7 row-sted'
-                cell8.className = 'row-8 row-photo'
-                cell9.className = 'row-9 row-coordinates'
+                cell8.className = 'row-8 row-sted'
+                cell9.className = 'row-9 row-photo'
                 //cell10.className = 'row-10 row-sampleType'
                 cell11.className = 'row-11 row-checkbox'
             }

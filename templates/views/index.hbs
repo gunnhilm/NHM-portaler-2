@@ -26,7 +26,15 @@
                         {{!-- cell with all text-fields to the left --}}
                          <td width="100%">
                             <div  style="width:50%; float:left">
-                                <p class="page-header" id="header-search-page"></p>
+                                <table width="100%">
+                                    <tr>
+                                        <td><p class="page-header" id="header-search-page"></p></td>
+                                        <td style="vertical-align: middle"><a href="/museum/advancedSearch" id="adv-search-link">Avansert søk</a></td>
+                                        {{!-- <p class="page-header" id="header-adv-search-page" style="display:block">Avansert søk</p> --}}
+                                    </tr>
+                                </table>
+                                
+                                
                                 {{!-- table with all text-fields to the left except title --}}
                                 <table width="100%"> 
                                     <tr>
@@ -192,5 +200,6 @@
         <script src="/museum/scripts/utils/resultElementsOnOff.js"></script>   
         <script src="/museum/scripts/utils/paginateAndRender.js"></script>
         <script src="/museum/scripts/utils/search.js"></script>   
+        <script src="/museum/scripts/utils/swapURL.js"></script>       
     </body>
 </html>
