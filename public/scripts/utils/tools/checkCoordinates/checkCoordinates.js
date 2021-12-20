@@ -65,7 +65,7 @@ return new Promise((resolve, reject) => {
         console.error('Error:', error);
         reject(error)
       });
-})
+    })
 }
 
 const getNeighbors = (valgtLKommune) => {

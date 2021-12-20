@@ -26,6 +26,7 @@ const textItems = {
     emptySearch: ["Tøm søk", "Empty search"],
     headerSearchPage: ["Søk i samlingene", "Search the collections"],
     vennligst: ["--Velg en samling--", "--Choose a collection--"],
+    simpleSearch: ["Enkelt søk", "Simple search"],
     searchButton: ["Søk", "Search"],
     //----Specimens
     total: ["Alle samlingene","All collections"],
@@ -141,6 +142,9 @@ const textItems = {
     hasPhoto: ["Har bilde", "Has photo"],
     hasNotPhoto: ["Har ikke bilde", "Has not photo"],
     irrPhoto: ["Med og uten bilde", "With or without photo"],
+    
+    listObjects: ["Søk på objektnummer", "Search with objectnumbers"],
+    placeholderList: ["Objektnumre:   345, 533, 1234   eller   345 533 1234   eller   345...1234 (fra...til)","Object numbers:   345, 553, 1234   or   345 533 1234   or   345...1234 (from...to)"],
     // object page
     searchButtonHeader: ["Tilbake til søkeresultat", "Back to search result"],
     objectPageHeader: ['Objektvisning', 'Object view'],

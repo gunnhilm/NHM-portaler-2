@@ -59,6 +59,7 @@ const fillSearchFields = () => {
     if (document.querySelector('#hasPhotoLabel')) {document.querySelector('#hasPhotoLabel').innerHTML = textItems.hasPhoto[index]}
     if (document.querySelector('#hasNotPhotoLabel')) {document.querySelector('#hasNotPhotoLabel').innerHTML = textItems.hasNotPhoto[index]}
     if (document.querySelector('#irrPhotoLabel')) {document.querySelector('#irrPhotoLabel').innerHTML = textItems.irrPhoto[index]}
+    if (document.querySelector('#obj-list-input')) {document.querySelector('#obj-list-input').placeholder = textItems.placeholderList[index]}
 }
 // renders text and images in html-elements
 // in: lang (string, «Norwegian» or «English»)
@@ -151,28 +152,44 @@ const renderText = function(lang) {
 
     // index page
     if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler')& !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools') & !location.href.includes('checkCoord') & !location.href.includes('dataError')) {
-    //if (location.href.substring(location.href.split('/',3).join('/').length).length === 12) { 
 
         //document.querySelector('#vennligst').innerHTML = textItems.vennligst[index] 
+        if(document.querySelector('#header-advSearch-page')) { document.querySelector('#header-advSearch-page').innerHTML = textItems.headerAdvSearchPage[index]}
+        if(document.querySelector('#adv-search-button')) {document.querySelector('#adv-search-button').innerHTML = textItems.searchButton[index]}
+        if(document.querySelector('#list-objects-button')) { document.querySelector('#list-objects-button').innerHTML = textItems.listObjects[index]}
+        if(document.querySelector('#search-obj-list-button')) {document.querySelector('#search-obj-list-button').innerHTML = textItems.searchButton[index]}
         
-        // advanced search page
-        if (location.href.includes('advancedSearch')) {
-            console.log('her')
-            if(document.querySelector('#header-advSearch-page')) { document.querySelector('#header-advSearch-page').innerHTML = textItems.headerAdvSearchPage[index]}
-            if(document.querySelector('#adv-search-button')) {
-                document.querySelector('#adv-search-button').innerHTML = textItems.searchButton[index]
+        // const orgGroup = sessionStorage.getItem('organismGroup')
+        fillSearchFields()
+
+        document.querySelector('#search-button').innerHTML = textItems.searchButton[index]
+        document.querySelector('#header-search-page').innerHTML = textItems.headerSearchPage[index]
+        //document.querySelector('#adv-search-link').innerHTML = textItems.headerAdvSearchPage[index]
+        document.querySelector('#search-text').placeholder = textItems.placeholder[index]
+        //document.querySelector('#simple-accordion').innerHTML = textItems.simpleSearch[index]
+        //document.querySelector('#advanced-accordion').innerHTML = textItems.headerAdvSearchPage[index]
+        document.querySelector('#advanced-title').innerHTML = textItems.headerAdvSearchPage[index]
+
+        if (document.getElementById('adv-accordion-icon')) {
+            if (document.getElementsByClassName('panel')[0].style.display === 'block') {
+                document.getElementById('adv-accordion-icon').innerHTML = '-'
+            } else {
+                document.getElementById('adv-accordion-icon').innerHTML = '+'
             }
-            // const orgGroup = sessionStorage.getItem('organismGroup')
-            // console.log(orgGroup)
-            fillSearchFields()
         }
-        if (!location.href.includes('advancedSearch')) {
-            document.querySelector('#search-button').innerHTML = textItems.searchButton[index]
-            document.querySelector('#header-search-page').innerHTML = textItems.headerSearchPage[index]
-            document.querySelector('#adv-search-link').innerHTML = textItems.headerAdvSearchPage[index]
-            document.querySelector('#search-text').placeholder = textItems.placeholder[index]
         
+        if (document.getElementById('objectlist-accordion-icon')) {
+            if (document.getElementsByClassName('panel')[1].style.display === 'block') {
+                document.getElementById('objectlist-accordion-icon').innerHTML = '-'
+            } else {
+                document.getElementById('objectlist-accordion-icon').innerHTML = '+'
+            }
         }
+        
+        //document.querySelector('#list-objects-accordion').innerHTML = textItems.listObjects[index]
+        document.querySelector('#objectlist-title').innerHTML = textItems.listObjects[index]
+        document.querySelector('#obj-list-input').innerHTML = textItems.placeholderList[index]
+            
         if (document.querySelector('#botanikk')) {document.querySelector('#botanikk').innerHTML = textItems.botanikk[index]}
         if (document.querySelector('#zoologi')) {document.querySelector('#zoologi').innerHTML = textItems.zoologi[index]}
         if (document.querySelector('#geologi')) {document.querySelector('#geologi').innerHTML = textItems.geologi[index]}
@@ -182,7 +199,6 @@ const renderText = function(lang) {
         //document.querySelector('#select-collection-label').innerHTML = textItems.selectCollection[index]
         document.querySelector('#hits-per-page').innerHTML = textItems.hitsPerPage[index]
         //console.log(sessionStorage.getItem('string'))
-        console.log('her')
         if (sessionStorage.getItem('string')) {
             
             document.getElementById("head-nb-hits").innerHTML = textItems.nbHitsText[index]

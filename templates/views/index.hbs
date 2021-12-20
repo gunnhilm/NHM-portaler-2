@@ -29,7 +29,7 @@
                                 <table width="100%">
                                     <tr>
                                         <td><p class="page-header" id="header-search-page"></p></td>
-                                        <td style="vertical-align: middle"><a href="/museum/advancedSearch" id="adv-search-link">Avansert søk</a></td>
+                                        {{!-- <td style="vertical-align: middle"><a href="/museum/advancedSearch" id="adv-search-link">Avansert søk</a></td> --}}
                                         {{!-- <p class="page-header" id="header-adv-search-page" style="display:block">Avansert søk</p> --}}
                                     </tr>
                                 </table>
@@ -58,17 +58,83 @@
                                         <td colspan = "3">
                                             <br>
                                             <br>
-                                            <form style="display:none" id="search-form">
-                                                <div  style="float: left; width:100%">
-                                                    <input id="search-text" type="text" class="input" style="height:30px;  width:99%; border-radius:4px; border-width: 1px; "   title="Skriv inn søkeord">
-                                                    
-                                                </div>
-                                                <br><br><br>
-                                                <div style="float: right">
-                                                    <button class="blue-button" id="search-button" title="Søk">Søk</button>
-                                                </div>
-                                            </form>
+                                            {{!-- <button class="accordion" id="simple-accordion" style="display:none">Enkelt søk</button> --}}
+                                            <div id="search-type" style="display:none">Enkelt søk:</div>
+                                            <div>
+                                                <br>
+                                                <form id="search-form" style="display:none">
+                                                    <div  style="float: left; width:85%">
+                                                        <input id="search-text" type="text" class="input"    title="Skriv inn søkeord">
+                                                        
+                                                    </div>
+                                                    {{!-- <br><br><br> --}}
+                                                    <div style="float: right; width:60px; display: inline">
+                                                        <button class="blue-button" id="search-button" title="Søk" style="display:none">Søk</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <br><br><br>
+                                            <button class="accordion" id="advanced-accordion" style="display:none"><span id="advanced-title">Avansert søk </span><span class="accordion-icon" id="adv-accordion-icon"></span></button>
+                                            <div class="panel">
+                                                <br>
+                                                <form id="adv-search-form">
+                                                    <div  style="float: left; width:100%">
+                                                        <table id="adv_table">
+                                                            <tr>
+                                                                <td class="adv_cell">
+                                                                    {{!-- <input id="adv-object" type="text" class="input-tight"    title="Skriv inn søkeord"><br><br> --}}
+                                                                    <input id="adv-species" type="text" class="input-tight"    title="Skriv inn søkeord"><br><br>
+                                                                    <input id="adv-collector" type="text" class="input-tight"    title="Skriv inn søkeord"><br><br>
+                                                                    <input id="adv-date" type="text" class="input-tight"    title="Skriv inn søkeord"><br><br>
+                                                                    <input id="adv-country" type="text" class="input-tight"    title="Skriv inn søkeord"><br><br>
+                                                                    <input id="adv-county" type="text" class="input-tight"    title="Skriv inn søkeord"><br><br>
+                                                                </td>
+                                                                <td class="adv_cell">
+                                                                    <input id="adv-municipality" type="text" class="input-tight"    title="Skriv inn søkeord"><br><br>
+                                                                    <input id="adv-locality" type="text" class="input-tight"    title="Skriv inn søkeord"><br><br>
+                                                                    
+                                                                    <input id="adv-collNo" type="text" class="input-tight"    title="Skriv inn søkeord"><br><br>
+                                                                    <input id="adv-taxType" type="text" class="input-tight"    title="Skriv inn søkeord"><br><br>
+
+                                                                    <div id="radio-form" style="float:left; width:200px">
+                                                                        <input type="radio" name="hasPhotoRadio" value="has" id="hasPhoto">
+                                                                        <label for="hasPhoto" id="hasPhotoLabel" class="label-tight" ></label>
+                                                                    </div>
+                                                                    <div id="radio-form" style="float:left; width:200px">
+                                                                        <input type="radio" name="hasPhotoRadio" value="hasNot" id="hasNotPhoto">
+                                                                        <label for="hasNotPhoto" id="hasNotPhotoLabel" class="label-tight"></label>
+                                                                    </div>
+                                                                    <div id="radio-form" style="float:left; width:200px">
+                                                                        <input type="radio" name="hasPhotoRadio" value="irr" id="irrPhoto">
+                                                                        <label for="irrPhoto" id="irrPhotoLabel" class="label-tight"></label>
+                                                                    </div>
+                                                                     <div style="float: right; width:60px; display:inline">
+                                                                        <button class="blue-button" id="adv-search-button" style="display=none"></button>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                        
+                                                       
+                                                    </div>
+                                                    <br><br><br>
+                                                </form>
+                                            </div>
                                             <br>
+                                            <button class="accordion" id="list-objects-accordion" style="display:none"><span id="objectlist-title">Søk med objektnummere</span><span class = "accordion-icon" id="objectlist-accordion-icon"></span></button>
+                                            <div class="panel">
+                                                <br>
+                                                <form id="obj-list-form">
+                                                    <div  style="float: left; width:85%">
+                                                        <input id="obj-list-input" type="text" class="input" title="Skriv inn søkeord"><br><br>
+                                                        <br><br>
+                                                    </div>
+                                                    
+                                                    <div style="float: right; display:inline">
+                                                        <button class="blue-button" id="search-obj-list-button"></button>
+                                                    </div>
+                                                </form>
+                                            </div>
                                             <img id="please-wait" src="/museum/images/ajax-loader.gif" alt="Please Wait"  style="display:none" valign="top">
                                         </td>
                                     </tr>
@@ -200,6 +266,6 @@
         <script src="/museum/scripts/utils/resultElementsOnOff.js"></script>   
         <script src="/museum/scripts/utils/paginateAndRender.js"></script>
         <script src="/museum/scripts/utils/search.js"></script>   
-        <script src="/museum/scripts/utils/swapURL.js"></script>       
+        <script src="/museum/scripts/utils/advancedAccordion.js"></script>   
     </body>
 </html>

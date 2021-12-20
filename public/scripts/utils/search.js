@@ -38,12 +38,35 @@ if (sessionStorage.language) {
 //      emptyResultElements() in resultElementsOnOff.js
 // is called by emptySearchButton.eventlistener, upateFooter() when error
 const emptySearch = (comesFrom) => {
+    console.log('emptySearch')
     console.log(comesFrom)
-    if (comesFrom !== "collection_listener") {
+    // if (comesFrom !== "collection_listener") {
+    //     sessionStorage.removeItem('collection')
+    //     collection.value = "vennligst"
+    // }
+
+    if (comesFrom === "organism-button") {
         sessionStorage.removeItem('collection')
         collection.value = "vennligst"
     }
+
+    // close accordions
+    document.getElementsByClassName('panel')[0].style.display = 'none'
+    document.getElementsByClassName('panel')[1].style.display = 'none'
+
+    // remove search-terms
+    const inputFields = document.getElementsByClassName('input-tight')
+    const inputFields2 = document.getElementsByClassName('input')
+    for (el of inputFields) {
+        el.value = ''
+    }
+    for (el of inputFields2) {
+        el.value = ''
+    }
     
+    
+
+
     sessionStorage.removeItem('string')
     sessionStorage.removeItem('searchLineNumber')
     sessionStorage.removeItem('search-text')
@@ -60,12 +83,15 @@ const emptySearch = (comesFrom) => {
         })
     }
 
+
+    // document.getElementById('simple-button').style.display = "none"
+    // document.getElementById('advanced-button').style.display = "none"
+    // document.getElementById('list-objects-accordion').style.display = "none"
+    // document.getElementById('head-nb-hits').style.display = "none"
+    // document.getElementById('search-form').style.display = "none"
+    // document.getElementById("search-text").value = ""
     
-    document.getElementById('head-nb-hits').style.display = "none"
-    document.getElementById('search-form').style.display = "none"
-    document.getElementById("search-text").value = ""
-    
-    document.getElementById('hits-row').style.display = "none"
+    // document.getElementById('hits-row').style.display = "none"
     emptyTable()
     
     // remove old map if any and empty array
@@ -119,7 +145,7 @@ function makeButtons() {
     buttonArray.forEach(el => {
         el.addEventListener('click', (e) => {
             if (document.getElementById('search-form').style.display == 'block') {
-                emptySearch()
+                emptySearch('organism-button')
             }
             addCollectionsToSelect(el.id)
             e.preventDefault()
@@ -427,6 +453,7 @@ const doSearch = (limit = 20) => {
                                 try {
                                     // hvis vi får flere enn 2000 treff må vi si i fra om det
                                     if(parsedResults.data.length > 999){
+                                        console.log('rødt')
                                         nbHitsElement.textContent = textItems.tooManyHits[index]
                                         nbHitsElement.style.color = 'red'
                                     } else {
@@ -506,8 +533,12 @@ collection.addEventListener('change', (e) => {
     e.preventDefault()
     updateFooter()
     emptySearch("collection_listener")
+    //if (document.querySelector('#simple-accordion')) {document.querySelector('#simple-accordion').style.display = 'block'}
     searchForm.style.display = "block"
-    document.querySelector('#hits-row').style.display = 'block'
+    
+    document.querySelector('#advanced-accordion').style.display = 'block'
+    document.querySelector('#list-objects-accordion').style.display = 'block'
+
     errorMessage.innerHTML = ""
 
     if (document.getElementById("search-text").style.display === "none" || document.getElementById("search-button").style.display === "none") {
