@@ -262,6 +262,11 @@ const renderText = function(lang) {
         const id = urlParams.get('id')
         const object = allObject.find(x => x.catalogNumber === id)
         
+        document.querySelector("#back-to-result").innerHTML = textItems.searchButtonHeader[index]
+        document.querySelector("#next-object").innerHTML = textItems.nextObject[index]
+        document.querySelector("#previous-object").innerHTML = textItems.previousObject[index]
+        
+
         document.querySelector("#photo-box").alt = textItems.photoAlt[index]
         document.querySelector("#next-photo").innerHTML = textItems.nextPhoto[index]
         document.querySelector("#previous-photo").innerHTML = textItems.previousPhoto[index]
@@ -304,7 +309,7 @@ const renderText = function(lang) {
                 document.querySelector("#head-det-date").innerHTML = textItems.headDetDate[index].bold()
                 document.querySelector("#head-coll-date").innerHTML = textItems.headCollDate[index].bold()
                 document.querySelector("#head-coll").innerHTML = textItems.headColl[index].bold()
-                document.querySelector("#head-collNo").innerHTML = textItems.headCollNo[index].bold()
+                //document.querySelector("#head-collNo").innerHTML = textItems.headCollNo[index].bold()
                 document.querySelector("#head-locality").innerHTML = textItems.headLocality[index].bold()
                 document.querySelector("#head-coordinates").innerHTML = textItems.headCoordinates[index].bold()
 
@@ -314,6 +319,7 @@ const renderText = function(lang) {
             }
             
             if (object.recordNumber) {
+                console.log('har collno')
                 if (document.querySelector("#head-collNo")) {
                     document.querySelector("#head-collNo").innerHTML = textItems.headCollNo[index].bold()
                 }

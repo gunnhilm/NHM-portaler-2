@@ -16,7 +16,29 @@
             {{>header}}
             <br><br>
             <div class="content">
-                <button id="back-to-result" style="float: right" onclick="history.back()">Tilbake til søkeresultat</button>
+                
+                <table style="float: right">
+                    <tr>
+                        <td>
+                            <div class="objectPagesButtonClass"><button id="next-object">Neste objekt </button> </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="objectPagesButtonClass"><button id="previous-object">Forrige objekt </button></div>
+                        </td>
+                        <td>
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {{!-- <button id="back-to-result" style="float: right" onclick="history.back()">Tilbake til søkeresultat</button> --}}
+                            <button id="back-to-result" style="float: right">Tilbake til søkeresultat</button>
+                        </td>
+                    </tr>
+
+                </table>
                 <br>
                 <div style="width:100%">
                     <div class="page-header" id="musit-regno" style="width:40%; display: inline-block"></div>
@@ -77,6 +99,7 @@
                 <script src="/museum/scripts/utils/ol/ol.js"></script>
                 <script src="/museum/scripts/utils/map.js"></script>
                 <script src="/museum/scripts/utils/object.js"></script>
+                 
             </div>
         </div>
     </body>

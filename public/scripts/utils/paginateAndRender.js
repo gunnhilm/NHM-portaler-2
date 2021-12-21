@@ -459,9 +459,6 @@ function getNumberOfPages(numberPerPage) {
 // calls load()
 // is called in index.hbs when nextPage-button is created
 function nextPage() {
-    console.log('np function')
-    console.log(currentPage)
-    console.log(sessionStorage.getItem('currentPage'))
     if (currentPage < numberOfPages) {
         currentPage += 1    
         sessionStorage.setItem('currentPage', currentPage)

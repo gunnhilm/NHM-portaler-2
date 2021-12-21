@@ -276,6 +276,7 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
                 let source = getSource(museum, samling)
                 if (source === "corema") {
                     catNoInFile = catNoInFile.substring(catNoInFile.indexOf('-',catNoInFile.indexOf('-')+1)+1,catNoInFile.indexOf('/'))
+                    
                 }
 
 

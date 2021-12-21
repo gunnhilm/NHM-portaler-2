@@ -44,6 +44,11 @@ const loadStringObject = () => {
     }
 }
 
+document.getElementById("next-photo").onclick = () => {
+    index = changeImage(index, 'f', smallImageList, imageList)
+    document.getElementById("nb-photos").innerHTML = (index+1)  + '/' + imageList.length 
+    
+}
 
 //hide next-photo-button, only in use when more than one photo
 document.getElementById("next-photo").style.display = "none"
@@ -53,11 +58,52 @@ document.getElementById("nb-photos").style.display = "none"
 //get the object from session storage
 const allObject = loadStringObject()
 
+
 // get the id from the url
 const urlParams = new URLSearchParams(window.location.search)
 const id = urlParams.get('id')
 
 const object = allObject.find(x => x.catalogNumber === id)
+console.log(object)
+
+
+// functionality to next-object-buttons
+let museumURLPath = ''
+if (window.location.href.includes('/um')) { 
+    museumURLPath = urlPath + "/um"
+} else if (window.location.href.includes('tmu')) {
+    museumURLPath = urlPath + "/tmu"
+} else if (window.location.href.includes('nbh')) {
+    museumURLPath = urlPath + "/nbh"
+} else {
+    museumURLPath = urlPath + "/nhm"
+}
+
+// back-to-result-button
+document.getElementById("back-to-result").onclick = () => {
+    window.location.href=`${museumURLPath}`
+}
+
+
+const nextObject = allObject[allObject.indexOf(object)+1]
+const previousObject = allObject[allObject.indexOf(object)-1]
+console.log(allObject.length-1)
+console.log(allObject.indexOf(object))
+
+document.getElementById("next-object").disabled = allObject.indexOf(object) == allObject.length-1 ? true : false;
+document.getElementById("previous-object").disabled = allObject.indexOf(object) == 0 ? true : false;
+
+document.getElementById("next-object").onclick = () => {
+    if (allObject.indexOf(object) !== allObject.length-1) {
+        window.location.href=`${museumURLPath}/object/?id=${nextObject.catalogNumber}`
+    }
+}
+document.getElementById("previous-object").onclick = () => {
+    if (allObject.indexOf(object) !== 0) {
+        window.location.href=`${museumURLPath}/object/?id=${previousObject.catalogNumber}`
+    }
+    
+}
 
 
 // facilitates correctly formatted locality information for a museum object
@@ -139,12 +185,14 @@ const regnoEl = `<span>${prefix}${object.catalogNumber}</span>`
 let headCollNo = ''
 let collNo = ''
 if( object.recordNumber ) {
+    console.log('har collno')
     collNo = `<span>${object.recordNumber}</span>`
 } 
 
 let headArtsobs = ''
 let artsobsID = ''
 if( object.ArtObsID ) {
+    console.log('har artsobsno')
     artsobsID = `<span>${object.ArtObsID}</span>`
 } 
 
@@ -420,6 +468,8 @@ const showData = () => {
         document.querySelector("#species-name").innerHTML = `<span style=font-style:italic>${nameArray[0]}</span>` + ' ' + `<span>${nameArray[1]}</span>`
         document.querySelector("#coll-date").innerHTML = `<span>${object.eventDate}</span>`
         document.querySelector("#coll").innerHTML = `<span>${object.recordedBy}</span>`
+        console.log(collNo)
+        console.log(artsobsID)
         document.querySelector("#collNo").innerHTML = collNo
         document.querySelector("#det").innerHTML =  `<span>${object.identifiedBy}</span>`
         document.querySelector("#det-date").innerHTML = `<span>${object.dateIdentified}</span>`

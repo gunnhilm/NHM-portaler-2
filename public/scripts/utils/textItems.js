@@ -147,6 +147,8 @@ const textItems = {
     placeholderList: ["Objektnumre:   345, 533, 1234   eller   345 533 1234   eller   345...1234 (fra...til)","Object numbers:   345, 553, 1234   or   345 533 1234   or   345...1234 (from...to)"],
     // object page
     searchButtonHeader: ["Tilbake til søkeresultat", "Back to search result"],
+    nextObject: ["Neste objekt", "Next object"],
+    previousObject: ["Forrige objekt", "Previous object"],
     objectPageHeader: ['Objektvisning', 'Object view'],
     headSpeciesName: ['Vitenskapelig navn: ', 'Scientific name: '],
     headDet: ['Bestemt av: ', 'Determined by: '],

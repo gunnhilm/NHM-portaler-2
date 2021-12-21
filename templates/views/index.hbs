@@ -45,36 +45,36 @@
                                     </tr>
                                     <tr>
                                         {{!-- cell-row with select-collection and search -button --}}
-                                        <td id = 'select-cell' style="vertical-align: middle; display: none;" colspan="2">
+                                        <td id = 'select-cell' style="vertical-align: middle; display:none" colspan="2">
                                             <br>
-                                            <label for="collection-select" id="select-collection-label" style="display:none"></label>
-                                            <select id="collection-select"  style=" height:30px; border-radius:4px; overflow-y:auto; display:none" ></select>
+                                            <label for="collection-select" id="select-collection-label"></label>
+                                            <select id="collection-select"  style=" height:30px; border-radius:4px; overflow-y:auto" ></select>
                                         </td>
                                         <td  colspan="2">
                                             <button class="blue-button" id="empty-search-button" style="display:none" title="Slett søke resultater">Tøm søk</button>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td colspan = "3">
+                                        <td id="search-cell" style="display:none" colspan = "3">
                                             <br>
                                             <br>
                                             {{!-- <button class="accordion" id="simple-accordion" style="display:none">Enkelt søk</button> --}}
-                                            <div id="search-type" style="display:none">Enkelt søk:</div>
+                                            {{!-- <div id="search-type" >Enkelt søk:</div> --}}
                                             <div>
                                                 <br>
-                                                <form id="search-form" style="display:none">
+                                                <form id="search-form">
                                                     <div  style="float: left; width:85%">
                                                         <input id="search-text" type="text" class="input"    title="Skriv inn søkeord">
                                                         
                                                     </div>
                                                     {{!-- <br><br><br> --}}
                                                     <div style="float: right; width:60px; display: inline">
-                                                        <button class="blue-button" id="search-button" title="Søk" style="display:none">Søk</button>
+                                                        <button class="blue-button" id="search-button" title="Søk" >Søk</button>
                                                     </div>
                                                 </form>
                                             </div>
                                             <br><br><br>
-                                            <button class="accordion" id="advanced-accordion" style="display:none"><span id="advanced-title">Avansert søk </span><span class="accordion-icon" id="adv-accordion-icon"></span></button>
+                                            <button class="accordion" id="advanced-accordion" ><span id="advanced-title">Avansert søk </span><span class="accordion-icon" id="adv-accordion-icon"></span></button>
                                             <div class="panel">
                                                 <br>
                                                 <form id="adv-search-form">
@@ -109,7 +109,7 @@
                                                                         <label for="irrPhoto" id="irrPhotoLabel" class="label-tight"></label>
                                                                     </div>
                                                                      <div style="float: right; width:60px; display:inline">
-                                                                        <button class="blue-button" id="adv-search-button" style="display=none"></button>
+                                                                        <button class="blue-button" id="adv-search-button" ></button>
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -120,8 +120,8 @@
                                                     <br><br><br>
                                                 </form>
                                             </div>
-                                            <br>
-                                            <button class="accordion" id="list-objects-accordion" style="display:none"><span id="objectlist-title">Søk med objektnummere</span><span class = "accordion-icon" id="objectlist-accordion-icon"></span></button>
+                                            <br><br>
+                                            <button class="accordion" id="list-objects-accordion" ><span id="objectlist-title">Søk med objektnummere</span><span class = "accordion-icon" id="objectlist-accordion-icon"></span></button>
                                             <div class="panel">
                                                 <br>
                                                 <form id="obj-list-form">

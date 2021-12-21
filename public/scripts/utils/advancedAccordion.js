@@ -3,8 +3,6 @@
 var acc = document.getElementsByClassName("accordion");
 var accIcons = document.getElementsByClassName("accordion-icon")
 var i;
-console.log(acc)
-console.log(accIcons)
 for (i = 0; i < acc.length; i++) {
     acc[i].addEventListener("click", function() {
         /* Toggle between adding and removing the "active" class,
@@ -135,6 +133,7 @@ const doAdvancedSearch = (limit = 20) => {
                                         nbHitsElement.style.color = 'red'
                                     } else {
                                         nbHitsElement.textContent = parsedResults.data.length
+                                        nbHitsElement.style.color = 'black'
                                     }
                                     nbHitsHeader.innerHTML = textItems.nbHitsText[index]
                                     nbHitsHeader.style.display = 'inline'
@@ -279,6 +278,7 @@ const doObjListSearch = (limit = 20) => {
                                         nbHitsElement.style.color = 'red'
                                     } else {
                                         nbHitsElement.textContent = parsedResults.data.length
+                                        nbHitsElement.style.color = 'black'
                                     }
                                     nbHitsHeader.innerHTML = textItems.nbHitsText[index]
                                     nbHitsHeader.style.display = 'inline'
