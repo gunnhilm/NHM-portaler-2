@@ -338,6 +338,10 @@ app.get('*/getDOI', (req, res) => {
     res.render('getDOI', {})
 })
 
+app.get('*/artsObs', (req, res) => {
+    res.render('artsObs', {})
+})
+
 // tool-page for checking if coordinates are within correct region
 app.get('*/checkCoord', (req, res) => {
     if (!req.query.museum) {

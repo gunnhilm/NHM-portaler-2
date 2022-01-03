@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Hent data fra Artsobservasjoner</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        
+    </head>
+    <body>
+        <div class="wrapper">
+            {{>header}}
+            
+            <div class="content">
+            <br><br><br>
+            <form  method="post">
+
+                    <table>
+                    <tr>
+                        <label for="museum-select" id="select-museum-label"></label>
+                        <select id="museum-select" style="height:30px; border-radius:4px;">
+                            <option value="" id="selectMuseum">Velg museum</option>
+                            <option value="nhm" id="nhm">NHM</option>
+                            <option value="um" id="um">UM</option>
+                            <option value="vm" id="vm">VM</option>
+                            <option value="tmu" id="tmu">TMU</option>
+                            <option value="nbh" id="nbh">NBH</option>
+                            <option value="other-museum" id="other-museum">other</option>
+                        </select>
+                    </tr>
+                    &nbsp
+                    &nbsp
+                    <tr>
+                                    
+                        <label for="collection-select" id="select-collection-label"></label>
+                        <select id="collection-select" style="height:30px; border-radius:4px;">
+                            <option value="" id="selectCollection">Velg samling</option>
+                            <option value="karplanter" id="selectCollection">Karplanter</option>
+                            <option value="sopp" id="selectCollection">Sopp</option>
+                            <option value="lav" id="selectCollection">Lav</option>
+                            <option value="moser" id="selectCollection">Moser</option>
+                            <option value="entomologi" id="selectCollection">Insekter</option>
+                            <option value="annen" id="selectCollection">other</option>
+                        </select>
+                        
+                    </tr>
+                    <tr>
+                        <br>
+                        <br>
+                        <td>
+                            <label for="artsObs-Numbers" id="pasteRequest">MUSIT nummerserie starter på: </label>
+                            <br>
+                            <textarea id="musit-Numbers" name="musit-Numbers" rows="1" cols="10"></textarea>
+                        </td>
+
+                    </tr>
+                    <tr>
+ 
+                        <td>  <br>              
+                            <label for="artsObs-Numbers" id="pasteRequest">Lim inn artsobsnumre</label>
+                            <br>
+                            <textarea id="artsObs-Numbers" name="artsObs-Numbers" rows="10" cols="50"></textarea>
+                            <br><br>
+                        </td>
+                        <td><div id="container"><br></div></td>
+                    </table>
+
+                <input type="submit" value="Submit" style="padding:6px; font-size:16px"> &nbsp
+                <input type="reset" style="padding:6px; font-size:16px" id="resetButton">
+                <br>
+                <br>
+
+            </form>
+            </div>
+            {{>footer}}
+        </div>
+        <link rel="stylesheet" href="/museum/styles/styles.css">
+        <link id="museumStyle" rel="stylesheet" type="text/css" href= "">
+        <script src="/museum/scripts/utils/showCorrectMuseum.js"></script>
+        <script src="/museum/scripts/utils/textItems.js"></script>
+        <script src="/museum/scripts/utils/renderLang.js"></script>
+        <script src="/museum/scripts/utils/papaparse/papaparse.min.js"></script>
+        <script src="/museum/scripts/utils/tools/artsObs/getArtsObsData.js"></script>
+
+    </body>
+
+
+</html>
