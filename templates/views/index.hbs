@@ -19,48 +19,45 @@
                 <table width="100%">
                     <tr>
                         <td>
-                        <br><br><br><br>
+                        <br>
                         </td>
                     </tr>
                     <tr>
                         {{!-- cell with all text-fields to the left --}}
                          <td width="100%">
-                            <div  style="width:50%; float:left">
+                            <div  style="width:50%; float:left; ">
                                 <table width="100%">
                                     <tr>
-                                        <td><p class="page-header" id="header-search-page"></p></td>
-                                        {{!-- <td style="vertical-align: middle"><a href="/museum/advancedSearch" id="adv-search-link">Avansert søk</a></td> --}}
-                                        {{!-- <p class="page-header" id="header-adv-search-page" style="display:block">Avansert søk</p> --}}
+                                        <td style=""><p class="page-header" id="header-search-page"></p></td>
+                                        
                                     </tr>
                                 </table>
                                 
                                 
                                 {{!-- table with all text-fields to the left except title --}}
-                                <table width="100%"> 
+                                <table width="100%" style="; border-color:aqua"> 
                                     <tr>
-                                        <td style="vertical-align: middle" colspan="2" id ="button-cell">
+                                        <td style="vertical-align: middle;" colspan="3" id ="button-cell">
                                             
                                             <br>
                                         </td>
                                     </tr>
                                     <tr>
                                         {{!-- cell-row with select-collection and search -button --}}
-                                        <td id = 'select-cell' style="vertical-align: middle; display:none" colspan="2">
+                                        <td id = 'select-cell' style="vertical-align: middle; display:none; ; border-color:red" colspan="2">
                                             <br>
                                             <label for="collection-select" id="select-collection-label"></label>
                                             <select id="collection-select"  style=" height:30px; border-radius:4px; overflow-y:auto" ></select>
                                         </td>
-                                        <td  colspan="2">
-                                            <button class="blue-button" id="empty-search-button" style="display:none" title="Slett søke resultater">Tøm søk</button>
+                                        <td  colspan="1" style="; border-color:blue">
+                                            <button class="blue-button" id="empty-search-button" style="display:none; " title="Slett søke resultater">Tøm søk</button>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td id="search-cell" style="display:none" colspan = "3">
-                                            <br>
-                                            <br>
-                                            {{!-- <button class="accordion" id="simple-accordion" style="display:none">Enkelt søk</button> --}}
-                                            {{!-- <div id="search-type" >Enkelt søk:</div> --}}
-                                            <div>
+                                        <td id="search-cell" style="display:none; ; border-color:tomato" colspan="3">
+                                            
+                                            
+                                            <div style="; border-color:burlywood">
                                                 <br>
                                                 <form id="search-form">
                                                     <div  style="float: left; width:85%">
@@ -75,59 +72,23 @@
                                             </div>
                                             <br><br><br>
                                             <button class="accordion" id="advanced-accordion" ><span id="advanced-title">Avansert søk </span><span class="accordion-icon" id="adv-accordion-icon"></span></button>
-                                            <div class="panel">
+                                            <div class="panel" id="advanced-panel" style="">
                                                 <br>
                                                 <form id="adv-search-form">
-                                                    <div  style="float: left; width:100%">
+                                                    <div  style="float: left; width:100%; ">
                                                         <table id="adv_table">
-                                                            <tr>
-                                                                <td class="adv_cell">
-                                                                    {{!-- <input id="adv-object" type="text" class="input-tight"    title="Skriv inn søkeord"><br><br> --}}
-                                                                    <input id="adv-species" type="text" class="input-tight"    title="Skriv inn søkeord"><br><br>
-                                                                    <input id="adv-collector" type="text" class="input-tight"    title="Skriv inn søkeord"><br><br>
-                                                                    <input id="adv-date" type="text" class="input-tight"    title="Skriv inn søkeord"><br><br>
-                                                                    <input id="adv-country" type="text" class="input-tight"    title="Skriv inn søkeord"><br><br>
-                                                                    <input id="adv-county" type="text" class="input-tight"    title="Skriv inn søkeord"><br><br>
-                                                                </td>
-                                                                <td class="adv_cell">
-                                                                    <input id="adv-municipality" type="text" class="input-tight"    title="Skriv inn søkeord"><br><br>
-                                                                    <input id="adv-locality" type="text" class="input-tight"    title="Skriv inn søkeord"><br><br>
-                                                                    
-                                                                    <input id="adv-collNo" type="text" class="input-tight"    title="Skriv inn søkeord"><br><br>
-                                                                    <input id="adv-taxType" type="text" class="input-tight"    title="Skriv inn søkeord"><br><br>
-
-                                                                    <div id="radio-form" style="float:left; width:200px">
-                                                                        <input type="radio" name="hasPhotoRadio" value="has" id="hasPhoto">
-                                                                        <label for="hasPhoto" id="hasPhotoLabel" class="label-tight" ></label>
-                                                                    </div>
-                                                                    <div id="radio-form" style="float:left; width:200px">
-                                                                        <input type="radio" name="hasPhotoRadio" value="hasNot" id="hasNotPhoto">
-                                                                        <label for="hasNotPhoto" id="hasNotPhotoLabel" class="label-tight"></label>
-                                                                    </div>
-                                                                    <div id="radio-form" style="float:left; width:200px">
-                                                                        <input type="radio" name="hasPhotoRadio" value="irr" id="irrPhoto">
-                                                                        <label for="irrPhoto" id="irrPhotoLabel" class="label-tight"></label>
-                                                                    </div>
-                                                                     <div style="float: right; width:60px; display:inline">
-                                                                        <button class="blue-button" id="adv-search-button" ></button>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
                                                         </table>
-                                                        
-                                                       
                                                     </div>
-                                                    <br><br><br>
                                                 </form>
                                             </div>
                                             <br><br>
                                             <button class="accordion" id="list-objects-accordion" ><span id="objectlist-title">Søk med objektnummere</span><span class = "accordion-icon" id="objectlist-accordion-icon"></span></button>
-                                            <div class="panel">
+                                            <div class="panel" id="obj-panel">
                                                 <br>
                                                 <form id="obj-list-form">
                                                     <div  style="float: left; width:85%">
                                                         <input id="obj-list-input" type="text" class="input" title="Skriv inn søkeord"><br><br>
-                                                        <br><br>
+                                                        
                                                     </div>
                                                     
                                                     <div style="float: right; display:inline">
@@ -139,8 +100,8 @@
                                         </td>
                                     </tr>
                                     <tr id="hits-row" style="display:none">    
-                                        <td id="hits-per-page" style="vertical-align:middle; white-space: nowrap; width: 110px; " title="Antall treff per side"></td>
-                                        <td  style="vertical-align:middle;  " >
+                                        <td id="hits-per-page" style="vertical-align:middle; white-space: nowrap; width: 110px; ; border-color:yellow" title="Antall treff per side" colspan="1"></td>
+                                        <td  style="vertical-align:middle; ; border-color:green " colspan="1">
                                             <select id="number-per-page" style=" height:30px; border-radius:4px;" title="Antall treff per side">
                                                 <option value="10">10</option>
                                                 <option value="20" selected="selected">20</option>
@@ -149,43 +110,28 @@
                                                 <option value="4000">All (max 1000)</option>
                                             </select>
                                         </td>
-                                        <td id="error-message" title="Feil melding"></td>
-                                    </tr>
-                                    <tr>
-                                        <td><br><br></td>
+                                        <td id="error-message" title="Feil melding" style="; border-color:violet" colspan="1">feilmelding</td>
                                         
                                     </tr>
                                     <tr>    
-                                        <td style="vertical-align:middle; white-space: nowrap; ">
-                                            <div id="head-nb-hits"style="display: inline-block"></div>
-                                            <div id= "nb-hits"style="display: inline-block"></div>
-                                        </td>
-                                        <td  style="vertical-align:middle; white-space: nowrap;" ></td>
-                                        <td style="vertical-align: middle; ">
-                                            <button class="blue-button" id="download-button"  style="display:none" title="Last ned resultater">Last ned resultat<i class="fa fa-download"></i></button>
+                                        <td style="vertical-align:middle; white-space: nowrap; " colspan="3">
                                         </td>
                                    
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td style="vertical-align: middle;">
-                                            <button class="blue-button" id="download-photo-button"  style="display:none" title="Last ned bilder"><i class="fa fa-download"></i>Last ned bilder</button>
-                                        </td>
                                     </tr>
                                 </table>
                             </div>
                         {{!-- table cell with map --}}
-                            <div id="mapDiv" style="width:49%; min-width:254px;  float:left; margin-left:5px; ">
-                                <br>
-                                <div id="map-search" class="map-search"></div>
+                            <div id="mapDiv" style="width:49%; min-width:254px;  float:left; margin-left:5px;  ">
+                                <br><br>
+                                <div id="map-search" class="map-search" style=""></div>
                                 <div id="popup" class="ol-popup">
                                     <a href="#" id="popup-closer" class="ol-popup-closer"></a>
                                     <div id="popup-content"></div>
                                 </div>
         
-                                <table align="right" >
+                                <table align="right" style="">
                                     <tr >
+                                        
                                         <td >
                                             <button id="zoom-button" style="display:none" title="Bruksanvisning kart">Zoom</button>
                                             <div id="zoom-modal" class="modal">
@@ -208,15 +154,16 @@
                                             <button id="checkedInMap" style = "display:none" title="Vis valgt poster i kart">Vis valgte poster i kart</button>
                                         </td>
                                     </tr>
+                                  
                                 </table>
                             </div>
                         </td>
                     </tr>
                 </table>
 
-                <div style="text-align:center;">
-                    <div class="pagination-container1">
-                        <div class="pagination-div1">
+                <div style="text-align:center; overflow:hidden">
+                    <div class="pagination-container1;overflow:hidden">
+                        <div class="pagination-div1" style="float:left">
                             <input type="button" id="first1" onclick="firstPage()" class="descrete-button" style="display:none" value="Vis første side"/>
                             <input type="button" id="previous1" onclick="previousPage()" class="descrete-button" style="display:none" value="Vis forrige side"/>
                             <input type="button" id="next1" onclick="nextPage()" class="descrete-button" style="display:none" value="Vis neste side"/>
@@ -225,9 +172,19 @@
                             <p style="display: none"  class="small-text"id = "resultPageNb1"></p>
                             <p style="display: inline-block"  class="small-text" id = "resultPageAlert1"></p>
                         </div>
+                        <div style="width:100px; display: inline-block; "></div>
+                        <div id="head-nb-hits"style="display: inline-block; "></div>
+                        <div id= "nb-hits"style="display: inline-block; "></div>
+                        <div style="display: inline-block; float:right; ">
+                            <button class="blue-button" id="download-button"  style="display:none" title="Last ned resultater">Last ned resultat<i class="fa fa-download"></i></button>
+                            <button class="blue-button" id="download-photo-button"  style="display:none" title="Last ned bilder"><i class="fa fa-download"></i>Last ned bilder</button>
+                        </div>
+                         
                     </div>
-                </div>
 
+
+                </div>
+                 
                 <div style="overflow-x:auto">
                     <table class="result-table" id="myTable"></table>
                 </div>

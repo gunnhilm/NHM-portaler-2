@@ -39,15 +39,11 @@ if (sessionStorage.language) {
 // is called by emptySearchButton.eventlistener, upateFooter() when error
 const emptySearch = (comesFrom) => {
     console.log('emptySearch, comes from ' + comesFrom)
-    // if (comesFrom !== "collection_listener") {
-    //     sessionStorage.removeItem('collection')
-    //     collection.value = "vennligst"
-    // }
 
-    // if (comesFrom === "organism-button") {
-    //     sessionStorage.removeItem('collection')
-    //     collection.value = "vennligst"
-    // }
+    if (comesFrom === "organism-button") {
+        sessionStorage.removeItem('collection')
+        collection.value = "vennligst"
+    }
 
     // // close accordions
     // document.getElementsByClassName('panel')[0].style.display = 'none'
@@ -69,6 +65,10 @@ const emptySearch = (comesFrom) => {
     sessionStorage.removeItem('numberPerPage')
     sessionStorage.setItem('currentPage',1)
     currentPage = 1
+    
+    if (comesFrom == 'window.onload') {
+        sessionStorage.removeItem('organismGroup')    
+    }
     
     if (sessionStorage.getItem('organismGroup')) {
         // gå gjennom alle knappene og aktiver den relevante
@@ -134,12 +134,10 @@ function makeButtons() {
         button.id = el
         document.getElementById("button-cell").appendChild(button)
         buttonArray.push(button)   
-         
     })
-    
     buttonArray.forEach(el => {
         el.addEventListener('click', (e) => {
-            if (document.getElementById('search-cell').style.display == 'block') {
+            if (document.getElementById('search-cell').style.display == 'table-cell') {
                 emptySearch('organism-button')
                 emptyCollection()
                 document.getElementById('search-cell').style.display = 'none'
@@ -147,7 +145,13 @@ function makeButtons() {
             addCollectionsToSelect(el.id)
             e.preventDefault()
         })
-        el.className = "white-button"
+        orgGroup = sessionStorage.getItem('organismGroup')
+        if (orgGroup == el.id) {
+            el.className = "blue-button" 
+        } else {
+            el.className = "white-button" 
+        }
+        //el.className = "white-button"
     })
 }
 
@@ -205,8 +209,6 @@ function addTextInCollSelect(a) {
     else if (a == 'mineraler') {return textItems.mineraler[index]}
     else if (a == 'fossiler') {return textItems.fossiler[index]}
     else if (a == 'palTyper') {return textItems.palTyper[index]}
-    //else if (a == 'GeoPal') {return textItems.GeoPal[index]}
-    //else if (a == 'otherOpt') {return textItems.otherOpt[index]}
     else if (a == 'utad') {return textItems.utad[index]}
     else if (a == 'bulk') {return textItems.bulk[index]}
 }
@@ -217,8 +219,6 @@ function addCollectionsToSelect(orgGroup) {
     orgGroups = sessionStorage.getItem('organismGroups').split(',')
     
     document.querySelector('#select-cell').style.display = 'block'
-    
-    //collection.style.display = 'block'
     
     let length = collection.options.length
     
@@ -245,7 +245,6 @@ function addCollectionsToSelect(orgGroup) {
 
         document.querySelector('#'+ orgGroup).style.marginRight = "10px"
         const url_coll = urlPath + '/collections/?museum=' + museum + '&orgGroup=' + orgGroup
-        console.log(url_coll)
         
         fetch(url_coll).then((response) => {
             if (!response.ok) {
@@ -321,7 +320,6 @@ downloadButton.addEventListener('click', (e) => {
             delimiter: "\t",
         })
     }
-    //download("download.txt", downloadData.unparsed.results)
     download("download.txt", downloadResult)
 })
 
@@ -531,21 +529,28 @@ collection.addEventListener('change', (e) => {
     e.preventDefault()
     updateFooter()
     emptySearch("collection_listener")
-    //emptyCollection()
+    let orgGroup = sessionStorage.getItem('organismGroup')
+    if (orgGroup == "geologi" || orgGroup == "paleontologi" || orgGroup == "other" ) {
+        document.getElementById("advanced-accordion").style.display = "none"
+        document.getElementById("advanced-panel").style.display = "none"
+    } else {
+        if (document.getElementById("advanced-accordion").style.display = "none") {
+            document.getElementById("advanced-accordion").style.display = "block"
+        }
+        // console.log(document.getElementById("advanced-accordion").style.display)
+        // if (document.getElementById("advanced-panel").style.display = "none") {
+        //     document.getElementById("advanced-panel").style.display = "block"
+        // }
+    }
+ 
     
-    document.getElementById('search-cell').style.display = 'block'
-    // searchForm.style.display = "block"
-    // document.querySelector('#advanced-accordion').style.display = 'block'
-    // document.querySelector('#list-objects-accordion').style.display = 'block'
+    document.getElementById('search-cell').style.display = 'table-cell'
 
     errorMessage.innerHTML = ""
-
-    // if (document.getElementById("search-text").style.display === "none" || document.getElementById("search-button").style.display === "none") {
-    //     document.getElementById("search-text").style.display = "inline" 
-    //     document.getElementById("search-button").style.display = "inline"
-    //     //resultHeader.innerHTML = ""
-    // }
     sessionStorage.setItem('collection', collection.value)
+    
+    
+    
     // legg til samling i URL
     // if( collection.value !== 'vennligst') {
     // const newUrl = location.origin + '/museum/' + museum + '/' + collection.value
@@ -584,59 +589,30 @@ const updateFooter = () => {
     }
 }
 
+
+const loopButtons = () => {
+    orgGroups = sessionStorage.getItem('organismGroups').split(',')
+    let orgGroup = sessionStorage.getItem('organismGroup')
+    orgGroups.forEach(el => {
+        console.log('kk')
+        if (el == orgGroup) { 
+            console.log(document.getElementById('botanikk'))
+            document.getElementById(`${el}`).className = "blue-button" 
+        } else {
+            document.querySelector('#' + el).className = "white-button" 
+        }
+    })
+    
+} 
+
+
+
 // shows previous search-result when returning to main-page, if it exists in this session
 // calls renderText(language), updateFooter(), load()
 // is called in search.js, that is, every time main page is rendered
 const oldSearch = () => {
     
-    // remove organism-group-buttons? var det meningen å fjerne blå merking?
-
-    // if (document.getElementById('button-cell')) {
-    //     console.log('her')
-    //     while (document.getElementById('button-cell').hasChildNodes()) {
-    //         console.log('remove button')
-    //         document.getElementById('button-cell').removeChild(document.getElementById('button-cell').lastChild);
-    //     }
-    // }
     
-    
-    orgGroups = sessionStorage.getItem('organismGroups').split(',')
-    let orgGroup = sessionStorage.getItem('organismGroup')
-    
-
-//     orgGroups.forEach(el => {
-//         if (el == orgGroup) { 
-//             document.querySelector('#' + el).className = "blue-button" 
-//         } else {
-//             document.querySelector('#' + el).className = "white-button" 
-//         }
-//     })
-
-
-
-    // if (sessionStorage.getItem('organismGroup')) {
-        //  buttonArray.forEach(el => {
-        //      console.log('what')
-        //     if (sessionStorage.getItem('organismGroup') == el.id) {
-        //         el.className = "blue-button"  
-        //     }
-        // })
-        
-        
-        
-        
-         // if (document.getElementById('button-cell')) {
-        //     let orgButtons = document.getElementById('button-cell').childNodes
-        //     console.log(orgButtons.length)
-        //     for (let i = 0; i < orgButtons.length; i++) {
-        //         console.log(orgButtons[i])
-        //         if (sessionStorage.getItem('organismGroup') == i.id) {
-        //             i.className = "blue-button"  
-        //         }
-        //     }
-        // }
-    //}
-
     /////////hva brukes dette til? eksisterer den ikke? nei...
     const vennligst = document.createElement("option")
     vennligst.text = textItems.vennligst[index]
@@ -661,7 +637,6 @@ const oldSearch = () => {
     }
 
     document.querySelector('#select-cell').style.display = 'block'
-    //collection.style.display = 'block'
     
     if (sessionStorage.getItem('collection')) {
         if (sessionStorage.getItem('string')) { //hvis det er søkeresultater i sesion storage, så skal disse vises
@@ -673,10 +648,7 @@ const oldSearch = () => {
                 language = sessionStorage.getItem('language')
             }
             
-            document.getElementById('search-cell').style.display = 'block'
-            
-            // document.getElementById("search-form").style.display = "block" 
-            // document.querySelector('#hits-row').style.display = 'block'
+            document.getElementById('search-cell').style.display = 'table-cell'
             renderText(language)
                 
             try {

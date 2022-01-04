@@ -337,7 +337,7 @@ const makeBioTable = () => {
 // in: specimenObject; collection-object
 // calls makeTableHeader(table)
 const makeUTADTable = (specimenObject) => {
-    const table = document.getElementById("object-table");
+    const table = document.getElementById("object-table")
     const fieldsToShow = [/*'scientificName',*/ 'vernacularName', 'basisOfRecord', 'Hyllenr.', 'NHM objektbase', 'lengde', 'bredde', 'høyde', 'Vekt', 'Tilstand', 'Utlån', 'Kommentar']
 
     makeTableHeader(table)
@@ -649,8 +649,6 @@ function reducePhoto(photo) {
 
 //to get a thumbnail width is set to 150px in styles for img
 // and to to enable large photo by clicking, img is wrapped in a <a>
-
-// if more than one photo
 
 const coll = sessionStorage.getItem('collection')
 let mediaLink

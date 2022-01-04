@@ -1,34 +1,114 @@
 
+// render search-fields in search-page; HTML elements
+const renderAdvSearchFields = (searchFields) => {
+    const advTable = document.getElementById("adv_table")
+    const row = advTable.insertRow(-1)
+    const cell1 = row.insertCell(0)
+    const cell2 = row.insertCell(1)
+    cell1.className = 'adv_cell'
+    cell2.className = 'adv_cell'
+    linebreak = document.createElement("br")
+    
+    for (const el of searchFields) {
+        const inputElement = document.createElement("input")
+        inputElement.id = el
+        inputElement.type = "text"
+        inputElement.className = "input-tight"
+        inputElement.style = "margin-bottom:10px; margin-left:10px"
+        let relCell
+        if (searchFields.indexOf(el) < searchFields.length/2) { relCell = cell1} else {relCell = cell2}
+        relCell.append(inputElement)
+        // får ikke til disse linjeskiftene, har lagt til margin-bottom i style (over) i stedet
+        //relCell.appendChild(document.createElement("br"))
+        //relCell.append(linebreak)
+    }
+    // radio-buttons for photos
+    const radioDivs = []
+    radioDivs.push(document.createElement("div"))
+    radioDivs.push(document.createElement("div"))
+    radioDivs.push(document.createElement("div"))
+
+    const radioButtons = []
+    radioButtons.push(document.createElement("input"))
+    radioButtons.push(document.createElement("input"))
+    radioButtons.push(document.createElement("input"))
+    const radioIds = ['hasPhoto','hasNotPhoto','irrPhoto']
+
+    for (i=0; i<3; i++) {
+        radioDivs[i].id = "radio-form"
+        radioDivs[i].style = "float:left; width:200px"
+        cell2.append(radioDivs[i])
+        radioButtons[i].id = radioIds[i]
+        // brukes denne?
+        radioButtons[i].value = radioIds[i]
+        radioButtons[i].type = "radio"
+        const radioLabel = document.createElement("label")
+        radioLabel.for = radioIds[i]
+        radioLabel.id = radioIds[i] + 'Label'
+        radioLabel.className = "label-tight"
+        radioDivs[i].appendChild(radioButtons[i])
+        radioDivs[i].appendChild(radioLabel)
+    }
+    const buttonDiv = document.createElement("div")
+    buttonDiv.style="float:right; width:60px; display:inline"
+    cell2.append(buttonDiv)
+    const advSearchButton = document.createElement("button")
+    advSearchButton.className = "blue-button"
+    advSearchButton.id = "adv-search-button"
+    advSearchButton.style = "float:right"
+    cell2.append(advSearchButton)
+    advSearchButton.innerHTML = textItems.searchButton[index]
+}
+
+const advSearchForm = document.querySelector('#adv-search-form') 
+const termNameArray = ["adv-species", "adv-collector", "adv-date", "adv-country", "adv-county", "adv-municipality", "adv-locality", "adv-collNo", "adv-taxType"]
+
 // accordion
 var acc = document.getElementsByClassName("accordion");
 var accIcons = document.getElementsByClassName("accordion-icon")
 var i;
+
+// render search fields
+
+renderAdvSearchFields(termNameArray)
+fillSearchFields()
+document.querySelector('#hasPhotoLabel').innerHTML = textItems.hasPhoto[index]
+document.querySelector('#hasNotPhotoLabel').innerHTML = textItems.hasNotPhoto[index]
+document.querySelector('#irrPhotoLabel').innerHTML = textItems.irrPhoto[index]
+
+
 for (i = 0; i < acc.length; i++) {
     acc[i].addEventListener("click", function() {
         /* Toggle between adding and removing the "active" class,
         to highlight the button that controls the panel */
         this.classList.toggle("active");
-
         /* Toggle between hiding and showing the active panel */
         var panel = this.nextElementSibling;
         if (panel.style.display === "block") {
             panel.style.display = "none";
-            console.log(this.children[1])
             this.children[1].innerHTML = '+'
+            
         } else {
             panel.style.display = "block";
             this.children[1].innerHTML = '-'
+            if (panel.id == "advanced-panel") {
+                // close the other panel, if it is open
+                if (document.getElementById("obj-panel").style.display == "block") {
+                    document.getElementById("obj-panel").style.display = "none"
+                    document.getElementById("objectlist-accordion-icon").innerHTML = "+"
+                }
+                
+                
+            } else {
+                if (document.getElementById("advanced-panel").style.display == "block") {
+                    document.getElementById("advanced-panel").style.display = "none"
+                    document.getElementById("adv-accordion-icon").innerHTML = "+"
+                }
+            }
         }
     });
 }
 
-
-const advSearchForm = document.querySelector('#adv-search-form') 
-const termNameArray = ["adv-object", "adv-species", "adv-collector", "adv-date", "adv-country", "adv-county", "adv-municipality", "adv-locality", "adv-collNo", "adv-taxType"]
-
-document.querySelector('#hasPhotoLabel').innerHTML = textItems.hasPhoto[index]
-document.querySelector('#hasNotPhotoLabel').innerHTML = textItems.hasNotPhoto[index]
-document.querySelector('#irrPhotoLabel').innerHTML = textItems.irrPhoto[index]
 
 // deletes previous search results, resets value that says if search failed, resets Boolean sorting-values for result, hides buttons, performs search
 // in: limit (number, line number of search result where search stops)
@@ -88,9 +168,6 @@ const doAdvancedSearch = (limit = 20) => {
         document.getElementById("please-wait").style.display = "none"
         
     } 
-    //else if (chosenCollection === "utad") {
-      //  const  url = urlPath + 
-    //} 
     else {
         const url = urlPath + '/advSearch/?searchSpecies=' + searchSpecies + '&searchCollector=' + searchCollector + 
         '&searchDate=' + searchDate + '&searchCountry=' + searchCountry + '&searchCounty=' + searchCounty + 
@@ -113,9 +190,6 @@ const doAdvancedSearch = (limit = 20) => {
                             
                             sessionStorage.setItem('searchLineNumber', JSONdata.unparsed.count)
                             sessionStorage.setItem('advSearchArray', [searchSpecies,searchCollector,searchDate,searchCountry,searchMunicipality,searchLocality,searchCollNo,searchTaxType])
-    
-                            // sessionStorage.setItem('searchSpecies', searchSpecies)
-                            // sessionStorage.setItem('searchCounty', searchCounty)
                             const parsedResults = Papa.parse(JSONdata.unparsed.results, {
                                 delimiter: "\t",
                                 newline: "\n",

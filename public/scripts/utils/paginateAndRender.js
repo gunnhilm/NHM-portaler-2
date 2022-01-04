@@ -53,7 +53,6 @@ function hide_column(col_no) {
 //	addSortingText(…)
 const resultTable = (subMusitData, musitData) => {    
     try {
-        
         table.innerHTML = ""
         for (let i = -1; i < pageList.length; i++) { // vis en tabell med resultater som er like lang som det vi ba om pageList.length; 
             const row = table.insertRow(-1)
@@ -118,13 +117,13 @@ const resultTable = (subMusitData, musitData) => {
                 // to avoid lots of text in collector-field: replace more than two names with et al. 
                 // when  collector is written "lastName, firstName", only first name is included, followed by et al. if more names
                 let recByArray = subMusitData[i].recordedBy.split(' ')
-                
                 if ((subMusitData[i].recordedBy.match(/,/g) || []).length > 1) {
-                    let x = subMusitData[i].recordedBy.indexOf(",")
-                    let y = subMusitData[i].recordedBy.substr(0,x)
-                    cell3.innerHTML = y + " et al."    
+                    if (!sessionStorage.getItem("organismGroup").includes('paleontologi')) {
+                        let x = subMusitData[i].recordedBy.indexOf(",")
+                        let y = subMusitData[i].recordedBy.substr(0,x)
+                        cell3.innerHTML = y + " et al."    
+                    }
                 } else {
-                
                 cell3.innerHTML = subMusitData[i].recordedBy
                 }
                 cell4.innerHTML = subMusitData[i].eventDate

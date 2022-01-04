@@ -203,33 +203,22 @@ sort_by = (prop, reverse, primer) => {
 function addSortingText(id, prop, musitData, fromFunction) { // her er musitData alle
     try {
         //addSortingText('localityButton', 'locality', musitData)
-
         document.getElementById(id).addEventListener("click", function() {
             // Show please wait
+        
             document.getElementById("please-wait").style.display = "block"
-            
-            
             let reverse = false
             if (propsSorted.find(x => x.id === prop).sortedOnce) { reverse = true }
-            if (id === 'musitIDButton') { 
-                //console.log(musitData[0])
+            if (id === 'musitIDButton' && sessionStorage.getItem("collection") != "fossiler") { 
                 musitData.sort(sort_by(prop,reverse, parseInt))
-                //console.log(musitData[0])
-            }  else if (id === 'breddeButton' || id === 'hoydeButton' || id === 'lengdeButton') {
-                //console.log(prop + reverse )
+            }  else 
+            if (id === 'breddeButton' || id === 'hoydeButton' || id === 'lengdeButton') {
                 musitData.sort(sort_by(prop,reverse))
-            }
-            
-            else {
+            } else {
                 if (id === 'photoButton' | id === 'coordinateButton') {
                     reverse = !reverse
                 } 
-                console.log(prop)
-                console.log(musitData[0][prop])
-                //if (musitData[0][prop]) {
-                    musitData.sort(sort_by(prop,reverse, (a) => a.toLowerCase()))
-                //}
-                
+                musitData.sort(sort_by(prop,reverse, (a) => a.toLowerCase()))
             } 
             
             if (propsSorted.find(x => x.id === prop).sortedOnce === propsSorted.find(x => x.id === prop).sortedTwice) {
@@ -247,7 +236,7 @@ function addSortingText(id, prop, musitData, fromFunction) { // her er musitData
                 propsSorted[i].sortedOnce = false
                 propsSorted[i].sortedTwice = false
             }
-
+            
             subMusitData = musitData.slice(0,numberPerPage)
             sessionStorage.setItem('pageList', JSON.stringify(subMusitData))
             sessionStorage.setItem('string', JSON.stringify(musitData))

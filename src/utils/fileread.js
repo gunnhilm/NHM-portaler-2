@@ -273,6 +273,7 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
                 }
                 let lineArray = line.split('\t')
                 let catNoInFile = lineArray[headers.indexOf('catalogNumber')].toLowerCase().trim()
+                
                 let source = getSource(museum, samling)
                 if (source === "corema") {
                     catNoInFile = catNoInFile.substring(catNoInFile.indexOf('-',catNoInFile.indexOf('-')+1)+1,catNoInFile.indexOf('/'))
@@ -280,11 +281,26 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
                 }
 
 
-                // miss functionality to find match when one searches with xxx/, and not xxx/1, and xxx/1 is in the file
                 for (const el of objectNumbers) {
+                    // for collections with suffixes in catNo ('.../1'). When complete suffix is entered in search term, all is good
+                        // when no suffix is included in search term: 
                     if (suffix && !el.includes('/')) {
+                        console.log(catNoInFile.indexOf('/'))
                         catNoInFile = catNoInFile.substring(0,catNoInFile.indexOf('/'))
                     }
+                        // when only '/' is included:
+                    else if (suffix && el.includes('/') && el.length == el.indexOf('/')+1) {
+                        catNoInFile = catNoInFile.substring(0,catNoInFile.indexOf('/')+1)
+                    }
+                    // remove leading 0's from catalogNumber in dump-file
+                    
+                    if (String(el).charAt(0) != "0") {
+                        console.log('her')
+                        let match = catNoInFile.match(/^0+/)
+                        let level = match ? match[0].length : 0
+                        catNoInFile = catNoInFile.substring(level,catNoInFile.length)    
+                    }
+                    
                     if ( catNoInFile === el.trim()) {
                         // søk for en match i linja  (line.indexOf(searchTerm) !== -1)
                         results =  results +  '\n' + line
