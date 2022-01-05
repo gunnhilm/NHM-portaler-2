@@ -45,10 +45,16 @@ const emptySearch = (comesFrom) => {
         collection.value = "vennligst"
     }
 
-    // // close accordions
-    // document.getElementsByClassName('panel')[0].style.display = 'none'
-    // document.getElementsByClassName('panel')[1].style.display = 'none'
+    // close accordions
+    document.getElementsByClassName('panel')[0].style.display = 'none'
+    document.getElementsByClassName('panel')[1].style.display = 'none'
+    document.getElementById("objectlist-accordion-icon").innerHTML = "+"
+    document.getElementById("adv-accordion-icon").innerHTML = "+"
 
+    // uncheck radiobuttons
+    let  radioButtons = document.getElementsByName('radio-photo')
+    radioButtons.forEach (el => el.checked = false)
+    
     // remove search-terms
     const inputFields = document.getElementsByClassName('input-tight')
     const inputFields2 = document.getElementsByClassName('input')

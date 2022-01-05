@@ -144,7 +144,7 @@ app.get('/advSearch', (req, res) => {
     }
 })
 
-///////////jeg er her
+
 app.get('/objListSearch', (req, res) => {
     if (!req.query.samling) {
         throw new Error ('collection not chosen') 
@@ -287,6 +287,7 @@ app.get('*/advancedSearch', (req, res) => {
  })
 
 app.get('*/tools', (req, res) => {
+    console.log('tools')
     res.render('tools', {
     })
 })

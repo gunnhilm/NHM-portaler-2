@@ -42,6 +42,7 @@ const renderAdvSearchFields = (searchFields) => {
         // brukes denne?
         radioButtons[i].value = radioIds[i]
         radioButtons[i].type = "radio"
+        radioButtons[i].name = "radio-photo"
         const radioLabel = document.createElement("label")
         radioLabel.for = radioIds[i]
         radioLabel.id = radioIds[i] + 'Label'
