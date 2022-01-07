@@ -1,7 +1,5 @@
 const searchForm = document.querySelector('form') 
 
-
-
 const papaParseConfig = {
 	delimiter: "",	// auto-detect
 	newline: "",	// auto-detect
@@ -13,7 +11,6 @@ const papaParseConfig = {
 	skipEmptyLines: 'greedy',
 	delimitersToGuess: [ ' ',',', '\t', '|', ';']
 }
-
 
 const transelateKeyMap = new Map();
 transelateKeyMap.set('museumCollection', 'Museum');
@@ -37,7 +34,9 @@ transelateKeyMap.set('#Dummy10', 'Høyde over havet (m)');
 transelateKeyMap.set('#Dummy11', 'Høyde - usikker');
 transelateKeyMap.set('recordedBy', 'Innsamlere');
 transelateKeyMap.set('eventDate', 'Innsamlingsdato');
-
+transelateKeyMap.set('IdentifiedBy', 'Bestemmere');
+transelateKeyMap.set('datasetName', 'Prosjektnavn');
+transelateKeyMap.set('fieldNotes', 'Kommentar fra innsamler');
 
 
 const addMuseum = () => {
@@ -60,7 +59,6 @@ const getMUSITNumber = () => {
     let MUSITNo = document.getElementById('musit-Numbers').value
     MUSITNo = Number(MUSITNo)
     if (Number.isFinite(MUSITNo)) {
-        console.log('is number');
         return MUSITNo
     } else {
         MUSITNo = false
@@ -117,7 +115,6 @@ const getArtsObsData = async (artsObsNumber, MUSITNo)=> {
         // fix Museum & collection
         museumCollection = addMuseum()
 
-
         // fix dato, fjern alt etter T
         let fixedDate = resultObj.eventDate
         fixedDate = fixedDate.substring(0,fixedDate.search('T'))
@@ -167,54 +164,102 @@ const getArtsObsData = async (artsObsNumber, MUSITNo)=> {
 // in: filename(string, name of outputfile)
 // in: text (string, the text that goes into the file, that is, the search result)
 // out: downloaded tab-separated txt-file
-function download(filename, text) {
+async function download(filename, text) {
     const element = document.createElement('a')
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
     element.setAttribute('download', filename)
-    
     element.style.display = 'none'
     document.body.appendChild(element)
-   
     element.click()
-    
     document.body.removeChild(element)
 }
 
 
-// https://huynvk.dev/blog/download-files-and-zip-them-in-your-browsers-using-javascript
+// "https://www.artsobservasjoner.no/MediaLibrary/2021/12/22a283c1-d274-4c0f-9ef4-131932598777_image.jpg"
 const downloadImage = async (url) => {
-    return fetch(url).then(resp => resp.blob());
-  };
+    url = 'museum/tools/artsObsImage/?url=' + url
+    const response = await fetch(url);
+    const blob = await response.blob();
+    return blob
+};
   
-  const downloadMany = urls => {
+const downloadMany = urls => {
     return Promise.all(urls.map(url => downloadImage(url)))
+}
+
+// download images
+const downloadAndZip = async (mediaObj, allResults) => {
+    document.getElementById("please-wait").style.display = "block"
+    const zip = JSZip();
+    const myTxtBlob = new Blob([allResults], {
+        type: 'text/plain'
+    });
+    zip.file('data.txt', allResults)
+    let fileName = ''
+    for (const [key, value] of Object.entries(mediaObj)) {
+        await downloadMany(value).then(blobs =>{ 
+            blobs.forEach((blob, i) => {
+            zip.file(`${key}-0${[i]}.jpg`, blob);
+            });
+        });
+    }
+    zip.generateAsync({type: 'blob'}).then(zipFile => {
+    const currentDate = new Date().getTime();
+    fileName = `combined-${currentDate}.zip`;
+      document.getElementById("please-wait").style.display = "none"
+      return saveAs(zipFile, fileName);
+    })
   }
 
-//   const urls = []
-//   const catalogNo = []
-// download images
-const downloadAndZip = async (urls, catalogNo) => {
-    document.getElementById("please-wait").style.display = "block"
-    return downloadMany(urls).then(blobs =>{
-        const zip = JSZip();
-        blobs.forEach((blob, i) => {
-        //   zip.file(`file-${i}.jpg`, blob);
-          zip.file(`${catalogNo[i]}.jpg`, blob);
-        });
-        zip.generateAsync({type: 'blob'}).then(zipFile => {
-          const currentDate = new Date().getTime();
-          const fileName = `combined-${currentDate}.zip`;
-          document.getElementById("please-wait").style.display = "none"
-          return saveAs(zipFile, fileName);
-        });
-    } );
-  }
+async function getImageUrls(keyObj) {
+    try {
+        const imageUrls = []
+        let mediaObj = {}
+        let tempObj = {}
+        let imageUrl = ''
+        let obj = null;
+        let url = ''
+        let lisens = ''
+        let onlyCCBY = true
+        console.log(mediaObj);
+        if(!document.querySelector('#lisens').checked) {
+            onlyCCBY = false
+        } 
+        for (const [key, value] of Object.entries(keyObj)) {
+            // 'https://api.gbif.org/v1/occurrence/search?dataset_Key=b124e1e0-4755-430f-9eab-894f25a9b59c&catalogNumber=27783344'
+            url = 'https://api.gbif.org/v1/occurrence/search?dataset_Key=b124e1e0-4755-430f-9eab-894f25a9b59c&catalogNumber=' + key
+            obj = await (await fetch(url)).json();
+            tempObj = obj.results[0].extensions["http://rs.gbif.org/terms/1.0/Multimedia"]
+            if(tempObj){
+                lisens = tempObj[0]["http://purl.org/dc/terms/license"]
+            }
+            
+            if((onlyCCBY &&  lisens === 'CC BY 4.0') || !onlyCCBY ) {
+                for (const key in tempObj) {
+                    const element = tempObj[key];
+                    imageUrl = element["http://purl.org/dc/terms/identifier"]
+                    imageUrls.push(imageUrl)
+                    imageUrl = ''
+                }               
+                mediaObj[value] = Array.from(imageUrls)
+                imageUrls.length = 0
+                console.log(mediaObj);
+                obj = null
+                }
+        }
+        return mediaObj
+    } catch (error) {
+        console.log(error);
+        // alert(error)
+    }
+}
 
 async function main() {
     try{
         let singelResult = ''
         let allResults = ''
         let MUSITNo = null
+        const keyObj = {}
 
             let artsObsNumbers = fixUserInput() 
             // fix MUSIT number
@@ -222,6 +267,7 @@ async function main() {
  
             for (const element of artsObsNumbers) {
                 singelResult = await getArtsObsData(element, MUSITNo)
+                keyObj[element] = MUSITNo
                 MUSITNo = ++MUSITNo
                 if (singelResult) {
                     if (allResults){
@@ -233,8 +279,14 @@ async function main() {
                     allResults = allResults + '\n' + 'Fant ikke: ' + element
                 }
             }
+   
+        if(document.querySelector('#images-check').checked) {
+            const mediaObj = await getImageUrls(keyObj)
+            downloadAndZip(mediaObj, allResults)
+        } else {
+            download("artsObsData.txt", allResults)
+        }
 
-    download("download.txt", allResults)
     } catch (error) {
         console.log(error);
     }
@@ -246,6 +298,23 @@ searchForm.addEventListener('submit', (e) => {
     main()
 
 
-}) 
+});
+
+
+// when somebody clicks submit-button
+document.getElementById("Vis-kolonne").addEventListener('click', (e) => {
+    e.preventDefault()  
+    try { 
+        let totValue = ''
+        for (const [key, value] of transelateKeyMap) {
+            totValue = totValue + value + '\t' 
+        }
+        download("Headers.txt", totValue)
+    } catch (error) {
+          console.log(error);  
+    }
+});
+
+
 // console.log(getArtsObsData(21574795));
-//21574795 28215006 2213006 28215007
+//21574795 28215006 2213006 28215007 27783443 27680409 25396524 27783344 27561102
