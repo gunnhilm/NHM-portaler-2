@@ -390,6 +390,8 @@ const renderText = function(lang) {
         document.querySelector('#DOI-text').innerHTML = textItems.DOIText[index]
         document.querySelector('#data-error-link').innerHTML = textItems.dataErrorLink[index]
         document.querySelector('#data-error-text').innerHTML = textItems.dataErrorText[index]
+        document.querySelector('#arts-obs-link').innerHTML = textItems.artsObsLink[index]
+        document.querySelector('#arts-obs-text').innerHTML = textItems.artsObsText[index]
         //document.querySelector('#coordinate-link').innerHTML = textItems.coordinateLink[index]
 
     }

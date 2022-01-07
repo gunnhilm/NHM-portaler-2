@@ -264,7 +264,12 @@ async function main() {
             let artsObsNumbers = fixUserInput() 
             // fix MUSIT number
             MUSITNo = getMUSITNumber()
- 
+            if(document.querySelector('#overskrift').checked){
+                console.log('checked');
+                for (const [key, value] of transelateKeyMap) {
+                    allResults = allResults + value + '\t' 
+                }
+            }
             for (const element of artsObsNumbers) {
                 singelResult = await getArtsObsData(element, MUSITNo)
                 keyObj[element] = MUSITNo

@@ -339,7 +339,7 @@ app.get('*/getDOI', (req, res) => {
     res.render('getDOI', {})
 })
 
-app.get('*/tools/artsObs', (req, res) => {
+app.get('*/artsObs', (req, res) => {
     res.render('artsObs', {})
 })
 
@@ -347,7 +347,6 @@ app.get('*/tools/artsObs', (req, res) => {
 // https://dev.to/eckhardtd/downloading-images-in-the-browser-with-node-js-4f0h
 app.get('*/tools/artsObsImage', cors(), async (req, res) => {
     if(req.query.url.endsWith('.jpg')){
-        const imageURL = "https://picsum.photos/200/300";
         const response = await fetch(req.query.url);
 
         // Set the appropriate headers, to let
