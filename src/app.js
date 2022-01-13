@@ -3,7 +3,7 @@ const express = require('express')
 const fileRead = require('./utils/fileread')
 const getStatFile = require('./utils/getStatFile')
 const checkCoord = require('./utils/checkCoords')
-const artsObs = require('./utils/tools/artsobs.js')
+const artsObsReadFile = require('./utils/artsobs/artsObs')
 //const coremaFileread = require('./utils/coremaFileread')
 const footerDate = require('./utils/footerDate')
 const hbs = require('hbs')
@@ -340,7 +340,19 @@ app.get('*/getDOI', (req, res) => {
 })
 
 app.get('*/artsObs', (req, res) => {
+    if (req.query.kommune){ 
+        artsObsReadFile.readMUSITgeoFile('kommuner.json', (error, results) => {
+            if(results){
+                res.send({
+                    unparsed: results
+                }) 
+            } else {
+                console.log('Error: cold not read kommunedata file: ' + error)
+            }
+        })
+    } else {
     res.render('artsObs', {})
+    }
 })
 
 //proxy for downloading images from artsdatabanken

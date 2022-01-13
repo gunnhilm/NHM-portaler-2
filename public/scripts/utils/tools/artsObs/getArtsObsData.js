@@ -34,7 +34,7 @@ transelateKeyMap.set('#Dummy10', 'Høyde over havet (m)');
 transelateKeyMap.set('#Dummy11', 'Høyde - usikker');
 transelateKeyMap.set('recordedBy', 'Innsamlere');
 transelateKeyMap.set('eventDate', 'Innsamlingsdato');
-transelateKeyMap.set('IdentifiedBy', 'Bestemmere');
+transelateKeyMap.set('identifiedBy', 'Bestemmere');
 transelateKeyMap.set('datasetName', 'Prosjektnavn');
 transelateKeyMap.set('fieldNotes', 'Kommentar fra innsamler');
 
@@ -66,9 +66,32 @@ const getMUSITNumber = () => {
     }
 }
 
+// sends request to backend to fetch data
+// is called by getArtsObsData()
+async function getKommuneData  () {
+    try {
+        const url =  urlPath + '/tools/artsObs/?kommune=true'
+        data = await (await fetch(url)).json();
+        data = JSON.parse(data.unparsed)
+        return data
+    } catch (error) {
+        console.log(error);
+    }
+}    
 
-const fixUserInput = () => {
-    let artsObsNumbers = document.getElementById('artsObs-Numbers').value
+function fixAdmPlace (kommuneObj, municipality, county) {
+    let admPlace = ''
+    // Ål (kommune i Viken) [4506] 
+    admPlace = municipality + ' (kommune i ' + county +') [' + kommuneObj[county][municipality].HierarchPlaceId + ']'
+    if (admPlace) {
+        return admPlace
+    } else {
+        return 'Dummy'
+    }
+}
+
+
+const fixUserInput = (artsObsNumbers) => {
     // replace all lineshifts with comma
     let arrayOfNumbers = Papa.parse(artsObsNumbers, papaParseConfig)
 
@@ -104,6 +127,8 @@ const getArtsObsData = async (artsObsNumber, MUSITNo)=> {
     let tempColl = ''
     let collString = null
     let museumCollection = ''
+    const kommuneObj = await getKommuneData()
+
     obj = await (await fetch(url)).json();
         resultObj = obj.results[0]
         obj = null
@@ -138,15 +163,25 @@ const getArtsObsData = async (artsObsNumber, MUSITNo)=> {
         })
         collString = collString.trim()
         resultObj.recordedBy = collString
+        // fix identifiedBy
+        if(!resultObj.identifiedBy) {
+            resultObj.identifiedBy = collString
+        }
+        
         for (const [key] of transelateKeyMap) {
             if (key === 'museumCollection') {
                 resultString = resultString + museumCollection + '\t' 
             } else if (key === 'dbNumbers') {
                 resultString = resultString + MUSITNo + '\t'
-            } else if (key.includes('#D')) {
+            }  else if (key.includes('#D')) {
                 resultString = resultString + '' + '\t'
             }else if (key in resultObj) {
+                if (key === 'municipality') {
+                    const admPlace = fixAdmPlace(kommuneObj, resultObj[key], resultObj['county'])
+                    resultString = resultString + admPlace + '\t'
+                } else {
                 resultString = resultString + resultObj[key] + '\t'
+                }
             } else {
                 resultString = resultString + '' + '\t'
             }
@@ -196,10 +231,12 @@ const downloadAndZip = async (mediaObj, allResults) => {
     });
     zip.file('data.txt', allResults)
     let fileName = ''
+    let no = 1
     for (const [key, value] of Object.entries(mediaObj)) {
         await downloadMany(value).then(blobs =>{ 
             blobs.forEach((blob, i) => {
-            zip.file(`${key}-0${[i]}.jpg`, blob);
+            zip.file(`${key}-0${[no]}.jpg`, blob);
+            no = ++no
             });
         });
     }
@@ -221,7 +258,6 @@ async function getImageUrls(keyObj) {
         let url = ''
         let lisens = ''
         let onlyCCBY = true
-        console.log(mediaObj);
         if(!document.querySelector('#lisens').checked) {
             onlyCCBY = false
         } 
@@ -243,7 +279,6 @@ async function getImageUrls(keyObj) {
                 }               
                 mediaObj[value] = Array.from(imageUrls)
                 imageUrls.length = 0
-                console.log(mediaObj);
                 obj = null
                 }
         }
@@ -260,12 +295,18 @@ async function main() {
         let allResults = ''
         let MUSITNo = null
         const keyObj = {}
-
-            let artsObsNumbers = fixUserInput() 
+        let museum = document.getElementById('museum-select').value
+        let samling = document.getElementById('collection-select').value
+        console.log('museum: ' + museum + ' og samling: ' + samling);
+        let Numbers = document.getElementById('artsObs-Numbers').value
+        if (!Numbers) {
+            alert('Du må skrive inn artsobsnumre')
+            return
+        }
+        let artsObsNumbers = fixUserInput(Numbers) 
             // fix MUSIT number
             MUSITNo = getMUSITNumber()
             if(document.querySelector('#overskrift').checked){
-                console.log('checked');
                 for (const [key, value] of transelateKeyMap) {
                     allResults = allResults + value + '\t' 
                 }
@@ -284,7 +325,7 @@ async function main() {
                     allResults = allResults + '\n' + 'Fant ikke: ' + element
                 }
             }
-   
+
         if(document.querySelector('#images-check').checked) {
             const mediaObj = await getImageUrls(keyObj)
             downloadAndZip(mediaObj, allResults)
@@ -301,12 +342,10 @@ async function main() {
 searchForm.addEventListener('submit', (e) => {
     e.preventDefault()  
     main()
-
-
 });
 
 
-// when somebody clicks submit-button
+// when somebody clicks Vis-kolonne-button
 document.getElementById("Vis-kolonne").addEventListener('click', (e) => {
     e.preventDefault()  
     try { 
