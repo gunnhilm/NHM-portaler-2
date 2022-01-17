@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/app.js",
-    "dev": "nodemon src/app.js -e js,hbs"
+    "dev": "nodemon src/app.js -e js,hbs",
+    "hd": "nodemon public/scripts/utils/tools/artsObs/headerMap.js -e js,hbs"
   },
   "keywords": [],
   "author": "",
