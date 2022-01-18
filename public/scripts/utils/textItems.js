@@ -216,7 +216,9 @@ const textItems = {
                 "Make a link to the data of collection objecs. When loaning out material or use of objects for scientific research, you can get a DOI to include in a scientific paper so that you can refer to the collections in an unabiguous way. This is a prerequisite to take advantage in the opportunities that lies in bionomia.net"],
     coordinateLink: ["Sjekk koordinater", "Check coordinates"],
     dataErrorLink: ["Finn feil i dataene", "Find errors in the data"],
-    dataErrorText: ["Utnytt de verktøyene som tilbys fra GBIF og Bionomia til å oppdage feil i dataene","Utilize the tools available from GBIF and Bionomia to discover errors in the data"],
+    dataErrorText: ["Utnytt de verktøyene som tilbys fra GBIF og Bionomia til å oppdage feil i dataene.","Utilize the tools available from GBIF and Bionomia to discover errors in the data."],
+    artsObsLink: ["Last ned data fra artsobservasjoner", "Download data from artsobservasjoner"],
+    artsObsText: ["Last ned data og bilder fra artsobservasjoner i et format som gjør det lett å importere det til MUSIT-databasen.","Download data from artsobservasjoner in a formate that is easy to import into the MUSIT database."],
     
     //ShowStat page
     showStatHeader: ["Statistikk over samlingene", "Statistics from the collections"],

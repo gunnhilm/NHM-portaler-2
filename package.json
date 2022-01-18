@@ -5,24 +5,27 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/app.js",
-    "dev": "nodemon src/app.js -e js,hbs"
+    "dev": "nodemon src/app.js -e js,hbs",
+    "hd": "nodemon public/scripts/utils/tools/artsObs/headerMap.js -e js,hbs"
   },
   "keywords": [],
   "author": "",
   "license": "UNLICENSED",
   "dependencies": {
+    "cors": "^2.8.5",
     "csv-parser": "^2.3.3",
     "dompurify": "^2.2.6",
     "express": "^4.17.1",
     "hbs": "^4.1.1",
     "helmet": "^3.22.0",
     "json2csv": "^5.0.1",
+    "node-fetch": "^2.6.6",
     "papaparse": "^5.2.0",
     "path": "^0.12.7",
     "request": "^2.88.2"
   },
   "devDependencies": {
-    "eslint": "^6.8.0",
+    "eslint": "^8.6.0",
     "nodemon": "^2.0.3"
   },
   "directories": {

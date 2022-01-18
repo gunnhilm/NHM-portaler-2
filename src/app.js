@@ -3,14 +3,14 @@ const express = require('express')
 const fileRead = require('./utils/fileread')
 const getStatFile = require('./utils/getStatFile')
 const checkCoord = require('./utils/checkCoords')
+const artsObsReadFile = require('./utils/artsobs/artsObs')
 //const coremaFileread = require('./utils/coremaFileread')
 const footerDate = require('./utils/footerDate')
 const hbs = require('hbs')
 const helmet = require('helmet')
 const { response } = require('express')
-
-
-
+const cors = require('cors');
+const fetch = require('node-fetch');
 
 
 const app = express()
@@ -340,8 +340,42 @@ app.get('*/getDOI', (req, res) => {
 })
 
 app.get('*/artsObs', (req, res) => {
+    if (req.query.kommune){ 
+        artsObsReadFile.readMUSITgeoFile('kommuner.json', (error, results) => {
+            if(results){
+                res.send({
+                    unparsed: results
+                }) 
+            } else {
+                console.log('Error: cold not read kommunedata file: ' + error)
+            }
+        })
+    } else {
     res.render('artsObs', {})
+    }
 })
+
+//proxy for downloading images from artsdatabanken
+// https://dev.to/eckhardtd/downloading-images-in-the-browser-with-node-js-4f0h
+app.get('*/tools/artsObsImage', cors(), async (req, res) => {
+    if(req.query.url.endsWith('.jpg')){
+        const response = await fetch(req.query.url);
+
+        // Set the appropriate headers, to let
+        // the browser know that it should save
+        res.writeHead(200, {
+            "content-disposition": 'attachment; filename="my-image.png"',
+            "content-type": "image/jpg",
+        });
+
+        // Pipe the request buffer into
+        // the response back to the client
+        return response.body.pipe(res);
+    } else {
+        console.log('ender ikke med jpg');
+    }    
+})
+
 
 // tool-page for checking if coordinates are within correct region
 app.get('*/checkCoord', (req, res) => {
@@ -394,8 +428,6 @@ app.get('/checkRegion', (req, res) => {
         }
     }
 })
-
-
 
 
 app.get('/checkRegion2', (req, res) => {
