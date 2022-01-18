@@ -134,7 +134,6 @@ const search = (museum, samling, searchTerm, linjeNumber = 0, limit = 20, callba
 const advSearch = (museum, samling, searchSpecies, searchCollector, searchDate, searchCountry, searchCounty, searchMunicipality, searchLocality, searchCollNo, searchTaxType, linjeNumber = 0, limit = 20, hasPhoto, callback) => {
     // velg riktig MUSIT dump fil å lese
     musitFile = setCollection(museum,samling)
-    console.log('here')
     if (fs.existsSync(musitFile)) {
         // cleaning the searchterm before making the search so that we get a more precise
         // remove whiteSpace,
@@ -217,6 +216,7 @@ const advSearch = (museum, samling, searchSpecies, searchCollector, searchDate, 
 // object list search
 const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 20, callback) => {
     // velg riktig MUSIT dump fil å lese
+    
     musitFile = setCollection(museum,samling)
     if (fs.existsSync(musitFile)) {
         // cleaning the searchterm before making the search so that we get a more precise
@@ -244,7 +244,6 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
         }
 
         let suffix
-        console.log(samling)
         if (samling == "sopp" || samling == "moser") {
             console.log('samling har suffix')
             suffix = true
@@ -282,10 +281,10 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
 
 
                 for (const el of objectNumbers) {
+                    
                     // for collections with suffixes in catNo ('.../1'). When complete suffix is entered in search term, all is good
                         // when no suffix is included in search term: 
                     if (suffix && !el.includes('/')) {
-                        console.log(catNoInFile.indexOf('/'))
                         catNoInFile = catNoInFile.substring(0,catNoInFile.indexOf('/'))
                     }
                         // when only '/' is included:
@@ -295,18 +294,20 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
                     // remove leading 0's from catalogNumber in dump-file
                     
                     if (String(el).charAt(0) != "0") {
-                        console.log('her')
                         let match = catNoInFile.match(/^0+/)
                         let level = match ? match[0].length : 0
                         catNoInFile = catNoInFile.substring(level,catNoInFile.length)    
                     }
                     
                     if ( catNoInFile === el.trim()) {
+                        console.log(el)
+                        console.log(objectNumbers)
                         // søk for en match i linja  (line.indexOf(searchTerm) !== -1)
                         results =  results +  '\n' + line
                         resultCount++
                         objectNumbers.splice(objectNumbers.indexOf(el),1)
-                        break;
+                        console.log(objectNumbers)
+                        //break;
                     } 
                 }
             }
@@ -335,8 +336,7 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
 //         console.log( 'Search Term: ' + searchTerm);
         
 //         terms = searchTerm.split(' ')
-//         let results = ''
-//         const readInterface = readline.createInterface({
+//         let results = 'readInterface = readline.createInterface({
 //             input: fs.createReadStream(musitFile),
 //             console: false
 //         })
