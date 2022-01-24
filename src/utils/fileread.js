@@ -61,6 +61,7 @@ const setCollection = (museum, samling) => {
     } else {
         fileList.forEach(element => {
             if (element.name === samling){
+                console.log('eleement name:' + element.name)
                     musitFile = pathToMuseum + element.name + '_occurrence.txt'
             }
         })

@@ -312,6 +312,7 @@ const downloadAndZip = async (mediaObj, allResults) => {
             no = ++no
             });
         });
+        no = 1
     }
     zip.generateAsync({type: 'blob'}).then(zipFile => {
     const currentDate = new Date().getTime();
@@ -380,6 +381,7 @@ async function main() {
             // fix MUSIT number
             MUSITNo = getMUSITNumber()
             if(document.querySelector('#overskrift').checked){
+                const transelateKeyMap = headerMap()
                 for (const [key, value] of transelateKeyMap) {
                     allResults = allResults + value + '\t' 
                 }
@@ -422,6 +424,7 @@ searchForm.addEventListener('submit', (e) => {
 document.getElementById("Vis-kolonne").addEventListener('click', (e) => {
     e.preventDefault()  
     try { 
+        const transelateKeyMap = headerMap()
         let totValue = ''
         for (const [key, value] of transelateKeyMap) {
             totValue = totValue + value + '\t' 
