@@ -176,7 +176,6 @@ const doAdvancedSearch = (limit = 20) => {
         '&samling=' + chosenCollection + '&linjeNumber=0' + '&limit=' + limit  + '&hasPhoto=' + hasPhoto
         fetch(url).then((response) => {
             if (!response.ok) {
-                console.log('her')
                 throw 'noe går galt med søk, respons ikke ok'
                 
             } else {
@@ -321,7 +320,6 @@ const doObjListSearch = (limit = 20) => {
         '&samling=' + chosenCollection + '&linjeNumber=0' + '&limit=' + limit
         fetch(url).then((response) => {
             if (!response.ok) {
-                console.log('her')
                 throw 'noe går galt med objektliste-søk, respons ikke ok'
                 
             } else {
