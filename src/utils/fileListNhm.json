@@ -92,15 +92,7 @@
     "url": "https://ipt.gbif.no/archive.do?r=birds",
     "akronym": "NHMO-BI"
 },
-{
-    "source": "corema",
-    "orgGroup": "zoologi",
-    "name": "fisk",
-    "zipFileName": "occurrence",
-    "mediaFile": "_multimedia",
-    "url": "https://ipt.gbif.no/archive.do?r=o_fish",
-    "akronym": "ZMO-Pisc"
-},
+
 {
     "source": "corema",
     "orgGroup": "zoologi",
@@ -179,7 +171,7 @@
     "name": "fisk",
     "zipFileName": "occurrence",
     "mediaFile": "",
-    "url": "",
+    "url": "https://ipt.gbif.no/archive.do?r=o_fish",
     "akronym": "NHMO-J"
 },
 {

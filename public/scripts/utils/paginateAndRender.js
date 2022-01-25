@@ -99,9 +99,12 @@ const resultTable = (subMusitData, musitData) => {
                 
                 
                 let prefix
+                console.log(sessionStorage.getItem('chosenCollection'))
                 if (sessionStorage.getItem('organismGroup').includes('paleontologi')) {
                     prefix = 'PMO '
 
+                } else if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
+                    prefix = 'NHMO-J-'
                 } else if (!(/[a-zA-Z]/).test(subMusitData[i].catalogNumber.charAt(0))) {
                     
                     prefix = subMusitData[i].institutionCode + '-' + subMusitData[i].collectionCode + '-'
@@ -109,6 +112,7 @@ const resultTable = (subMusitData, musitData) => {
                     prefix = ''
                 }
                 
+                if (subMusitData[i].catalogNumber.includes('J')) { subMusitData[i].catalogNumber = subMusitData[i].catalogNumber.substring(2)}
                 cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}"> ${prefix}${subMusitData[i].catalogNumber} </a>`
                 if (!sessionStorage.getItem('organismGroup').includes('geologi')) {
                     let nameArray = italicSpeciesname(subMusitData[i].scientificName)
@@ -252,6 +256,7 @@ const UTADRestultTable = (subUTADData, UTADData) => {
                 let prefix = ''
                 if (!(/[a-zA-Z]/).test(subUTADData[i].catalogNumber.charAt(0))) {  
                     prefix = subUTADData[i].institutionCode + '-' + subUTADData[i].collectionCode + '-'
+                    
                 } else {
                     prefix = ''
                 }

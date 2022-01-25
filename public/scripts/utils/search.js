@@ -260,6 +260,7 @@ function addCollectionsToSelect(orgGroup) {
                     response.text().then((data) => {
                         const JSONdata = JSON.parse(data)  
                         sessionStorage.setItem('options', data)
+                        console.log(JSONdata)
                         JSONdata.forEach(el => {
                             elOption = document.createElement("option")
                             elOption.text = addTextInCollSelect(el)
