@@ -61,8 +61,7 @@ const setCollection = (museum, samling) => {
     } else {
         fileList.forEach(element => {
             if (element.name === samling){
-                console.log('eleement name:' + element.name)
-                    musitFile = pathToMuseum + element.name + '_occurrence.txt'
+                musitFile = pathToMuseum + element.name + '_occurrence.txt'
             }
         })
     
@@ -171,35 +170,41 @@ const advSearch = (museum, samling, searchSpecies, searchCollector, searchDate, 
                 headers = line.split('\t')
             } else {
                 let lineArray = line.split('\t')
-                console.log(lineArray + 'linje 174')
+                // console.log(lineArray + 'linje 174')
                 if (lineArray[headers.indexOf(headerTerms[0])].toLowerCase().indexOf(termsArray[0]) !== -1) {
                     // Hvis linja inneholder det først søkeordet, sjekk om det også inneholder de andre
                     for(let i = 1; i < termsArray.length; i++){
-                        if (i < (termsArray.length - 1)) {
-                            
-                            if(lineArray[headers.indexOf(headerTerms[i])].toLowerCase().indexOf(termsArray[i]) === -1){
-                            // hvis vi ikke får treff så bryter vi loopen (-1 = fant ikke),
-                                break;
-                            } 
-                } else if (i === (termsArray.length -1) ) {
-                            // check for last searchTerm; associatedMedia
-                            if (termsArray[i] === 'hasphoto') {
-                                if (!lineArray[headers.indexOf(headerTerms[i])]) {
+                        
+                        if (headers.indexOf(headerTerms[i]) != -1) {
+                            if (i < (termsArray.length - 1)) {
+                                
+                                // console.log(i + 'og' +headers.indexOf(headerTerms[i]))
+                                // console.log(headerTerms[i])
+                                
+                                if(lineArray[headers.indexOf(headerTerms[i])].toLowerCase().indexOf(termsArray[i]) === -1){
+                                // hvis vi ikke får treff så bryter vi loopen (-1 = fant ikke),
                                     break;
+                                } 
+                            } else if (i === (termsArray.length -1) ) {
+                                // check for last searchTerm; associatedMedia
+                                if (termsArray[i] === 'hasphoto') {
+                                    if (!lineArray[headers.indexOf(headerTerms[i])]) {
+                                        break;
+                                    } else {
+                                        results =  results +  '\n' + line
+                                        resultCount++  
+                                    }
+                                } else if (termsArray[i] === 'hasnotphoto') {
+                                    if (lineArray[headers.indexOf(headerTerms[i])]) {
+                                        break;
+                                    } else {
+                                        results =  results +  '\n' + line
+                                        resultCount++  
+                                    }
                                 } else {
                                     results =  results +  '\n' + line
                                     resultCount++  
                                 }
-                            } else if (termsArray[i] === 'hasnotphoto') {
-                                if (lineArray[headers.indexOf(headerTerms[i])]) {
-                                    break;
-                                } else {
-                                    results =  results +  '\n' + line
-                                    resultCount++  
-                                }
-                            } else {
-                                results =  results +  '\n' + line
-                                resultCount++  
                             }
                         }
                     }
