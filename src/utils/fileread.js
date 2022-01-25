@@ -171,10 +171,12 @@ const advSearch = (museum, samling, searchSpecies, searchCollector, searchDate, 
                 headers = line.split('\t')
             } else {
                 let lineArray = line.split('\t')
+                console.log(lineArray + 'linje 174')
                 if (lineArray[headers.indexOf(headerTerms[0])].toLowerCase().indexOf(termsArray[0]) !== -1) {
                     // Hvis linja inneholder det først søkeordet, sjekk om det også inneholder de andre
                     for(let i = 1; i < termsArray.length; i++){
                         if (i < (termsArray.length - 1)) {
+                            
                             if(lineArray[headers.indexOf(headerTerms[i])].toLowerCase().indexOf(termsArray[i]) === -1){
                             // hvis vi ikke får treff så bryter vi loopen (-1 = fant ikke),
                                 break;
@@ -246,7 +248,6 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
 
         let suffix
         if (samling == "sopp" || samling == "moser") {
-            console.log('samling har suffix')
             suffix = true
         } else {suffix = false }
 
@@ -301,14 +302,10 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
                     }
                     
                     if ( catNoInFile === el.trim()) {
-                        console.log(el)
-                        console.log(objectNumbers)
                         // søk for en match i linja  (line.indexOf(searchTerm) !== -1)
                         results =  results +  '\n' + line
                         resultCount++
                         objectNumbers.splice(objectNumbers.indexOf(el),1)
-                        console.log(objectNumbers)
-                        //break;
                     } 
                 }
             }
