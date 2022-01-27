@@ -655,7 +655,7 @@ let mediaLink
 let imageList
 if ( coll === 'birds' || coll === 'mammals' || coll === 'dna_fish_herptiles' || coll === 'dna_other') {
     
-    mediaLink = object.photoIdentifiers
+    mediaLink = object.associatedMedia
 } else {
     mediaLink = object.associatedMedia
 }
