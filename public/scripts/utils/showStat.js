@@ -101,9 +101,16 @@ const populateTable = (data) => {
 
       cell_1.textContent = collections[i].replace(/\b\S/g, t => t.toUpperCase())
       cell_1.style = 'text-align:left'  
-      cell_2.textContent = data[element][3].collectionSize.format(0,3,' ')
-      cell_3.textContent = data[element][5].media.stillImage.format(0,3,' ')
-      cell_4.textContent = data[element][1].geography.coordinates[0].yes.format(0,3,' ')
+      if(data[element][3].collectionSize){
+        cell_2.textContent = data[element][3].collectionSize.format(0,3,' ')
+      }
+      if(data[element][5].media.stillImage){
+        cell_3.textContent = data[element][5].media.stillImage.format(0,3,' ')
+      }
+        if(data[element][1].geography.coordinates[0].yes){
+          cell_4.textContent = data[element][1].geography.coordinates[0].yes.format(0,3,' ')
+        }
+      
     }    
     table.setAttribute("class", "summaryTable");
   } catch (error) {
