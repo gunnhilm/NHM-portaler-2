@@ -1,5 +1,46 @@
 const searchForm = document.querySelector('form') 
 
+collectionObject = {
+    nhm: {
+        entomologi: 'NHMO-ENT',
+        alger: 'O-A',
+        karplanter: 'O-V',
+        lav: 'O-L',
+        moser: 'O-B',
+        sopp: 'O-F'
+    },
+    tmu: {
+        entomologi: 'X',
+        marine: 'X',
+        karplanter: 'TROM-V',
+        lav: 'TROM-L',
+        moser: 'TROM-B',
+        sopp: 'TROM-F' 
+    },
+    um: {
+        entomologi: 'X',
+        marine: 'ZMBN-EVERT',
+        karplanter: 'BG-S',
+        lav: 'BG-L',
+        moser: 'BG-B',
+        sopp: 'BG-F' 
+    },
+    nbh: {
+        alger: 'KMN-A',
+        karplanter: 'KMN-V',
+        moser: 'KMN-B'
+    }, 
+    vm: {
+        entomologi: 'X',
+        marine: 'X',
+        alger: 'THR-A',
+        karplanter: 'THR-V',
+        lav: 'THR-L',
+        moser: 'THR-B',
+        sopp: 'THR-F'
+    }
+}
+
 const papaParseConfig = {
 	delimiter: "",	// auto-detect
 	newline: "",	// auto-detect
@@ -12,41 +53,12 @@ const papaParseConfig = {
 	delimitersToGuess: [ ' ',',', '\t', '|', ';']
 }
 
-/*
-const transelateKeyMap = new Map();
-transelateKeyMap.set('museumCollection', 'Museum');
-transelateKeyMap.set('dbNumbers', 'Løpenummer');
-transelateKeyMap.set('#Dummy3', 'UUID');
-transelateKeyMap.set('catalogNumber', 'Artsobservasjon nr.');
-transelateKeyMap.set('#Dummy4', 'Navn_Usikkerhet');
-transelateKeyMap.set('acceptedScientificName', 'Vitenskapelig navn');
-transelateKeyMap.set('#Dummy5', 'Norsk navn');
-transelateKeyMap.set('#Dummy6', 'Kommentar (bestemmelse)');
-transelateKeyMap.set('municipality', 'Administrativt sted/kommune');
-transelateKeyMap.set('locality', 'Lokalitet');
-transelateKeyMap.set('geodeticDatum', 'Datum');
-transelateKeyMap.set('latLongCoords', 'Koordinater');
-transelateKeyMap.set('#Dummy7', 'Koordinat - usikker');
-transelateKeyMap.set('#Dummy8', 'Koordinater bestemt i ettertid');
-transelateKeyMap.set('coordinateUncertaintyInMeters', 'Koordinat-presisjon (m)');
-transelateKeyMap.set('habitat', 'Økologi');
-transelateKeyMap.set('#Dummy9', 'Kartblad');
-transelateKeyMap.set('#Dummy10', 'Høyde over havet (m)');
-transelateKeyMap.set('#Dummy11', 'Høyde - usikker');
-transelateKeyMap.set('recordedBy', 'Innsamlere');
-transelateKeyMap.set('eventDate', 'Innsamlingsdato');
-transelateKeyMap.set('identifiedBy', 'Bestemmere');
-transelateKeyMap.set('datasetName', 'Prosjektnavn');
-transelateKeyMap.set('fieldNotes', 'Kommentar fra innsamler');
-*/
-
-
 function headerMap() {
      const transelateKeyMap = new Map();
     transelateKeyMap.set('Museum', 'museumCollection');
     transelateKeyMap.set('Løpenummer', 'dbNumbers');
     transelateKeyMap.set('Artsobservasjon nr.', 'catalogNumber');
-    transelateKeyMap.set('Vitenskapelig navn', 'acceptedScientificName');
+    transelateKeyMap.set('Vitenskapelig navn', 'scientificName');
     transelateKeyMap.set('Administrativt sted/kommune', 'municipality');
     transelateKeyMap.set('Lokalitet', 'locality');
     transelateKeyMap.set('Datum', 'geodeticDatum');
@@ -56,6 +68,7 @@ function headerMap() {
     transelateKeyMap.set('Innsamlere', 'recordedBy');
     transelateKeyMap.set('Innsamlingsdato', 'eventDate');
     transelateKeyMap.set('Bestemmere', 'identifiedBy');
+    transelateKeyMap.set('Bestemmelsesdato', 'dateIdentified');
     transelateKeyMap.set('Prosjektnavn', 'datasetName');
     transelateKeyMap.set('Kommentar fra innsamler', 'fieldNotes');
 
@@ -105,17 +118,39 @@ function headerMap() {
 const addMuseum = () => {
     const valgtMuseum = document.getElementById('museum-select').value
     const valgtSamling = document.getElementById('collection-select').value
-    let museumString = ''
+    let museumstring = ''
+    //set museum
     if (valgtMuseum === 'nhm'){
         if(valgtSamling === 'entomologi'){
-            museumString = 'NHMO'
+            museumstring= 'NHMO'
         } else {
-            museumString = 'O'
+            museumstring = 'O'
         }
+    } else if (valgtMuseum === 'tmu') {
+        if(valgtSamling === 'entomologi' || valgtSamling === 'marine invertebrater'){
+            museumstring = ''
+        } else {
+            museumstring = 'TROM'
+        }
+
+    }  else if (valgtMuseum === 'um') {
+        if(valgtSamling === 'entomologi' || valgtSamling === 'marine invertebrater'){
+            museumstring = ''
+        } else {
+            museumstring = 'BG'
+        }
+    }  else if (valgtMuseum === 'vm') {
+        if(valgtSamling === 'entomologi' || valgtSamling === 'marine invertebrater'){
+            museumstring = ''
+        } else {
+            museumstring = 'TRH'
+        }
+    } else if (valgtMuseum === 'nbh') {
+        museumstring = 'KMN'
     } else {
-        museumString = ''
+        museumstring = ''
     }
-    return museumString
+    return museumstring
 }
 
 const getMUSITNumber = () => {
@@ -156,7 +191,6 @@ function fixAdmPlace (kommuneObj, municipality, county) {
         return input
     }
 }
-
 
 const fixUserInput = (artsObsNumbers) => {
     // replace all lineshifts with comma
@@ -216,6 +250,10 @@ const getArtsObsData = async (artsObsNumber, MUSITNo)=> {
         let fixedDate = resultObj.eventDate
         fixedDate = fixedDate.substring(0,fixedDate.search('T'))
         resultObj.eventDate = fixedDate
+        // fix coll date
+        if(!resultObj.dateIdentified) {
+            resultObj.dateIdentified = fixedDate
+        }
 
         // fix collector
         let fixedColl = resultObj.recordedBy
@@ -298,6 +336,15 @@ const downloadMany = urls => {
 // download images
 const downloadAndZip = async (mediaObj, allResults) => {
     document.getElementById("please-wait").style.display = "block"
+    const valgtMuseum = document.getElementById('museum-select').value
+    const valgtSamling = document.getElementById('collection-select').value
+    let akronym = ''
+    try {
+        akronym = collectionObject[valgtMuseum][valgtSamling] + '-'
+    } catch (error) {
+        akronym = ''
+    }
+
     const zip = JSZip();
     const myTxtBlob = new Blob([allResults], {
         type: 'text/plain'
@@ -308,7 +355,7 @@ const downloadAndZip = async (mediaObj, allResults) => {
     for (const [key, value] of Object.entries(mediaObj)) {
         await downloadMany(value).then(blobs =>{ 
             blobs.forEach((blob, i) => {
-            zip.file(`${key}-0${[no]}.jpg`, blob);
+            zip.file(`${akronym}${key}-0${[no]}.jpg`, blob);
             no = ++no
             });
         });
@@ -359,7 +406,6 @@ async function getImageUrls(keyObj) {
         return mediaObj
     } catch (error) {
         console.log(error);
-        // alert(error)
     }
 }
 
@@ -371,7 +417,6 @@ async function main() {
         const keyObj = {}
         let museum = document.getElementById('museum-select').value
         let samling = document.getElementById('collection-select').value
-        console.log('museum: ' + museum + ' og samling: ' + samling);
         let Numbers = document.getElementById('artsObs-Numbers').value
         if (!Numbers) {
             alert('Du må skrive inn artsobsnumre')
