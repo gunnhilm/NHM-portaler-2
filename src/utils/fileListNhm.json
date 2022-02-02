@@ -75,6 +75,15 @@
     "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/entomology_nhmo.zip"
 },
 {
+    "source": "access",
+    "orgGroup": "zoologi",
+    "name": "fisk",
+    "zipFileName": "occurrence",
+    "mediaFile": "",
+    "url": "https://ipt.gbif.no/archive.do?r=o_fish",
+    "akronym": "NHMO-J"
+},
+{
     "source": "corema",
     "orgGroup": "zoologi",
     "name": "mammals",
@@ -164,15 +173,6 @@
     "mediaFile": "",
     "url": "",
     "akronym": "PMO"
-},
-{
-    "source": "access",
-    "orgGroup": "zoologi",
-    "name": "fisk",
-    "zipFileName": "occurrence",
-    "mediaFile": "",
-    "url": "https://ipt.gbif.no/archive.do?r=o_fish",
-    "akronym": "NHMO-J"
 },
 {
     "source": "excel",

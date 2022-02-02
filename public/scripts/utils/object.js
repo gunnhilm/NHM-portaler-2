@@ -57,15 +57,16 @@ document.getElementById("nb-photos").style.display = "none"
 
 //get the object from session storage
 const allObject = loadStringObject()
-
-
+console.log(allObject)
 // get the id from the url
 const urlParams = new URLSearchParams(window.location.search)
 const id = urlParams.get('id')
-
-const object = allObject.find(x => x.catalogNumber === id)
-console.log(object)
-
+let object
+if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
+    object = allObject.find(x => x.catalogNumber.replace(/[A-Z]/,'').trim() === id)
+} else {
+    object = allObject.find(x => x.catalogNumber === id)
+}
 
 // functionality to next-object-buttons
 let museumURLPath = ''
@@ -87,20 +88,26 @@ document.getElementById("back-to-result").onclick = () => {
 
 const nextObject = allObject[allObject.indexOf(object)+1]
 const previousObject = allObject[allObject.indexOf(object)-1]
-console.log(allObject.length-1)
-console.log(allObject.indexOf(object))
 
 document.getElementById("next-object").disabled = allObject.indexOf(object) == allObject.length-1 ? true : false;
 document.getElementById("previous-object").disabled = allObject.indexOf(object) == 0 ? true : false;
 
 document.getElementById("next-object").onclick = () => {
     if (allObject.indexOf(object) !== allObject.length-1) {
-        window.location.href=`${museumURLPath}/object/?id=${nextObject.catalogNumber}`
+        if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
+            window.location.href=`${museumURLPath}/object/?id=${nextObject.catalogNumber.replace(/[A-Z]/,'').trim()}`
+        } else {
+            window.location.href=`${museumURLPath}/object/?id=${nextObject.catalogNumber}`
+        }
     }
 }
 document.getElementById("previous-object").onclick = () => {
     if (allObject.indexOf(object) !== 0) {
-        window.location.href=`${museumURLPath}/object/?id=${previousObject.catalogNumber}`
+        if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
+            window.location.href=`${museumURLPath}/object/?id=${previousObject.catalogNumber.replace(/[A-Z]/,'').trim()}`
+        } else {
+            window.location.href=`${museumURLPath}/object/?id=${previousObject.catalogNumber}`
+        }
     }
     
 }
@@ -176,9 +183,16 @@ const coordinates = (obj) => {
     }
 }
 
+let prefix
+let regnoEl
+if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
+    prefix = 'NHMO-J-'
+    regnoEl = `<span>${prefix}${object.catalogNumber.replace(/[A-Z]/,'').trim()}</span>` 
+} else {
+    prefix = object.institutionCode + '-' + object.collectionCode + '-'
+    regnoEl = `<span>${prefix}${object.catalogNumber}</span>` 
+}
 
-let prefix = object.institutionCode + '-' + object.collectionCode + '-'
-const regnoEl = `<span>${prefix}${object.catalogNumber}</span>` 
 
 // data only displayed if existing
 
@@ -459,7 +473,7 @@ const showData = () => {
     } else if (!sessionStorage.getItem('collection').includes('dna') & !sessionStorage.getItem('collection').includes('birds') & !sessionStorage.getItem('collection').includes('mammals')) {
         document.querySelector("#musit-regno").innerHTML = regnoEl
     } else {
-        document.querySelector("#musit-regno").innerHTML = `<span>${object.catalogNumber}</span>`
+        document.querySelector("#musit-regno").innerHTML = `<span>${object.catalogNumber.replace(/[A-Z]/,'').trim()}</span>`
     }
 
 
@@ -468,8 +482,6 @@ const showData = () => {
         document.querySelector("#species-name").innerHTML = `<span style=font-style:italic>${nameArray[0]}</span>` + ' ' + `<span>${nameArray[1]}</span>`
         document.querySelector("#coll-date").innerHTML = `<span>${object.eventDate}</span>`
         document.querySelector("#coll").innerHTML = `<span>${object.recordedBy}</span>`
-        console.log(collNo)
-        console.log(artsobsID)
         document.querySelector("#collNo").innerHTML = collNo
         document.querySelector("#det").innerHTML =  `<span>${object.identifiedBy}</span>`
         document.querySelector("#det-date").innerHTML = `<span>${object.dateIdentified}</span>`
