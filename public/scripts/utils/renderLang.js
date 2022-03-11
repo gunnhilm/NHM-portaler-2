@@ -3,6 +3,7 @@
 // urlPath er definert i textItems.js
 // textItems[] is in separate file textItems.js
 
+
 // enables species name in italic and author in non-italic
 // in: scientific species name; string
 // out: two strings (in an array); name in one string and 
@@ -65,7 +66,8 @@ const fillSearchFields = () => {
 // in: lang (string, «Norwegian» or «English»)
 // out: text or images in relevant HTML-elements
 // is called in renderLang.js
-const renderText = function(lang) {
+function renderText (lang) {
+
 
     if (lang === "English") {
         index = 1
@@ -237,149 +239,7 @@ const renderText = function(lang) {
     
     
 
-    // object page
-    if (location.href.includes('object')) {
-        // Get the name of the collection
-        const coll = sessionStorage.getItem('collection')
-        const orgGroup = sessionStorage.getItem('organismGroup')
-
-        // read string and get the object from sessionStorage (for the object-page)
-        const loadString = (item) => {
-            
-            const objectJSON = sessionStorage.getItem(item)
-            
-            try {//object
-                return objectJSON ? JSON.parse(objectJSON) : []
-            } catch (e) {
-                return []
-            }
-        }
-        //get the object from session storage
-        const allObject = loadString('string')
-        const objectHeaders = loadString('objectHeaders')
-        // get the id from the url
-        const urlParams = new URLSearchParams(window.location.search)
-        const id = urlParams.get('id')
-        const object = allObject.find(x => x.catalogNumber === id)
-        
-        document.querySelector("#back-to-result").innerHTML = textItems.searchButtonHeader[index]
-        document.querySelector("#next-object").innerHTML = textItems.nextObject[index]
-        document.querySelector("#previous-object").innerHTML = textItems.previousObject[index]
-        
-
-        document.querySelector("#photo-box").alt = textItems.photoAlt[index]
-        document.querySelector("#next-photo").innerHTML = textItems.nextPhoto[index]
-        document.querySelector("#previous-photo").innerHTML = textItems.previousPhoto[index]
-
-        if (coll === 'utad') {
-            console.log('utad');
-            //document.querySelector("#head-species-name").innerHTML = textItems.speciesName[index].bold()
-            if (document.querySelector("#head-vernacularName")) {document.querySelector("#head-vernacularName").innerHTML = textItems.vernacularName[index]}
-            if (document.querySelector("#head-basisOfRecord")) {document.querySelector("#head-basisOfRecord").innerHTML = textItems.basisOfRecord[index]}
-            if (document.querySelector("#head-lengde")) {document.querySelector("#head-lengde").innerHTML = textItems.lengde[index]}
-            if (document.querySelector("#head-bredde")) {document.querySelector("#head-bredde").innerHTML = textItems.bredde[index]}
-            if (document.querySelector("#head-høyde")) {document.querySelector("#head-høyde").innerHTML = textItems.hoyde[index]}
-            if (document.querySelector("#head-Vekt")) {document.querySelector("#head-Vekt").innerHTML = textItems.Vekt[index]}
-            if (document.querySelector("#head-Tilstand")) {document.querySelector("#head-Tilstand").innerHTML = textItems.Tilstand[index]}
-            if (document.querySelector("#head-Utlån")) {document.querySelector("#head-Utlån").innerHTML = textItems.Utlån[index]}
-            if (document.querySelector("#head-Kommentar")) {document.querySelector("#head-Kommentar").innerHTML = textItems.Kommentar[index]}
-            
-        } else if (orgGroup === 'paleontologi') {
-            if (document.querySelector("#head-species-name")) {document.querySelector("#head-species-name").innerHTML = textItems.headSpeciesName[index].bold()}
-            if (document.querySelector("#head-concatLocality")) {document.querySelector("#head-concatLocality").innerHTML = textItems.concatLocality[index].bold()}
-            for (let i = 0; i < objectHeaders.length; i++) {
-                const element = objectHeaders[i];
-                if (document.querySelector(`#head-${element}`)) {document.querySelector(`#head-${element}`).innerHTML = textItems[element][index].bold()}
-            }
-
-        } else if (orgGroup === 'geologi') {
-            for (let i = 0; i < objectHeaders.length; i++) {
-                
-                const element = objectHeaders[i];
-                if (element === "eventDate") {
-                    if (document.querySelector(`#head-${element}`)) {document.querySelector(`#head-${element}`).innerHTML = textItems.headerDate[index].bold()+":".bold()}
-                } else if (document.querySelector(`#head-${element}`)) {document.querySelector(`#head-${element}`).innerHTML = textItems[element][index].bold()}
-            }
-  
-        } else { // biologi objekter
-
-            if (document.querySelector("#head-species-name")) {
-                document.querySelector("#head-species-name").innerHTML = textItems.headSpeciesName[index].bold()
-                document.querySelector("#head-det").innerHTML = textItems.headDet[index].bold()
-                document.querySelector("#head-det-date").innerHTML = textItems.headDetDate[index].bold()
-                document.querySelector("#head-coll-date").innerHTML = textItems.headCollDate[index].bold()
-                document.querySelector("#head-coll").innerHTML = textItems.headColl[index].bold()
-                //document.querySelector("#head-collNo").innerHTML = textItems.headCollNo[index].bold()
-                document.querySelector("#head-locality").innerHTML = textItems.headLocality[index].bold()
-                document.querySelector("#head-coordinates").innerHTML = textItems.headCoordinates[index].bold()
-
-                // document.querySelector("#photo-box").alt = textItems.photoAlt[index]
-                // document.querySelector("#next-photo").innerHTML = textItems.nextPhoto[index]
-                // document.querySelector("#previous-photo").innerHTML = textItems.previousPhoto[index]
-            }
-            
-            if (object.recordNumber) {
-                console.log('har collno')
-                if (document.querySelector("#head-collNo")) {
-                    document.querySelector("#head-collNo").innerHTML = textItems.headCollNo[index].bold()
-                }
-            }
-            if(!object.decimalLatitude || !object.decimalLongitude) {
-                if (document.querySelector("#map-object")) {
-                    document.querySelector("#map-object").innerHTML = textItems.mapAlt[index]
-                }
-            }
-
-            if (object.ArtObsID) {
-                if (document.querySelector("#head-artsobs")) {
-                    document.querySelector("#head-artsobs").innerHTML = textItems.headArtsobs[index].bold()
-                }
-            }
-            if (object.habitat ) {
-                if(document.querySelector("#head-habitat")) {
-                    document.querySelector("#head-habitat").innerHTML = "Habitat: ".bold()
-                }
-            }
-            if (object.sex) {
-                if (document.querySelector("#head-sex")) {
-                    document.querySelector("#head-sex").innerHTML = textItems.headSex[index].bold()
-                }
-            }
-            if (object.lifeStage) {
-                if (document.querySelector("#head-lifeStage")) {
-                    document.querySelector("#head-lifeStage").innerHTML = textItems.headLifeStage[index].bold()
-                }
-            }
-            if (object.samplingProtocol) {
-                if(document.querySelector("#head-samplingProtocol")) {
-                    document.querySelector("#head-samplingProtocol").innerHTML = textItems.headSamplingProtocol[index].bold()
-                }
-            }
-            if (document.querySelector("#head-taxonomy")) {
-                if (object.kingdom || object.class || object.order || object.family) {
-                    document.querySelector("#head-taxonomy").innerHTML = textItems.headTaxonomy[index].bold()
-                }
-            }
-            
-            if (object.typeStatus) {
-                if (document.querySelector("#head-typeStatus")) {
-                    document.querySelector("#head-typeStatus").innerHTML = textItems.headTypeStatus[index].bold()
-                }
-            }
-            
-            //document.querySelector("#itemsHeader").innerHTML = textItems.itemsHeader[index]
-
-            ////////////endre dette med stiched files
-            // if (!window.location.href.includes('/um') && !window.location.href.includes('tmu')) {
-            //     document.querySelector("#preservedSp").innerHTML = textItems.preservedSp[index]
-            // }
-        
-        }
-
-        document.getElementById('zoom-expl-popup').innerHTML = textItems.mapHelpContent[index]
-        document.getElementById('large-map-object-button').innerHTML = textItems.largeMapButton[index]
-     
-    }
+    
     // Tools page
     if (location.href.includes('tools')) {
         document.querySelector('#showToolsHeader').innerHTML = textItems.showToolsHeader[index]
@@ -491,8 +351,9 @@ if (language === "Norwegian") {
     document.querySelector('#language').innerHTML = "Norwegian website"
 }
 
-
 renderText(language)
+
+
 
 document.querySelector('#language').addEventListener('click', (e) => {
     if (language === "Norwegian") {

@@ -87,14 +87,19 @@ const resultTable = (subMusitData, musitData) => {
                 
             } else {        // Her kommer innmaten i tabellen, selve resultatene
                 let museumURLPath
+                let museum = ''
                 if (window.location.href.includes('/um')) { 
                     museumURLPath = urlPath + "/um"
+                    museum = 'um'
                 } else if (window.location.href.includes('tmu')) {
                     museumURLPath = urlPath + "/tmu"
+                    museum = 'tmu'
                 } else if (window.location.href.includes('nbh')) {
                     museumURLPath = urlPath + "/nbh"
+                    museum = 'nbh'
                 } else {
                     museumURLPath = urlPath + "/nhm"
+                    museum = 'nhm'
                 }
                 
                 
@@ -113,7 +118,7 @@ const resultTable = (subMusitData, musitData) => {
                 }
                 
                 if (subMusitData[i].catalogNumber.includes('J')) { subMusitData[i].catalogNumber = subMusitData[i].catalogNumber.substring(2)}
-                cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}"> ${prefix}${subMusitData[i].catalogNumber} </a>`
+                cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${subMusitData[i].catalogNumber} </a>`
                 if (!sessionStorage.getItem('organismGroup').includes('geologi')) {
                     let nameArray = italicSpeciesname(subMusitData[i].scientificName)
                     cell2.innerHTML = `<span style=font-style:italic>${nameArray[0]}</span>` + ' ' + `<span>${nameArray[1]}</span>`
@@ -260,7 +265,7 @@ const UTADRestultTable = (subUTADData, UTADData) => {
                 } else {
                     prefix = ''
                 }
-                cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subUTADData[i].catalogNumber}"> ${prefix}${subUTADData[i].catalogNumber} </a>`
+                cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subUTADData[i].catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${subUTADData[i].catalogNumber} </a>`
                 cell2.innerHTML = subUTADData[i].vernacularName
                 cell3.innerHTML = subUTADData[i].Tilstand
                 cell4.innerHTML = subUTADData[i].basisOfRecord
@@ -342,7 +347,7 @@ const bulkResultTable = (subBulkData, bulkData) => {
                     prefix = ''
                 }
                 
-                //cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subBulkData[i].catalogNumber}"> ${prefix}${subBulkData[i].catalogNumber} </a>`
+                //cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subBulkData[i].catalogNumber&samling=${sessionStorage.getItem('chosenCollection')}}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${subBulkData[i].catalogNumber} </a>`
                 cell1.innerHTML =  prefix + subBulkData[i].catalogNumber
                 cell2.innerHTML = subBulkData[i].scientificName
                 cell3.innerHTML = subBulkData[i].recordedBy

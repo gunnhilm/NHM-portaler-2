@@ -41,6 +41,18 @@ const setOrgGroups = (museum) => {
     return uniqueOrgGroups
 }
 
+const getOrgGroup = (museum, samling) => {
+    const fileList = getFileList(museum)
+    let orgGroup = ''
+    fileList.forEach(element => {
+        if (element.name === samling){
+            orgGroup = element.orgGroup
+        }
+    })
+    return orgGroup
+}
+
+
 const setSubcollections = (museum, orgGroup) => {
     const fileList = getFileList(museum)
     let coll = []
@@ -221,7 +233,7 @@ const advSearch = (museum, samling, searchSpecies, searchCollector, searchDate, 
 }
 
 
-// object list search
+// object list search, seach for object numer or several numbers, searchObjects = one or more object numbers without prefixes, comma or space separated
 const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 20, callback) => {
     // velg riktig MUSIT dump fil å lese
     
@@ -423,6 +435,7 @@ module.exports = {
     objListSearch,
     setCollection,
     setOrgGroups,
+    getOrgGroup,
     setSubcollections,
     checkRegion
  } 

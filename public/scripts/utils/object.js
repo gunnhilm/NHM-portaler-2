@@ -1,12 +1,5 @@
 // Description of file: Renders text on object.hbs
 
-// decides which language is rendered
-if (sessionStorage.language) {
-    language = sessionStorage.getItem('language')
-} else {
-    language = document.querySelector('#language').value
-    sessionStorage.setItem('language', language)
-}
 
 // figures out which museum we are in
 // out: string, abbreviation for museum
@@ -21,10 +14,11 @@ const getCurrentMuseum = () => {
 // out: string
 // is called below function to fill variable orgGroup
 const getOrganismGroup = () => {
-    const orgGroup = sessionStorage.getItem('organismGroup')
+    let orgGroup = ''
+    orgGroup = sessionStorage.getItem('organismGroup')
     return orgGroup
 }
-const orgGroup = getOrganismGroup()
+
 
 
 // reads last search-result from sessionStorage and puts it in an array
@@ -54,19 +48,53 @@ document.getElementById("next-photo").onclick = () => {
 document.getElementById("next-photo").style.display = "none"
 document.getElementById("previous-photo").style.display = "none"
 document.getElementById("nb-photos").style.display = "none"
-
-//get the object from session storage
-const allObject = loadStringObject()
-console.log(allObject)
-// get the id from the url
-const urlParams = new URLSearchParams(window.location.search)
-const id = urlParams.get('id')
-let object
-if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
-    object = allObject.find(x => x.catalogNumber.replace(/[A-Z]/,'').trim() === id)
-} else {
-    object = allObject.find(x => x.catalogNumber === id)
+async function setOrgGroup () {
+    const urlParams = new URLSearchParams(window.location.search)
+        // set orgGroup to sessionStorage
+        const url2 = urlPath + '/groupOfOrg/?' + 'museum=' + urlParams.get("museum") + '&samling=' + urlParams.get("samling")
+        await fetch(url2).then((response) => {
+            if (!response.ok) {
+                throw 'noe går galt med søk, respons ikke ok'  
+            } else {
+                try {
+                    response.text().then((data) => {
+                        if(data.error) {
+                            errorMessage.innerHTML = textItems.serverError[index]
+                            return console.log(data.error)
+                        } else {
+                            sessionStorage.setItem('organismGroup', data)
+                        }
+                    }) 
+                    
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+        })
 }
+async  function getspecimenData (allObject) {
+    console.log(allObject);
+    return new Promise(function(resolve, reject) {
+        // get the id from the url
+        const urlParams = new URLSearchParams(window.location.search)
+        const id = urlParams.get('id')
+        let specimenObject = {}
+        try {
+            if (sessionStorage.getItem('collection').includes('fisk')) {
+                specimenObject = allObject.find(x => x.catalogNumber.replace(/[A-Z]/,'').trim() === id)
+            } else {
+                specimenObject = allObject.find(x => x.catalogNumber === id)
+            }
+            resolve(specimenObject)
+        } catch (error) {
+            reject(new Error(error));
+            console.log(error);
+
+        }
+    })
+}
+
+
 
 // functionality to next-object-buttons
 let museumURLPath = ''
@@ -80,37 +108,40 @@ if (window.location.href.includes('/um')) {
     museumURLPath = urlPath + "/nhm"
 }
 
-// back-to-result-button
-document.getElementById("back-to-result").onclick = () => {
-    window.location.href=`${museumURLPath}`
-}
+const makeNavButtons  = (allObject, specimenObject) => {
+    // back-to-result-button
+    document.getElementById("back-to-result").onclick = () => {
+        window.location.href=`${museumURLPath}`
+    }
 
 
-const nextObject = allObject[allObject.indexOf(object)+1]
-const previousObject = allObject[allObject.indexOf(object)-1]
+    const nextObject = allObject[allObject.indexOf(specimenObject)+1]
+    const previousObject = allObject[allObject.indexOf(specimenObject)-1]
 
-document.getElementById("next-object").disabled = allObject.indexOf(object) == allObject.length-1 ? true : false;
-document.getElementById("previous-object").disabled = allObject.indexOf(object) == 0 ? true : false;
+    document.getElementById("next-object").disabled = allObject.indexOf(specimenObject) == allObject.length-1 ? true : false;
+    document.getElementById("previous-object").disabled = allObject.indexOf(specimenObject) == 0 ? true : false;
 
-document.getElementById("next-object").onclick = () => {
-    if (allObject.indexOf(object) !== allObject.length-1) {
-        if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
-            window.location.href=`${museumURLPath}/object/?id=${nextObject.catalogNumber.replace(/[A-Z]/,'').trim()}`
-        } else {
-            window.location.href=`${museumURLPath}/object/?id=${nextObject.catalogNumber}`
+    document.getElementById("next-object").onclick = () => {
+        if (allObject.indexOf(object) !== allObject.length-1) {
+            if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
+                window.location.href=`${museumURLPath}/object/?id=${nextObject.catalogNumber.replace(/[A-Z]/,'').trim()}`
+            } else {
+                window.location.href=`${museumURLPath}/object/?id=${nextObject.catalogNumber}`
+            }
         }
     }
-}
-document.getElementById("previous-object").onclick = () => {
-    if (allObject.indexOf(object) !== 0) {
-        if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
-            window.location.href=`${museumURLPath}/object/?id=${previousObject.catalogNumber.replace(/[A-Z]/,'').trim()}`
-        } else {
-            window.location.href=`${museumURLPath}/object/?id=${previousObject.catalogNumber}`
+    document.getElementById("previous-object").onclick = () => {
+        if (allObject.indexOf(object) !== 0) {
+            if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
+                window.location.href=`${museumURLPath}/object/?id=${previousObject.catalogNumber.replace(/[A-Z]/,'').trim()}`
+            } else {
+                window.location.href=`${museumURLPath}/object/?id=${previousObject.catalogNumber}`
+            }
         }
+        
     }
-    
 }
+
 
 
 // facilitates correctly formatted locality information for a museum object
@@ -157,7 +188,7 @@ const locality = (obj) => {
     }
 }
 
-const concatLocality = country(object) + stateProvince(object) + county(object) + locality(object)
+
 
 // formats coordinates to nice readable format
 // in: obj (JSON-object that represents the museum object that is to be shown)
@@ -183,76 +214,60 @@ const coordinates = (obj) => {
     }
 }
 
-let prefix
-let regnoEl
-if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
-    prefix = 'NHMO-J-'
-    regnoEl = `<span>${prefix}${object.catalogNumber.replace(/[A-Z]/,'').trim()}</span>` 
-} else {
-    prefix = object.institutionCode + '-' + object.collectionCode + '-'
-    regnoEl = `<span>${prefix}${object.catalogNumber}</span>` 
-}
-
-
-// data only displayed if existing
-
-let headCollNo = ''
-let collNo = ''
-if( object.recordNumber ) {
-    console.log('har collno')
-    collNo = `<span>${object.recordNumber}</span>`
-} 
-
-let headArtsobs = ''
-let artsobsID = ''
-if( object.ArtObsID ) {
-    console.log('har artsobsno')
-    artsobsID = `<span>${object.ArtObsID}</span>`
-} 
-
-let headHabitat = ''
-let habitat = ''
-if (object.habitat ) {
-    habitat = `<span>${object.habitat}</span>`
-}
-
-//let headSex = ''
-let sex = ''
-if (object.sex) { sex =  `<span>${object.sex}</span>`}
-let lifeStage = ''
-if (object.lifeStage) { lifeStage =  `<span>${object.lifeStage}</span>`}
-let samplingProtocol = ''
-if (object.samplingProtocol) { samplingProtocol =  `<span>${object.samplingProtocol}</span>`}
-//let headTypeStatus = ''
-let typeStatus = ''
-if (object.typeStatus) { typeStatus =  `<span>${object.typeStatus}</span>`}
 
 // fills variable taxonomy with content
 // out: string with taxonomic hierarchy
 // is called below to fill variable taxonomy
-const taxonomyString = () => {
+const taxonomyString = (specimenObject) => {
     let string = ''
-    if (object.kingdom === true) {
-        string = object.kingdom
+    if (specimenObject.kingdom === true) {
+        string = specimenObject.kingdom
     } 
-    if (object.class) {
-        string = string + ' ' + object.class
+    if (specimenObject.class) {
+        string = string + ' ' + specimenObject.class
     }
-    if (object.order) {
-        string = string + ' ' + object.order
+    if (specimenObject.order) {
+        string = string + ' ' + specimenObject.order
     }
-    if (object.family) {
-        string = string + ' ' + object.family
+    if (specimenObject.family) {
+        string = string + ' ' + specimenObject.family
     }
     string = `<span>${string}</span>`
     string = string.toString()
  return string
 }
 
-let taxonomy = ''
-if (object.kingdom || object.class || object.order || object.family) {
-    taxonomy = taxonomyString()
+// enables species name in italic and author in non-italic
+// in: scientific species name; string
+// out: two strings (in an array); name in one string and 
+// author in another
+// is called in showData()
+const italicSpeciesname = (string) => {
+    string = string.trim()
+    let author = ''
+    let array = string.split(" ")
+    let name = array[0]
+    let nameFinished = false
+    for (let i = 1; i< array.length; i++) {
+        characters = array[i].split('')
+        if (characters.length > 0) {
+            if (characters[0] == characters[0].toUpperCase()) {
+                nameFinished = true
+                author = author + ' ' + array[i]
+            } else {
+                if (nameFinished == false) {
+                    name = name + ' ' + array[i]
+                } else {
+                    author = author + ' ' + array[i]
+                }
+            }
+        }
+    }
+    let nameAuthor = [name, author]
+    
+    return(nameAuthor)
 }
+
 
 
 // make first line in table for object-information, fills the cells (scientific name),
@@ -284,7 +299,7 @@ const makeBioTable = () => {
     const speciesNameHeader = speciesNameRow.insertCell(0); speciesNameHeader.id = 'head-species-name'; speciesNameHeader.style.fontWeight = 'bold'; speciesNameHeader.style = 'white-space:pre';
     const speciesNameCont = speciesNameRow.insertCell(1); speciesNameCont.id = 'species-name'; speciesNameCont.style = 'border-spacing: 10px 0;' //font-style:italic'; 
         
-    if (orgGroup === 'botanikk' || orgGroup === 'zoologi') {            
+     {            
         const detRow = table.insertRow(-1)
         const detH =   detRow.insertCell(0); detH.id = 'head-det'; detH.class = 'bold'; detH.style = 'white-space:pre';
         const detC =   detRow.insertCell(1); detC.id = 'det'; detC.style = 'border-spacing: 10px 0';
@@ -329,19 +344,7 @@ const makeBioTable = () => {
         const typeC =   type.insertCell(1); typeC.id = 'typeStatus'; typeC.style = 'border-spacing: 10px 0';
         
     } 
-    // else if (orgGroup === 'geologi') {
-    //     console.log('her hos geologene');
-    //     const loc = table.insertRow(-1)
-    //     const locH =   loc.insertCell(0); locH.id = 'head-locality'; locH.class = 'bold';
-    //     const locC =   loc.insertCell(1); locC.id = 'locality'; locC.style = 'border-spacing: 10px 0';
-    //     const coor = table.insertRow(-1)
-    //     const coorH =   coor.insertCell(0); coorH.id = 'head-coordinates'; coorH.class = 'bold';
-    //     const coorC =   coor.insertCell(1); coorC.id = 'coordinates'; coorC.style = 'border-spacing: 10px 0';
-    //     const type = table.insertRow(-1)
-    //     const typeH =   type.insertCell(0); typeH.id = 'head-typeStatus'; typeH.class = 'bold';
-    //     const typeC =   type.insertCell(1); typeC.id = 'typeStatus'; typeC.style = 'border-spacing: 10px 0';
 
-    // } 
 }
 
 // builds table for object-data for UTAD's collections
@@ -455,36 +458,84 @@ const makeGeoTable = (specimenObject) => {
 // and fills data in table for zoology and botany
 // calls makeUTADTable(obj) or makeGeoTable(obj) or makePalTable(obj) or makeBioTable(obj)
 // is called below
-const showData = () => {
+const showData = (specimenObject, orgGroup) => {
     if (orgGroup === 'other') {
-        makeUTADTable(object)
+        makeUTADTable(specimenObject)
     } else if (orgGroup === 'geologi') {
-        makeGeoTable(object)
+        makeGeoTable(specimenObject)
     } else if (orgGroup === 'paleontologi') {
-        makePalTable(object)
+        makePalTable(specimenObject)
     } else {
-        makeBioTable()
+        makeBioTable(specimenObject, orgGroup)
     }
-     
+    let prefix
+    let regnoEl
+    if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
+        prefix = 'NHMO-J-'
+        regnoEl = `<span>${prefix}${specimenObject.catalogNumber.replace(/[A-Z]/,'').trim()}</span>` 
+    } else {
+        prefix = specimenObject.institutionCode + '-' + specimenObject.collectionCode + '-'
+        regnoEl = `<span>${prefix}${specimenObject.catalogNumber}</span>` 
+    }
+
+    // data only displayed if existing
+    let headCollNo = ''
+    let collNo = ''
+    if( specimenObject.recordNumber ) {
+        console.log('har collno')
+        collNo = `<span>${specimenObject.recordNumber}</span>`
+    } 
+
+    let headArtsobs = ''
+    let artsobsID = ''
+    if( specimenObject.ArtObsID ) {
+        console.log('har artsobsno')
+        artsobsID = `<span>${specimenObject.ArtObsID}</span>`
+    } 
+
+    let headHabitat = ''
+    let habitat = ''
+    if (specimenObject.habitat ) {
+        habitat = `<span>${specimenObject.habitat}</span>`
+    }
+
+    //let headSex = ''
+    let sex = ''
+    if (specimenObject.sex) { sex =  `<span>${specimenObject.sex}</span>`}
+    let lifeStage = ''
+    if (specimenObject.lifeStage) { lifeStage =  `<span>${specimenObject.lifeStage}</span>`}
+    let samplingProtocol = ''
+    if (specimenObject.samplingProtocol) { samplingProtocol =  `<span>${specimenObject.samplingProtocol}</span>`}
+    //let headTypeStatus = ''
+    let typeStatus = ''
+    if (specimenObject.typeStatus) { typeStatus =  `<span>${specimenObject.typeStatus}</span>`}
+
 
     if (sessionStorage.getItem('organismGroup').includes('paleontologi') ) {
 
-        document.querySelector("#musit-regno").innerHTML = `<span>PMO ${object.catalogNumber}</span>`
+        document.querySelector("#musit-regno").innerHTML = `<span>PMO ${specimenObject.catalogNumber}</span>`
     } else if (!sessionStorage.getItem('collection').includes('dna') & !sessionStorage.getItem('collection').includes('birds') & !sessionStorage.getItem('collection').includes('mammals')) {
         document.querySelector("#musit-regno").innerHTML = regnoEl
     } else {
         document.querySelector("#musit-regno").innerHTML = `<span>${object.catalogNumber.replace(/[A-Z]/,'').trim()}</span>`
     }
 
+    const concatLocality = country(specimenObject) + stateProvince(specimenObject) + county(specimenObject) + locality(specimenObject)
 
+    let taxonomy = ''
+    if (specimenObject.kingdom || specimenObject.class || specimenObject.order || specimenObject.family) {
+        taxonomy = taxonomyString(specimenObject)
+    }
+
+console.log(specimenObject.eventDate);
     if (orgGroup === 'botanikk' || orgGroup === 'zoologi') {
-        let nameArray = italicSpeciesname(object.scientificName)
+        let nameArray = italicSpeciesname(specimenObject.scientificName)
         document.querySelector("#species-name").innerHTML = `<span style=font-style:italic>${nameArray[0]}</span>` + ' ' + `<span>${nameArray[1]}</span>`
-        document.querySelector("#coll-date").innerHTML = `<span>${object.eventDate}</span>`
-        document.querySelector("#coll").innerHTML = `<span>${object.recordedBy}</span>`
+        document.querySelector("#coll-date").innerHTML = `<span>${specimenObject.eventDate}</span>`
+        document.querySelector("#coll").innerHTML = `<span>${specimenObject.recordedBy}</span>`
         document.querySelector("#collNo").innerHTML = collNo
-        document.querySelector("#det").innerHTML =  `<span>${object.identifiedBy}</span>`
-        document.querySelector("#det-date").innerHTML = `<span>${object.dateIdentified}</span>`
+        document.querySelector("#det").innerHTML =  `<span>${specimenObject.identifiedBy}</span>`
+        document.querySelector("#det-date").innerHTML = `<span>${specimenObject.dateIdentified}</span>`
         document.querySelector("#artsobsID").innerHTML = artsobsID
         document.querySelector('#sex').innerHTML = sex
         document.querySelector('#lifeStage').innerHTML = lifeStage
@@ -492,14 +543,11 @@ const showData = () => {
         document.querySelector('#taxonomy').innerHTML = taxonomy
         document.querySelector('#typeStatus').innerHTML = typeStatus
         document.querySelector("#locality").innerHTML = `<span>${concatLocality}</span>`
-        document.querySelector("#coordinates").innerHTML = `<span>${coordinates(object)}</span>`
+        document.querySelector("#coordinates").innerHTML = `<span>${coordinates(specimenObject)}</span>`
         document.querySelector('#samplingProtocol').innerHTML = samplingProtocol
     }
 }
-showData()
-//document.querySelector("#bold-link").innerHTML = `<span>${APIurlSpecimenEl}</span>`
-//document.querySelector("#head-coremaAccno").innerHTML = `<span>Corema Accno</span>`
-//document.querySelector("#coremaAccno").innerHTML = `<span>${coremaAccno}</span>`
+
 
 // items
 
@@ -512,123 +560,7 @@ function addRow() {
         cell2 = row.insertCell(1)
 }
 
-if (!sessionStorage.getItem('collection').includes('dna') & !sessionStorage.getItem('collection').includes('birds') & !sessionStorage.getItem('collection').includes('mammals')) {
-    if(object.coremaUUID) {
-        document.querySelector("#preservedSp").innerHTML = textItems.preservedSp[index]
-        document.querySelector("#corema-link").innerHTML = `<a id="object-link" href="#" onclick="searchInCorema(object.coremaNo);return false;"> ${object.coremaNo} </a>`
-        // eslint-disable-next-line no-inner-declarations
-        function searchInCorema(coremaNo) {
-            console.log(coremaNo)
-            // vent til vi har sti med samlinger - kan peke rett på
-        }
-    }
-} 
-//else if(!window.location.href.includes('tmu') && !window.location.href.includes('/um')) {
-// 
-//     document.querySelector("#preservedSp").innerHTML = 'basisOfRecord:'
-//     document.querySelector("#corema-link").innerHTML = object.basisOfRecord
-// 
-//     document.querySelector("#head-preparation").innerHTML = 'preparation:'
-//     document.querySelector("#preparation").innerHTML = object.preparations
-// 
-//     document.querySelector("#head-disposition").innerHTML = 'disposition:'
-//     document.querySelector("#disposition").innerHTML = object.disposition
-// 
-// }
-// 
-//     // put items in itemArray as objects
-//     tempItemArray = object.itemNumbers.split(",")
-//     itemArray = []
-//     tempItemArray.forEach (element => itemArray.push({itemNumber: element}))
-    // 
-//     // add properties to the item-objects
-//     itemTypeArray = object.items.split(",")
-//     dateArray = object.itemDates.split(",")
-//     methodArray = object.itemMethods.split(",")
-//     preparedByArray = object.itemPreparedBys.split(",")
-//     processIDArray = object.itemProcessIDs.split(",")
-//     genbankArray = object.itemGenAccNos.split(",")
-//     DNAConcArray = object.itemConcentrations.split(",")
-//     DNAConcUnitArray = object.itemUnits.split(",")
-//     preservationArray = object.itemPreservations.split(",")
-// 
-//     for (i=0; i<itemArray.length; i++) {
-//         itemArray[i].properties = itemTypeArray[i]
-//         itemArray[i].date = dateArray[i]
-//         itemArray[i].method =methodArray[i]
-//         itemArray[i].preparedBy = preparedByArray[i]
-//         itemArray[i].processID = processIDArray[i]
-//         itemArray[i].genAccNo = genbankArray[i]
-//         itemArray[i].DNAConc =DNAConcArray[i]
-//         itemArray[i].DNAConcUnit = DNAConcUnitArray[i] 
-//         itemArray[i].preservation = preservationArray[i]
-//     }
-//     // add row in table with heading for items
-//     // addRow()
-//     // cell1.innerHTML = '<br>'
-//     // addRow()
-//     // cell1.id = 'itemsHeader'
-//     // cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.itemsHeader[index]}:</span>`
-//     // addRow()
-//     //cell1.innerHTML = '<br>'
-//     // loop over array
-//     itemArray.forEach( item => {
-//         addRow()
-//         cell1.innerHTML = item.properties
-//         cell1.style.textDecoration  = 'underline'
-//         cell1.style.fontWeight = 'normal'
-//         cell1.style.fontSize = '18px'
-//         addRow()
-//         cell1.innerHTML = textItems.itemNumber[index]
-//         cell2.innerHTML = item.itemNumber
-//         addRow()
-//         if (item.properties.includes("gDNA")) {
-//             cell1.innerHTML = textItems.extractionDate[index]
-//         } else if (item.properties === 'Voucher') {
-//             cell1.innerHTML = ''
-//         } else {
-//             cell1.innerHTML = textItems.samplingDate[index]
-//         }
-//         cell2.innerHTML = item.date
-//         addRow()
-//         cell1.innerHTML = textItems.preservation[index]
-//         if (item.properties === 'Voucher') {
-//             cell2.innerHTML = object.preparations
-//         } else {
-//             cell2.innerHTML = item.preservation
-//         }
-//         if (item.properties.includes("gDNA")) {
-//             addRow()
-//             cell1.innerHTML = textItems.method[index]
-//             cell2.innerHTML = item.method
-//             addRow()
-//             cell1.innerHTML = textItems.preparedBy[index]
-//             cell2.innerHTML = item.preparedBy
-//             addRow()
-//             cell1.innerHTML = textItems.concentration[index]
-//             cell2.innerHTML = item.DNAConc + ' ' + item.DNAConcUnit
-//             addRow()    
-//             cell1.innerHTML = 'BOLD ProcessID:'
-//             if (item.processID != "#N/A") {
-//                 const url = `http://www.boldsystems.org/index.php/Public_RecordView?processid=${item.processID}`
-//                 cell2.innerHTML = `<a href="${url}" target="_blank">${item.processID}</a>`
-//             } else { cell2.innerHTML = "#N/A"}
-//             addRow()
-//             cell1.innerHTML = 'Genbank Acc.No:'
-//             cell2.innerHTML = item.genAccNo
-//         }
-//         addRow()
-//         cell1.innerHTML = '<br>'
-//     })
-// }
 
-// photo:
-// shows next image when nextImage-button is clicked, if there are more images for object
-// in: index (number, points to image)
-// in: direction (string, ‘f’ or ‘r’ for ‘forward’ and ‘reverse’; dependent on which button is clicked; next or previous image)
-// in: smallImageList (array with strings; names of small images)
-// in: imageList (array with strings; names of large images)
-// is called in next-photo-button.onclick and previous.photo.onclick
 
 function changeImage(index, direction, smallImageList, imageList) {
     //index = index + direction;
@@ -657,62 +589,48 @@ function changeImage(index, direction, smallImageList, imageList) {
 function reducePhoto(photo) {
     return photo.replace('jpeg', 'small')
 }
-        
 
-//to get a thumbnail width is set to 150px in styles for img
-// and to to enable large photo by clicking, img is wrapped in a <a>
+const showMedia = (specimenObject) => {
+    let mediaLink = '' 
+    let imageList = []
+    mediaLink = specimenObject.associatedMedia
 
-const coll = sessionStorage.getItem('collection')
-let mediaLink
-let imageList
-if ( coll === 'birds' || coll === 'mammals' || coll === 'dna_fish_herptiles' || coll === 'dna_other') {
-    
-    mediaLink = object.associatedMedia
-} else {
-    mediaLink = object.associatedMedia
-}
-if (mediaLink) {
-    if ( mediaLink.includes('|') | mediaLink.includes(',')) {  // if several photos
-        document.getElementById("next-photo").style.display = "block"
-        document.getElementById("previous-photo").style.display = "block"
-        document.getElementById("nb-photos").style.display = "block"
-        let index = 0
-        if (mediaLink.includes('|')) {
-            imageList = mediaLink.split('|')
-        } else {
-            imageList = mediaLink.split(',') // birds and mammals (corema-collections)
-        }
-        let smallImageList = imageList.map(reducePhoto)
-        let length = imageList[0].length
-        if (smallImageList[0].charAt(0) === '"') {smallImageList[0] = smallImageList[0].substring(1,length--)}
-        document.getElementById("photo-anchor").href = imageList[0]
-        document.getElementById("photo-box").src = smallImageList[0]
-        
-        document.getElementById("next-photo").onclick = () => {
-            index = changeImage(index, 'f', smallImageList, imageList)
-            document.getElementById("nb-photos").innerHTML = (index+1)  + '/' + imageList.length 
+    if (mediaLink) {
+        if ( mediaLink.includes('|') | mediaLink.includes(',')) {  // if several photos
+            document.getElementById("next-photo").style.display = "block"
+            document.getElementById("previous-photo").style.display = "block"
+            document.getElementById("nb-photos").style.display = "block"
+            let index = 0
+            if (mediaLink.includes('|')) {
+                imageList = mediaLink.split('|')
+            } else {
+                imageList = mediaLink.split(',') // birds and mammals (corema-collections)
+            }
+            let smallImageList = imageList.map(reducePhoto)
+            let length = imageList[0].length
+            if (smallImageList[0].charAt(0) === '"') {smallImageList[0] = smallImageList[0].substring(1,length--)}
+            document.getElementById("photo-anchor").href = imageList[0]
+            document.getElementById("photo-box").src = smallImageList[0]
             
+            document.getElementById("next-photo").onclick = () => {
+                index = changeImage(index, 'f', smallImageList, imageList)
+                document.getElementById("nb-photos").innerHTML = (index+1)  + '/' + imageList.length 
+                
+            }
+            
+            document.getElementById("previous-photo").onclick = () => {
+                index = changeImage(index, 'r', smallImageList, imageList)
+                document.getElementById("nb-photos").innerHTML = (index+1)  + '/' + imageList.length 
+            }
+            document.getElementById("nb-photos").innerHTML = index+1  + '/' + imageList.length 
+        } else {
+            document.getElementById("photo-anchor").href = mediaLink
+            let smallImage = mediaLink
+            smallImage = smallImage.replace('jpeg', 'small')
+            document.getElementById("photo-box").src = smallImage
         }
-        
-        document.getElementById("previous-photo").onclick = () => {
-            index = changeImage(index, 'r', smallImageList, imageList)
-            document.getElementById("nb-photos").innerHTML = (index+1)  + '/' + imageList.length 
-        }
-        document.getElementById("nb-photos").innerHTML = index+1  + '/' + imageList.length 
-    } else {
-        document.getElementById("photo-anchor").href = mediaLink
-        let smallImage = mediaLink
-        smallImage = smallImage.replace('jpeg', 'small')
-        document.getElementById("photo-box").src = smallImage
     }
-    
 }
-
-//map
-
-    drawMapObject(object)
-
-
 
 
 if (sessionStorage.getItem('collection') === 'utad') {
@@ -739,9 +657,51 @@ document.getElementById('large-map-object-button').onclick = () => {
 // document.getElementById('nextObjectCell').innerHTML = `<a id="next-object-link" href="${urlPath}/object/?id=${nextObjCatNumber}">Neste objekt ${nextObjCatNumber} </a>`
 
 // put content in html-boxes
-try {
-    renderText(language)
-} catch (error) {
-    console.log(error);
+async function renderItems () {
+    try {
+        renderText(language)
+    } catch (error) {
+        console.log(error);
+    }
 }
 
+
+function makeTable(specimenObject){
+    const orgType= sessionStorage.getItem('organismGroup')
+    if (orgType === 'geologi'){ makeGeoTable(specimenObject) }
+    else if (orgType === 'paleontologi'){ makePalTable(specimenObject) }
+    else if (orgType === 'zoologi'){ makeBioTable() }
+    else if (orgType === 'botanikk'){ makeBioTable() }
+    else if (orgType === 'other'){ makeUTADTable(specimenObject) }
+}
+
+
+async function main () {
+   // from file newObjectPage.js
+   await newObjectPageMain()
+   // from file renderLangObjPage.js
+   renderObjectText()
+   const orgGroup = getOrganismGroup()
+   //get the object from session storage
+   const allObject = loadStringObject()
+   console.log(allObject);
+   // set OrgGruop
+   await setOrgGroup()
+   // get the correct object
+   let specimenObject = await getspecimenData(allObject)
+   makeTable(specimenObject)
+
+   if(Array.isArray(allObject) && (allObject.length > 2)) {
+       makeNavButtons(allObject, specimenObject)
+   }
+   
+
+
+   renderObjectText(language)
+   showData(specimenObject, orgGroup)
+   showMedia(specimenObject)
+   drawMapObject(specimenObject)
+   renderItems()
+}
+
+main()

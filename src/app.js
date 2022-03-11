@@ -182,6 +182,25 @@ app.get('/orgGroups', (req, res) => {
     }
 
 })
+
+app.get('/groupOfOrg', (req, res) => {
+    if (!req.query.museum || !req.query.samling ) {
+        throw new Error ('no museum...or collection..')
+    } else {
+        try {
+            let orgGroup = fileRead.getOrgGroup(req.query.museum, req.query.samling, (error, results) => {
+            })
+            res.send(orgGroup)
+        }
+        catch(error) {
+            console.log(error)
+            throw new Error ('feil i app.js')
+        }
+    }
+
+})
+
+
 app.get('/collections', (req, res) => {
     if (!req.query.museum) {
         throw new Error ('no museum...')

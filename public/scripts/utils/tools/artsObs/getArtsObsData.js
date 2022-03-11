@@ -483,3 +483,4 @@ document.getElementById("Vis-kolonne").addEventListener('click', (e) => {
 
 // console.log(getArtsObsData(21574795));
 //21574795 28215006 2213006 28215007 27783443 27680409 25396524 27783344 27561102
+// https://www.artsobservasjoner.no/Sighting/27783344
