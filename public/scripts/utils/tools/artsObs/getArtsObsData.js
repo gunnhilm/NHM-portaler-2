@@ -1,5 +1,6 @@
 const searchForm = document.querySelector('form') 
 
+
 collectionObject = {
     nhm: {
         entomologi: 'NHMO-ENT',
@@ -217,7 +218,17 @@ function reverseCollectors(fullname) {
 return output
 }
 
+function fixScientificName(scientificName) {
+    if (scientificName.includes(',')) {
+        return scientificName.substring(0, scientificName.lastIndexOf(','))
+    } else {
+        return scientificName
+    }
+}
+
+
 const getArtsObsData = async (artsObsNumber, MUSITNo)=> {
+    const valgtSamling = document.getElementById('collection-select').value
     // 'https://api.gbif.org/v1/occurrence/search?dataset_Key=b124e1e0-4755-430f-9eab-894f25a9b59c&catalogNumber=21957795'
     let url = 'https://api.gbif.org/v1/occurrence/search?dataset_Key=b124e1e0-4755-430f-9eab-894f25a9b59c&catalogNumber=' + artsObsNumber; 
     let obj = null;
@@ -227,6 +238,7 @@ const getArtsObsData = async (artsObsNumber, MUSITNo)=> {
     let tempColl = ''
     let collString = null
     let museumCollection = ''
+    let scientificName = ''
     const kommuneObj = await getKommuneData()
     try {
     obj = await (await fetch(url)).json();
@@ -245,6 +257,14 @@ const getArtsObsData = async (artsObsNumber, MUSITNo)=> {
 
         // fix Museum & collection
         museumCollection = addMuseum()
+
+        // fix scientificName
+        console.log(valgtSamling);
+        if(valgtSamling === 'sopp') { // 
+            scientificName = fixScientificName(resultObj.scientificName)
+            resultObj.scientificName = scientificName
+        }
+        
 
         // fix dato, fjern alt etter T
         let fixedDate = resultObj.eventDate

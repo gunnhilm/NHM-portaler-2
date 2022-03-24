@@ -9,6 +9,10 @@
     "coremaFiles" : ["occurrence", "amplification","materialsample","multimedia","permit","preparation","preservation","resourcerelationship"]
 },
 {
+    "source": "journals",
+    "journalGroups": ["zoologi", "paleontologi"]
+},
+{
     "source": "musit",
     "orgGroup": "botanikk",
     "name": "alger",
