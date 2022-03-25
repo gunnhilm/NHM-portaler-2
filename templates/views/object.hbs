@@ -20,18 +20,19 @@
                 <table style="float: right">
                     <tr>
                         <td>
-                            <div class="objectPagesButtonClass"><button id="next-object">Neste objekt </button> </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
                             <div class="objectPagesButtonClass"><button id="previous-object">Forrige objekt </button></div>
                         </td>
+                    {{!-- </tr>
+                    <tr> --}}
                         <td>
+                            <div class="objectPagesButtonClass"><button id="next-object">Neste objekt </button> </div>
+                            
+                        {{!-- </td>
+                        <td> --}}
                             
                         </td>
-                    </tr>
-                    <tr>
+                    {{!-- </tr>
+                    <tr> --}}
                         <td>
                             {{!-- <button id="back-to-result" style="float: right" onclick="history.back()">Tilbake til søkeresultat</button> --}}
                             <button id="back-to-result" style="float: right">Tilbake til søkeresultat</button>
@@ -45,32 +46,42 @@
                     {{!-- <a href="/museum/advancedSearch" id="adv-search-link" style="display: none">Tilbake til søkeresultat - avansert søk</a> --}}
                 </div>
                 
-                <div style="width:40%; float:left; min-width:300px">
-                    <table id = "object-table"></table>
+                <div style="width:40%; float:left; min-width:300px; " >
+                    <div id = "left-table" >
+                        <table id = "data-table"></table>
+                    </div>
+                    <div>
+                        <table id = "object-table"></table>
+                    </div>
                 </div>
-                <div style="width:29%; float:left; min-width:300px" id="map-style">
-                    <div class="map-object" id="map-object"></div>
-                    <table id="table-object">
-                        <tr>
-                            <td>
-                                <button id="zoom-button" style="display:none">Zoom</button>
-                                <div id="zoom-modal" class="modal">
-                                    <div class="modal-content">
-                                        <span class="close">&times;</span>
-                                        <span class="popuptext" id="zoom-expl-popup"></span>
-                                    </div>    
-                                </div>
-                            </td>
-                            <td>
-                                <button id="large-map-object-button" style="display:none"></button>
-                            </td>
-                            
-                        </tr>
-                    </table>
-                    
-                    <br><br>
+                <div style ="width:29%; float:left; min-widht:300px;">
+                    <div id="map-style" >
+                        <div class="map-object" id="map-object"></div>
+                        <table id="table-object">
+                            <tr>
+                                <td>
+                                    <button id="zoom-button" style="display:none">Zoom</button>
+                                    <div id="zoom-modal" class="modal">
+                                        <div class="modal-content">
+                                            <span class="close">&times;</span>
+                                            <span class="popuptext" id="zoom-expl-popup"></span>
+                                        </div>    
+                                    </div>
+                                </td>
+                                <td>
+                                    <button id="large-map-object-button" style="display:none"></button>
+                                </td>
+                                
+                            </tr>
+                        </table>
+                        
+                        <br><br>
+                    </div>
+                    <div id="acc-object">
+                        <table id ="ass-object-table"></table>
+                    </div>
                 </div>
-                <div style="width:29%; float:left; min-width:254px">
+                <div style="width:29%; float:left; min-width:254px; ">
                     <div class="map-object">
                         <a id="photo-anchor">   
                             <img id="photo-box">
@@ -96,6 +107,7 @@
                 <script src="/museum/scripts/utils/papaparse/papaparse.min.js"></script>
                 <script src="/museum/scripts/utils/newObjectPage.js"></script>
                 <script src="/museum/scripts/utils/textItems.js"></script>
+                
                 <script src="/museum/scripts/utils/renderLangObjPage.js"></script>
                 <script src="/museum/scripts/utils/ol/ol.js"></script>
                 <script src="/museum/scripts/utils/map.js"></script>

@@ -4,6 +4,7 @@ const fileRead = require('./utils/fileread')
 const getStatFile = require('./utils/getStatFile')
 const checkCoord = require('./utils/checkCoords')
 const artsObsReadFile = require('./utils/artsobs/artsObs')
+const getDNAbarcoding = require('./utils/getDNAbarcoding')
 //const coremaFileread = require('./utils/coremaFileread')
 const footerDate = require('./utils/footerDate')
 const hbs = require('hbs')
@@ -112,6 +113,7 @@ app.get('/search', (req, res) => {
         throw new Error ('collection not chosen') 
     } else {
         try {
+            console.log(req.query.samling + ' app linje 116')
             fileRead.search(req.query.museum, req.query.samling, req.query.search, req.query.linjeNumber,req.query.limit , (error, results) => {
                 res.send({
                     unparsed: results
@@ -217,6 +219,21 @@ app.get('/collections', (req, res) => {
     }
 })
 
+app.get('/which', (req,res) => {
+    if (!req.query.collection) {
+        throw new Error ('no collection')
+    } else {
+        try {
+            let fileDb = fileRead.whichFileDb(req.query.museum, req.query.collection, (error, result) => {
+            })
+            console.log(fileDb)
+            res.send(fileDb)
+        } catch (error) {
+            console.log(error)
+            throw new Error ('feil app.js. linje 232')
+        }
+    }
+})
 // for å laste ned søkeresultatene
 // app.get('/download', (req, res) => {
 //     console.log("i app download")
@@ -289,6 +306,7 @@ app.get('/footer-date', (req, res) => {
 
 // objektvisningen
 app.get('*/object', (req, res) => {
+    console.log(req.query.id)
     if (!req.query.id) {
         return res.send({
             error: 'Du må oppgi et objekt'
@@ -373,6 +391,28 @@ app.get('*/artsObs', (req, res) => {
     res.render('artsObs', {})
     }
 })
+
+app.get('*/DNAbarcodes', (req, res) => {
+    if (!req.query.getFasta) {
+        return res.render('DNAbarcodes', {})
+    } else {
+        try { 
+            getDNAbarcoding.readFasta2( (error, results) => {
+                if (results){
+                    res.send({
+                        unparsed: results
+                    }) 
+                } else {
+                    console.log('Error: cold not read fasta file')
+                }
+            })
+        } catch(error) {
+            console.log('error in getDNAbarcoding on backend ' + error)
+            throw new Error ('error in getDNAbarcoding')
+        }
+    }
+})
+
 
 //proxy for downloading images from artsdatabanken
 // https://dev.to/eckhardtd/downloading-images-in-the-browser-with-node-js-4f0h

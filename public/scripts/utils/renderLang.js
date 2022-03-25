@@ -126,7 +126,7 @@ function renderText (lang) {
     
     // document.querySelector('#specimensOptgroup').innerHTML = textItems.specimensOptgroup[index]
         if (document.querySelector('#vennligst')) {document.querySelector('#vennligst').innerHTML = textItems.vennligst[index]}
-        if (document.querySelector('#karplanter')) {document.querySelector('#karplanter').innerHTML = textItems.karplanter[index]}
+        if (document.querySelector('#vascular')) {document.querySelector('#vascular').innerHTML = textItems.vascular[index]}
         if (document.querySelector('#sopp')) {document.querySelector('#sopp').innerHTML = textItems.sopp[index]}
         if (document.querySelector('#moser')) {document.querySelector('#moser').innerHTML = textItems.moser[index]}
         if (document.querySelector('#lav')) {document.querySelector('#lav').innerHTML = textItems.lav[index]}
@@ -137,8 +137,8 @@ function renderText (lang) {
         if (document.querySelector('#coremaopt')) {document.querySelector('#coremaopt').label = textItems.coremaopt[index]}
         if (document.querySelector('#birds')) {document.querySelector('#birds').innerHTML = textItems.fugler[index]}
         if (document.querySelector('#mammals')) {document.querySelector('#mammals').innerHTML = textItems.pattedyr[index]}
-        if (document.querySelector('#dna_karplanter')) {document.querySelector('#dna_karplanter').innerHTML = textItems.dna_karplanter[index]}
-        if (document.querySelector('#dna_entomologi')) {document.querySelector('#dna_entomologi').innerHTML = textItems.dna_insekter[index]}
+        if (document.querySelector('#dna_vascular')) {document.querySelector('#dna_vascular').innerHTML = textItems.dna_vascular[index]}
+        if (document.querySelector('#dna_entomology')) {document.querySelector('#dna_entomology').innerHTML = textItems.dna_insekter[index]}
         if (document.querySelector('#dna_fish_herptiles')) {document.querySelector('#dna_fish_herptiles').innerHTML = textItems.fishHerp[index]}
         if (document.querySelector('#dna_fungi_lichens')) {document.querySelector('#dna_fungi_lichens').innerHTML = textItems.fungiLichens[index]}
         if (document.querySelector('#dna_other')) {document.querySelector('#dna_other').innerHTML = textItems.other[index]}
@@ -193,6 +193,7 @@ function renderText (lang) {
         document.querySelector('#obj-list-input').innerHTML = textItems.placeholderList[index]
             
         if (document.querySelector('#botanikk')) {document.querySelector('#botanikk').innerHTML = textItems.botanikk[index]}
+        if (document.querySelector('#mykologi')) {document.querySelector('#mykologi').innerHTML = textItems.mykologi[index]}
         if (document.querySelector('#zoologi')) {document.querySelector('#zoologi').innerHTML = textItems.zoologi[index]}
         if (document.querySelector('#geologi')) {document.querySelector('#geologi').innerHTML = textItems.geologi[index]}
         if (document.querySelector('#paleontologi')) {document.querySelector('#paleontologi').innerHTML = textItems.paleontologi[index]}
@@ -265,7 +266,7 @@ function renderText (lang) {
         document.querySelector('#NbObj_header').innerHTML = textItems.nbObjHeader[index]
         document.querySelector('#NbPhoto_header').innerHTML = textItems.nbPhotoHeader[index]
         document.querySelector('#NbCoord_header').innerHTML = textItems.nbCoordHeader[index]
-//        document.querySelector('#Vascular_header').innerHTML = textItems.karplanter[index]
+//        document.querySelector('#Vascular_header').innerHTML = textItems.vascular[index]
  //       document.querySelector('#Mosses_header').innerHTML = textItems.moser[index]
    //     document.querySelector('#Fungi_header').innerHTML = textItems.sopp[index]
 //        document.querySelector('#Lichen_header').innerHTML = textItems.lav[index]
@@ -387,6 +388,8 @@ document.querySelector('#language').addEventListener('click', (e) => {
             cell9 = headerRow.cells[8]
             cell10 = headerRow.cells[9]
             cell11 = headerRow.cells[10]
+            cell12 = headerRow.cells[11]
+            cell13 = headerRow.cells[12]
  
             stringData = sessionStorage.getItem('string')
             musitData = JSON.parse(stringData)      
@@ -396,7 +399,7 @@ document.querySelector('#language').addEventListener('click', (e) => {
             } else if (coll === 'bulk') {
                 fillResultHeadersBulk(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell11,musitData)
             } else {
-                fillResultHeaders(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell10,cell11,musitData)
+                fillResultHeaders(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell10,cell11,cell12,cell13,musitData)
             }
         
             

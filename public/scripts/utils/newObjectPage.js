@@ -35,9 +35,11 @@ async  function setSpecimenData () {
         let specimenObject = {}
 
             // If the object is not in local storage, the get it from the server
-            let urlParams = new URLSearchParams(document.location.search);    
+            let urlParams = new URLSearchParams(document.location.search); 
+            console.log(urlParams)   
             sessionStorage.setItem('chosenCollection', urlParams.get("samling"))
             const url = '/museum' + '/objListSearch/?' + 'searchObjects=' + urlParams.get("id") +'&museum=' + urlParams.get("museum") + '&samling=' + urlParams.get("samling") + '&linjeNumber=0&limit=1000'
+            console.log(url)
             fetch(url).then((response) => {
                 if (!response.ok) {
                     
@@ -57,6 +59,7 @@ async  function setSpecimenData () {
                                     header: true,
                                 }) 
                                 specimenObject = parsedResults.data
+                                console.log(specimenObject)
                                 sessionStorage.setItem('string', JSON.stringify(specimenObject))
                                 resolve(specimenObject)
                             }
@@ -71,6 +74,35 @@ async  function setSpecimenData () {
     })
 }
 
+async function whichFileAndDb_two (museum,collection) {
+    //return new Promise(function(resolve, reject) {
+        
+        url = urlPath + '/which/?museum='+ museum + '&collection=' +  collection
+        await fetch(url).then((response) => {
+            if (!response.ok) {
+                throw 'cant find file and database from backend'
+            } else {
+                try {
+                    response.text().then((data) => {
+                        if (data.error) {
+                            errorMessage.innerHTML = textItems.serverError[index]
+                            return console.log(data.error)
+                        } else {
+                            let data1 = JSON.parse(data)
+                            console.log(data1[0])
+                            sessionStorage.setItem('file', data1[0])
+                            sessionStorage.setItem('source', data1[1])
+                        }
+                    })
+      //              resolve
+                } catch (error) {
+                    console.log(error)
+                }
+            } 
+        })
+    //})
+}
+
 async function setItems () {
     sessionStorage.setItem('language', urlParams.get("lang") )
     sessionStorage.setItem('museum', urlParams.get("museum") )
@@ -78,7 +110,7 @@ async function setItems () {
 }
 
 function testIfNewPage() {
-    if(sessionStorage.getItem('string') === null) {
+    if(sessionStorage.getItem('string') === null || sessionStorage.getItem('string') === '[]') { // endret her
         return true
     } else {
         return false
@@ -88,10 +120,12 @@ function testIfNewPage() {
 
 // runs in file object.js
 async function newObjectPageMain() {
+    console.log(testIfNewPage())
     if (testIfNewPage()) {
         await setItems()
         await setOrgGroup()
         await setSpecimenData()
+        await whichFileAndDb_two(urlParams.get("museum"),urlParams.get("samling"))
         console.log('ferdig mer pre run');
         // return true
     }

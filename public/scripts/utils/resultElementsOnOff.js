@@ -12,6 +12,9 @@ if (!sessionStorage.getItem('propsSorted')) {
             {id: 'scientificName',
             sortedOnce: false,
             sortedTwice: false},
+            {id: 'identificationQualifier',
+            sortedONce: false,
+            sortedTwice: false},
             {id: 'recordedBy',
             sortedOnce: false,
             sortedTwice: false},
@@ -27,7 +30,13 @@ if (!sessionStorage.getItem('propsSorted')) {
             {id: 'locality',
             sortedOnce: false,
             sortedTwice: false},
+            {id: 'habitat',
+            sortedOnce: false,
+            sortedTwice: false},
             {id: 'associatedMedia',
+            sortedOnce: false,
+            sortedTwice: false},
+            {id: 'identifier',
             sortedOnce: false,
             sortedTwice: false},
             {id: 'decimalLongitude',
@@ -68,6 +77,9 @@ if (!sessionStorage.getItem('propsSorted')) {
             sortedOnce: false,
             sortedTwice: false},
             {id: 'Tilstand',
+            sortedOnce: false,
+            sortedTwice: false},
+            {id: 'preparationType',
             sortedOnce: false,
             sortedTwice: false},
             {id: 'basisOfRecord',
@@ -179,6 +191,7 @@ showResultElements = () => {
 // out: sorting order of two elements (?)
 // is called by addSortingText(…)
 sort_by = (prop, reverse, primer) => {
+    console.log(primer)
     const key = primer ?
     function(x) {
         return primer(x[prop])
@@ -202,23 +215,23 @@ sort_by = (prop, reverse, primer) => {
 // is called by fillResultHeaders(…)
 function addSortingText(id, prop, musitData, fromFunction) { // her er musitData alle
     try {
-        //addSortingText('localityButton', 'locality', musitData)
         document.getElementById(id).addEventListener("click", function() {
             // Show please wait
         
             document.getElementById("please-wait").style.display = "block"
             let reverse = false
             if (propsSorted.find(x => x.id === prop).sortedOnce) { reverse = true }
-            if (id === 'musitIDButton' && sessionStorage.getItem("collection") != "fossiler") { 
+            if (id === 'musitIDButton' && sessionStorage.getItem("collection") != "fossiler" &&  !musitData[0].catalogNumber.includes('/')) { 
                 musitData.sort(sort_by(prop,reverse, parseInt))
-            }  else 
-            if (id === 'breddeButton' || id === 'hoydeButton' || id === 'lengdeButton') {
+                
+            }  else if (id === 'breddeButton' || id === 'hoydeButton' || id === 'lengdeButton') {
                 musitData.sort(sort_by(prop,reverse))
             } else {
                 if (id === 'photoButton' | id === 'coordinateButton') {
                     reverse = !reverse
                 } 
                 musitData.sort(sort_by(prop,reverse, (a) => a.toLowerCase()))
+                //musitData.sort(sort_by(prop,reverse))
             } 
             
             if (propsSorted.find(x => x.id === prop).sortedOnce === propsSorted.find(x => x.id === prop).sortedTwice) {
@@ -275,29 +288,36 @@ function getArrows(prop) {
 // puts content in headerbuttons in result-table
 // calls getArrows(..) for table-header-buttons
 // addSortingText(..) for tabel-header-buttons
-fillResultHeaders = (org,cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell10,cell11,musitData) => {
+fillResultHeaders = (org,cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell10,cell11,cell12,cell13,musitData) => {
     cell1.innerHTML = `<button id='musitIDButton' class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>` 
     cell2.innerHTML = `<button id='scientificNameButton' class='sort'>${textItems.headerTaxon[index].bold()} ${getArrows('scientificName')} </button>`
+    ////////her
+    cell3.innerHTML = `<button id='uncertaintyButton' class='sort'>${textItems.headerUncertainty[index].bold()} ${getArrows('identificationQualifier')} </button>` 
     if (org === 'geologi') {
-        cell3.innerHTML = `<button id='collectorButton' class='sort'>${textItems.headerCollectorGeo[index].bold()} ${getArrows('recordedBy')}</button>`    
+        cell4.innerHTML = `<button id='collectorButton' class='sort'>${textItems.headerCollectorGeo[index].bold()} ${getArrows('recordedBy')}</button>`    
     } else {
-        cell3.innerHTML = `<button id='collectorButton' class='sort'>${textItems.headerCollector[index].bold()} ${getArrows('recordedBy')}</button>`
+        cell4.innerHTML = `<button id='collectorButton' class='sort'>${textItems.headerCollector[index].bold()} ${getArrows('recordedBy')}</button>`
     }
-    cell4.innerHTML = `<button id='dateButton' class='sort'>${textItems.headerDate[index].bold()} ${getArrows('eventDate')}</button>`
-    cell5.innerHTML = `<button id='countryButton' class='sort'>${textItems.headerCountry[index].bold()} ${getArrows('country')}</button>`
-    cell6.innerHTML = `<button id='municipalityButton' class='sort'>${textItems.headerMunicipality[index].bold()} ${getArrows('county')}</button>`
-    cell7.innerHTML = `<button id='localityButton' class='sort'>${textItems.headerLocality[index].bold()} ${getArrows('locality')}</button>`
-    cell8.innerHTML = `<button id='photoButton' class='sort'><span class="fas fa-camera"></span>${getArrows('associatedMedia')}</button>`
-    cell9.innerHTML = `<button id='coordinateButton' class='sort'><span class="fas fa-compass"></span>${getArrows('decimalLongitude')}</button>`
-    //cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} </button>`
-    
+    cell5.innerHTML = `<button id='dateButton' class='sort'>${textItems.headerDate[index].bold()} ${getArrows('eventDate')}</button>`
+    cell6.innerHTML = `<button id='countryButton' class='sort'>${textItems.headerCountry[index].bold()} ${getArrows('country')}</button>`
+    cell7.innerHTML = `<button id='municipalityButton' class='sort'>${textItems.headerMunicipality[index].bold()} ${getArrows('county')}</button>`
+    cell8.innerHTML = `<button id='localityButton' class='sort'>${textItems.headerLocality[index].bold()} ${getArrows('locality')}</button>`
+    cell9.innerHTML = `<button id='ecologyButton' class='sort'>${textItems.headerEcology[index].bold()} ${getArrows('habitat')}</button>`
+    cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} ${getArrows('preparationType')} </button>` 
     // if (document.querySelector('#collection-select option:checked').parentElement.label === 'Specimens') {
     //     cell10.innerHTML = `<button id='coremaNoButton' class='sort'>${textItems.headerCoremaNo[index].bold()} ${getArrows('coremaNo')}</button>`
     // } else {
     //     cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} ${getArrows('sampleType')}</button>`
     // }
+    if (document.querySelector('#collection-select  option:checked').label.includes('DNA')) {
+        cell11.innerHTML = `<button id='photoButton' class='sort'><span class="fas fa-camera"></span>${getArrows('identifier')}</button>`    
+    } else {
+        cell11.innerHTML = `<button id='photoButton' class='sort'><span class="fas fa-camera"></span>${getArrows('associatedMedia')}</button>`
+    }
     
-    cell11.innerHTML = `<select id='checkboxSelect' class='sort'>
+    cell12.innerHTML = `<button id='coordinateButton' class='sort'><span class="fas fa-compass"></span>${getArrows('decimalLongitude')}</button>`
+    
+    cell13.innerHTML = `<select id='checkboxSelect' class='sort'>
         <option value="select" id="select">${textItems.select[index].bold()}</option>
         <option value="all" id="selectAll">${textItems.selectAll[index]}</option>
         <option value="all_on_page" id="selectAllOnPage">${ textItems.selectAllOnPage[index]}</option>
@@ -307,12 +327,24 @@ fillResultHeaders = (org,cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,c
     // lag overskriftene klikk og sorterbare
     addSortingText('musitIDButton', 'catalogNumber', musitData, 'resultTable')  // Tabellen blir sortert på nummer
     addSortingText('scientificNameButton', 'scientificName', musitData, 'resultTable')
+    addSortingText('uncertaintyButton', 'identificationQualifier', musitData, 'resultTable')
     addSortingText('collectorButton', 'recordedBy', musitData, 'resultTable')
     addSortingText('dateButton', 'eventDate', musitData, 'resultTable')
     addSortingText('countryButton', 'country', musitData, 'resultTable')
     addSortingText('municipalityButton', 'county', musitData, 'resultTable')
     addSortingText('localityButton', 'locality', musitData, 'resultTable')
-    addSortingText('photoButton', 'associatedMedia', musitData, 'resultTable')
+    addSortingText('ecologyButton', 'habitat', musitData, 'resultTable')
+    if (!musitData[0].preparationType || musitData[0].preparationType === '') {
+        addSortingText('sampleTypeButton', 'basisOfRecord', musitData, 'resultTable')
+    } else {
+        addSortingText('sampleTypeButton', 'preparationType', musitData, 'resultTable')
+    }    
+    if (musitData[0].associatedMedia) {
+        addSortingText('photoButton', 'associatedMedia', musitData, 'resultTable')
+    } else if (musitData[0].identifier) {
+        addSortingText('photoButton', 'identifier', musitData, 'resultTable')
+    }
+    
     addSortingText('coordinateButton', 'decimalLongitude', musitData, 'resultTable')
 }
 

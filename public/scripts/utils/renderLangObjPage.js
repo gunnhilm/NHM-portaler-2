@@ -1,7 +1,6 @@
 // read string and get the object from sessionStorage (for the object-page)
 const loadString = (item) => {
-        
-    const objectJSON = sessionStorage.getItem(item)    
+    const objectJSON = sessionStorage.getItem(item)  
     try {//object
         return objectJSON ? JSON.parse(objectJSON) : []
     } catch (e) {
@@ -18,9 +17,14 @@ function setIndex (lang) {
     return index
 }
 
-function renderObjectText(){
-// object page
-const urlParams = new URLSearchParams(window.location.search)
+function renderObjectText(lang){
+    if (lang === "English") {
+        index = 1
+    } else {
+        index = 0
+    }
+    // object page
+    const urlParams = new URLSearchParams(window.location.search)
     index = setIndex(urlParams.get("lang"))
     // Get the name of the collection
     const coll = sessionStorage.getItem('collection')
@@ -31,7 +35,14 @@ const urlParams = new URLSearchParams(window.location.search)
     const objectHeaders = loadString('objectHeaders')
     // get the id from the url
     const id = urlParams.get('id')
-    const specimenObject = allObject.find(x => x.catalogNumber === id)
+    let specimenObject
+    
+    // if (allObject[0].catalogNumber.includes('/')) {
+    //     specimenObject = allObject.find(x => x.catalogNumber.substring(0,x.catalogNumber.indexOf('/')) === id)
+    // } else {
+        specimenObject = allObject.find(x => x.catalogNumber === id)
+    // }
+    
     
     document.querySelector("#back-to-result").innerHTML = textItems.searchButtonHeader[index]
     document.querySelector("#next-object").innerHTML = textItems.nextObject[index]
@@ -145,7 +156,7 @@ document.querySelector('#language').addEventListener('click', () => {
         language = "Norwegian"
         document.querySelector('#language').innerHTML = "English website"
     }
-    renderText(language)
+    renderObjectText(language) // endrer fra renderText
     sessionStorage.setItem('language', language)
    
     if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler') & !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools') & !location.href.includes('checkCoord') & !location.href.includes('dataError')) {

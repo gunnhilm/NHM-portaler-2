@@ -343,7 +343,10 @@ td {
     /* result-table, in index.hbs */
     .result-table th {
         text-align: left;
-        padding: 5px
+        padding: 5px;
+    }
+    .result-table {
+        font-size: 14px;
     }
 
         /* every second line white and grey */
@@ -354,67 +357,77 @@ td {
     .row-ID {
         width: 7%;
         text-align: right;
-        padding: 5px;
+        padding: 3px;
         text-align:left; 
         vertical-align: middle;
         white-space: nowrap;
     }
     .row-name {
         /*font-style: italic;*/
-        width: 21%;
-        padding: 5px;
+        width: 10%;
+        padding: 3px;
+        vertical-align: middle;
+    }
+    .row-uncertainty {
+        width:3%;
+        padding: 3px;
         vertical-align: middle;
     }
     .row-innsamler {
         width: 10%;
-        padding: 5px;
+        padding: 3px;
         vertical-align: middle;
     }
     .row-dato {
-        width: 7%;
-        padding: 5px;
+        width: 6%;
+        padding: 3px;
         vertical-align: middle;
     }
     .row-land {
-        width: 7%;
-        padding: 5px;
+        width: 5%;
+        padding: 3px;
         vertical-align: middle;
     }
     .row-kommune {
-        width: 11%;
-        padding: 5px;
+        width: 8%;
+        padding: 3px;
         vertical-align: middle;
     }
     .row-sted {
         width: 15%;
-        padding: 5px;
+        padding: 3px;
         /* white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         display: inline-block; */
         vertical-align: middle;
     }
+    .row-habitat {
+        width:15%;
+        padding: 3px;
+        vertical-align: middle;
+    }
     .row-photo {
         width: 4%;
-        padding: 5px;
+        padding: 3px;
         text-align: center;
         vertical-align: middle;
     }
     .row-coordinates {
         width: 4%;
-        padding: 5px;
+        padding: 3px;
         text-align: center;
         vertical-align: middle;
     }
     .row-sampleType {
         width: 9%;
-        padding: 5px;
+        padding: 3px;
         vertical-align: middle;
         white-space: nowrap;
     }
     .row-checkbox {
         width: 5%;
-        padding: 5px;
+        padding: 3px;
         vertical-align: middle;
         text-align: center;
     }
@@ -423,24 +436,24 @@ td {
     .row-bulk-name {
         font-style: normal;
         vertical-align: middle;
-        padding: 5px;
+        padding: 3px;
         width: 7%;
     }
     .row-bulk-innsamler {
-        padding: 5px;
+        padding: 3px;
         width: 10%;
     }
     .row-bulk-dato {
         width: 4%;
-        padding: 5px;
+        padding: 3px;
     }
     .row-prep {
         width: 10%;
-        padding: 5px;
+        padding: 3px;
     }
     .row-bulk-sted {
         width: 20%;
-        padding: 5px;
+        padding: 3px;
     }
     .row-placement {
         width: 20%;

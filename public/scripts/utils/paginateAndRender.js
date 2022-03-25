@@ -5,6 +5,34 @@
 
 const hitsPerPage = document.querySelector('#number-per-page')
 
+async function whichFileAndDb_main (museum,collection) {
+    //return new Promise(function(resolve, reject) {
+        
+        url = urlPath + '/which/?museum='+ museum + '&collection=' +  collection
+        await fetch(url).then((response) => {
+            if (!response.ok) {
+                throw 'cant find file and database from backend'
+            } else {
+                try {
+                    response.text().then((data) => {
+                        if (data.error) {
+                            errorMessage.innerHTML = textItems.serverError[index]
+                            return console.log(data.error)
+                        } else {
+                            let data1 = JSON.parse(data)
+                            console.log(data1[0])
+                            sessionStorage.setItem('file', data1[0])
+                            sessionStorage.setItem('source', data1[1])
+                        }
+                    })
+      //              resolve
+                } catch (error) {
+                    console.log(error)
+                }
+            } 
+        })
+    //})
+}
 
 // returns itemType for a record, e.g. tissue, egg, sperm, skin etc.
 // in: catalogNumber (string, catalogNumber)
@@ -56,34 +84,28 @@ const resultTable = (subMusitData, musitData) => {
         table.innerHTML = ""
         for (let i = -1; i < pageList.length; i++) { // vis en tabell med resultater som er like lang som det vi ba om pageList.length; 
             const row = table.insertRow(-1)
-            const cell1 = row.insertCell(0)
-            const cell2 = row.insertCell(1)
-            const cell3 = row.insertCell(2)
+            const cell1 = row.insertCell(0) //cat no
+            const cell2 = row.insertCell(1) //Takson
+            const cell3 = row.insertCell(2) // uncertainty (før innsamler)
             cell3.className += "cell3"
-            const cell4 = row.insertCell(3)
-            const cell5 = row.insertCell(4)
+            const cell4 = row.insertCell(3) //Innsamler (før dato)
+            const cell5 = row.insertCell(4) //Dato (før land)
             cell5.className += "cell5";
-            const cell6 = row.insertCell(5)
-            const cell7 = row.insertCell(6)
-            const cell8 = row.insertCell(7)
-            const cell9 = row.insertCell(8)
-            const cell10 = row.insertCell(9)
+            const cell6 = row.insertCell(5) // Land (før kommune)
+            const cell7 = row.insertCell(6) // Kommune (før sted)
+            const cell8 = row.insertCell(7) // Sted (før foto)
+            const cell9 = row.insertCell(8) // Habitat (før koord)
+            const cell10 = row.insertCell(9) // Items (før hidden; items)
             cell10.className += "cell10";
-            const cell11 = row.insertCell(10)
+            const cell11 = row.insertCell(10) // foto
+            const cell12 = row.insertCell(11) // koord
+            const cell13 = row.insertCell(12) // velg
             if (i === -1) {     // her kommer tittellinjen
                 let org
                 if (sessionStorage.getItem('organismGroup').includes('geologi')) {
                     org = 'geologi'
                 } else { org = 'other'}
-                fillResultHeaders(org,cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell10,cell11,musitData)
-                
-                // if (document.querySelector('#collection-select option:checked').parentElement.label === 'Specimens') {
-                //     addSortingText('coremaNoButton', 10, 'coremaNo', musitData)
-                // } else {
-                //     addSortingText('sampleTypeButton', 10, 'sampleType', musitData)         
-                // }
-
-                //addSortingText('processIDButton', 11, 'processID', musitData)
+                fillResultHeaders(org,cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell10,cell11,cell12,cell13,musitData)
                 
             } else {        // Her kommer innmaten i tabellen, selve resultatene
                 let museumURLPath
@@ -104,7 +126,6 @@ const resultTable = (subMusitData, musitData) => {
                 
                 
                 let prefix
-                console.log(sessionStorage.getItem('chosenCollection'))
                 if (sessionStorage.getItem('organismGroup').includes('paleontologi')) {
                     prefix = 'PMO '
 
@@ -118,11 +139,26 @@ const resultTable = (subMusitData, musitData) => {
                 }
                 
                 if (subMusitData[i].catalogNumber.includes('J')) { subMusitData[i].catalogNumber = subMusitData[i].catalogNumber.substring(2)}
-                cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${subMusitData[i].catalogNumber} </a>`
-                if (!sessionStorage.getItem('organismGroup').includes('geologi')) {
+               
+                //cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${subMusitData[i].catalogNumber} </a>`
+               
+                if (subMusitData[i].catalogNumber.includes('/')) { // corema-data
+                    let strippedCatNo = subMusitData[i].catalogNumber.substring(0,subMusitData[i].catalogNumber.indexOf('/'))
+                    console.log(subMusitData[0])
+                    cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${strippedCatNo}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${strippedCatNo} </a>`
+                } else {
+                    cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${subMusitData[i].catalogNumber} </a>`
+                }
+                
+                if (sessionStorage.getItem('organismGroup').includes('geologi')) {
+                    cell2.innerHTML = `<span>${subMusitData[i].scientificName}</span>`
+                } else if (sessionStorage.getItem('organismGroup').includes('zoologi')) {
+                    cell2.innerHTML = `<span style=font-style:italic>${subMusitData[i].genus} ${subMusitData[i].specificEpithet}</span>`
+                } else {
                     let nameArray = italicSpeciesname(subMusitData[i].scientificName)
-                    cell2.innerHTML = `<span style=font-style:italic>${nameArray[0]}</span>` + ' ' + `<span>${nameArray[1]}</span>`
-                } else {cell2.innerHTML = `<span>${subMusitData[i].scientificName}</span>`}
+                    cell2.innerHTML = `<span style=font-style:italic>${nameArray[0].replace(/\"/g,'')}</span>` + ' ' + `<span>${nameArray[1].replace(/\"/g,'')}</span>`
+                }    
+                cell3.innerHTML = subMusitData[i].identificationQualifier
                 // to avoid lots of text in collector-field: replace more than two names with et al. 
                 // when  collector is written "lastName, firstName", only first name is included, followed by et al. if more names
                 let recByArray = subMusitData[i].recordedBy.split(' ')
@@ -130,41 +166,49 @@ const resultTable = (subMusitData, musitData) => {
                     if (!sessionStorage.getItem("organismGroup").includes('paleontologi')) {
                         let x = subMusitData[i].recordedBy.indexOf(",")
                         let y = subMusitData[i].recordedBy.substr(0,x)
-                        cell3.innerHTML = y + " et al."    
+                        cell4.innerHTML = y + " et al."    
                     }
                 } else {
-                cell3.innerHTML = subMusitData[i].recordedBy
+                    cell4.innerHTML = subMusitData[i].recordedBy
                 }
-                cell4.innerHTML = subMusitData[i].eventDate
-                cell5.innerHTML = subMusitData[i].country
-                if (subMusitData[i].county) {cell6.innerHTML = subMusitData[i].county}
-                cell7.innerHTML = subMusitData[i].locality
-                //corema-cases
-                // if (document.querySelector('#collection-select  option:checked').parentElement.label === 'Specimens og DNA') {
-                //     cell8.innerHTML = `<span class="fas fa-camera"></span>`
-                // }
+                cell5.innerHTML = subMusitData[i].eventDate
+                cell6.innerHTML = subMusitData[i].country
+                if (subMusitData[i].county) {cell7.innerHTML = subMusitData[i].county}
+                cell8.innerHTML = subMusitData[i].locality
+                cell9.innerHTML = subMusitData[i].habitat
+                if (museumURLPath = urlPath + "/nhm") {
+                    if (document.querySelector('#collection-select  option:checked').label.includes('DNA')) {
+                        if (!subMusitData[i].preparationType || subMusitData[i].preparationType === '' || !(/[a-zA-Z]/).test(subMusitData[i].preparationType)) {
+                            if (subMusitData[i].basisOfRecord) { cell10.innerHTML = subMusitData[i].basisOfRecord }
+                            else if (subMusitData[i].coremaBasisOfRecord) {cell10.innerHTML = subMusitData[i].coremaBasisOfRecord}
+                        } else { cell10.innerHTML = subMusitData[i].preparationType.replace(/\"/g,'') }
+
+                        // cell10.innerHTML = subMusitData[i].materialSampleType
+                        // if (subMusitData[i].musitBasisOfRecord) {
+                        //     cell10.textContent += ', ' + subMusitData[i].musitBasisOfRecord
+                        // }
+                    // } else if (subMusitData[i].materialSampleType === '' || !subMusitData[i].materialSampleType) {
+                    //     cell10.innerHTML = subMusitData[i].basisOfRecord
+                    } else { 
+                        if (!subMusitData[i].preparationType || subMusitData[i].preparationType === '') {
+                            if (subMusitData[i].basisOfRecord) { cell10.innerHTML = subMusitData[i].basisOfRecord }
+                            else if (subMusitData[i].coremaBasisOfRecord) {cell10.innerHTML = subMusitData[i].coremaBasisOfRecord}
+                        } else if (subMusitData[i].preparationType != '') {
+                            cell10.innerHTML = subMusitData[i].preparationType.replace(/\"/g,'')
+                        } 
+                    }
+                    
+                } 
                 if( subMusitData[i].associatedMedia ) {   
-                    cell8.innerHTML = `<span class="fas fa-camera"></span>`
-                } else if( subMusitData[i].photoIdentifiers ) {   
-                    cell8.innerHTML = `<span class="fas fa-camera"></span>`
+                    cell11.innerHTML = `<span class="fas fa-camera"></span>`
+                } else if( subMusitData[i].identifier ) {   
+                    cell11.innerHTML = `<span class="fas fa-camera"></span>`
                 }
                 if( subMusitData[i].decimalLongitude) {
-                    cell9.innerHTML = '<span class="fas fa-compass"></span>'
+                    cell12.innerHTML = '<span class="fas fa-compass"></span>'
                 }
                 
-                // if (window.location.href.includes('/nhm')) {
-                //     cell10.innerHTML = 'test'
-                // } else {
-                //     if (document.querySelector('#collection-select  option:checked').parentElement.label === 'Specimens') {
-                //         cell10.innerHTML = subMusitData[i].coremaNo
-                //     } else {
-                //         cell10.innerHTML = itemType(subMusitData[i].catalogNumber)
-                //     }
-                    
-                // }
-                
-                
-                cell11.innerHTML = `<input type="checkbox" id=checkbox${i} onclick="registerChecked(${i})" ></input>`
+                cell13.innerHTML = `<input type="checkbox" id=checkbox${i} onclick="registerChecked(${i})" ></input>`
                 if (investigateChecked(i)) {
                     document.getElementById(`checkbox${i}`).checked = true
                 } else {
@@ -173,31 +217,36 @@ const resultTable = (subMusitData, musitData) => {
                 
                 cell1.className = 'row-1 row-ID'
                 cell2.className = 'row-2 row-name'
-                cell3.className = 'row-3 row-innsamler'
-                cell4.className = 'row-4 row-dato'
-                cell5.className = 'row-5 row-land'
-                cell6.className = 'row-6 row-kommune'
-                cell7.className = 'row-7 row-sted'
-                cell8.className = 'row-8 row-photo'
-                cell9.className = 'row-9 row-coordinates'
-                //cell10.className = 'row-10 row-sampleType'
-                cell11.className = 'row-11 row-checkbox'
-                
+                cell3.className = 'row-2 row-uncertainty'
+                cell4.className = 'row-4 row-innsamler'
+                cell5.className = 'row-5 row-dato'
+                cell6.className = 'row-6 row-land'
+                cell7.className = 'row-7 row-kommune'
+                cell8.className = 'row-8 row-sted'
+                cell9.className = 'row-9 row-habitat'
+                cell10.className = 'row-10 row-sampleType'
+                cell11.className = 'row-11 row-photo'
+                cell12.className = 'row-12 row-coordinates'
+                cell13.className = 'row-13 row-checkbox'
             }
           
         }
         
-        // hide corema-link-column for UM and TMU
-        if (!window.location.href.includes('/nhm') ) {
-            hide_column(9)
-        }
-        
-        ////////////// remove when stiched files are in place
-        if (window.location.href.includes('/nhm')) {
-            hide_column(9)
+        // hide habitat for collections that do not have it
+        //console.log(subMusitData[i])
+        console.log(subMusitData[0])
+        if (!subMusitData[0].hasOwnProperty('habitat')) {
+            hide_column(8)
             
         }
+        // hide corema-link-column for UM and TMU
+        if (window.location.href.includes('tmu') || window.location.href.includes('/um') || window.location.href.includes('/nbh')) {
+            hide_column(9)
+        }
         
+
+        
+            
         showResultElements()
         document.getElementById("empty-search-button").style.display = "inline-block"
         numberOfPages = getNumberOfPages(numberPerPage)
@@ -393,15 +442,10 @@ const bulkResultTable = (subBulkData, bulkData) => {
         }
         
         // hide corema-link-column for UM and TMU
-        if (!window.location.href.includes('/nhm') ) {
-            hide_column(9)
-        }
+        // if (!window.location.href.includes('/nhm') ) {
+        //     hide_column(9)
+        // }
 
-        ////////////// remove when stiched files are in place
-        if (window.location.href.includes('/nhm')) {
-            hide_column(9)
-            
-        }
         
         showResultElements()
         document.getElementById("empty-search-button").style.display = "inline-block"
@@ -600,3 +644,4 @@ const registerChecked = (i) => {
         }
     sessionStorage.setItem('string', JSON.stringify(searchResult))
 }
+

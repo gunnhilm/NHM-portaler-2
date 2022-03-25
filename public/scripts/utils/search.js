@@ -126,6 +126,7 @@ function capitalizeFirstLetter(string) {
 
 function addTextInOrgButtons(a) {
     if (a == 'botanikk') {return textItems.botanikk[index]}
+    else if (a == 'mykologi') {return textItems.mykologi[index]}
     else if (a == 'zoologi') {return textItems.zoologi[index]}
     else if (a == 'geologi') {return textItems.geologi[index]}
     else if (a == 'paleontologi') {return textItems.paleontologi[index]}
@@ -148,6 +149,7 @@ function makeButtons() {
                 emptyCollection()
                 document.getElementById('search-cell').style.display = 'none'
             }
+            console.log(el)
             addCollectionsToSelect(el.id)
             e.preventDefault()
         })
@@ -195,7 +197,7 @@ addOrgGroups()
 
 function addTextInCollSelect(a) {
     if (a == 'moser') {return textItems.moser[index]}
-    else if (a == 'karplanter') {return textItems.karplanter[index]}
+    else if (a == 'vascular') {return textItems.vascular[index]}
     else if (a == 'lav') {return textItems.lav[index]}
     else if (a == 'alger') {return textItems.alger[index]}
     else if (a == 'entomologi') {return textItems.insekter[index]}
@@ -203,9 +205,9 @@ function addTextInCollSelect(a) {
     else if (a == 'fisk') {return textItems.fisk[index]}
     else if (a == 'birds') {return textItems.fugler[index]}
     else if (a == 'mammals') {return textItems.pattedyr[index]}
-    else if (a == 'dna_karplanter') {return textItems.dna_karplanter[index]}
+    else if (a == 'dna_vascular') {return textItems.dna_vascular[index]}
     else if (a == 'dna_fungi_lichens') {return textItems.fungiLichens[index]}
-    else if (a == 'dna_entomologi') {return textItems.dna_insekter[index]}
+    else if (a == 'dna_entomology') {return textItems.dna_insekter[index]}
     else if (a == 'dna_fish_herptiles') {return textItems.fishHerp[index]}
     else if (a == 'sopp') {return textItems.sopp[index]}
     else if (a == 'dna_other') {return textItems.other[index]}
@@ -223,7 +225,6 @@ function addTextInCollSelect(a) {
 function addCollectionsToSelect(orgGroup) {
     sessionStorage.setItem('organismGroup', orgGroup)
     orgGroups = sessionStorage.getItem('organismGroups').split(',')
-    
     document.querySelector('#select-cell').style.display = 'block'
     
     let length = collection.options.length
@@ -427,6 +428,7 @@ const doSearch = (limit = 20) => {
         errorMessage.innerHTML = textItems.mustChoose[index]
         document.getElementById("please-wait").style.display = "none"
     } else {
+        console.log(chosenCollection)
         const url = urlPath + '/search/?search=' + searchTerm + '&museum=' + museum + '&samling=' + chosenCollection + '&linjeNumber=0' + '&limit=' + limit // normal search
         fetch(url).then((response) => {
             if (!response.ok) {
@@ -528,6 +530,9 @@ const doSearch = (limit = 20) => {
 // when somebody clicks search-button
 searchForm.addEventListener('submit', (e) => {
     e.preventDefault()
+    // let museum = getCurrentMuseum() 
+    // const p_collection = collection.value
+    //whichFileAndDb_main(museum, p_collection)
     doSearch(1000) // vi skal få tilbake maks 1000 linjer med svar
 })  
 

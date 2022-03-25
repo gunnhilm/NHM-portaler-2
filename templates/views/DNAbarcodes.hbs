@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Barcoded fungi in NorBOL</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        
+    </head>
+    <body>
+        <div class="wrapper">
+            {{>header}}
+            
+            <div class="content">
+                <br><br><br><br>
+                <p class="page-header" id="getBarcodeHeader"></p>
+                <p class="neutral" id="getBarcodeText"></p>
+                <br>
+
+            <table id="barcode-table" style="border:solid">
+                <th>
+                    <td>Species</td>
+                    <td>Sequenced specimens</td>
+                    <td>Awaiting sequencing</td>
+                    <td>Sampled for sequencing</td>
+                </th>
+            </table>
+            </div>
+            {{>footer}}
+        </div>
+        <link rel="stylesheet" href="/museum/styles/styles.css">
+        <link id="museumStyle" rel="stylesheet" type="text/css" href= "">
+        <script src="/museum/scripts/utils/showCorrectMuseum.js"></script>
+        <script src="/museum/scripts/utils/textItems.js"></script>
+        <script src="/museum/scripts/utils/renderLang.js"></script>
+        <script src="/museum/scripts/utils/papaparse/papaparse.min.js"></script>
+        <script src="/museum/scripts/utils/tools/DNAbarcodes/DNAbarcodes.js"></script>
+        
+
+    </body>
+
+
+</html>
