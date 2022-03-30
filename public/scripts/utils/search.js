@@ -32,6 +32,43 @@ if (sessionStorage.language) {
     sessionStorage.setItem('language', language)
 }
 
+// figures out which museum we are in
+// out: string, abbreviation for museum
+// is called by doSearch() and updateFooter()
+const getCurrentMuseum = () => {
+    const pathArray = window.location.pathname.split('/')
+    const museum = pathArray[2]
+    return museum
+}
+
+const museum = getCurrentMuseum()
+
+// fetches fileList from backend. 
+const getFileList = async () => {
+    return new Promise((resolve,reject) => {
+        url_getFileList = urlPath + '/getFileList/?museum=' + museum
+        fetch(url_getFileList).then((response) => {
+            if (!response.ok) {
+                throw 'noe er galt med respons til getFileList fra museum'
+            } else {
+                try {
+                    response.text().then((data) => {
+                        JSONdata = JSON.parse(data)
+                        sessionStorage.setItem('fileList',data)
+                        resolve(true)
+                    })
+                }
+                catch (error) {
+                    console.log(error)
+                    reject(error)
+                }
+            }
+        })
+        
+    })
+}
+
+
 
 // empties session’s search-result (sessionStorage), removes elements from page, resets pagination variables
 // calls emptyTable() in resultElementsOnOff.js
@@ -107,17 +144,6 @@ const emptyCollection = () => {
 }
 
 
-// figures out which museum we are in
-// out: string, abbreviation for museum
-// is called by doSearch() and updateFooter()
-const getCurrentMuseum = () => {
-    const pathArray = window.location.pathname.split('/')
-    const museum = pathArray[2]
-    return museum
-}
-
-const museum = getCurrentMuseum()
-  
 // not in use???
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1)
@@ -149,7 +175,6 @@ function makeButtons() {
                 emptyCollection()
                 document.getElementById('search-cell').style.display = 'none'
             }
-            console.log(el)
             addCollectionsToSelect(el.id)
             e.preventDefault()
         })
@@ -163,36 +188,37 @@ function makeButtons() {
     })
 }
 
-function addOrgGroups() {
+
+// function addOrgGroups() {
     
-    url_orgGroup = urlPath + '/orgGroups/?museum=' + museum
-    let orgGroups = []
-    fetch(url_orgGroup).then((response) => {
-        if (!response.ok) {
-            throw 'noe er galt med respons til organismegrupper fra museum'
-        } else {
-            try {
-                response.text().then((data) => {
-                    const JSONdata = JSON.parse(data)
-                    JSONdata.forEach(el => {
-                        orgGroups.push(el)
-                    })
-                    sessionStorage.setItem('organismGroups', orgGroups)
-                    makeButtons()
-                })
-            }
-            catch (error) {
-                console.log(error)
-                reject(error)
-            }
-        }
-    })
-}
+//     url_orgGroup = urlPath + '/orgGroups/?museum=' + museum
+//     let orgGroups = []
+//     fetch(url_orgGroup).then((response) => {
+//         if (!response.ok) {
+//             throw 'noe er galt med respons til organismegrupper fra museum'
+//         } else {
+//             try {
+//                 response.text().then((data) => {
+//                     const JSONdata = JSON.parse(data)
+//                     JSONdata.forEach(el => {
+//                         orgGroups.push(el)
+//                     })
+//                     sessionStorage.setItem('organismGroups', orgGroups)
+//                     makeButtons()
+//                 })
+//             }
+//             catch (error) {
+//                 console.log(error)
+//                 reject(error)
+//             }
+//         }
+//     })
+// }
 
 // put organism-group-buttons into array
 
 let buttonArray = []
-addOrgGroups()
+// addOrgGroups()
 
 
 function addTextInCollSelect(a) {
@@ -200,7 +226,7 @@ function addTextInCollSelect(a) {
     else if (a == 'vascular') {return textItems.vascular[index]}
     else if (a == 'lav') {return textItems.lav[index]}
     else if (a == 'alger') {return textItems.alger[index]}
-    else if (a == 'entomologi') {return textItems.insekter[index]}
+    else if (a == 'entomology') {return textItems.insekter[index]}
     else if (a == 'evertebrater') {return textItems.evertebrater[index]}
     else if (a == 'fisk') {return textItems.fisk[index]}
     else if (a == 'birds') {return textItems.fugler[index]}
@@ -249,45 +275,67 @@ function addCollectionsToSelect(orgGroup) {
                 document.querySelector('#' + el).className = "white-button" 
             }
         })
-
         document.querySelector('#'+ orgGroup).style.marginRight = "10px"
-        const url_coll = urlPath + '/collections/?museum=' + museum + '&orgGroup=' + orgGroup
-        
-        fetch(url_coll).then((response) => {
-            if (!response.ok) {
-                throw 'noe er galt med respons til samlinger til select'
-            } else {
-                try {
-                    response.text().then((data) => {
-                        const JSONdata = JSON.parse(data)  
-                        sessionStorage.setItem('options', data)
-                        JSONdata.forEach(el => {
+        let coll = []
+        const fileList = JSON.parse(sessionStorage.getItem('fileList'))
+        fileList.forEach(el => {
+            if (el.orgGroup === orgGroup) {
+                coll.push(el.name)
+            }
+        })
+        console.log(coll)
+        sessionStorage.setItem('options', JSON.stringify(coll))
+        coll.forEach(el => {
                             elOption = document.createElement("option")
                             elOption.text = addTextInCollSelect(el)
                             elOption.value = el
                             elOption.id = el
                             collection.add(elOption)
-                        })
-                        if (sessionStorage.getItem('collection')) {
-                            collection.value = sessionStorage.getItem('collection')
-                            console.log(sessionStorage.getItem('collection'))
-                        } else {
-                            collection.value = 'vennligst'
-                        }
-                    })
-                }
-                catch (error) {
-                    console.log(error)
-                    reject(error)
-                }
-            }
-        }).catch((error) => {
-            console.log('feil i samlinger til select. ' + error)
         })
+        if (sessionStorage.getItem('chosenCollection')) {
+            collection.value = sessionStorage.getItem('chosenCollection')
+            console.log(sessionStorage.getItem('chosenCollection'))
+        } else {
+            collection.value = 'vennligst'
+        }
+
+        // const url_coll = urlPath + '/collections/?museum=' + museum + '&orgGroup=' + orgGroup
+        // fetch(url_coll).then((response) => {
+        //     if (!response.ok) {
+        //         throw 'noe er galt med respons til samlinger til select'
+        //     } else {
+        //         try {
+        //             response.text().then((data) => {
+        //                 const JSONdata = JSON.parse(data)  
+        //                 sessionStorage.setItem('options', data)
+        //                 JSONdata.forEach(el => {
+        //                     elOption = document.createElement("option")
+        //                     elOption.text = addTextInCollSelect(el)
+        //                     elOption.value = el
+        //                     elOption.id = el
+        //                     collection.add(elOption)
+        //                     console.log(el)
+        //                 })
+        //                 if (sessionStorage.getItem('chosenCollection')) {
+        //                     collection.value = sessionStorage.getItem('chosenCollection')
+        //                     console.log(sessionStorage.getItem('chosenCollection'))
+        //                 } else {
+        //                     collection.value = 'vennligst'
+        //                 }
+        //             })
+        //         }
+        //         catch (error) {
+        //             console.log(error)
+        //             reject(error)
+        //         }
+        //     }
+        // }).catch((error) => {
+        //     console.log('feil i samlinger til select. ' + error)
+        // })
     } else {
         collection.value = 'vennligst'
     }
- }
+}
 
 // download search-result to file
 // in: filename(string, name of outputfile)
@@ -428,7 +476,6 @@ const doSearch = (limit = 20) => {
         errorMessage.innerHTML = textItems.mustChoose[index]
         document.getElementById("please-wait").style.display = "none"
     } else {
-        console.log(chosenCollection)
         const url = urlPath + '/search/?search=' + searchTerm + '&museum=' + museum + '&samling=' + chosenCollection + '&linjeNumber=0' + '&limit=' + limit // normal search
         fetch(url).then((response) => {
             if (!response.ok) {
@@ -444,7 +491,7 @@ const doSearch = (limit = 20) => {
                             const JSONdata = JSON.parse(data)  
                             
                             sessionStorage.setItem('searchLineNumber', JSONdata.unparsed.count)
-                            sessionStorage.setItem('searchTerm', searchTerm)
+                            //sessionStorage.setItem('searchTerm', searchTerm)
                             const parsedResults = Papa.parse(JSONdata.unparsed.results, {
                                 delimiter: "\t",
                                 newline: "\n",
@@ -545,7 +592,7 @@ collection.addEventListener('change', (e) => {
         document.getElementById("advanced-accordion").style.display = "none"
         document.getElementById("advanced-panel").style.display = "none"
     } else {
-        if (document.getElementById("advanced-accordion").style.display = "none") {
+        if (document.getElementById("advanced-accordion").style.display === "none") {
             document.getElementById("advanced-accordion").style.display = "block"
         }
         // console.log(document.getElementById("advanced-accordion").style.display)
@@ -558,7 +605,7 @@ collection.addEventListener('change', (e) => {
     document.getElementById('search-cell').style.display = 'table-cell'
 
     errorMessage.innerHTML = ""
-    sessionStorage.setItem('collection', collection.value)
+    sessionStorage.setItem('chosenCollection', collection.value)
     
     
     
@@ -576,7 +623,7 @@ const updateFooter = () => {
     let museum = getCurrentMuseum()  
     const chosenCollection = collection.value
     if (chosenCollection) {
-        sessionStorage.setItem('collection', chosenCollection)
+        sessionStorage.setItem('chosenCollection', chosenCollection)
         const url =  urlPath + '/footer-date/?&samling=' + chosenCollection + '&museum=' + museum
 
         fetch(url).then((response) => {
@@ -641,15 +688,15 @@ const oldSearch = () => {
         elOption.id = el
         collection.add(elOption)
     })
-    if (sessionStorage.getItem('collection')) {
-        collection.value = sessionStorage.getItem('collection')
+    if (sessionStorage.getItem('chosenCollection')) {
+        collection.value = sessionStorage.getItem('chosenCollection')
     } else {
         collection.value = 'vennligst'
     }
 
     document.querySelector('#select-cell').style.display = 'block'
     
-    if (sessionStorage.getItem('collection')) {
+    if (sessionStorage.getItem('chosenCollection')) {
         if (sessionStorage.getItem('string')) { //hvis det er søkeresultater i sesion storage, så skal disse vises
             // render correct language
             
@@ -663,7 +710,7 @@ const oldSearch = () => {
             renderText(language)
                 
             try {
-                document.getElementById('collection-select').value = sessionStorage.getItem('collection')
+                document.getElementById('collection-select').value = sessionStorage.getItem('chosenCollection')
                 document.getElementById('search-text').value = sessionStorage.getItem('searchTerm')
                 nbHitsElement.innerHTML = JSON.parse(sessionStorage.getItem('string')).length
                 nbHitsElement.style.color = 'black'
@@ -841,3 +888,21 @@ window.onload = function () {
         }
     }
 }
+
+async function main () {
+    await getFileList()
+    const fileList = sessionStorage.getItem('fileList')
+    // put in function
+    let tempOrgGroups = []
+    const JSONdata = JSON.parse(fileList)
+    JSONdata.forEach(el => {
+        if (el.orgGroup) {tempOrgGroups.push(el.orgGroup)}
+    })
+    //remove duplicates:
+    let orgGroups = [...new Set(tempOrgGroups)]
+    sessionStorage.setItem('organismGroups', orgGroups)
+    
+    makeButtons()
+
+}
+main()

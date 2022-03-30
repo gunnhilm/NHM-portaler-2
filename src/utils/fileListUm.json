@@ -10,17 +10,19 @@
 {
     "source": "musit",
     "orgGroup": "botanikk",
-    "name": "karplanter",
+    "name": "vascular",
     "zipFileName": "vascular_bg",
     "mediaFile": "_media",
+    "occurrenceFileSuffix": "_occurrence.txt", 
     "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/vascular_bg.zip"
 },
 {
     "source": "musit",
     "orgGroup": "zoologi",
-    "name": "entomologi",
+    "name": "entomology",
     "zipFileName": "entomology_zmbn",
     "mediaFile": "_media",
+    "occurrenceFileSuffix": "_occurrence.txt", 
     "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/entomology_zmbn.zip"
 },
 {
@@ -29,6 +31,7 @@
     "name": "lav",
     "zipFileName": "lichens_bg",
     "mediaFile": "_media",
+    "occurrenceFileSuffix": "_occurrence.txt", 
     "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/lichens_bg.zip"
 },
 {
@@ -37,6 +40,7 @@
     "name": "moser",
     "zipFileName": "moss_bg",
     "mediaFile": "_media",
+    "occurrenceFileSuffix": "_occurrence.txt", 
     "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/moss_bg.zip"
 },
 {
@@ -45,6 +49,7 @@
     "name": "sopp",
     "zipFileName": "fungus_bg",
     "mediaFile": "_media",
+    "occurrenceFileSuffix": "_occurrence.txt", 
     "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/fungus_bg.zip"
 },
 {
@@ -53,6 +58,7 @@
     "name": "evertebrater",
     "zipFileName": "evert_zmbn",
     "mediaFile": "_media",
+    "occurrenceFileSuffix": "_occurrence.txt", 
     "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/evert_zmbn.zip"
 }
 ]

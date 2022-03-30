@@ -145,7 +145,7 @@ const doAdvancedSearch = (limit = 20) => {
     } else {
         hasPhoto = "irr"
     }
-
+    console.log(hasPhoto)
     
     sessionStorage.setItem('advSearchArray', [searchSpecies,searchCollector,searchDate,searchCountry,searchMunicipality,searchLocality,searchCollNo,searchTaxType])
     const chosenCollection = collection.value
@@ -189,7 +189,7 @@ const doAdvancedSearch = (limit = 20) => {
                             const JSONdata = JSON.parse(data)  
                             
                             sessionStorage.setItem('searchLineNumber', JSONdata.unparsed.count)
-                            sessionStorage.setItem('advSearchArray', [searchSpecies,searchCollector,searchDate,searchCountry,searchMunicipality,searchLocality,searchCollNo,searchTaxType])
+                            // sessionStorage.setItem('advSearchArray', [searchSpecies,searchCollector,searchDate,searchCountry,searchMunicipality,searchLocality,searchCollNo,searchTaxType])
                             const parsedResults = Papa.parse(JSONdata.unparsed.results, {
                                 delimiter: "\t",
                                 newline: "\n",
@@ -292,6 +292,7 @@ const doObjListSearch = (limit = 20) => {
         
     sessionStorage.setItem('objList', searchObjects)
     const chosenCollection = collection.value
+    console.log(chosenCollection)
     sessionStorage.setItem('chosenCollection', JSON.stringify(chosenCollection))
     searchLineNumber = limit
     sessionStorage.setItem('limit', limit)
@@ -334,7 +335,7 @@ const doObjListSearch = (limit = 20) => {
                             const JSONdata = JSON.parse(data)  
                             
                             sessionStorage.setItem('searchLineNumber', JSONdata.unparsed.count)
-                            sessionStorage.setItem('objList', searchObjects)
+                            // sessionStorage.setItem('objList', searchObjects)
                             const parsedResults = Papa.parse(JSONdata.unparsed.results, {
                                 delimiter: "\t",
                                 newline: "\n",

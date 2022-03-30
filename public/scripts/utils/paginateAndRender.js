@@ -5,6 +5,7 @@
 
 const hitsPerPage = document.querySelector('#number-per-page')
 
+// change: take from fileList
 async function whichFileAndDb_main (museum,collection) {
     //return new Promise(function(resolve, reject) {
         
@@ -132,7 +133,6 @@ const resultTable = (subMusitData, musitData) => {
                 } else if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
                     prefix = 'NHMO-J-'
                 } else if (!(/[a-zA-Z]/).test(subMusitData[i].catalogNumber.charAt(0))) {
-                    
                     prefix = subMusitData[i].institutionCode + '-' + subMusitData[i].collectionCode + '-'
                 } else {
                     prefix = ''
@@ -142,12 +142,12 @@ const resultTable = (subMusitData, musitData) => {
                
                 //cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${subMusitData[i].catalogNumber} </a>`
                
-                if (subMusitData[i].catalogNumber.includes('/')) { // corema-data
+                if (subMusitData[i].catalogNumber.includes('/')) { // mose-data
                     let strippedCatNo = subMusitData[i].catalogNumber.substring(0,subMusitData[i].catalogNumber.indexOf('/'))
-                    console.log(subMusitData[0])
-                    cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${strippedCatNo}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${strippedCatNo} </a>`
+                    cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${strippedCatNo} </a>`
                 } else {
-                    cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${subMusitData[i].catalogNumber} </a>`
+                    let coll = collection.value
+                    cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}&samling=${coll}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${subMusitData[i].catalogNumber} </a>`
                 }
                 
                 if (sessionStorage.getItem('organismGroup').includes('geologi')) {
@@ -201,8 +201,8 @@ const resultTable = (subMusitData, musitData) => {
                 } 
                 if( subMusitData[i].associatedMedia ) {   
                     cell11.innerHTML = `<span class="fas fa-camera"></span>`
-                } else if( subMusitData[i].identifier ) {   
-                    cell11.innerHTML = `<span class="fas fa-camera"></span>`
+                // } else if( subMusitData[i].identifier ) {   
+                //     cell11.innerHTML = `<span class="fas fa-camera"></span>`
                 }
                 if( subMusitData[i].decimalLongitude) {
                     cell12.innerHTML = '<span class="fas fa-compass"></span>'
@@ -354,7 +354,6 @@ const UTADRestultTable = (subUTADData, UTADData) => {
         searchFailed = true // is checked when map is drawn 
     }
 }
-
 
 const bulkResultTable = (subBulkData, bulkData) => {
     try {

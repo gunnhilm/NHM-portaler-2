@@ -166,6 +166,21 @@ app.get('/objListSearch', (req, res) => {
     }
 })
 
+app.get('/getFileList', (req, res) => {
+    if (!req.query.museum) {
+        throw new Error ('no museum')
+    } else {
+        try {
+            let fileListObject = fileRead.fileListObject(req.query.museum, (error, results) => {
+            })
+            res.send(fileListObject)
+        }
+        catch(error) {
+            console.log(error)
+            throw new Error ('feil i app.js')
+        }
+    }
+})
 
 app.get('/orgGroups', (req, res) => {
     if (!req.query.museum) {

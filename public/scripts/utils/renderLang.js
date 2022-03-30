@@ -67,8 +67,6 @@ const fillSearchFields = () => {
 // out: text or images in relevant HTML-elements
 // is called in renderLang.js
 function renderText (lang) {
-
-
     if (lang === "English") {
         index = 1
     } else {
@@ -131,7 +129,7 @@ function renderText (lang) {
         if (document.querySelector('#moser')) {document.querySelector('#moser').innerHTML = textItems.moser[index]}
         if (document.querySelector('#lav')) {document.querySelector('#lav').innerHTML = textItems.lav[index]}
         if (document.querySelector('#alger')) {document.querySelector('#alger').innerHTML = textItems.alger[index]}
-        if (document.querySelector('#entomologi')) {document.querySelector('#entomologi').innerHTML = textItems.insekter[index]}
+        if (document.querySelector('#entomology')) {document.querySelector('#entomology').innerHTML = textItems.insekter[index]}
         if (document.querySelector('#evertebrater')) {document.querySelector('#evertebrater').innerHTML = textItems.evertebrater[index]}
         if (document.querySelector('#fisk')) {document.querySelector('#fisk').innerHTML = textItems.fisk[index]}
         if (document.querySelector('#coremaopt')) {document.querySelector('#coremaopt').label = textItems.coremaopt[index]}
@@ -393,7 +391,7 @@ document.querySelector('#language').addEventListener('click', (e) => {
  
             stringData = sessionStorage.getItem('string')
             musitData = JSON.parse(stringData)      
-            const coll = sessionStorage.getItem('collection')
+            const coll = sessionStorage.getItem('chosenCollection')
             if (coll === 'utad') { 
                 fillResultHeadersUTAD(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell11,musitData)
             } else if (coll === 'bulk') {

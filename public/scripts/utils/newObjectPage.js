@@ -106,28 +106,53 @@ async function whichFileAndDb_two (museum,collection) {
 async function setItems () {
     sessionStorage.setItem('language', urlParams.get("lang") )
     sessionStorage.setItem('museum', urlParams.get("museum") )
-    sessionStorage.setItem('collection', urlParams.get("samling") )
+    sessionStorage.setItem('chosenCollection', urlParams.get("samling"))
 }
 
-function testIfNewPage() {
-    if(sessionStorage.getItem('string') === null || sessionStorage.getItem('string') === '[]') { // endret her
+function testIfNewPage(isNew) {
+    if(sessionStorage.getItem('string') === null || sessionStorage.getItem('string') === '[]' || isNew === 'yes') { // endret her
         return true
     } else {
         return false
     }
 }
 
+// fetches fileList from backend. 
+////////////// duplicate code, also in search.js (different name; getFileList())
+const getFileListObjPage = async () => {
+    return new Promise((resolve,reject) => {
+        url_getFileList = urlPath + '/getFileList/?museum=' + urlParams.get("museum")
+        fetch(url_getFileList).then((response) => {
+            if (!response.ok) {
+                throw 'noe er galt med respons til getFileList fra museum'
+            } else {
+                try {
+                    response.text().then((data) => {
+                        JSONdata = JSON.parse(data)
+                        sessionStorage.setItem('fileList',data)
+                        resolve(true)
+                    })
+                }
+                catch (error) {
+                    console.log(error)
+                    reject(error)
+                }
+            }
+        })
+        
+    })
+}
+
+
 
 // runs in file object.js
 async function newObjectPageMain() {
-    console.log(testIfNewPage())
-    if (testIfNewPage()) {
+    if (testIfNewPage(urlParams.get("isNew"))) {
         await setItems()
         await setOrgGroup()
         await setSpecimenData()
         await whichFileAndDb_two(urlParams.get("museum"),urlParams.get("samling"))
-        console.log('ferdig mer pre run');
-        // return true
+        await getFileListObjPage()
     }
 }
 

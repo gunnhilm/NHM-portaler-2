@@ -21,6 +21,19 @@ const getFileList = (museum) => {
     return fileList
 }
 
+const fileListObject = (museum) => {
+    let fileList = getFileList(museum)
+    let fileListObject = fileList
+    //console.log(fileListObject)
+    // fileList.forEach(el => {
+    //     if (el.orgGroup) {
+    //         orgGroups.push(el.orgGroup)
+    //     }
+    // })
+    // let uniqueOrgGroups = [...new Set(orgGroups)]
+    return fileListObject
+}
+
 // to figure out wheter collection is in musit or corema
 // is called in...
 const getSource = (museum,samling) => {
@@ -33,7 +46,7 @@ const setOrgGroups = (museum) => {
     const fileList = getFileList(museum)
     let orgGroups = []
     fileList.forEach(el => {
-        if (!el.filMetadata) {
+        if (el.orgGroup) {
             orgGroups.push(el.orgGroup)
         }
     })
@@ -218,14 +231,15 @@ const advSearch = (museum, samling, searchSpecies, searchCollector, searchDate, 
                                 } 
                             } else if (i === (termsArray.length -1) ) {
                                 // check for last searchTerm; associatedMedia
-                                if (termsArray[i] === 'hasphoto') {
+                                if (termsArray[i] === 'hasPhoto') {
+                                    console.log('her')
                                     if (!lineArray[headers.indexOf(headerTerms[i])]) {
                                         break;
                                     } else {
                                         results =  results +  '\n' + line
                                         resultCount++  
                                     }
-                                } else if (termsArray[i] === 'hasnotphoto') {
+                                } else if (termsArray[i] === 'hasNotPhoto') {
                                     if (lineArray[headers.indexOf(headerTerms[i])]) {
                                         break;
                                     } else {
@@ -453,6 +467,7 @@ module.exports = {
     search,
     advSearch,
     objListSearch,
+    fileListObject,
     setCollection,
     setOrgGroups,
     getOrgGroup,

@@ -12,9 +12,10 @@
     {
         "source": "musit",
         "orgGroup": "botanikk",
-        "name": "karplanter",
+        "name": "vascular",
         "zipFileName": "vascular_kmn",
         "mediaFile": "_media",
+        "occurrenceFileSuffix": "_occurrence.txt", 
         "url":  "https://www.unimus.no/nedlasting/datasett/naturhistorie/vascular_kmn.zip"
     },
     {
@@ -23,6 +24,7 @@
         "name": "alger",
         "zipFileName": "alge_kmn",
         "mediaFile": "_media",
+        "occurrenceFileSuffix": "_occurrence.txt", 
         "url": "https://www.unimus.no/nedlasting/datasett/naturhistorie/alge_kmn.zip"
     },
     {
@@ -31,6 +33,7 @@
         "name": "moser",
         "zipFileName": "moss_knm",
         "mediaFile": "_media",
+        "occurrenceFileSuffix": "_occurrence.txt", 
         "url": "https://www.unimus.no/nedlasting/datasett/naturhistorie/moss_kmn.zip"
     },
     {
@@ -40,6 +43,7 @@
         "zipFileName": "mineralsamlingen",
         "mediaFile": "",
         "url": "",
+        "occurrenceFileSuffix": "_occurrence.txt", 
         "akronym": "NBH-MIN"
     }
 ]

@@ -1,6 +1,13 @@
 // Description of file: Renders text on object.hbs
-
-
+let index
+const urlParamsTop = new URLSearchParams(window.location.search)
+language = urlParams.get("lang")
+console.log(language)
+if (language === "Norwegian") {
+    index = 0
+} else if (language === "English") {
+    index = 1
+}
 // figures out which museum we are in
 // out: string, abbreviation for museum
 // is called by document.getElementById('large-map-object-button').onclick
@@ -49,6 +56,7 @@ document.getElementById("next-photo").style.display = "none"
 document.getElementById("previous-photo").style.display = "none"
 document.getElementById("nb-photos").style.display = "none"
 
+// change: take from fileList
 // fetches organism-group from backend and sets it in sessionStorage (botanikk, mykologi, zoologi, osv)
 // is called in main()
 async function setOrgGroup () {
@@ -87,11 +95,13 @@ async  function getspecimenData (allObject) {
         const id = urlParams.get('id')
         let specimenObject = {}
         try {
-            if (sessionStorage.getItem('collection').includes('fisk')) {
+            if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
                 specimenObject = allObject.find(x => x.catalogNumber.replace(/[A-Z]/,'').trim() === id)
-            } else if (allObject[0].catalogNumber.includes('/')) {
-                specimenObject = allObject.find(x => x.catalogNumber.substring(0,x.catalogNumber.indexOf('/')) === id)
-            } else {
+            }
+            //  else if (allObject[0].catalogNumber.includes('/')) {
+            //     specimenObject = allObject.find(x => x.catalogNumber.substring(0,x.catalogNumber.indexOf('/')) === id)
+            // }
+             else {
                 specimenObject = allObject.find(x => x.catalogNumber === id)
             }
             resolve(specimenObject)
@@ -103,6 +113,7 @@ async  function getspecimenData (allObject) {
     })
 }
 
+// change: take from fileList
 // fetches type of file (stitched if collection is in both corema and musit, 
 //      or only in corema, not-stitched if not) and db (musit or corema or access etc) 
 //      from backend and put them in sessionStorage
@@ -162,21 +173,29 @@ const makeNavButtons  = (allObject, specimenObject) => {
     document.getElementById("next-object").onclick = () => {
         if (allObject.indexOf(specimenObject) !== allObject.length-1) {
             if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
-                window.location.href=`${museumURLPath}/object/?id=${nextObject.catalogNumber.replace(/[A-Z]/,'').trim()}`
+                window.location.href=`${museumURLPath}/object/?id=${nextObject.catalogNumber.replace(/[A-Z]/,'').trim()}&samling=${sessionStorage.getItem('chosenCollection')}&museum=nhm&lang=${sessionStorage.getItem('language')}`
             } else {
-                window.location.href=`${museumURLPath}/object/?id=${nextObject.catalogNumber}`
+                window.location.href=`${museumURLPath}/object/?id=${nextObject.catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=nhm&lang=${sessionStorage.getItem('language')}`
             }
         }
     }
     document.getElementById("previous-object").onclick = () => {
-        if (allObject.indexOf(object) !== 0) {
+        if (allObject.indexOf(specimenObject) !== 0) {
             if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
-                window.location.href=`${museumURLPath}/object/?id=${previousObject.catalogNumber.replace(/[A-Z]/,'').trim()}`
+                window.location.href=`${museumURLPath}/object/?id=${previousObject.catalogNumber.replace(/[A-Z]/,'').trim()}&samling=${sessionStorage.getItem('chosenCollection')}&museum=nhm&lang=${sessionStorage.getItem('language')}`
             } else {
-                window.location.href=`${museumURLPath}/object/?id=${previousObject.catalogNumber}`
+                window.location.href=`${museumURLPath}/object/?id=${previousObject.catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=nhm&lang=${sessionStorage.getItem('language')}`
             }
         }
     }
+}
+
+
+const hideNavButtons = () => {
+    document.getElementById("next-object").style.display = 'none'
+    document.getElementById("previous-object").style.display = 'none'
+    document.getElementById("back-to-result").style.display = 'none'
+
 }
 
 // facilitates correctly formatted locality information for a museum object
@@ -306,7 +325,7 @@ const italicSpeciesname = (string) => {
 // and fills musit-regno-box
 // in: table; html-element
 // is called in makeUTADTable() and makePalTable()
-const makeTableHeader = (table) => {
+const makeTableHeader = (table, specimenObject) => {
     const speciesNameRow = table.insertRow(0)
     const speciesNameHeader = speciesNameRow.insertCell(0); speciesNameHeader.id = 'head-species-name'; speciesNameHeader.class = 'bold'; speciesNameHeader.style = 'white-space:pre';
     const speciesNameCont = speciesNameRow.insertCell(1); speciesNameCont.id = 'species-name'; speciesNameCont.style = 'border-spacing: 10px 0'; //font-style:italic';
@@ -314,7 +333,7 @@ const makeTableHeader = (table) => {
     if (sessionStorage.getItem('organismGroup').includes('geologi') ) {
         console.log('geologi')
     }
-    let nameArray = italicSpeciesname(object.scientificName)
+    let nameArray = italicSpeciesname(specimenObject.scientificName)
     document.querySelector('#head-species-name').innerHTML = `<span>${textItems.scientificName[index]}</span>`
     document.querySelector("#species-name").innerHTML = `<span style=font-style:italic>${nameArray[0]}</span>` + ' ' + `<span>${nameArray[1]}</span>`
     //document.querySelector("#musit-regno").innerHTML = `<span>${object.catalogNumber}</span>`
@@ -399,7 +418,7 @@ const makeUTADTable = (specimenObject) => {
     const table = document.getElementById("data-table")
     const fieldsToShow = [/*'scientificName',*/ 'vernacularName', 'basisOfRecord', 'Hyllenr.', 'NHM objektbase', 'lengde', 'bredde', 'høyde', 'Vekt', 'Tilstand', 'Utlån', 'Kommentar']
 
-    makeTableHeader(table)
+    makeTableHeader(table, specimenObject)
     const keyObj = []
     // construct table
     // "The Object.entries() method returns an array of a given object's own enumerable string-keyed property [key, value] pairs.
@@ -435,11 +454,11 @@ const makePalTable = (specimenObject) => {
     console.log(specimenObject)
     // legg til formaterte koordinater og lokalitet som .. på objektet
     specimenObject.coordinates = coordinates(specimenObject)
-    console.log(specimenObject)
+    const concatLocality = country(specimenObject) + stateProvince(specimenObject) + county(specimenObject) + locality(specimenObject)
     specimenObject.concatLocality = concatLocality
     const table = document.getElementById("data-table");
     const fieldsToShow = ['higherClassification', 'geologicalContext', 'coordinates', 'concatLocality', 'coordinates', 'recordedBy', 'eventDate', 'remarks']
-    makeTableHeader(table)
+    makeTableHeader(table, specimenObject)
 
     const keyObj = []
     const objectHeaders = []
@@ -471,6 +490,9 @@ const makeGeoTable = (specimenObject) => {
     const table = document.getElementById("data-table");
     const fieldsToShow = ['scientificName', 'higherClassification', 'Dimensjon', 'mass', 'geologicalContext', 'coordinates', 'concatLocality', 'coordinates', 'recordedBy', 'eventDate', 'remarks']
     specimenObject.coordinates = coordinates(specimenObject)
+    const concatLocality = country(specimenObject) + stateProvince(specimenObject) + county(specimenObject) + locality(specimenObject)
+    console.log(concatLocality)
+    
     specimenObject.concatLocality = concatLocality
     // makeTableHeader(table)
 
@@ -501,6 +523,7 @@ const makeGeoTable = (specimenObject) => {
 // in: objectTable - which table data should be rendered in (relict from when this was swapped according to which collection we came from)
 // in: order - string; "first" or "second". "First" means trad.coll.object comes from the collecton we are in (typically musit)
 // "Second" means trad.coll.object comes from other collection that the one we are in (typically DNA-bank)
+// "second" means we want link to other collection
 async function showObjectData (specimenObject,objectTable,order) {
     addRow(objectTable)
     cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.objectHeaderColl[index]}</span>`
@@ -519,11 +542,19 @@ async function showObjectData (specimenObject,objectTable,order) {
             prefix = specimenObject.institutionCode + '-' + specimenObject.collectionCode
         }
     if (order === 'first') {
-        cell1.innerHTML = cell1.innerHTML = `<a id="object-link" href="${museumURLPath}/object/?id=${specimenObject.catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=nhm&lang=${sessionStorage.getItem('language')}"> ${prefix}-${specimenObject.catalogNumber} </a>`
-    } else {
-        cell1.innerHTML = cell1.innerHTML = `<a id="object-link" href="${museumURLPath}/object/?id=${specimenObject.RelCatNo}&samling=${sessionStorage.getItem('chosenCollection')}&museum=nhm&lang=${sessionStorage.getItem('language')}"> ${prefix}-${specimenObject.RelCatNo} </a>`
+        //cell1.innerHTML = `<a id="object-link" href="${museumURLPath}/object/?id=${specimenObject.catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=nhm&lang=${sessionStorage.getItem('language')}"> ${prefix}-${specimenObject.catalogNumber} </a>`
+        cell1.innerHTML = prefix + '-' + specimenObject.catalogNumber
+    } else { // object is from assosicated collection, and should have link
+        const fileList = JSON.parse(sessionStorage.getItem('fileList'))
+        let fileListPost = fileList.find(el => el.name === sessionStorage.getItem('chosenCollection'))
+        let associatedCollection = fileListPost.associatedCollection
+        console.log(associatedCollection)
+        if (Array.isArray(associatedCollection)) {
+            if (specimenObject.musitCollectionCode === 'F') {associatedCollection = "sopp"} else {associatedCollection = "lav"}
+        }
+        cell1.innerHTML = `<a id="object-link" target="_blank" href="${museumURLPath}/object/?id=${specimenObject.RelCatNo}&samling=${associatedCollection}&museum=nhm&lang=${sessionStorage.getItem('language')}&isNew=yes"> ${prefix}-${specimenObject.RelCatNo} </a>`
     }
-        
+ 
     cell1.style.textDecoration  = 'underline'
     cell1.style.fontWeight = 'normal'
     cell1.style.fontSize = '18px'
@@ -545,9 +576,10 @@ async function showObjectData (specimenObject,objectTable,order) {
 async function showItemData (specimenObject,objectTable,order) {
 // put corema-items in itemArray as objects
     tempItemArray = []
-    if(order === 'first') {
+    
+    if(order === 'first') { // hvis hovedobjekt er corema
         tempItemArray = specimenObject.fullCatalogNumber.split(" | ")
-    } else {
+    } else { // hvis hovedobjekt er musit
         tempItemArray = specimenObject.RelCatNo.split(" | ")
     }
     
@@ -584,6 +616,7 @@ async function showItemData (specimenObject,objectTable,order) {
     addRow(objectTable)
     cell1.id = 'itemsHeader'
     console.log(sessionStorage.getItem('source'))
+    console.log(index)
     cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.itemsHeader[index]}</span>`
     addRow(objectTable)
     cell1.innerHTML = '<br>'
@@ -598,11 +631,16 @@ async function showItemData (specimenObject,objectTable,order) {
             } else {
                 cell1.innerHTML = item.itemNumber
             }
-        } else if (order === 'second') {
+        } else if (order === 'second') { // object is from assosicated collection, and should have link
+            const fileList = JSON.parse(sessionStorage.getItem('fileList'))
+            let fileListPost = fileList.find(el => el.name === sessionStorage.getItem('chosenCollection'))
+            let associatedCollection = fileListPost.associatedCollection
+            console.log(associatedCollection)
             if (sessionStorage.getItem('source') === 'musit') {
-                cell1.innerHTML = item.itemNumber
+                cell1.innerHTML = `<a id="object-link" target="_blank" href="${museumURLPath}/object/?id=${specimenObject.RelCleanCatNo}&samling=${associatedCollection}&museum=nhm&lang=${sessionStorage.getItem('language')}&isNew=yes"> ${item.itemNumber} </a>`
             } else {
-                cell1.innerHTML = specimenObject.institutionCode + '-' + specimenObject.collectionCode + '-' + specimenObject.catalogNumber
+                //cell1.innerHTML = specimenObject.institutionCode + '-' + specimenObject.collectionCode + '-' + specimenObject.catalogNumber
+                cell1.innerHTML = `<a id="object-link" href="${museumURLPath}/object/?id=${specimenObject.RelCatNo}&samling=${associatedCollection}&museum=nhm&lang=${sessionStorage.getItem('language')}"> ${specimenObject.institutionCode}-${specimenObject.collectionCode}-${specimenObject.catalogNumber} </a>`
             }
         }
         cell1.style.textDecoration  = 'underline'
@@ -663,6 +701,7 @@ async function showItemData (specimenObject,objectTable,order) {
 // calls makeUTADTable(obj) or makeGeoTable(obj) or makePalTable(obj) or makeBioTable(obj)
 // is called below
 async function showData (specimenObject, orgGroup) {
+    
     console.log(specimenObject)
     if (orgGroup === 'other') {
         makeUTADTable(specimenObject)
@@ -681,8 +720,9 @@ async function showData (specimenObject, orgGroup) {
         prefix = 'NHMO-J-'
         regnoEl = `<span>${prefix}${specimenObject.catalogNumber.replace(/[A-Z]/,'').trim()}</span>` 
     } else if (specimenObject.catalogNumber.includes('/')) {
+        prefix = specimenObject.institutionCode + '-' + specimenObject.collectionCode + '-'
         let strippedCatNo = specimenObject.catalogNumber.substring(0,specimenObject.catalogNumber.indexOf('/'))
-        regnoEl =  `<span>${strippedCatNo}</span>`
+        regnoEl =  `<span>${prefix}${strippedCatNo}</span>`
     } else{
         prefix = specimenObject.institutionCode + '-' + specimenObject.collectionCode + '-'
         regnoEl = `<span>${prefix}${specimenObject.catalogNumber}</span>` 
@@ -724,7 +764,7 @@ async function showData (specimenObject, orgGroup) {
 
         document.querySelector("#musit-regno").innerHTML = `<span>PMO ${specimenObject.catalogNumber}</span>`
     } 
-    // else if (!sessionStorage.getItem('collection').includes('dna') & !sessionStorage.getItem('collection').includes('birds') & !sessionStorage.getItem('collection').includes('mammals')) {
+    // else if (!sessionStorage.getItem('chosenCollection').includes('dna') & !sessionStorage.getItem('chosenCollection').includes('birds') & !sessionStorage.getItem('chosenCollection').includes('mammals')) {
     //     document.querySelector("#musit-regno").innerHTML = regnoEl
     // }
      else {
@@ -732,9 +772,8 @@ async function showData (specimenObject, orgGroup) {
    
    //     document.querySelector("#musit-regno").innerHTML = `<span>${object.catalogNumber.replace(/[A-Z]/,'').trim()}</span>`
     }
-
+    
     const concatLocality = country(specimenObject) + stateProvince(specimenObject) + county(specimenObject) + locality(specimenObject)
-
     let taxonomy = ''
     if (specimenObject.kingdom || specimenObject.class || specimenObject.order || specimenObject.family) {
         taxonomy = taxonomyString(specimenObject)
@@ -769,12 +808,14 @@ async function showData (specimenObject, orgGroup) {
         
         if (sessionStorage.getItem('file').includes('stitch')) {
             if (sessionStorage.getItem('source') === 'corema') {
-                
-                await showItemData(specimenObject,table1,"first")
-                table2.style.border = 'solid'
                 if (specimenObject.RelCatNo) {
-                    await showObjectData(specimenObject,table2,"second")    
-                } else {table2.style.display = 'none'}
+                    await showObjectData(specimenObject,table1,"second")    
+                    await showItemData(specimenObject,table2,"first")
+                    table2.style.border = 'solid'
+                } else {
+                    await showItemData(specimenObject,table1,"first")
+                    table2.style.display = 'none'
+                }
             } else if (sessionStorage.getItem('source') === 'musit') {
                 await showObjectData(specimenObject,table1,"first")
                 if (specimenObject.RelCatNo) {
@@ -884,7 +925,7 @@ const showMedia = (specimenObject) => {
 }
 
 
-if (sessionStorage.getItem('collection') === 'utad') {
+if (sessionStorage.getItem('chosenCollection') === 'utad') {
     const mapEl = document.getElementById('map-style'); 
     mapEl.style.display = "none";
 }
@@ -940,11 +981,10 @@ async function main () {
     }
       // from file renderLangObjPage.js
 
-    renderObjectText(language)
+   // renderObjectText(language)
    const orgGroup = getOrganismGroup()
    //get the object from session storage
    const allObject = loadStringObject()
-   
    // set OrgGruop
    await setOrgGroup()
    
@@ -952,11 +992,13 @@ async function main () {
    // get the correct object
    let specimenObject = await getspecimenData(allObject)
    //makeTable(specimenObject)
-
-   if(Array.isArray(allObject) && (allObject.length > 2)) {
+    console.log(urlParams.get("isNew"))
+   if(Array.isArray(allObject) && (allObject.length > 2) && urlParams.get("isNew") != "yes") {
        makeNavButtons(allObject, specimenObject)
+   } else {
+       hideNavButtons()
    }
-   renderObjectText(language)
+   //renderObjectText(language)
    await showData(specimenObject, orgGroup)
    showMedia(specimenObject)
    drawMapObject(specimenObject)

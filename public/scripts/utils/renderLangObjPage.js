@@ -27,7 +27,7 @@ function renderObjectText(lang){
     const urlParams = new URLSearchParams(window.location.search)
     index = setIndex(urlParams.get("lang"))
     // Get the name of the collection
-    const coll = sessionStorage.getItem('collection')
+    const coll = sessionStorage.getItem('chosenCollection')
     const orgGroup = sessionStorage.getItem('organismGroup')
 
     //get the object from session storage
@@ -37,11 +37,12 @@ function renderObjectText(lang){
     const id = urlParams.get('id')
     let specimenObject
     
-    // if (allObject[0].catalogNumber.includes('/')) {
-    //     specimenObject = allObject.find(x => x.catalogNumber.substring(0,x.catalogNumber.indexOf('/')) === id)
-    // } else {
+    if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
+        specimenObject = allObject.find(x => x.catalogNumber.replace(/[A-Z]/,'').trim() === id)
+    } else {
         specimenObject = allObject.find(x => x.catalogNumber === id)
-    // }
+        
+    }
     
     
     document.querySelector("#back-to-result").innerHTML = textItems.searchButtonHeader[index]
@@ -183,7 +184,7 @@ document.querySelector('#language').addEventListener('click', () => {
  
             stringData = sessionStorage.getItem('string')
             musitData = JSON.parse(stringData)      
-            const coll = sessionStorage.getItem('collection')
+            const coll = sessionStorage.getItem('chosenCollection')
             if (coll === 'utad') { 
                 fillResultHeadersUTAD(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell11,musitData)
             } else if (coll === 'bulk') {

@@ -28,6 +28,7 @@
     "zipFileName": "vascular_o",
     "mediaFile": "_media",
     "occurrenceFileSuffix": "_stitched.txt",
+    "associatedCollection": "dna_vascular",
     "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/vascular_o.zip"
 },
 {
@@ -37,6 +38,7 @@
     "zipFileName": "lichens_o",
     "mediaFile": "_media",
     "occurrenceFileSuffix": "_stitched.txt",
+    "associatedCollection": "dna_fungi_lichens",
     "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/lichens_o.zip"
 },
 {
@@ -55,6 +57,7 @@
     "zipFileName": "fungus_o",
     "mediaFile": "_media",
     "occurrenceFileSuffix": "_stitched.txt",
+    "associatedCollection": "dna_fungi_lichens",
     "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/fungus_o.zip"
 },
 {
@@ -64,6 +67,7 @@
     "zipFileName": "occurrence",
     "mediaFile": "_multimedia",
     "occurrenceFileSuffix": "_stitched.txt",
+    "associatedCollection": ["sopp","lav"],
     "url": "https://ipt.gbif.no/archive.do?r=o_dna_fungi_lichens",
     "akronym": "O-DFL"
 },
@@ -74,16 +78,18 @@
     "zipFileName": "occurrence",
     "mediaFile": "_multimedia",
     "occurrenceFileSuffix": "_stitched.txt",
+    "associatedCollection": "vascular",
     "url": "https://ipt.gbif.no/archive.do?r=o_dna_plants",
     "akronym": "O-DP"
 },
 {
     "source": "musit",
     "orgGroup": "zoologi",
-    "name": "entomologi",
+    "name": "entomology",
     "zipFileName": "entomology_nhmo",
     "mediaFile": "_media",
     "occurrenceFileSuffix": "_stitched.txt",
+    "associatedCollection": "dna_entomology",
     "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/entomology_nhmo.zip"
 },
 {
@@ -124,6 +130,7 @@
     "zipFileName": "occurrence",
     "mediaFile": "_multimedia",
     "occurrenceFileSuffix": "_stitched.txt",
+    "associatedCollection": "entomology",
     "url": "https://ipt.gbif.no/archive.do?r=o_dna_arthropods",
     "akronym": "NHMO-DAR"
 },
