@@ -5,7 +5,7 @@ const journalSearchForm = document.getElementById('search-button')
 const errorMessage = document.getElementById('head-nb-hits')
 const nbHitsElement = document.getElementById('nb-hits') 
 const columnsToShow = 14
-
+let journalCollection = ''
 // figures out which museum we are in
 // out: string, abbreviation for museum
 // is called by doSearch() and updateFooter()
@@ -14,6 +14,58 @@ const getCurrentMuseum = () => {
     museum = museum.split('/')
     return museum[2]
 }
+
+function addTextInButtons(a) {
+    if (a == 'botanikk') {return textItems.botanikk[index]}
+    else if (a == 'mykologi') {return textItems.mykologi[index]}
+    else if (a == 'zoologi') {return textItems.zoologi[index]}
+    else if (a == 'geologi') {return textItems.geologi[index]}
+    else if (a == 'paleontologi') {return textItems.paleontologi[index]}
+    else if (a == 'other') {return textItems.otherCollections[index]}
+}
+
+function removeResults() {
+    try {
+        const Table = document.getElementById("journal-result-table");
+        Table.innerHTML = "";
+    } catch (error) {
+        // do nothing
+    }
+
+}
+// buttons for the different types of journals
+function makeButtons() {
+    const buttonArray = []
+    journalTypes = sessionStorage.getItem('journals').split(',')
+    console.log(journalTypes);
+    journalTypes.forEach(el => {
+        button = document.createElement("button")
+        button.innerHTML = addTextInButtons(el)
+        button.id = el
+        button.className = "white-button"
+        document.getElementById("journal-type").appendChild(button)
+        buttonArray.push(button)   
+    })
+    buttonArray.forEach(el => {
+        el.addEventListener('click', (e) => {
+            removeResults()
+            buttonArray.forEach(el => {
+                el.className = "white-button"
+            })
+            if(el.id === 'paleontologi') {
+                journalCollection = 'palJournaler'
+                el.className = "blue-button" 
+            }
+            if(el.id === 'zoologi') {
+                journalCollection = 'zooJournaler'
+                el.className = "blue-button" 
+            }
+            e.preventDefault()
+        })
+    })
+}
+
+
 
 // resultattabell
 
@@ -38,7 +90,7 @@ function addHeaders(table, keys) {
 // creates table for the journals and fills it
 // in: children (array, containing content to table, i.e. data on journals) 
 // calls addHeaders(..)
-// is called in dorournalSearch(..)
+// is called in dojournalSearch(..)
 const journalResultTable = (children) => {
     const table = document.createElement('table');
     table.setAttribute('id', 'journal-result-table')
@@ -82,6 +134,12 @@ const journalResultTable = (children) => {
 }
 
 
+const getJournalGroup = () => {
+    sessionStorage.setItem('journals', 'zoologi,paleontologi');
+    const journalGroups = ['Zoology', 'Palaeontology']
+    return journalGroups
+}
+
 // performs search and fetches data
 // in: limit (integer; maximum number of records to display)
 // calls journalResultTable(..)
@@ -95,8 +153,11 @@ const doJournalSearch = (limit = 2000) => {
     }
     let museum = getCurrentMuseum() 
     const searchTerm = journalSearch.value
- 
-    const url = urlPath + '/search/?search=' + searchTerm + '&museum=' + museum + '&samling=journaler&linjeNumber=0&limit=' + limit // normal search
+    if(!journalCollection) {
+        journalCollection = 'zooJournaler'
+    }
+    // const url = urlPath + '/search/?search=' + searchTerm + '&museum=' + museum + '&samling=zooJournaler&linjeNumber=0&limit=' + limit // normal search
+    const url = urlPath + '/search/?search=' + searchTerm + '&museum=' + museum + '&samling='+ journalCollection + '&linjeNumber=0&limit=' + limit // normal search
         fetch(url).then((response) => {
             if (!response.ok) {
                 // throw 'noe går galt med søk, respons ikke ok' + response
@@ -133,6 +194,7 @@ const doJournalSearch = (limit = 2000) => {
                 }
             }
         })
+        updateFooter()
 } 
 
 
@@ -163,7 +225,11 @@ const updateFooter = () => {
         })
 }
 
-updateFooter()
-doJournalSearch()
+getJournalGroup()
+makeButtons()
+
+
+// updateFooter()
+// doJournalSearch()
 
 

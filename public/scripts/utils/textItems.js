@@ -22,7 +22,7 @@ const textItems = {
     mykologi: ["Mykologi", "Mycology"],
     zoologi: ["Zoologi", "Zoology"],
     geologi: ["Geologi", "Geology"],
-    paleontologi: ['Paleontologi', 'Paleontology'],
+    paleontologi: ['Paleontologi', 'Palaeontology'],
     otherCollections: ["Andre samlinger", "Other collections"],
     emptySearch: ["Tøm søk", "Empty search"],
     headerSearchPage: ["Søk i samlingene", "Search the collections"],

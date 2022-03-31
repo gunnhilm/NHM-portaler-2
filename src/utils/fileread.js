@@ -84,9 +84,15 @@ const setCollection = (museum, samling) => {
     const fileList = getFileList(museum)
     let musitFile = ''
     const pathToMuseum = './src/data/' + museum + '/'
-    if (samling === 'journaler') {
-        musitFile = './src/data/' + museum +'/journaler.txt'  
-    } else {
+    if (samling === 'zooJournaler') {
+        musitFile = './src/data/' + museum +'/zooJournaler.txt'  
+    } else if (samling === 'palJournaler') {
+        musitFile = './src/data/' + museum +'/palJournaler.txt'  
+    } else if (samling === 'botJournaler') {
+        musitFile = './src/data/' + museum +'/botJournaler.txt'  
+    } 
+    
+    else {
         console.log('her')
         fileList.forEach(element => {
             if (element.name === samling){

@@ -266,7 +266,7 @@ function addCollectionsToSelect(orgGroup) {
     collection.add(vennligst)
     collection.value = "vennligst"
     
-
+console.log(orgGroups);
     if (orgGroup) {
         orgGroups.forEach(el => {
             if (el == orgGroup) { 
