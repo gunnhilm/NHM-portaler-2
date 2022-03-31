@@ -28,6 +28,8 @@ function removeResults() {
     try {
         const Table = document.getElementById("journal-result-table");
         Table.innerHTML = "";
+        const hits = document.getElementById("nb-hits");
+        hits.innerHTML = "";
     } catch (error) {
         // do nothing
     }
