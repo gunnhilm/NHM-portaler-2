@@ -6,6 +6,8 @@ const errorMessage = document.getElementById('head-nb-hits')
 const nbHitsElement = document.getElementById('nb-hits') 
 const columnsToShow = 14
 let journalCollection = ''
+
+
 // figures out which museum we are in
 // out: string, abbreviation for museum
 // is called by doSearch() and updateFooter()
@@ -14,6 +16,38 @@ const getCurrentMuseum = () => {
     museum = museum.split('/')
     return museum[2]
 }
+
+// fetches fileList from backend. 
+const getFileList = async () => {
+    return new Promise((resolve,reject) => {
+        const museum = getCurrentMuseum()
+        url_getFileList = urlPath + '/getFileList/?museum=' + museum
+        fetch(url_getFileList).then((response) => {
+            if (!response.ok) {
+                throw 'noe er galt med respons til getFileList fra museum'
+            } else {
+                try {
+                    response.text().then((data) => {
+                        JSONdata = JSON.parse(data)
+                        sessionStorage.setItem('fileList',data)
+                        resolve(true)
+                    })
+                }
+                catch (error) {
+                    console.log(error)
+                    reject(error)
+                }
+            }
+        })
+        
+    })
+}
+
+
+
+
+
+
 
 function addTextInButtons(a) {
     if (a == 'botanikk') {return textItems.botanikk[index]}
@@ -38,8 +72,18 @@ function removeResults() {
 // buttons for the different types of journals
 function makeButtons() {
     const buttonArray = []
-    journalTypes = sessionStorage.getItem('journals').split(',')
-    console.log(journalTypes);
+    // journalTypes = sessionStorage.getItem('journals').split(',')
+    let journalTypes = ''
+    let journalFiles = ''
+    let fileList = sessionStorage.getItem('fileList').split(',')
+    fileList = JSON.parse(fileList)
+    for (let i = 0; i < fileList.length; i++) {
+            if(fileList[i].source === 'journals') {
+            journalTypes = fileList[i].journalGroups;
+            journalFiles = fileList[i].journalFiles
+        }
+        
+    }
     journalTypes.forEach(el => {
         button = document.createElement("button")
         button.innerHTML = addTextInButtons(el)
@@ -50,17 +94,20 @@ function makeButtons() {
     })
     buttonArray.forEach(el => {
         el.addEventListener('click', (e) => {
+            console.log(el.id);
             removeResults()
             buttonArray.forEach(el => {
                 el.className = "white-button"
             })
-            if(el.id === 'paleontologi') {
-                journalCollection = 'palJournaler'
-                el.className = "blue-button" 
-            }
-            if(el.id === 'zoologi') {
-                journalCollection = 'zooJournaler'
-                el.className = "blue-button" 
+            
+ 
+            for (const [key, value] of Object.entries(journalFiles)) {
+               
+                if(el.id === key) {
+                    console.log(`${key}: ${value}`);  
+                    journalCollection = value
+                    el.className = "blue-button" 
+                }
             }
             e.preventDefault()
         })
@@ -227,11 +274,16 @@ const updateFooter = () => {
         })
 }
 
-getJournalGroup()
-makeButtons()
+async function main() {
+    if((sessionStorage.getItem('fileList') === null || sessionStorage.getItem('fileList') === '[]' )) {
+        await getFileList()
+    }
+    getJournalGroup()
+    makeButtons()
 
+}
 
-// updateFooter()
-// doJournalSearch()
+main()
+
 
 

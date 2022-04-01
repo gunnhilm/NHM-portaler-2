@@ -10,7 +10,12 @@
 },
 {
     "source": "journals",
-    "journalGroups": ["Zoology", "Palaeontology"]
+    "journalGroups": ["zoologi", "paleontologi"],
+    "journalFiles":{
+        "zoologi": "zooJournaler",
+        "paleontologi": "palJournaler",
+        "botanikk": "botJournaler"
+    }
 },
 {
     "source": "musit",
