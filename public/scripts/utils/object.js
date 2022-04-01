@@ -143,6 +143,43 @@ async function whichFileAndDb (museum,collection) {
     })
 }
 
+const collectionName = (coll) => {
+    let term
+    console.log(coll,)
+    if (coll == "sopp") {
+        term = textItems.fungiCollection[index]
+        return `<a target="_blank" href= "https://www.nhm.uio.no/forskning/samlinger/mykologi/soppherbariet/">${term}</a>`
+    } else if (coll == "lav") {
+        term = textItems.lichenCollection[index]
+        return `<a target="_blank" href= "https://www.nhm.uio.no/forskning/samlinger/mykologi/lavherbariet/">${term}</a>`
+    } else if (coll == "alger") {
+        term = textItems.algaeCollection[index]
+        return `<a target="_blank" href= "https://www.nhm.uio.no/forskning/samlinger/botanikk/alge/">${term}</a>`
+    } else if (coll == "vascular") {
+        term = textItems.vascularCollection[index]
+        return `<a target="_blank" href= "https://www.nhm.uio.no/forskning/samlinger/botanikk/karplanteherbariet/">${term}</a>`
+    } else if (coll == "moser") {
+        term = textItems.mossCollection[index]
+        return `<a target="_blank" href= "https://www.nhm.uio.no/forskning/samlinger/botanikk/mose/">${term}</a>`
+    } else if (coll == "entomology") {
+        term = textItems.insectCollection[index]
+        return `<a target="_blank" href= "https://www.nhm.uio.no/forskning/samlinger/zoologi/insekt/">${term}</a>`
+    } else if (coll == "fisk") {
+        term = textItems.fishCollection[index]
+        return `<a target="_blank" href= "https://www.nhm.uio.no/forskning/samlinger/zoologi/fisk/">${term}</a>`
+    } else if (coll == "mammals") {
+        term = textItems.mammalCollection[index]
+        return `<a target="_blank" href= "https://www.nhm.uio.no/forskning/samlinger/zoologi/pattedyr/">${term}</a>`
+    } else if (coll == "birds") {
+        term = textItems.birdCollection[index]
+        return `<a target="_blank" href= "https://www.nhm.uio.no/forskning/samlinger/zoologi/fugl/">${term}</a>`
+    } else if (coll == "lav") {
+        term = textItems.lichenCollection[index]
+        return `<a target="_blank" href= "https://www.nhm.uio.no/forskning/samlinger/mykologi/lavherbariet/">${term}</a>`
+    }
+    
+}
+
 
 // functionality to next-object-buttons
 let museumURLPath = ''
@@ -525,8 +562,12 @@ const makeGeoTable = (specimenObject) => {
 // "Second" means trad.coll.object comes from other collection that the one we are in (typically DNA-bank)
 // "second" means we want link to other collection
 async function showObjectData (specimenObject,objectTable,order) {
+    let coll = sessionStorage.getItem('chosenCollection')
+    
     addRow(objectTable)
-    cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.objectHeaderColl[index]}</span>`
+    cell1.innerHTML = '<br>'
+    addRow(objectTable)
+    cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.objectHeaderColl[index]}${collectionName(coll)}</span>`
     // if (sessionStorage.getItem('source') === 'corema') {
     //     cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.assObjHeader[index]}</span>`
     // } else if (sessionStorage.getItem('source') === 'musit') {
@@ -759,9 +800,8 @@ async function showData (specimenObject, orgGroup) {
     let typeStatus = ''
     if (specimenObject.typeStatus) { typeStatus =  `<span>${specimenObject.typeStatus}</span>`}
 
-
+    
     if (sessionStorage.getItem('organismGroup').includes('paleontologi') ) {
-
         document.querySelector("#musit-regno").innerHTML = `<span>PMO ${specimenObject.catalogNumber}</span>`
     } 
     // else if (!sessionStorage.getItem('chosenCollection').includes('dna') & !sessionStorage.getItem('chosenCollection').includes('birds') & !sessionStorage.getItem('chosenCollection').includes('mammals')) {
@@ -881,7 +921,7 @@ function reducePhoto(photo) {
 const showMedia = (specimenObject) => {
     let mediaLink = '' 
     let imageList = []
-    if (specimenObject.associatedMedaa) {
+    if (specimenObject.associatedMedia) {
         mediaLink = specimenObject.associatedMedia
     } else if (specimenObject.identifier) {
         mediaLink = specimenObject.identifier

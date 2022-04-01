@@ -229,8 +229,11 @@ function addSortingText(id, prop, musitData, fromFunction) { // her er musitData
             } else {
                 if (id === 'photoButton' | id === 'coordinateButton') {
                     reverse = !reverse
-                } 
-                musitData.sort(sort_by(prop,reverse, (a) => a.toLowerCase()))
+                    musitData.sort(sort_by(prop,reverse))
+                } else {
+                    musitData.sort(sort_by(prop,reverse, (a) => a.toLowerCase()))
+                }
+                
                 //musitData.sort(sort_by(prop,reverse))
             } 
             
@@ -304,19 +307,8 @@ fillResultHeaders = (org,cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,c
     cell8.innerHTML = `<button id='localityButton' class='sort'>${textItems.headerLocality[index].bold()} ${getArrows('locality')}</button>`
     cell9.innerHTML = `<button id='ecologyButton' class='sort'>${textItems.headerEcology[index].bold()} ${getArrows('habitat')}</button>`
     cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} ${getArrows('preparationType')} </button>` 
-    // if (document.querySelector('#collection-select option:checked').parentElement.label === 'Specimens') {
-    //     cell10.innerHTML = `<button id='coremaNoButton' class='sort'>${textItems.headerCoremaNo[index].bold()} ${getArrows('coremaNo')}</button>`
-    // } else {
-    //     cell10.innerHTML = `<button id='sampleTypeButton' class='sort'>${textItems.headerSampleTypes[index].bold()} ${getArrows('sampleType')}</button>`
-    // }
-    if (document.querySelector('#collection-select  option:checked').label.includes('DNA')) {
-        cell11.innerHTML = `<button id='photoButton' class='sort'><span class="fas fa-camera"></span>${getArrows('identifier')}</button>`    
-    } else {
-        cell11.innerHTML = `<button id='photoButton' class='sort'><span class="fas fa-camera"></span>${getArrows('associatedMedia')}</button>`
-    }
-    
+    cell11.innerHTML = `<button id='photoButton' class='sort'><span class="fas fa-camera"></span>${getArrows('associatedMedia')}</button>`
     cell12.innerHTML = `<button id='coordinateButton' class='sort'><span class="fas fa-compass"></span>${getArrows('decimalLongitude')}</button>`
-    
     cell13.innerHTML = `<select id='checkboxSelect' class='sort'>
         <option value="select" id="select">${textItems.select[index].bold()}</option>
         <option value="all" id="selectAll">${textItems.selectAll[index]}</option>
@@ -339,12 +331,7 @@ fillResultHeaders = (org,cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,c
     } else {
         addSortingText('sampleTypeButton', 'preparationType', musitData, 'resultTable')
     }    
-    if (musitData[0].associatedMedia) {
-        addSortingText('photoButton', 'associatedMedia', musitData, 'resultTable')
-    } else if (musitData[0].identifier) {
-        addSortingText('photoButton', 'identifier', musitData, 'resultTable')
-    }
-    
+    addSortingText('photoButton', 'associatedMedia', musitData, 'resultTable')
     addSortingText('coordinateButton', 'decimalLongitude', musitData, 'resultTable')
 }
 

@@ -80,7 +80,6 @@ const setSubcollections = (museum, orgGroup) => {
 }
 
 const setCollection = (museum, samling) => {
-    console.log(samling + ' fileread 70')
     const fileList = getFileList(museum)
     let musitFile = ''
     const pathToMuseum = './src/data/' + museum + '/'
@@ -99,8 +98,6 @@ const setCollection = (museum, samling) => {
                 musitFile = pathToMuseum + element.name + element.occurrenceFileSuffix
             }
         })
-        console.log(musitFile + ' fileread linje 82')
-    
     }
     return musitFile 
 }
@@ -119,9 +116,7 @@ const whichFileDb = (museum,collection) => {
 
 const search = (museum, samling, searchTerm, linjeNumber = 0, limit = 20, callback) => {
     // velg riktig MUSIT dump fil å lese
-    console.log(samling + ' fileread 89')
     musitFile = setCollection(museum,samling)
-    //console.log(musitFile)
     if (fs.existsSync(musitFile)) {
         // cleaning the searchterm before making the search so that we get a more precise
         // remove whiteSpace
@@ -220,17 +215,12 @@ const advSearch = (museum, samling, searchSpecies, searchCollector, searchDate, 
                 headers = line.split('\t')
             } else {
                 let lineArray = line.split('\t')
-                // console.log(lineArray + 'linje 174')
                 if (lineArray[headers.indexOf(headerTerms[0])].toLowerCase().indexOf(termsArray[0]) !== -1) {
                     // Hvis linja inneholder det først søkeordet, sjekk om det også inneholder de andre
                     for(let i = 1; i < termsArray.length; i++){
                         
                         if (headers.indexOf(headerTerms[i]) != -1) {
                             if (i < (termsArray.length - 1)) {
-                                
-                                // console.log(i + 'og' +headers.indexOf(headerTerms[i]))
-                                // console.log(headerTerms[i])
-                                
                                 if(lineArray[headers.indexOf(headerTerms[i])].toLowerCase().indexOf(termsArray[i]) === -1){
                                 // hvis vi ikke får treff så bryter vi loopen (-1 = fant ikke),
                                     break;

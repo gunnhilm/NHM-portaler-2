@@ -106,6 +106,7 @@ const emptySearch = (comesFrom) => {
     sessionStorage.removeItem('searchLineNumber')
     sessionStorage.removeItem('search-text')
     sessionStorage.removeItem('numberPerPage')
+    sessionStorage.removeItem('chosenCollection')
     sessionStorage.setItem('currentPage',1)
     currentPage = 1
     
