@@ -845,7 +845,6 @@ async function showData (specimenObject, orgGroup) {
         // console.log(sessionStorage.getItem('organismGroup'))
         let table1 = document.getElementById("object-table")
         let table2 = document.getElementById('ass-object-table')
-        
         if (sessionStorage.getItem('file').includes('stitch')) {
             if (sessionStorage.getItem('source') === 'corema') {
                 if (specimenObject.RelCatNo) {
@@ -864,7 +863,9 @@ async function showData (specimenObject, orgGroup) {
                 } else {table2.style.display = 'none'}
             }
             
-        }   
+        } else {
+            table1.style.display = 'none'
+        }
         // align object-table and items-table by making their above divs same height
         let dataTableHeight = document.getElementById('left-table').getBoundingClientRect()
         let mapDivHeight = document.getElementById('map-style').getBoundingClientRect()

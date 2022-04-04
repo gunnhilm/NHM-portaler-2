@@ -153,9 +153,11 @@ document.querySelector('#language').addEventListener('click', () => {
     if (language === "Norwegian") {
         language = "English"
         document.querySelector('#language').innerHTML = "Norwegian website"
+        location.href = location.href.replace("Norwegian","English")
     } else if (language === "English") {
         language = "Norwegian"
         document.querySelector('#language').innerHTML = "English website"
+        location.href = location.href.replace("English","Norwegian")
     }
     renderObjectText(language) // endrer fra renderText
     sessionStorage.setItem('language', language)
