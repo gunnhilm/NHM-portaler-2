@@ -7,6 +7,27 @@ const fileListTmu = require('./fileListTmu')
 const fileListUm = require('./fileListUm')
 const fileListNbh = require('./fileListNbh')
 
+// logging av søkeord 
+// get the Console class
+const { Console } = require("console");
+
+// formate date
+let date_ob = new Date();
+const date = date_ob.getFullYear() + ("0" + (date_ob.getMonth() + 1)).slice(-2)  + ("0" + date_ob.getDate()).slice(-2) + date_ob.getHours() + date_ob.getMinutes() + date_ob.getSeconds()
+
+// make a new logger
+const myLogger = new Console({
+  stdout: fs.createWriteStream("./log/" + date + "_normalStdout.txt"),
+  stderr: fs.createWriteStream("./log/" + date + "_errStdErr.txt"),
+});
+
+function makeHeader () {
+    myLogger.log('Museum\tcollection\tsearchTerm\tdate\ttype of search');
+}
+
+makeHeader()
+
+
 const getFileList = (museum) => {
     let fileList
     if (museum == 'tmu') {
@@ -116,6 +137,9 @@ const whichFileDb = (museum,collection) => {
 
 const search = (museum, samling, searchTerm, linjeNumber = 0, limit = 20, callback) => {
     // velg riktig MUSIT dump fil å lese
+    console.log(samling + ' fileread 89')
+    myLogger.log( museum + '\t' + samling + '\t' + searchTerm + '\t' + date + '\tsimple search');
+   
     musitFile = setCollection(museum,samling)
     if (fs.existsSync(musitFile)) {
         // cleaning the searchterm before making the search so that we get a more precise
@@ -171,13 +195,17 @@ const search = (museum, samling, searchTerm, linjeNumber = 0, limit = 20, callba
         })
        
     } else {
-        throw new Error ('File not found ')
+        myLogger.error('File not found');
+        throw new Error ('File not found ');
+        
     }
 }
 
 // advanced search
 const advSearch = (museum, samling, searchSpecies, searchCollector, searchDate, searchCountry, searchCounty, searchMunicipality, searchLocality, searchCollNo, searchTaxType, linjeNumber = 0, limit = 20, hasPhoto, callback) => {
     // velg riktig MUSIT dump fil å lese
+    let concatSearchterm = searchSpecies + ' ' + searchCollector + ' ' +  searchDate + ' ' +  searchCountry + ' ' +  searchCounty + ' ' +  searchMunicipality + ' ' +  searchLocality + ' ' +  searchCollNo + ' ' +  searchTaxType
+    myLogger.log( museum + '\t' + samling + '\t' + concatSearchterm + '\t' + date + '\tadvsearch');
     musitFile = setCollection(museum,samling)
     if (fs.existsSync(musitFile)) {
         // cleaning the searchterm before making the search so that we get a more precise
@@ -264,6 +292,7 @@ const advSearch = (museum, samling, searchSpecies, searchCollector, searchDate, 
 
 // object list search, seach for object number or several numbers, searchObjects = one or more object numbers without prefixes, comma or space separated
 const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 20, callback) => {
+    myLogger.log( museum + '\t' + samling + '\t' + searchObjects + '\t' + date + '\tnumber search');
     // velg riktig MUSIT dump fil å lese
     console.log(searchObjects)
     musitFile = setCollection(museum,samling)
