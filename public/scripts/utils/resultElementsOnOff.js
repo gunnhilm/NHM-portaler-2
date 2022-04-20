@@ -221,7 +221,7 @@ function addSortingText(id, prop, musitData, fromFunction) { // her er musitData
             document.getElementById("please-wait").style.display = "block"
             let reverse = false
             if (propsSorted.find(x => x.id === prop).sortedOnce) { reverse = true }
-            if (id === 'musitIDButton' && sessionStorage.getItem("collection") != "fossiler" &&  !musitData[0].catalogNumber.includes('/')) { 
+            if (id === 'musitIDButton' && sessionStorage.getItem("chosenCollection") != "fossiler" &&  !musitData[0].catalogNumber.includes('/')) { 
                 musitData.sort(sort_by(prop,reverse, parseInt))
                 
             }  else if (id === 'breddeButton' || id === 'hoydeButton' || id === 'lengdeButton') {

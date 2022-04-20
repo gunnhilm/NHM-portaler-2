@@ -82,6 +82,7 @@ function hide_column(col_no) {
 //	addSortingText(…)
 const resultTable = (subMusitData, musitData) => {    
     try {
+        
         table.innerHTML = ""
         for (let i = -1; i < pageList.length; i++) { // vis en tabell med resultater som er like lang som det vi ba om pageList.length; 
             const row = table.insertRow(-1)
@@ -250,7 +251,9 @@ const resultTable = (subMusitData, musitData) => {
         showResultElements()
         document.getElementById("empty-search-button").style.display = "inline-block"
         numberOfPages = getNumberOfPages(numberPerPage)
-        
+
+        // document.getElementById('musitIDButton').click()
+ 
         if (!searchFailed) {
             try {
                 drawMap(musitData) 

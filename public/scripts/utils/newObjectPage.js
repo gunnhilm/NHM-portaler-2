@@ -107,6 +107,13 @@ async function setItems () {
     sessionStorage.setItem('language', urlParams.get("lang") )
     sessionStorage.setItem('museum', urlParams.get("museum") )
     sessionStorage.setItem('chosenCollection', urlParams.get("samling"))
+    const fileList = JSON.parse(sessionStorage.getItem('fileList'))
+    let associatedCollection
+    fileList.forEach(el => {
+        if (el == sessionStorage.getItem('chosenCollection')) {
+            associatedCollection = el.associatedCollection
+        }
+    })
 }
 
 function testIfNewPage(isNew) {
@@ -145,14 +152,15 @@ const getFileListObjPage = async () => {
 
 
 
+
 // runs in file object.js
 async function newObjectPageMain() {
     if (testIfNewPage(urlParams.get("isNew"))) {
+        await getFileListObjPage()
         await setItems()
         await setOrgGroup()
         await setSpecimenData()
         await whichFileAndDb_two(urlParams.get("museum"),urlParams.get("samling"))
-        await getFileListObjPage()
     }
 }
 

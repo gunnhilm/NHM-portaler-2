@@ -148,34 +148,64 @@ const collectionName = (coll) => {
     console.log(coll,)
     if (coll == "sopp") {
         term = textItems.fungiCollection[index]
-        return `<a target="_blank" href= "https://www.nhm.uio.no/forskning/samlinger/mykologi/soppherbariet/">${term}</a>`
+        let href
+        if (index == 0) {
+            href ="https://www.nhm.uio.no/samlinger/mykologi/sopp/index.html"
+        } else {
+            href = "https://www.nhm.uio.no/english/collections/mycological/fungi/index.html"
+        }
+        return `<a target="_blank" href=${href} >${term}</a>`
     } else if (coll == "lav") {
         term = textItems.lichenCollection[index]
-        return `<a target="_blank" href= "https://www.nhm.uio.no/forskning/samlinger/mykologi/lavherbariet/">${term}</a>`
+        return `<a target="_blank" href= "https://www.nhm.uio.no/samlinger/mykologi/lavherbariet/">${term}</a>`
     } else if (coll == "alger") {
         term = textItems.algaeCollection[index]
-        return `<a target="_blank" href= "https://www.nhm.uio.no/forskning/samlinger/botanikk/alge/">${term}</a>`
+        return `<a target="_blank" href= "https://www.nhm.uio.no/samlinger/botanikk/alge/">${term}</a>`
     } else if (coll == "vascular") {
         term = textItems.vascularCollection[index]
-        return `<a target="_blank" href= "https://www.nhm.uio.no/forskning/samlinger/botanikk/karplanteherbariet/">${term}</a>`
+        return `<a target="_blank" href= "https://www.nhm.uio.no/samlinger/botanikk/karplanteherbariet/">${term}</a>`
     } else if (coll == "moser") {
         term = textItems.mossCollection[index]
-        return `<a target="_blank" href= "https://www.nhm.uio.no/forskning/samlinger/botanikk/mose/">${term}</a>`
+        return `<a target="_blank" href= "https://www.nhm.uio.no/samlinger/botanikk/mose/">${term}</a>`
     } else if (coll == "entomology") {
         term = textItems.insectCollection[index]
-        return `<a target="_blank" href= "https://www.nhm.uio.no/forskning/samlinger/zoologi/insekt/">${term}</a>`
+        let href
+        if (index == 0) {
+            href ="https://www.nhm.uio.no/samlinger/zoologi/insekt/"
+        } else {
+            href = "https://www.nhm.uio.no/english/collections/zoological/insect/index.html"
+        }
+        return `<a target="_blank" href= ${href}>${term}</a>`
     } else if (coll == "fisk") {
         term = textItems.fishCollection[index]
-        return `<a target="_blank" href= "https://www.nhm.uio.no/forskning/samlinger/zoologi/fisk/">${term}</a>`
+        return `<a target="_blank" href= "https://www.nhm.uio.no/samlinger/zoologi/fisk/">${term}</a>`
     } else if (coll == "mammals") {
         term = textItems.mammalCollection[index]
-        return `<a target="_blank" href= "https://www.nhm.uio.no/forskning/samlinger/zoologi/pattedyr/">${term}</a>`
+        let href
+        if (index == 0) {
+            href ="https://www.nhm.uio.no/samlinger/zoologi/pattedyr/"
+        } else {
+            href = "https://www.nhm.uio.no/english/collections/zoological/mammal/index.html"
+        }
+        return `<a target="_blank" href= ${href}>${term}</a>`
     } else if (coll == "birds") {
         term = textItems.birdCollection[index]
-        return `<a target="_blank" href= "https://www.nhm.uio.no/forskning/samlinger/zoologi/fugl/">${term}</a>`
-    } else if (coll == "lav") {
-        term = textItems.lichenCollection[index]
-        return `<a target="_blank" href= "https://www.nhm.uio.no/forskning/samlinger/mykologi/lavherbariet/">${term}</a>`
+        let href
+        if (index == 0) {
+            href ="https://www.nhm.uio.no/samlinger/zoologi/fugl/"
+        } else {
+            href = "https://www.nhm.uio.no/english/collections/zoological/bird/index.html"
+        }
+        return `<a target="_blank" href= ${href}>${term}</a>`
+    } else if (coll == "DNA") {
+        term = textItems.DNAcollection[index]
+        let href
+        if (index == 0) {
+            href ="https://www.nhm.uio.no/samlinger/dna-bank/index.html"
+        } else {
+            href = "https://www.nhm.uio.no/english/collections/dna-bank/index.html"
+        }
+        return `<a target="_blank" href= ${href}>${term}</a>`
     }
     
 }
@@ -658,7 +688,7 @@ async function showItemData (specimenObject,objectTable,order) {
     cell1.id = 'itemsHeader'
     console.log(sessionStorage.getItem('source'))
     console.log(index)
-    cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.itemsHeader[index]}</span>`
+    cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.itemsHeader[index]}${collectionName("DNA")}</span>`
     addRow(objectTable)
     cell1.innerHTML = '<br>'
     // loop over array
@@ -847,12 +877,17 @@ async function showData (specimenObject, orgGroup) {
         let table2 = document.getElementById('ass-object-table')
         if (sessionStorage.getItem('file').includes('stitch')) {
             if (sessionStorage.getItem('source') === 'corema') {
-                if (specimenObject.RelCatNo) {
+                if (specimenObject.RelCatNo) { // associated collection exist in musit
                     await showObjectData(specimenObject,table1,"second")    
                     await showItemData(specimenObject,table2,"first")
                     table2.style.border = 'solid'
-                } else {
-                    await showItemData(specimenObject,table1,"first")
+                } else { // both preserved specimen and samples are in corema
+                    if (specimenObject.coremaPreservedSpecimen == "Preserved specimen") {
+                        await showObjectData(specimenObject,table1,"first")
+                    } else {
+                        await showItemData(specimenObject,table1,"first")
+                    }
+                    
                     table2.style.display = 'none'
                 }
             } else if (sessionStorage.getItem('source') === 'musit') {
@@ -973,7 +1008,8 @@ if (sessionStorage.getItem('chosenCollection') === 'utad') {
 
 
 
-// large map 
+// large map
+const id = urlParams.get('id')
 document.getElementById('large-map-object-button').onclick = () => {
     window.open(href=`${urlPath}/${getCurrentMuseum()}/mapObject/?id=${id}`)
 }
