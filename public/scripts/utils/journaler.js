@@ -275,6 +275,7 @@ const updateFooter = () => {
 }
 
 async function main() {
+    errorMessage.innerText=''
     if((sessionStorage.getItem('fileList') === null || sessionStorage.getItem('fileList') === '[]' )) {
         await getFileList()
     }

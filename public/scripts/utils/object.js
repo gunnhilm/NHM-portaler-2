@@ -145,7 +145,6 @@ async function whichFileAndDb (museum,collection) {
 
 const collectionName = (coll) => {
     let term
-    console.log(coll,)
     if (coll == "sopp") {
         term = textItems.fungiCollection[index]
         let href
@@ -154,19 +153,19 @@ const collectionName = (coll) => {
         } else {
             href = "https://www.nhm.uio.no/english/collections/mycological/fungi/index.html"
         }
-        return `<a target="_blank" href=${href} >${term}</a>`
+        return `<a target="_blank" class="head-collection" href=${href} >${term}:</a>`
     } else if (coll == "lav") {
         term = textItems.lichenCollection[index]
-        return `<a target="_blank" href= "https://www.nhm.uio.no/samlinger/mykologi/lavherbariet/">${term}</a>`
+        return `<a target="_blank" class="head-collection" href= "https://www.nhm.uio.no/samlinger/mykologi/lavherbariet/">${term}:</a>`
     } else if (coll == "alger") {
         term = textItems.algaeCollection[index]
-        return `<a target="_blank" href= "https://www.nhm.uio.no/samlinger/botanikk/alge/">${term}</a>`
+        return `<a target="_blank" class="head-collection" href= "https://www.nhm.uio.no/samlinger/botanikk/alge/">${term}:</a>`
     } else if (coll == "vascular") {
         term = textItems.vascularCollection[index]
-        return `<a target="_blank" href= "https://www.nhm.uio.no/samlinger/botanikk/karplanteherbariet/">${term}</a>`
+        return `<a target="_blank" class="head-collection" href= "https://www.nhm.uio.no/samlinger/botanikk/karplanteherbariet/">${term}:</a>`
     } else if (coll == "moser") {
         term = textItems.mossCollection[index]
-        return `<a target="_blank" href= "https://www.nhm.uio.no/samlinger/botanikk/mose/">${term}</a>`
+        return `<a target="_blank" class="head-collection" href= "https://www.nhm.uio.no/samlinger/botanikk/mose/">${term}:</a>`
     } else if (coll == "entomology") {
         term = textItems.insectCollection[index]
         let href
@@ -175,10 +174,10 @@ const collectionName = (coll) => {
         } else {
             href = "https://www.nhm.uio.no/english/collections/zoological/insect/index.html"
         }
-        return `<a target="_blank" href= ${href}>${term}</a>`
+        return `<a target="_blank" class="head-collection" href= ${href}>${term}:</a>`
     } else if (coll == "fisk") {
         term = textItems.fishCollection[index]
-        return `<a target="_blank" href= "https://www.nhm.uio.no/samlinger/zoologi/fisk/">${term}</a>`
+        return `<a target="_blank" class="head-collection" href= "https://www.nhm.uio.no/samlinger/zoologi/fisk/">${term}:</a>`
     } else if (coll == "mammals") {
         term = textItems.mammalCollection[index]
         let href
@@ -187,7 +186,7 @@ const collectionName = (coll) => {
         } else {
             href = "https://www.nhm.uio.no/english/collections/zoological/mammal/index.html"
         }
-        return `<a target="_blank" href= ${href}>${term}</a>`
+        return `<a target="_blank" class="head-collection" href= ${href}>${term}:</a>`
     } else if (coll == "birds") {
         term = textItems.birdCollection[index]
         let href
@@ -196,8 +195,8 @@ const collectionName = (coll) => {
         } else {
             href = "https://www.nhm.uio.no/english/collections/zoological/bird/index.html"
         }
-        return `<a target="_blank" href= ${href}>${term}</a>`
-    } else if (coll == "DNA") {
+        return `<a target="_blank" class="head-collection" href= ${href}>${term}:</a>`
+    } else if (coll == "DNA" || coll.includes("dna")) {
         term = textItems.DNAcollection[index]
         let href
         if (index == 0) {
@@ -205,7 +204,49 @@ const collectionName = (coll) => {
         } else {
             href = "https://www.nhm.uio.no/english/collections/dna-bank/index.html"
         }
-        return `<a target="_blank" href= ${href}>${term}</a>`
+        return `<a target="_blank" class="head-collection" href= ${href}>${term}:</a>`
+    } else if (coll === "sperm") {
+        term = textItems.spermCollection[index]
+        let href
+        if (index == 0) {
+            href ="https://www.nhm.uio.no/samlinger/zoologi/fugl/"
+        } else {
+            href = "https://www.nhm.uio.no/english/collections/zoological/bird/index.html"
+        }
+        return `<a target="_blank" class="head-collection" href= ${href}>${term}:</a>`
+    } else if (coll === "malmer") {
+        term = textItems.malmer[index]
+        let href
+        if (index == 0) { href = "https://www.nhm.uio.no/samlinger/geologi/index.html"}
+        else {href = "https://www-int.nhm.uio.no/english/collections/geological/index.html"}
+        return `<a target="_blank" class="head-collection" href= ${href}>${term}:</a>`
+    } else if (coll === "utenlandskeBergarter") {
+        term = textItems.utenlandskeBA[index]
+        let href
+        if (index == 0) { href = "https://www.nhm.uio.no/samlinger/geologi/index.html"}
+        else {href = "https://www-int.nhm.uio.no/english/collections/geological/index.html"}
+        return `<a target="_blank" class="head-collection" href= ${href}>${term}:</a>`
+    } else if (coll === "oslofeltet") {
+        term = textItems.oslofeltet[index]
+        let href
+        if (index == 0) { href = "https://www.nhm.uio.no/samlinger/geologi/index.html"}
+        else {href = "https://www-int.nhm.uio.no/english/collections/geological/index.html"}
+        return `<a target="_blank" class="head-collection" href= ${href}>${term}:</a>`
+    } else if (coll === "palTyper") {
+        term = textItems.palTyper[index]
+        let href
+        if (index == 0) { href = "https://www.nhm.uio.no/samlinger/paleontologi/index.html"}
+        else {href = "https://www-int.nhm.uio.no/english/collections/paleontological/"}
+        return `<a target="_blank" class="head-collection" href= ${href}>${term}:</a>`
+    } else if (coll === "fossiler") {
+        term = textItems.fossiler[index]
+        let href
+        if (index == 0) { href = "https://www.nhm.uio.no/samlinger/paleontologi/index.html"}
+        else {href = "https://www-int.nhm.uio.no/english/collections/paleontological/"}
+        return `<a target="_blank" class="head-collection" href= ${href}>${term}:</a>`
+    } else if (coll === "utad") {
+        term = textItems.utad[index]
+        return term
     }
     
 }
@@ -223,15 +264,18 @@ if (window.location.href.includes('/um')) {
     museumURLPath = urlPath + "/nhm"
 }
 
+const makeBackButton = () => {
+    // back-to-result-button
+    document.getElementById("back-to-result").onclick = () => {
+        window.location.href=`${museumURLPath}`
+    }
+}
 // functionality regarding navigation-buttons (next object, previous object, back-to-searc-result)
 // in: allObject; searchResult (from session Storage?)
 // in: specimenObject: present object
 // is called in main()
 const makeNavButtons  = (allObject, specimenObject) => {
-    // back-to-result-button
-    document.getElementById("back-to-result").onclick = () => {
-        window.location.href=`${museumURLPath}`
-    }
+    
     const nextObject = allObject[allObject.indexOf(specimenObject)+1]
     const previousObject = allObject[allObject.indexOf(specimenObject)-1]
 
@@ -261,7 +305,7 @@ const makeNavButtons  = (allObject, specimenObject) => {
 const hideNavButtons = () => {
     document.getElementById("next-object").style.display = 'none'
     document.getElementById("previous-object").style.display = 'none'
-    document.getElementById("back-to-result").style.display = 'none'
+    // document.getElementById("back-to-result").style.display = 'none'
 
 }
 
@@ -490,7 +534,6 @@ const makeUTADTable = (specimenObject) => {
     // construct table
     // "The Object.entries() method returns an array of a given object's own enumerable string-keyed property [key, value] pairs.
     for (const [key, value] of Object.entries(specimenObject)) {
-        //console.log(key)
         // The hasOwnProperty() method returns a boolean indicating whether the object has the specified property as its own property (as opposed to inheriting it).
         if (Object.hasOwnProperty.call(specimenObject, key) && fieldsToShow.includes(key)) {
 
@@ -498,7 +541,6 @@ const makeUTADTable = (specimenObject) => {
             const headKey = row.insertCell(0); headKey.id =  `head-${key}` ; headKey.class = 'bold';
             const Content =   row.insertCell(1); Content.id = key; Content.style = 'border-spacing: 10px 0';
             keyObj[key] = value
-            //console.log(headKey)
         }
         
     }
@@ -518,8 +560,6 @@ const makeUTADTable = (specimenObject) => {
 
 const makePalTable = (specimenObject) => {
     // add special fields to specimenobject
-    console.log(specimenObject)
-    // legg til formaterte koordinater og lokalitet som .. på objektet
     specimenObject.coordinates = coordinates(specimenObject)
     const concatLocality = country(specimenObject) + stateProvince(specimenObject) + county(specimenObject) + locality(specimenObject)
     specimenObject.concatLocality = concatLocality
@@ -558,7 +598,6 @@ const makeGeoTable = (specimenObject) => {
     const fieldsToShow = ['scientificName', 'higherClassification', 'Dimensjon', 'mass', 'geologicalContext', 'coordinates', 'concatLocality', 'coordinates', 'recordedBy', 'eventDate', 'remarks']
     specimenObject.coordinates = coordinates(specimenObject)
     const concatLocality = country(specimenObject) + stateProvince(specimenObject) + county(specimenObject) + locality(specimenObject)
-    console.log(concatLocality)
     
     specimenObject.concatLocality = concatLocality
     // makeTableHeader(table)
@@ -592,12 +631,24 @@ const makeGeoTable = (specimenObject) => {
 // "Second" means trad.coll.object comes from other collection that the one we are in (typically DNA-bank)
 // "second" means we want link to other collection
 async function showObjectData (specimenObject,objectTable,order) {
+    objectTable.style.display='block'
     let coll = sessionStorage.getItem('chosenCollection')
+    console.log(specimenObject)
     
     addRow(objectTable)
     cell1.innerHTML = '<br>'
     addRow(objectTable)
-    cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.objectHeaderColl[index]}${collectionName(coll)}</span>`
+    if (specimenObject.preparationType.includes("Sperm") || specimenObject.preparationType.includes("sperm")) {
+        objectTable.style.display='block'
+        if (objectTable.rows.length < 3) { // no sperm item added yet
+            cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.itemsHeader[index]}${collectionName("sperm")}</span>`
+        }
+        
+    } else if (objectTable.rows.length < 3) { // no item added yet
+        cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.objectHeaderColl[index]}${collectionName(coll)}</span>`
+    }
+    
+    cell1.colSpan = '2'
     // if (sessionStorage.getItem('source') === 'corema') {
     //     cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.assObjHeader[index]}</span>`
     // } else if (sessionStorage.getItem('source') === 'musit') {
@@ -609,30 +660,41 @@ async function showObjectData (specimenObject,objectTable,order) {
     let prefix
     if (specimenObject.relatedResourceID) {
         prefix = specimenObject.relatedResourceID.substring(12,specimenObject.relatedResourceID.indexOf(':',14)).replace('\:','-')
-        } else {
-            prefix = specimenObject.institutionCode + '-' + specimenObject.collectionCode
-        }
+    } else if (specimenObject.institutionCode) {
+        prefix = specimenObject.institutionCode + '-' + specimenObject.collectionCode
+    }  // if mammal- or bird-preserved specimen: no prefix
+
     if (order === 'first') {
         //cell1.innerHTML = `<a id="object-link" href="${museumURLPath}/object/?id=${specimenObject.catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=nhm&lang=${sessionStorage.getItem('language')}"> ${prefix}-${specimenObject.catalogNumber} </a>`
-        cell1.innerHTML = prefix + '-' + specimenObject.catalogNumber
+        if (prefix) {
+            cell1.innerHTML = prefix + '-' + specimenObject.catalogNumber
+        } else { // mammal- or bird-preserved specimen
+            cell1.innerHTML = specimenObject.itemNumber
+        }
     } else { // object is from assosicated collection, and should have link
         const fileList = JSON.parse(sessionStorage.getItem('fileList'))
         let fileListPost = fileList.find(el => el.name === sessionStorage.getItem('chosenCollection'))
         let associatedCollection = fileListPost.associatedCollection
-        console.log(associatedCollection)
         if (Array.isArray(associatedCollection)) {
             if (specimenObject.musitCollectionCode === 'F') {associatedCollection = "sopp"} else {associatedCollection = "lav"}
         }
         cell1.innerHTML = `<a id="object-link" target="_blank" href="${museumURLPath}/object/?id=${specimenObject.RelCatNo}&samling=${associatedCollection}&museum=nhm&lang=${sessionStorage.getItem('language')}&isNew=yes"> ${prefix}-${specimenObject.RelCatNo} </a>`
     }
- 
     cell1.style.textDecoration  = 'underline'
     cell1.style.fontWeight = 'normal'
     cell1.style.fontSize = '18px'
     addRow(objectTable)
     cell1.innerHTML = textItems.itemType[index]
     if (order === 'first') {
-        cell2.innerHTML = specimenObject.basisOfRecord
+        if (prefix) {  cell2.innerHTML = specimenObject.basisOfRecord } 
+        else { 
+            cell2.innerHTML = specimenObject.preparationType 
+            addRow(objectTable)
+            cell1.innerHTML = textItems.preservation[index]
+            cell2.innerHTML = specimenObject.preservation
+            addRow(objectTable)
+            cell1.innerHTML = '<br>'
+        }
     } else {
         cell2.innerHTML = specimenObject.musitBasisOfRecord        
     }
@@ -645,6 +707,7 @@ async function showObjectData (specimenObject,objectTable,order) {
 // "Second" means trad.coll.object comes from other collection that the one we are in (typically DNA-bank)
 
 async function showItemData (specimenObject,objectTable,order) {
+    objectTable.style.display='block'
 // put corema-items in itemArray as objects
     tempItemArray = []
     
@@ -680,99 +743,102 @@ async function showItemData (specimenObject,objectTable,order) {
         itemArray[i].preservation = preservationArray[i]
         itemArray[i].preparationType = preparationTypeArray[i]
     }
-    console.log(itemArray)
     // add row in table with heading for items or preserved specimen
     addRow(objectTable)
     cell1.innerHTML = '<br>'
     addRow(objectTable)
     cell1.id = 'itemsHeader'
-    console.log(sessionStorage.getItem('source'))
-    console.log(index)
     cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.itemsHeader[index]}${collectionName("DNA")}</span>`
     addRow(objectTable)
     cell1.innerHTML = '<br>'
     // loop over array
     itemArray.forEach( item => {
-        // console.log(item)
-        //row1 catno
-        addRow(objectTable)
-        if (order === 'first') {
-            if (sessionStorage.getItem('source') === 'musit') {
-                cell1.innerHTML = specimenObject.institutionCode + '-' + specimenObject.collectionCode + '-' + specimenObject.catalogNumber
-            } else {
-                cell1.innerHTML = item.itemNumber
-            }
-        } else if (order === 'second') { // object is from assosicated collection, and should have link
-            const fileList = JSON.parse(sessionStorage.getItem('fileList'))
-            let fileListPost = fileList.find(el => el.name === sessionStorage.getItem('chosenCollection'))
-            let associatedCollection = fileListPost.associatedCollection
-            console.log(associatedCollection)
-            if (sessionStorage.getItem('source') === 'musit') {
-                cell1.innerHTML = `<a id="object-link" target="_blank" href="${museumURLPath}/object/?id=${specimenObject.RelCleanCatNo}&samling=${associatedCollection}&museum=nhm&lang=${sessionStorage.getItem('language')}&isNew=yes"> ${item.itemNumber} </a>`
-            } else {
-                //cell1.innerHTML = specimenObject.institutionCode + '-' + specimenObject.collectionCode + '-' + specimenObject.catalogNumber
-                cell1.innerHTML = `<a id="object-link" href="${museumURLPath}/object/?id=${specimenObject.RelCatNo}&samling=${associatedCollection}&museum=nhm&lang=${sessionStorage.getItem('language')}"> ${specimenObject.institutionCode}-${specimenObject.collectionCode}-${specimenObject.catalogNumber} </a>`
-            }
-        }
-        cell1.style.textDecoration  = 'underline'
-        cell1.style.fontWeight = 'normal'
-        cell1.style.fontSize = '18px'
-        //row2 item type
-        addRow(objectTable)
-        cell1.innerHTML = textItems.itemType[index]
-        cell2.innerHTML = item.itemType
-        //row3 extraction date
-        addRow(objectTable)
-        cell1.innerHTML = textItems.subTypeHeader[index]
-        cell2.innerHTML = item.preparationType
-        addRow(objectTable)
-        
-        if (item.itemType.includes("DNA")) {  // tidligere versjon: "gDNA" - fra preparationType
-            cell1.innerHTML = textItems.extractionDate[index]
-        // } else if (item.itemType === 'Voucher') { // change
-        //     cell1.innerHTML = ''
+        if (item.itemType === "Specimen") { 
+            showObjectData(item, document.getElementById("object-table"), "first")
+        } else if (item.preparationType.includes("Sperm") || item.preparationType.includes("sperm")) {
+            showObjectData(item, document.getElementById('sperm-table'), "first")
         } else {
-            cell1.innerHTML = textItems.samplingDate[index]
+            //row1 catno
+            addRow(objectTable)
+            if (order === 'first') {
+                if (sessionStorage.getItem('source') === 'musit') {
+                    cell1.innerHTML = specimenObject.institutionCode + '-' + specimenObject.collectionCode + '-' + specimenObject.catalogNumber
+                } else {
+                    cell1.innerHTML = item.itemNumber
+                }
+            } else if (order === 'second') { // object is from assosicated collection, and should have link
+                const fileList = JSON.parse(sessionStorage.getItem('fileList'))
+                console.log(sessionStorage.getItem('chosenCollection'))
+                let fileListPost = fileList.find(el => el.name === sessionStorage.getItem('chosenCollection'))
+                let associatedCollection = fileListPost.associatedCollection
+                if (sessionStorage.getItem('source') === 'musit') {
+                    cell1.innerHTML = `<a id="object-link" target="_blank" href="${museumURLPath}/object/?id=${specimenObject.RelCleanCatNo}&samling=${associatedCollection}&museum=nhm&lang=${sessionStorage.getItem('language')}&isNew=yes"> ${item.itemNumber} </a>`
+                } else {
+                    //cell1.innerHTML = specimenObject.institutionCode + '-' + specimenObject.collectionCode + '-' + specimenObject.catalogNumber
+                    cell1.innerHTML = `<a id="object-link" href="${museumURLPath}/object/?id=${specimenObject.RelCatNo}&samling=${associatedCollection}&museum=nhm&lang=${sessionStorage.getItem('language')}"> ${specimenObject.institutionCode}-${specimenObject.collectionCode}-${specimenObject.catalogNumber} </a>`
+                }
+            }
+            cell1.style.textDecoration  = 'underline'
+            cell1.style.fontWeight = 'normal'
+            cell1.style.fontSize = '18px'
+            //row2 item type
+            addRow(objectTable)
+            cell1.innerHTML = textItems.itemType[index]
+            cell2.innerHTML = item.itemType.replace(/"/g, '')
+            //row3 extraction date
+            addRow(objectTable)
+            cell1.innerHTML = textItems.subTypeHeader[index]
+            cell2.innerHTML = item.preparationType.replace(/"/g, '')
+            addRow(objectTable)
+            
+            if (item.itemType.includes("DNA")) {  // tidligere versjon: "gDNA" - fra preparationType
+                cell1.innerHTML = textItems.extractionDate[index]
+            // } else if (item.itemType === 'Voucher') { // change
+            //     cell1.innerHTML = ''
+            } else {
+                cell1.innerHTML = textItems.samplingDate[index]
+            }
+            if (!item.date || item.date == '"') {cell2.innerHTML = ''} else {cell2.innerHTML = item.date.replace(/"/g, '')}
+            addRow(objectTable)
+            cell1.innerHTML = textItems.preservation[index]
+            // if (item.itemType === 'Voucher') { // change
+            //     cell2.innerHTML = specimenObject.itemType
+            // } else {
+            if (!item.preservation || item.preservation == '"') {cell2.innerHTML = ''} else {cell2.innerHTML = item.preservation.replace(/"/g, '')}
+            if (item.itemType.includes("DNA")) { // tidligere versjon: "gDNA" - fra preparationType
+                addRow(objectTable)
+                cell1.innerHTML = textItems.method[index]
+                if (!item.method || item.method == '"') {cell2.innerHTML = ''} else {cell2.innerHTML = item.method.replace(/"/g, '')}
+                addRow(objectTable)
+                cell1.innerHTML = textItems.preparedBy[index]
+                if (!item.preparedBy || item.preparedBy == '"') {cell2.innerHTML = ''} else {cell2.innerHTML = item.preparedBy.replace(/"/g, '')}
+                addRow(objectTable)
+                cell1.innerHTML = textItems.concentration[index]
+                if (!item.DNAConc || item.DNAConc == '"') {cell2.innerHTML = ''} else {cell2.innerHTML = item.DNAConc.replace(/"/g, '') + ' ' + item.DNAConcUnit.replace(/"/g, '')}
+                addRow(objectTable)    
+                cell1.innerHTML = 'BOLD ProcessID:'
+                if (!item.processID || item.processID == '"') {cell2.innerHTML = ''}
+                else {
+                    const url = `http://www.boldsystems.org/index.php/Public_RecordView?processid=${item.processID}`
+                    cell2.innerHTML = `<a href="${url}" target="_blank">${item.processID}</a>`
+                } 
+                addRow(objectTable)
+                cell1.innerHTML = 'Genbank Acc.No:'
+                if (!item.genAccNo || item.genAccNo == '"') {cell2.innerHTML = ''} else {cell2.innerHTML = item.genAccNo.replace(/"/g, '')}
+            }
+            addRow(objectTable)
+            cell1.innerHTML = '<br>'
         }
-        if (!item.date || item.date == '"') {cell2.innerHTML = ''} else {cell2.innerHTML = item.date}
-        addRow(objectTable)
-        cell1.innerHTML = textItems.preservation[index]
-        // if (item.itemType === 'Voucher') { // change
-        //     cell2.innerHTML = specimenObject.itemType
-        // } else {
-        if (!item.preservation || item.preservation == '"') {cell2.innerHTML = ''} else {cell2.innerHTML = item.preservation.replace(/"/g, '')}
-        if (item.itemType.includes("DNA")) { // tidligere versjon: "gDNA" - fra preparationType
-            addRow(objectTable)
-            cell1.innerHTML = textItems.method[index]
-            if (!item.method || item.method == '"') {cell2.innerHTML = ''} else {cell2.innerHTML = item.method.replace(/"/g, '')}
-            addRow(objectTable)
-            cell1.innerHTML = textItems.preparedBy[index]
-            if (!item.preparedBy || item.preparedBy == '"') {cell2.innerHTML = ''} else {cell2.innerHTML = item.preparedBy.replace(/"/g, '')}
-            addRow(objectTable)
-            cell1.innerHTML = textItems.concentration[index]
-            if (!item.DNAConc || item.DNAConc == '"') {cell2.innerHTML = ''} else {cell2.innerHTML = item.DNAConc.replace(/"/g, '') + ' ' + item.DNAConcUnit.replace(/"/g, '')}
-            addRow(objectTable)    
-            cell1.innerHTML = 'BOLD ProcessID:'
-            if (!item.processID || item.processID == '"') {cell2.innerHTML = ''}
-            else {
-                const url = `http://www.boldsystems.org/index.php/Public_RecordView?processid=${item.processID}`
-                cell2.innerHTML = `<a href="${url}" target="_blank">${item.processID}</a>`
-            } 
-            addRow(objectTable)
-            cell1.innerHTML = 'Genbank Acc.No:'
-            if (!item.genAccNo || item.genAccNo == '"') {cell2.innerHTML = ''} else {cell2.innerHTML = item.genAccNo.replace(/"/g, '')}
-        }
-        addRow(objectTable)
-        cell1.innerHTML = '<br>'
+        
     })
     
 }
+
 // calls function that build table and fill headers,
 // and fills data in table for zoology and botany and mycology
 // calls makeUTADTable(obj) or makeGeoTable(obj) or makePalTable(obj) or makeBioTable(obj)
 // is called below
 async function showData (specimenObject, orgGroup) {
-    
     console.log(specimenObject)
     if (orgGroup === 'other') {
         makeUTADTable(specimenObject)
@@ -802,14 +868,12 @@ async function showData (specimenObject, orgGroup) {
     // data only displayed if existing
     let collNo = ''
     if( specimenObject.recordNumber ) {
-        console.log('har collno')
         collNo = `<span>${specimenObject.recordNumber}</span>`
     } 
 
     let headArtsobs = ''
     let artsobsID = ''
     if( specimenObject.ArtObsID ) {
-        console.log('har artsobsno')
         artsobsID = `<span>${specimenObject.ArtObsID}</span>`
     } 
 
@@ -869,26 +933,38 @@ async function showData (specimenObject, orgGroup) {
     }
 
     if(!window.location.href.includes('tmu') && !window.location.href.includes('/um') && !window.location.href.includes('/nbh')) {
-    ////// change to check file, if stitched. fix async stuff first
-        // console.log(sessionStorage.getItem('file'))
-        // console.log(sessionStorage.getItem('source'))
-        // console.log(sessionStorage.getItem('organismGroup'))
+    
         let table1 = document.getElementById("object-table")
         let table2 = document.getElementById('ass-object-table')
+        let table3 = document.getElementById('sperm-table')
+        // if (sessionStorage.getItem('chosenCollection') === "mammals") {
+            
+        // }
+        // else 
         if (sessionStorage.getItem('file').includes('stitch')) {
             if (sessionStorage.getItem('source') === 'corema') {
                 if (specimenObject.RelCatNo) { // associated collection exist in musit
                     await showObjectData(specimenObject,table1,"second")    
                     await showItemData(specimenObject,table2,"first")
+                    table3.style.display = 'none'
                     table2.style.border = 'solid'
-                } else { // both preserved specimen and samples are in corema
-                    if (specimenObject.coremaPreservedSpecimen == "Preserved specimen") {
-                        await showObjectData(specimenObject,table1,"first")
+                } else { // both preserved specimen (if exists) and samples are in corema
+                    if (specimenObject.materialSampleType.includes("Specimen")) { // preserved specimen exists
+                        // change this: make coremaBasisOfRecord an array
+                        if (specimenObject.materialSampleType === "Specimen") { // only (one) preserved specimen exist
+                            table2.style.display = 'none'
+                            table3.style.display = 'none'
+                        }
+                        await showItemData(specimenObject,table2,"first")
+                        table2.style.border = 'solid'
+                        // }
+                        
                     } else {
                         await showItemData(specimenObject,table1,"first")
+                        table2.style.display = 'none'
                     }
                     
-                    table2.style.display = 'none'
+                    
                 }
             } else if (sessionStorage.getItem('source') === 'musit') {
                 await showObjectData(specimenObject,table1,"first")
@@ -896,6 +972,7 @@ async function showData (specimenObject, orgGroup) {
                     await showItemData(specimenObject,table2,"second")
                     table2.style.border = 'solid'
                 } else {table2.style.display = 'none'}
+                table3.style.display = 'none'
             }
             
         } else {
@@ -905,14 +982,8 @@ async function showData (specimenObject, orgGroup) {
         let dataTableHeight = document.getElementById('left-table').getBoundingClientRect()
         let mapDivHeight = document.getElementById('map-style').getBoundingClientRect()
         
-        // console.log(dataTableHeight.height)
-        // console.log(mapDivHeight.height)
         let divHeight
         if (dataTableHeight.height > mapDivHeight.height) {divHeight = dataTableHeight.height} else {divHeight = mapDivHeight.height}
-        // console.log(divHeight)
-        // document.getElementById('left-table').style.height = divHeight + 'px'
-        // document.getElementById('map-style').style.height = divHeight + 'px'
-        //console.log(document.getElementById('left-table').offsetHeight)
     }
 }
 
@@ -1014,17 +1085,6 @@ document.getElementById('large-map-object-button').onclick = () => {
     window.open(href=`${urlPath}/${getCurrentMuseum()}/mapObject/?id=${id}`)
 }
 
-
-// document.getElementById('nextObject').onclick = () => {
-//     console.log('neste objekt')
-// }   
-// console.log(allObject)
-// const objIndex = allObject.findIndex(el =>  el.catalogNumber = id)
-// console.log(objIndex)
-// const nextObjCatNumber = allObject[objIndex + 1].catalogNumber
-// console.log(nextObjCatNumber)
-// document.getElementById('nextObjectCell').innerHTML = `<a id="next-object-link" href="${urlPath}/object/?id=${nextObjCatNumber}">Neste objekt ${nextObjCatNumber} </a>`
-
 // put content in html-boxes
 async function renderItems () {
     try {
@@ -1047,9 +1107,15 @@ function makeTable(specimenObject){
 
 
 async function main () {
+    // add isNew to url if opened in new tab
+    if (!sessionStorage.getItem('chosenCollection')) {
+        console.log(window.location.href)
+        location.replace(`${window.location.href}&isNew=yes`)
+    }
    // from file newObjectPage.js
    await newObjectPageMain()
    const urlParams = new URLSearchParams(window.location.search)
+   console.log(urlParams)
    await whichFileAndDb(urlParams.get("museum"),urlParams.get("samling")) 
    if (language === "Norwegian") {
         document.querySelector('#language').innerHTML = "English website"
@@ -1071,9 +1137,12 @@ async function main () {
    //makeTable(specimenObject)
     console.log(urlParams.get("isNew"))
    if(Array.isArray(allObject) && (allObject.length > 2) && urlParams.get("isNew") != "yes") {
-       makeNavButtons(allObject, specimenObject)
+    makeNavButtons(allObject, specimenObject)
+    makeBackButton()
    } else {
        hideNavButtons()
+       if (urlParams.get("isNew") == "yes") { document.getElementById("back-to-result").style.display = 'none' }
+       
    }
    //renderObjectText(language)
    await showData(specimenObject, orgGroup)

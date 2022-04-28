@@ -1,19 +1,19 @@
 header {
-    background-color: #57AD3E;
+    /* background-color: #57AD3E; */
+    background-color: #ADB797
     
 }
 #logo {
-    height: 30px;
-    padding: 15px;
+    height: 50px;
 }
 
 /* footer.hbs */
 footer {
-    background-color: #57AD3E;
+    background-color: #ADB797;
 } 
 
 #language {
-    background-color: #57AD3E;
+    background-color: #ADB797;
     color: white;
 } 
 
@@ -27,13 +27,13 @@ footer {
 
 /* Dropdown Button */
   .dropbtn {
-    background-color:#57AD3E;
+    background-color: #ADB797;
     color: white;
   }
 
 /* Dropdown Content (Hidden by Default) */
 .dropdown-content {
-    background-color:#57AD3E;
+    background-color: #ADB797;
 }
 
 /* Links inside the dropdown */

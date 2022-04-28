@@ -149,7 +149,7 @@ const doAdvancedSearch = (limit = 20) => {
     
     sessionStorage.setItem('advSearchArray', [searchSpecies,searchCollector,searchDate,searchCountry,searchMunicipality,searchLocality,searchCollNo,searchTaxType])
     const chosenCollection = collection.value
-    sessionStorage.setItem('chosenCollection', JSON.stringify(chosenCollection))
+    sessionStorage.setItem('chosenCollection', chosenCollection)
     searchLineNumber = limit
     sessionStorage.setItem('limit', limit)
 
@@ -292,8 +292,7 @@ const doObjListSearch = (limit = 20) => {
         
     sessionStorage.setItem('objList', searchObjects)
     const chosenCollection = collection.value
-    console.log(chosenCollection)
-    sessionStorage.setItem('chosenCollection', JSON.stringify(chosenCollection))
+    sessionStorage.setItem('chosenCollection', chosenCollection)
     searchLineNumber = limit
     sessionStorage.setItem('limit', limit)
 

@@ -17,7 +17,7 @@
             <br><br>
             <div class="content">
                 
-                <table style="float: right">
+                <table style="float: right;">
                     <tr><td>
                             <div class="objectPagesButtonClass"><button id="previous-object">Forrige objekt </button></div>
                         </td>
@@ -28,18 +28,20 @@
                             <button id="back-to-result" style="float: right">Tilbake til søkeresultat</button>
                         </td></tr>
                 </table>
-                <br>
+                <br><br>
                 <table>
                     <tr>
                         <td>
                             <br>
                             <div style="width:100%">
-                                <div class="page-header" id="musit-regno" style="width:40%; display: inline-block"></div>
+                                <div id="head-collection" style="font-weight:bold"></div>
+                                <br>
+                                <div class="page-header" id="musit-regno" style="width:100%; display: inline-block"></div>
                             </div>
                             <div style="width:100%; float:left; min-width:300px;" >
                                 <br>
                                 <div id = "left-table" >
-                                    <table id = "data-table"></table>
+                                    <table id = "data-table" ></table>
                                 </div>
                                 <br>
                             </div>
@@ -49,7 +51,7 @@
                             <div style ="width:100%; float:left; min-widht:300px;">
                                 <div id="map-style" >
                                     <div class="map-object" id="map-object"></div>
-                                    <table id="table-object">
+                                    <table id="table-object" >
                                         <tr>
                                             <td>
                                                 <button id="zoom-button" style="display:none">Zoom</button>
@@ -95,12 +97,14 @@
                         </td>
                     </tr>
                     <tr>
-                        <td >
-                            <div style="float:left">
-                                <table id = "object-table" style="min-width: 300px; border:solid"></table>
-                                <br>
+                        <td>
+                            <div style="width:100%; float:left; min-width:300px;" >
+                                <div style="float:left">
+                                    <table id = "object-table" style="min-width: 300px; border:solid; display:none"></table>
+                                    <br>
+                                    <table id = "sperm-table" style="min-width: 300px; border:solid; display:none"></table>
+                                </div>
                             </div>
-                            
                         </td>
                         <td colspan = "2">
                             <div id="acc-object" style="float:left">
