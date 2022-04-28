@@ -143,7 +143,9 @@ async function whichFileAndDb (museum,collection) {
     })
 }
 
-const collectionName = (coll) => {
+const collectionName = (coll,source) => {
+    let colon
+    if (source == "head") {colon=""} else {colon=":"}
     let term
     if (coll == "sopp") {
         term = textItems.fungiCollection[index]
@@ -153,19 +155,19 @@ const collectionName = (coll) => {
         } else {
             href = "https://www.nhm.uio.no/english/collections/mycological/fungi/index.html"
         }
-        return `<a target="_blank" class="head-collection" href=${href} >${term}:</a>`
+        return `<a target="_blank" class="head-collection" href=${href} >${term}${colon}</a>`
     } else if (coll == "lav") {
         term = textItems.lichenCollection[index]
-        return `<a target="_blank" class="head-collection" href= "https://www.nhm.uio.no/samlinger/mykologi/lavherbariet/">${term}:</a>`
+        return `<a target="_blank" class="head-collection" href= "https://www.nhm.uio.no/samlinger/mykologi/lavherbariet/">${term}${colon}</a>`
     } else if (coll == "alger") {
         term = textItems.algaeCollection[index]
-        return `<a target="_blank" class="head-collection" href= "https://www.nhm.uio.no/samlinger/botanikk/alge/">${term}:</a>`
+        return `<a target="_blank" class="head-collection" href= "https://www.nhm.uio.no/samlinger/botanikk/alge/">${term}${colon}</a>`
     } else if (coll == "vascular") {
         term = textItems.vascularCollection[index]
-        return `<a target="_blank" class="head-collection" href= "https://www.nhm.uio.no/samlinger/botanikk/karplanteherbariet/">${term}:</a>`
+        return `<a target="_blank" class="head-collection" href= "https://www.nhm.uio.no/samlinger/botanikk/karplanteherbariet/">${term}${colon}</a>`
     } else if (coll == "moser") {
         term = textItems.mossCollection[index]
-        return `<a target="_blank" class="head-collection" href= "https://www.nhm.uio.no/samlinger/botanikk/mose/">${term}:</a>`
+        return `<a target="_blank" class="head-collection" href= "https://www.nhm.uio.no/samlinger/botanikk/mose/">${term}${colon}</a>`
     } else if (coll == "entomology") {
         term = textItems.insectCollection[index]
         let href
@@ -174,10 +176,10 @@ const collectionName = (coll) => {
         } else {
             href = "https://www.nhm.uio.no/english/collections/zoological/insect/index.html"
         }
-        return `<a target="_blank" class="head-collection" href= ${href}>${term}:</a>`
+        return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
     } else if (coll == "fisk") {
         term = textItems.fishCollection[index]
-        return `<a target="_blank" class="head-collection" href= "https://www.nhm.uio.no/samlinger/zoologi/fisk/">${term}:</a>`
+        return `<a target="_blank" class="head-collection" href= "https://www.nhm.uio.no/samlinger/zoologi/fisk/">${term}${colon}</a>`
     } else if (coll == "mammals") {
         term = textItems.mammalCollection[index]
         let href
@@ -186,7 +188,7 @@ const collectionName = (coll) => {
         } else {
             href = "https://www.nhm.uio.no/english/collections/zoological/mammal/index.html"
         }
-        return `<a target="_blank" class="head-collection" href= ${href}>${term}:</a>`
+        return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
     } else if (coll == "birds") {
         term = textItems.birdCollection[index]
         let href
@@ -195,7 +197,7 @@ const collectionName = (coll) => {
         } else {
             href = "https://www.nhm.uio.no/english/collections/zoological/bird/index.html"
         }
-        return `<a target="_blank" class="head-collection" href= ${href}>${term}:</a>`
+        return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
     } else if (coll == "DNA" || coll.includes("dna")) {
         term = textItems.DNAcollection[index]
         let href
@@ -204,7 +206,7 @@ const collectionName = (coll) => {
         } else {
             href = "https://www.nhm.uio.no/english/collections/dna-bank/index.html"
         }
-        return `<a target="_blank" class="head-collection" href= ${href}>${term}:</a>`
+        return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
     } else if (coll === "sperm") {
         term = textItems.spermCollection[index]
         let href
@@ -213,37 +215,37 @@ const collectionName = (coll) => {
         } else {
             href = "https://www.nhm.uio.no/english/collections/zoological/bird/index.html"
         }
-        return `<a target="_blank" class="head-collection" href= ${href}>${term}:</a>`
+        return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
     } else if (coll === "malmer") {
         term = textItems.malmer[index]
         let href
         if (index == 0) { href = "https://www.nhm.uio.no/samlinger/geologi/index.html"}
         else {href = "https://www-int.nhm.uio.no/english/collections/geological/index.html"}
-        return `<a target="_blank" class="head-collection" href= ${href}>${term}:</a>`
+        return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
     } else if (coll === "utenlandskeBergarter") {
         term = textItems.utenlandskeBA[index]
         let href
         if (index == 0) { href = "https://www.nhm.uio.no/samlinger/geologi/index.html"}
         else {href = "https://www-int.nhm.uio.no/english/collections/geological/index.html"}
-        return `<a target="_blank" class="head-collection" href= ${href}>${term}:</a>`
+        return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
     } else if (coll === "oslofeltet") {
         term = textItems.oslofeltet[index]
         let href
         if (index == 0) { href = "https://www.nhm.uio.no/samlinger/geologi/index.html"}
         else {href = "https://www-int.nhm.uio.no/english/collections/geological/index.html"}
-        return `<a target="_blank" class="head-collection" href= ${href}>${term}:</a>`
+        return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
     } else if (coll === "palTyper") {
         term = textItems.palTyper[index]
         let href
         if (index == 0) { href = "https://www.nhm.uio.no/samlinger/paleontologi/index.html"}
         else {href = "https://www-int.nhm.uio.no/english/collections/paleontological/"}
-        return `<a target="_blank" class="head-collection" href= ${href}>${term}:</a>`
+        return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
     } else if (coll === "fossiler") {
         term = textItems.fossiler[index]
         let href
         if (index == 0) { href = "https://www.nhm.uio.no/samlinger/paleontologi/index.html"}
         else {href = "https://www-int.nhm.uio.no/english/collections/paleontological/"}
-        return `<a target="_blank" class="head-collection" href= ${href}>${term}:</a>`
+        return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
     } else if (coll === "utad") {
         term = textItems.utad[index]
         return term
@@ -641,11 +643,11 @@ async function showObjectData (specimenObject,objectTable,order) {
     if (specimenObject.preparationType.includes("Sperm") || specimenObject.preparationType.includes("sperm")) {
         objectTable.style.display='block'
         if (objectTable.rows.length < 3) { // no sperm item added yet
-            cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.itemsHeader[index]}${collectionName("sperm")}</span>`
+            cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.itemsHeader[index]}${collectionName("sperm","table")}</span>`
         }
         
     } else if (objectTable.rows.length < 3) { // no item added yet
-        cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.objectHeaderColl[index]}${collectionName(coll)}</span>`
+        cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.objectHeaderColl[index]}${collectionName(coll,"table")}</span>`
     }
     
     cell1.colSpan = '2'
@@ -748,7 +750,7 @@ async function showItemData (specimenObject,objectTable,order) {
     cell1.innerHTML = '<br>'
     addRow(objectTable)
     cell1.id = 'itemsHeader'
-    cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.itemsHeader[index]}${collectionName("DNA")}</span>`
+    cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.itemsHeader[index]}${collectionName("DNA","table")}</span>`
     addRow(objectTable)
     cell1.innerHTML = '<br>'
     // loop over array
@@ -1135,12 +1137,14 @@ async function main () {
    // get the correct object
    let specimenObject = await getspecimenData(allObject)
    //makeTable(specimenObject)
+   console.log(specimenObject)
     console.log(urlParams.get("isNew"))
    if(Array.isArray(allObject) && (allObject.length > 2) && urlParams.get("isNew") != "yes") {
     makeNavButtons(allObject, specimenObject)
     makeBackButton()
    } else {
        hideNavButtons()
+       makeBackButton()
        if (urlParams.get("isNew") == "yes") { document.getElementById("back-to-result").style.display = 'none' }
        
    }

@@ -13,7 +13,7 @@ const textItems = {
     journalLink: ["Journalsøk", "Journal search"],
     mobileMenuBtn: ["Meny", "Menu"],
     //logoNHM: [urlPath + "/images/UiO NHM SH V2 RGB.png", urlPath + "/images/uio_nhm_a_eng_cmyk_2.png"],
-    logoNHM: [urlPath + "/images/nhm.png", urlPath + "/images/nhm_eng.png"],
+    logoNHM: [urlPath + "/images/nhm_small.png", urlPath + "/images/nhm_eng.png"],
     logoTMU: [urlPath + "/images/Tromso_museum_Logo_Bokmal_2l_HVIT.png", urlPath + "/images/Universitetsmuseet_Logo_Engelsk_2l_HVIT.png"],
     logoUM: [urlPath + "/images/UiBlogoUM_white_v.png", urlPath + "/images/UiBlogo_Eng_white_left.png"],
     logoNBH: [urlPath + "/images/NBH_logo_green.png", urlPath + "/images/NBH_logo_green.png"],
@@ -158,7 +158,7 @@ const textItems = {
     birdCollection: ["Fuglesamlingen", "The bird collection"],
     mammalCollection: ["Pattedyrsamlingen", "The mammal collection"],
     insectCollection: ["Insektsamlingen", "The insect collection"],
-    fishCollection: ["Fiskesamlingen", "The fish collection"],
+    fishCollection: ["Fiskesamlingen:", "The fish collection"],
     DNAcollection: ["DNA-banken", "The DNA bank"],
     spermCollection: ["Spermsamlingen", "The sperm collection"],
     

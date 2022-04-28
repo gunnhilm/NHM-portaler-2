@@ -43,8 +43,9 @@ function renderObjectText(lang){
         specimenObject = allObject.find(x => x.catalogNumber === id)
         
     }
-    let headCollection = collectionName(coll).replace(":","")
-    document.querySelector("#head-collection").innerHTML = headCollection.replace(":","")
+    let headCollection = collectionName(coll,"head")
+    console.log(headCollection)
+    document.querySelector("#head-collection").innerHTML = headCollection
     
     document.querySelector("#back-to-result").innerHTML = textItems.searchButtonHeader[index]
     document.querySelector("#next-object").innerHTML = textItems.nextObject[index]
