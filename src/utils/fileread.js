@@ -255,15 +255,14 @@ const advSearch = (museum, samling, searchSpecies, searchCollector, searchDate, 
                                 } 
                             } else if (i === (termsArray.length -1) ) {
                                 // check for last searchTerm; associatedMedia
-                                if (termsArray[i] === 'hasPhoto') {
-                                    console.log('her')
+                                if (termsArray[i] === 'hasphoto') {
                                     if (!lineArray[headers.indexOf(headerTerms[i])]) {
                                         break;
                                     } else {
                                         results =  results +  '\n' + line
                                         resultCount++  
                                     }
-                                } else if (termsArray[i] === 'hasNotPhoto') {
+                                } else if (termsArray[i] === 'hasnotphoto') {
                                     if (lineArray[headers.indexOf(headerTerms[i])]) {
                                         break;
                                     } else {

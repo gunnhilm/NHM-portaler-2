@@ -183,13 +183,6 @@ const resultTable = (subMusitData, musitData) => {
                             if (subMusitData[i].basisOfRecord) { cell10.innerHTML = subMusitData[i].basisOfRecord }
                             else if (subMusitData[i].coremaBasisOfRecord) {cell10.innerHTML = subMusitData[i].coremaBasisOfRecord}
                         } else { cell10.innerHTML = subMusitData[i].preparationType.replace(/\"/g,'') }
-
-                        // cell10.innerHTML = subMusitData[i].materialSampleType
-                        // if (subMusitData[i].musitBasisOfRecord) {
-                        //     cell10.textContent += ', ' + subMusitData[i].musitBasisOfRecord
-                        // }
-                    // } else if (subMusitData[i].materialSampleType === '' || !subMusitData[i].materialSampleType) {
-                    //     cell10.innerHTML = subMusitData[i].basisOfRecord
                     } else { 
                         if (!subMusitData[i].preparationType || subMusitData[i].preparationType === '') {
                             if (subMusitData[i].basisOfRecord) { cell10.innerHTML = subMusitData[i].basisOfRecord }
@@ -235,7 +228,6 @@ const resultTable = (subMusitData, musitData) => {
         
         // hide habitat for collections that do not have it
         //console.log(subMusitData[i])
-        console.log(subMusitData[0])
         if (!subMusitData[0].hasOwnProperty('habitat')) {
             hide_column(8)
             
@@ -566,6 +558,7 @@ function loadList() {
     } else if (document.querySelector('#collection-select').value === 'utad') {
         UTADRestultTable(pageList, list)
     } else {
+        console.log(pageList)
         resultTable(pageList, list)
     }
     check();

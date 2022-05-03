@@ -191,7 +191,6 @@ showResultElements = () => {
 // out: sorting order of two elements (?)
 // is called by addSortingText(…)
 sort_by = (prop, reverse, primer) => {
-    console.log(primer)
     const key = primer ?
     function(x) {
         return primer(x[prop])
@@ -232,6 +231,7 @@ function addSortingText(id, prop, musitData, fromFunction) { // her er musitData
                     musitData.sort(sort_by(prop,reverse))
                 } else {
                     musitData.sort(sort_by(prop,reverse, (a) => a.toLowerCase()))
+                    //a.trim().toLowerCase()
                 }
                 
                 //musitData.sort(sort_by(prop,reverse))
@@ -326,7 +326,7 @@ fillResultHeaders = (org,cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,c
     addSortingText('municipalityButton', 'county', musitData, 'resultTable')
     addSortingText('localityButton', 'locality', musitData, 'resultTable')
     addSortingText('ecologyButton', 'habitat', musitData, 'resultTable')
-    if (!musitData[0].preparationType || musitData[0].preparationType === '') {
+    if ( !('preparationType' in musitData[0])) {
         addSortingText('sampleTypeButton', 'basisOfRecord', musitData, 'resultTable')
     } else {
         addSortingText('sampleTypeButton', 'preparationType', musitData, 'resultTable')

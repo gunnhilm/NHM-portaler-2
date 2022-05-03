@@ -73,51 +73,8 @@ function renderText (lang) {
         index = 0
     }
     
-    //header
-    let logo = document.querySelector('#logo')
-    if (window.location.href.includes('tmu')) {
-        logo.src = textItems.logoTMU[index]
-    } else if (window.location.href.includes('/um')) {
-        logo.src = textItems.logoUM[index]
-    }  else if (window.location.href.includes('/nbh')) {
-        logo.src = textItems.logoNBH[index]
-    }else if (window.location.href.includes('/nhm')) {
-        logo.src = textItems.logoNHM[index]
-    }
-    
-    document.querySelector('#help-link').innerHTML = textItems.helpButton[index]
-    document.querySelector('#tools-link').innerHTML = textItems.toolsButton[index]
-    document.querySelector('#search-page-link').innerHTML = textItems.searchPageLink[index]
-    document.querySelector('#journal-link').innerHTML = textItems.journalLink[index]
-    document.querySelector('#menu_help-link').innerHTML = textItems.helpButton[index]
-    document.querySelector('#menu_tools-link').innerHTML = textItems.toolsButton[index]
-    document.querySelector('#menu_search-page-link').innerHTML = textItems.searchPageLink[index]
-    document.querySelector('#menu_journal-link').innerHTML = textItems.journalLink[index]
-    document.querySelector('#mobileMenuBtn').innerHTML = textItems.mobileMenuBtn[index]
-    
-    
-    
+    renderHeaderContent(lang)
 
-    /* When the user clicks on the menu-button (mobile-screens),
-    toggle between hiding and showing the dropdown content */
-    document.getElementById("mobileMenuBtn").onclick = function () {
-        document.getElementById("myDropdown").classList.toggle("show");
-    }
-  
-    // Close the dropdown menu if the user clicks outside of it
-    window.onclick = function(event) {
-        if (!event.target.matches('.dropbtn')) {
-            const dropdowns = document.getElementsByClassName("dropdown-content");
-            let i;
-            for (i = 0; i < dropdowns.length; i++) {
-                const openDropdown = dropdowns[i];
-                if (openDropdown.classList.contains('show')) {
-                    openDropdown.classList.remove('show');
-                }
-            }
-        }
-    }
-    
     //Dropdown med valg av samlinger, index page og stat page
     if (!location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler') & !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools') & !location.href.includes('checkCoord') & !location.href.includes('dataError') & !location.href.includes('advancedSearch')) {
     //if (location.href.substring(location.href.split('/',3).join('/').length).lengt === 12) { 
@@ -397,10 +354,13 @@ document.querySelector('#language').addEventListener('click', (e) => {
             } else if (coll === 'bulk') {
                 fillResultHeadersBulk(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell11,musitData)
             } else {
-                fillResultHeaders(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell10,cell11,cell12,cell13,musitData)
+                let org
+                if (sessionStorage.getItem('organismGroup').includes('geologi')) {
+                    org = 'geologi'
+                } else { org = 'other'}
+                fillResultHeaders(org,cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell10,cell11,cell12,cell13,musitData)
             }
         
-            
             
             const select = document.getElementById('checkboxSelect')
             pageList = JSON.parse(sessionStorage.getItem('pageList'))

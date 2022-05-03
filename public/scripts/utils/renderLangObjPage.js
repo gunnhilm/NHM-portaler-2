@@ -23,6 +23,9 @@ function renderObjectText(lang){
     } else {
         index = 0
     }
+
+    // header
+    renderHeaderContent(lang)
     // object page
     const urlParams = new URLSearchParams(window.location.search)
     index = setIndex(urlParams.get("lang"))
@@ -44,7 +47,6 @@ function renderObjectText(lang){
         
     }
     let headCollection = collectionName(coll,"head")
-    console.log(headCollection)
     document.querySelector("#head-collection").innerHTML = headCollection
     
     document.querySelector("#back-to-result").innerHTML = textItems.searchButtonHeader[index]
