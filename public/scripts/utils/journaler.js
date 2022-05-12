@@ -273,28 +273,6 @@ function sortTable() {
     })));
 }
 
-// function sortTable() {
-//     document.querySelectorAll('th.order').forEach(th_elem => {
-//         let asc=true
-//         const index = Array.from(th_elem.parentNode.children).indexOf(th_elem)  
-//         th_elem.addEventListener('click', (e) => {    
-//             console.log('tabel header click');          
-//             const arr = [... th_elem.closest("table").querySelectorAll('tbody tr')]
-//             console.log(arr);
-//             arr.sort( (a, b) => {
-//                 const a_val = a.children[index].innerText
-//                 const b_val = b.children[index].innerText                   
-//                 return (asc) ? a_val.localeCompare(b_val) : b_val.localeCompare(a_val)
-//             })
-//             arr.forEach(elem => {                   
-//                 th_elem.closest("table").querySelector("tbody").appendChild(elem)
-//             })
-//             asc = !asc
-//         })
-//     })
-// }
-
-
 
 // sends request to server for date of last change of the journal-datafile
 // is called in this file (journaler.js)
