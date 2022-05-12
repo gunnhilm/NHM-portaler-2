@@ -666,6 +666,9 @@ td {
     padding: 5px;
     
 }
+th {
+    cursor: pointer;
+}
 
 
 /* tools-page */
