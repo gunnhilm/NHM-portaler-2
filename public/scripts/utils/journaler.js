@@ -94,7 +94,6 @@ function makeButtons() {
     })
     buttonArray.forEach(el => {
         el.addEventListener('click', (e) => {
-            console.log(el.id);
             removeResults()
             buttonArray.forEach(el => {
                 el.className = "white-button"
@@ -103,10 +102,11 @@ function makeButtons() {
  
             for (const [key, value] of Object.entries(journalFiles)) {
                
-                if(el.id === key) {
-                    console.log(`${key}: ${value}`);  
+                if(el.id === key) { 
                     journalCollection = value
                     el.className = "blue-button" 
+                    errorMessage.innerText = "" // fjern feilmeldinger
+                    doJournalSearch(2000)
                 }
             }
             e.preventDefault()
@@ -128,6 +128,7 @@ function addHeaders(table, keys) {
 //   for( let i = 0; i < keys.length; i++ ) {
     for( let i = 0; i < columnsToShow; i++ ) {
         const th = document.createElement('th'); //column
+        th.classList.add("order")
         const text = document.createTextNode(keys[i]); //cell
         th.appendChild(text);
         tr.appendChild(th);
@@ -177,7 +178,6 @@ const journalResultTable = (children) => {
             }
         })
     }
-
     // send tabellen til frontend
     document.getElementById('container').appendChild(table);
 }
@@ -231,6 +231,7 @@ const doJournalSearch = (limit = 2000) => {
                                 journalResultTable(parsedResults.data)
                                 errorMessage.innerText = textItems.nbHitsText[index] 
                                 nbHitsElement.innerText = parsedResults.data.length
+                                sortTable()
                             } else {
                                 console.log('no results');
                                 errorMessage.innerText = textItems.noHits[index]   
@@ -254,6 +255,24 @@ journalSearchForm.addEventListener('click', (e) => {
     doJournalSearch(2000) //
     
 })  
+
+// sort table
+function sortTable() {
+    const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
+
+    const comparer = (idx, asc) => (a, b) => ((v1, v2) => 
+        v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.toString().localeCompare(v2)
+        )(getCellValue(asc ? a : b, idx), getCellValue(asc ? b : a, idx));
+
+    // do the work...
+    document.querySelectorAll('th').forEach(th => th.addEventListener('click', (() => {
+        const table = th.closest('table');
+        Array.from(table.querySelectorAll('tr:nth-child(n+2)'))
+            .sort(comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
+            .forEach(tr => table.appendChild(tr) );
+    })));
+}
+
 
 // sends request to server for date of last change of the journal-datafile
 // is called in this file (journaler.js)
