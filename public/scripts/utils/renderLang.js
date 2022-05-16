@@ -74,7 +74,7 @@ function renderText (lang) {
     }
     
     renderHeaderContent(lang)
-
+    
     //Dropdown med valg av samlinger, index page og stat page
     if (!location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler') & !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools') & !location.href.includes('checkCoord') & !location.href.includes('dataError') & !location.href.includes('advancedSearch')) {
     //if (location.href.substring(location.href.split('/',3).join('/').length).lengt === 12) { 
@@ -256,6 +256,7 @@ function renderText (lang) {
 
     // journals page
     if (location.href.includes('journaler')) {
+        console.log('her')
         document.querySelector('#header-journal-page').innerHTML = textItems.journalHeader[index]
         document.querySelector('#text-journal-page').innerHTML = textItems.journalText[index]
         document.querySelector('#search-button').innerHTML = textItems.searchButton[index]
