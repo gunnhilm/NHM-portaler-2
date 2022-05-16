@@ -167,6 +167,7 @@ const textItems = {
     previousObject: ["Forrige objekt", "Previous object"],
     objectPageHeader: ['Objektvisning', 'Object view'],
     headSpeciesName: ['Vitenskapelig navn: ', 'Scientific name: '],
+    headerUncertainty: ['Usikkerhet i id: ', 'Uncertainty in id: '],
     headDet: ['Bestemt av: ', 'Determined by: '],
     headDetDate: ['Dato for (siste) bestemming: ', 'Date of (last) determination: '],
     headCollDate: ['Innsamlingsdato: ', 'Collection date: '],

@@ -34,7 +34,8 @@
     "mediaFile": "_media",
     "occurrenceFileSuffix": "_stitched.txt",
     "associatedCollection": "dna_vascular",
-    "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/vascular_o.zip"
+    "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/vascular_o.zip",
+    "urn": "O:V"
 },
 {
     "source": "musit",
@@ -44,7 +45,8 @@
     "mediaFile": "_media",
     "occurrenceFileSuffix": "_stitched.txt",
     "associatedCollection": "dna_fungi_lichens",
-    "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/lichens_o.zip"
+    "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/lichens_o.zip",
+    "urn": "O:L"
 },
 {
     "source": "musit",
@@ -63,7 +65,8 @@
     "mediaFile": "_media",
     "occurrenceFileSuffix": "_stitched.txt",
     "associatedCollection": "dna_fungi_lichens",
-    "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/fungus_o.zip"
+    "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/fungus_o.zip",
+    "urn": "O:F"
 },
 {
     "source": "corema",
@@ -95,7 +98,8 @@
     "mediaFile": "_media",
     "occurrenceFileSuffix": "_stitched.txt",
     "associatedCollection": "dna_entomology",
-    "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/entomology_nhmo.zip"
+    "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/entomology_nhmo.zip",
+    "urn": "NHMO:ENT"
 },
 {
     "source": "access",

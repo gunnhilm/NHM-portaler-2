@@ -27,7 +27,7 @@
 },
 {
     "source": "musit",
-    "orgGroup": "botanikk",
+    "orgGroup": "mykologi",
     "name": "lav",
     "zipFileName": "lichens_bg",
     "mediaFile": "_media",
@@ -45,7 +45,7 @@
 },
 {
     "source": "musit",
-    "orgGroup": "botanikk",
+    "orgGroup": "mykologi",
     "name": "sopp",
     "zipFileName": "fungus_bg",
     "mediaFile": "_media",

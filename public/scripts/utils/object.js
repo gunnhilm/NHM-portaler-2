@@ -474,6 +474,9 @@ const makeBioTable = () => {
     const speciesNameCont = speciesNameRow.insertCell(1); speciesNameCont.id = 'species-name'; speciesNameCont.style = 'border-spacing: 10px 0' //font-style:italic'; 
         
     //if (orgGroup === 'botanikk' || orgGroup === 'zoologi' || orgGroup === 'mykologi') {            
+        const uncRow = table.insertRow(-1)
+        const uncH =   uncRow.insertCell(0); uncH.id = 'head-unc'; uncH.class = 'bold'; uncH.style = 'white-space:pre';
+        const uncC =   uncRow.insertCell(1); uncC.id = 'unc'; uncC.style = 'border-spacing: 10px 0';    
         const detRow = table.insertRow(-1)
         const detH =   detRow.insertCell(0); detH.id = 'head-det'; detH.class = 'bold'; detH.style = 'white-space:pre';
         const detC =   detRow.insertCell(1); detC.id = 'det'; detC.style = 'border-spacing: 10px 0';
@@ -755,6 +758,7 @@ async function showItemData (specimenObject,objectTable,order) {
     cell1.innerHTML = '<br>'
     // loop over array
     itemArray.forEach( item => {
+        console.log(item)
         if (item.itemType === "Specimen") { 
             showObjectData(item, document.getElementById("object-table"), "first")
         } else if (item.preparationType.includes("Sperm") || item.preparationType.includes("sperm")) {
@@ -770,7 +774,6 @@ async function showItemData (specimenObject,objectTable,order) {
                 }
             } else if (order === 'second') { // object is from assosicated collection, and should have link
                 const fileList = JSON.parse(sessionStorage.getItem('fileList'))
-                console.log(sessionStorage.getItem('chosenCollection'))
                 let fileListPost = fileList.find(el => el.name === sessionStorage.getItem('chosenCollection'))
                 let associatedCollection = fileListPost.associatedCollection
                 if (sessionStorage.getItem('source') === 'musit') {
@@ -918,6 +921,7 @@ async function showData (specimenObject, orgGroup) {
     if (orgGroup === 'botanikk' || orgGroup === 'mykologi' || orgGroup === 'zoologi') {
         let nameArray = italicSpeciesname(specimenObject.scientificName)
         document.querySelector("#species-name").innerHTML = `<span style=font-style:italic>${nameArray[0]}</span>` + ' ' + `<span>${nameArray[1]}</span>`
+        document.querySelector("#unc").innerHTML = `<span>${specimenObject.identificationRemarks}</span>`
         document.querySelector("#coll-date").innerHTML = `<span>${specimenObject.eventDate}</span>`
         document.querySelector("#coll").innerHTML = `<span>${specimenObject.recordedBy}</span>`
         document.querySelector("#collNo").innerHTML = collNo
@@ -949,7 +953,7 @@ async function showData (specimenObject, orgGroup) {
                     await showObjectData(specimenObject,table1,"second")    
                     await showItemData(specimenObject,table2,"first")
                     table3.style.display = 'none'
-                    table2.style.border = 'solid'
+                    table2.style = 'border-top:solid grey'
                 } else { // both preserved specimen (if exists) and samples are in corema
                     if (specimenObject.materialSampleType.includes("Specimen")) { // preserved specimen exists
                         // change this: make coremaBasisOfRecord an array
@@ -958,7 +962,7 @@ async function showData (specimenObject, orgGroup) {
                             table3.style.display = 'none'
                         }
                         await showItemData(specimenObject,table2,"first")
-                        table2.style.border = 'solid'
+                        table2.style = 'border-top:solid grey'
                         // }
                         
                     } else {
@@ -972,13 +976,14 @@ async function showData (specimenObject, orgGroup) {
                 await showObjectData(specimenObject,table1,"first")
                 if (specimenObject.RelCatNo) {
                     await showItemData(specimenObject,table2,"second")
-                    table2.style.border = 'solid'
+                    table2.style = 'border-top:solid grey'
                 } else {table2.style.display = 'none'}
                 table3.style.display = 'none'
             }
             
         } else {
             table1.style.display = 'none'
+            document.getElementById('object-table-cell').style.border = 'none'
         }
         // align object-table and items-table by making their above divs same height
         let dataTableHeight = document.getElementById('left-table').getBoundingClientRect()

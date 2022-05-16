@@ -18,7 +18,7 @@
 },
 {
     "source": "musit",
-    "orgGroup": "botanikk",
+    "orgGroup": "mykologi",
     "name": "lav",
     "zipFileName": "lichens_trom",
     "mediaFile": "_media",
@@ -36,7 +36,7 @@
 },
 {
     "source": "musit",
-    "orgGroup": "botanikk",
+    "orgGroup": "mykologi",
     "name": "sopp",
     "zipFileName": "fungus_trom",
     "mediaFile": "_media",

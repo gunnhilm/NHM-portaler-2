@@ -162,6 +162,7 @@ function addTextInOrgButtons(a) {
 
 function makeButtons() {
     orgGroups = sessionStorage.getItem('organismGroups').split(',')
+    console.log(orgGroups)
     orgGroups.forEach(el => {
         button = document.createElement("button")
         button.innerHTML = addTextInOrgButtons(el)
@@ -267,7 +268,7 @@ function addCollectionsToSelect(orgGroup) {
     collection.add(vennligst)
     collection.value = "vennligst"
     
-console.log(orgGroups);
+    console.log(orgGroups);
     if (orgGroup) {
         orgGroups.forEach(el => {
             if (el == orgGroup) { 
@@ -731,10 +732,6 @@ const oldSearch = () => {
     } 
     
 }
-
-
-
-
 
 emptySearchButton.addEventListener('click', (e) => {
     e.preventDefault()
