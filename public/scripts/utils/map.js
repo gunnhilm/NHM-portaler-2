@@ -14,6 +14,17 @@ const downloadMapButton = document.getElementById("export-png")
 const checkedInMap = document.getElementById("checkedInMap")
 const span = document.getElementsByClassName("close")[0];
 
+// duplicate code, is also in search.js, can be deleted from there? map.js comes first in list of scripts in index.hbs
+// figures out which museum we are in
+// out: string, abbreviation for museum
+// is called by doSearch() and updateFooter()
+// const getCurrentMuseum = () => {
+//     const pathArray = window.location.pathname.split('/')
+//     const museum = pathArray[2]
+//     return museum
+// }
+
+
 // draws map with clickable red markes for all records in search result with coordinates
 // in: parsedData (JSON, search result)
 // out: map with markers
@@ -205,21 +216,22 @@ const drawMap = (parsedData) => {
                                 museumURLPath = urlPath + "/nhm"
                             }
 
-                            
+                            let museum = getCurrentMuseum()
+
                             if (cfeatures.length > 1) {
                                 
                                 if( cfeatures.length > 10 ) {
                                     popup_element.setAttribute("style","width:300px") // size is set 
                                 }
                                 for (i=0; i < cfeatures.length; i++) {
-                                    popup_content.innerHTML += `<a id="object-link"  href="${museumURLPath}/object/?id=${cfeatures[i].get('catalogNumber')}"> ${cfeatures[i].get('catalogNumber')}</a>`
+                                    popup_content.innerHTML += `<a id="object-link"  href="${museumURLPath}/object/?id=${cfeatures[i].get('catalogNumber')}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${cfeatures[i].get('catalogNumber')}</a>`
                                     if (i < cfeatures.length-1) {
                                         popup_content.innerHTML += ', '
                                     }
                                 }
                             }
                             if (cfeatures.length == 1) {
-                                popup_content.innerHTML =  `<a id="object-link" style="white-space: nowrap" href="${museumURLPath}/object/?id=${cfeatures[0].get('catalogNumber')}"> ${cfeatures[0].get('catalogNumber')} </a>`
+                                popup_content.innerHTML =  `<a id="object-link" style="white-space: nowrap" href="${museumURLPath}/object/?id=${cfeatures[0].get('catalogNumber')}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${cfeatures[0].get('catalogNumber')} </a>`
                             }
                             popup.setPosition(coordinates)
                         } catch (error) {

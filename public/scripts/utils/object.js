@@ -2,7 +2,6 @@
 let index
 const urlParamsTop = new URLSearchParams(window.location.search)
 language = urlParams.get("lang")
-console.log(language)
 if (language === "Norwegian") {
     index = 0
 } else if (language === "English") {
@@ -629,17 +628,21 @@ const makeGeoTable = (specimenObject) => {
   
 }
 
-// renders text for object in traditional collection (not DNA-bank)
+// renders text for object/item in traditional collection (not DNA-bank)
 // in: specimenObject - present object
-// in: objectTable - which table data should be rendered in (relict from when this was swapped according to which collection we came from)
+// in: objectTable - which table data should be rendered in (object or sperm-table)
 // in: order - string; "first" or "second". "First" means trad.coll.object comes from the collecton we are in (typically musit)
 // "Second" means trad.coll.object comes from other collection that the one we are in (typically DNA-bank)
 // "second" means we want link to other collection
 async function showObjectData (specimenObject,objectTable,order) {
     objectTable.style.display='block'
     let coll = sessionStorage.getItem('chosenCollection')
-    console.log(specimenObject)
-    
+    // let associatedCollection
+    // const fileList = sessionStorage.getItem('fileList')
+    // const JSONdata = JSON.parse(fileList)
+    // JSONdata.forEach(el => {
+    //     if (el.name == coll) {associatedCollection = el.associatedCollection}
+    // })
     addRow(objectTable)
     cell1.innerHTML = '<br>'
     addRow(objectTable)
@@ -650,7 +653,12 @@ async function showObjectData (specimenObject,objectTable,order) {
         }
         
     } else if (objectTable.rows.length < 3) { // no item added yet
-        cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.objectHeaderColl[index]}${collectionName(coll,"table")}</span>`
+        if (order === "second") {
+            console.log(specimenObject)
+            if (specimenObject.musitCollectionCode === "F") {cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.objectHeaderColl[index]}${collectionName("sopp","table")}</span>`}
+            else if (specimenObject.musitCollectionCode === "L") {cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.objectHeaderColl[index]}${collectionName("lav","table")}</span>`}
+        }
+        else {cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.objectHeaderColl[index]}${collectionName(coll,"table")}</span>`}
     }
     
     cell1.colSpan = '2'
@@ -758,7 +766,6 @@ async function showItemData (specimenObject,objectTable,order) {
     cell1.innerHTML = '<br>'
     // loop over array
     itemArray.forEach( item => {
-        console.log(item)
         if (item.itemType === "Specimen") { 
             showObjectData(item, document.getElementById("object-table"), "first")
         } else if (item.preparationType.includes("Sperm") || item.preparationType.includes("sperm")) {
@@ -844,7 +851,6 @@ async function showItemData (specimenObject,objectTable,order) {
 // calls makeUTADTable(obj) or makeGeoTable(obj) or makePalTable(obj) or makeBioTable(obj)
 // is called below
 async function showData (specimenObject, orgGroup) {
-    console.log(specimenObject)
     if (orgGroup === 'other') {
         makeUTADTable(specimenObject)
     } else if (orgGroup === 'geologi') {
@@ -918,6 +924,7 @@ async function showData (specimenObject, orgGroup) {
         taxonomy = taxonomyString(specimenObject)
     }
 
+    console.log(specimenObject)
     if (orgGroup === 'botanikk' || orgGroup === 'mykologi' || orgGroup === 'zoologi') {
         let nameArray = italicSpeciesname(specimenObject.scientificName)
         document.querySelector("#species-name").innerHTML = `<span style=font-style:italic>${nameArray[0]}</span>` + ' ' + `<span>${nameArray[1]}</span>`
@@ -943,10 +950,7 @@ async function showData (specimenObject, orgGroup) {
         let table1 = document.getElementById("object-table")
         let table2 = document.getElementById('ass-object-table')
         let table3 = document.getElementById('sperm-table')
-        // if (sessionStorage.getItem('chosenCollection') === "mammals") {
-            
-        // }
-        // else 
+        
         if (sessionStorage.getItem('file').includes('stitch')) {
             if (sessionStorage.getItem('source') === 'corema') {
                 if (specimenObject.RelCatNo) { // associated collection exist in musit
@@ -983,7 +987,8 @@ async function showData (specimenObject, orgGroup) {
             
         } else {
             table1.style.display = 'none'
-            document.getElementById('object-table-cell').style.border = 'none'
+            // document.getElementById('object-table-cell').style.border = 'none'
+            document.getElementById('object-table').style.border = 'none'
         }
         // align object-table and items-table by making their above divs same height
         let dataTableHeight = document.getElementById('left-table').getBoundingClientRect()
@@ -1032,6 +1037,9 @@ function reducePhoto(photo) {
     return photo.replace('jpeg', 'small')
 }
 
+// renders photo(s) and next- and previous-photo buttons
+// in: specimenObject (object)
+// is called in main-function
 const showMedia = (specimenObject) => {
     let mediaLink = '' 
     let imageList = []
@@ -1101,7 +1109,7 @@ async function renderItems () {
     }
 }
 
-
+// calls correct makeTable-function
 function makeTable(specimenObject){
     const orgType= sessionStorage.getItem('organismGroup')
     if (orgType === 'geologi'){ makeGeoTable(specimenObject) }
@@ -1116,13 +1124,11 @@ function makeTable(specimenObject){
 async function main () {
     // add isNew to url if opened in new tab
     if (!sessionStorage.getItem('chosenCollection')) {
-        console.log(window.location.href)
         location.replace(`${window.location.href}&isNew=yes`)
     }
    // from file newObjectPage.js
    await newObjectPageMain()
    const urlParams = new URLSearchParams(window.location.search)
-   console.log(urlParams)
    await whichFileAndDb(urlParams.get("museum"),urlParams.get("samling")) 
    if (language === "Norwegian") {
         document.querySelector('#language').innerHTML = "English website"
@@ -1140,11 +1146,8 @@ async function main () {
    
    
    // get the correct object
-   let specimenObject = await getspecimenData(allObject)
-   //makeTable(specimenObject)
-   console.log(specimenObject)
-    console.log(urlParams.get("isNew"))
-   if(Array.isArray(allObject) && (allObject.length > 2) && urlParams.get("isNew") != "yes") {
+    let specimenObject = await getspecimenData(allObject)
+    if(Array.isArray(allObject) && (allObject.length > 2) && urlParams.get("isNew") != "yes") {
     makeNavButtons(allObject, specimenObject)
     makeBackButton()
    } else {

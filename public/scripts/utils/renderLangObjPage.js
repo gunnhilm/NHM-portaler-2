@@ -59,7 +59,6 @@ function renderObjectText(lang){
     document.querySelector("#previous-photo").innerHTML = textItems.previousPhoto[index]
 
     if (coll === 'utad') {
-        console.log('utad');
         //document.querySelector("#head-species-name").innerHTML = textItems.speciesName[index].bold()
         if (document.querySelector("#head-vernacularName")) {document.querySelector("#head-vernacularName").innerHTML=textItems.vernacularName[index]}
         if (document.querySelector("#head-basisOfRecord")) {document.querySelector("#head-basisOfRecord").innerHTML=textItems.basisOfRecord[index]}
@@ -102,7 +101,6 @@ function renderObjectText(lang){
         }
         
         if (specimenObject.recordNumber) {
-            console.log('har collno')
             if (document.querySelector("#head-collNo")) {
                 document.querySelector("#head-collNo").innerHTML = textItems.headCollNo[index].bold()
             }

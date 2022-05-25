@@ -156,9 +156,7 @@ function renderText (lang) {
         document.querySelector('#empty-search-button').innerHTML = textItems.emptySearch[index]
         //document.querySelector('#select-collection-label').innerHTML = textItems.selectCollection[index]
         document.querySelector('#hits-per-page').innerHTML = textItems.hitsPerPage[index]
-        //console.log(sessionStorage.getItem('string'))
         if (sessionStorage.getItem('string')) {
-            
             document.getElementById("head-nb-hits").innerHTML = textItems.nbHitsText[index]
         }
         if (document.getElementById("nb-hits").innerHTML.includes('1000')) {
@@ -256,7 +254,6 @@ function renderText (lang) {
 
     // journals page
     if (location.href.includes('journaler')) {
-        console.log('her')
         document.querySelector('#header-journal-page').innerHTML = textItems.journalHeader[index]
         document.querySelector('#text-journal-page').innerHTML = textItems.journalText[index]
         document.querySelector('#search-button').innerHTML = textItems.searchButton[index]

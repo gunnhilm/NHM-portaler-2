@@ -21,7 +21,6 @@ async function whichFileAndDb_main (museum,collection) {
                             return console.log(data.error)
                         } else {
                             let data1 = JSON.parse(data)
-                            console.log(data1[0])
                             sessionStorage.setItem('file', data1[0])
                             sessionStorage.setItem('source', data1[1])
                         }
@@ -227,7 +226,6 @@ const resultTable = (subMusitData, musitData) => {
         }
         
         // hide habitat for collections that do not have it
-        //console.log(subMusitData[i])
         if (!subMusitData[0].hasOwnProperty('habitat')) {
             hide_column(8)
             
@@ -558,7 +556,6 @@ function loadList() {
     } else if (document.querySelector('#collection-select').value === 'utad') {
         UTADRestultTable(pageList, list)
     } else {
-        console.log(pageList)
         resultTable(pageList, list)
     }
     check();

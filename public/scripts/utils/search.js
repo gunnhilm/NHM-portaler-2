@@ -162,7 +162,6 @@ function addTextInOrgButtons(a) {
 
 function makeButtons() {
     orgGroups = sessionStorage.getItem('organismGroups').split(',')
-    console.log(orgGroups)
     orgGroups.forEach(el => {
         button = document.createElement("button")
         button.innerHTML = addTextInOrgButtons(el)
@@ -268,7 +267,6 @@ function addCollectionsToSelect(orgGroup) {
     collection.add(vennligst)
     collection.value = "vennligst"
     
-    console.log(orgGroups);
     if (orgGroup) {
         orgGroups.forEach(el => {
             if (el == orgGroup) { 
@@ -285,7 +283,6 @@ function addCollectionsToSelect(orgGroup) {
                 coll.push(el.name)
             }
         })
-        console.log(coll)
         sessionStorage.setItem('options', JSON.stringify(coll))
         coll.forEach(el => {
                             elOption = document.createElement("option")
@@ -296,7 +293,6 @@ function addCollectionsToSelect(orgGroup) {
         })
         if (sessionStorage.getItem('chosenCollection')) {
             collection.value = sessionStorage.getItem('chosenCollection')
-            console.log(sessionStorage.getItem('chosenCollection'))
         } else {
             collection.value = 'vennligst'
         }
@@ -656,7 +652,6 @@ const loopButtons = () => {
     orgGroups.forEach(el => {
         console.log('kk')
         if (el == orgGroup) { 
-            console.log(document.getElementById('botanikk'))
             document.getElementById(`${el}`).className = "blue-button" 
         } else {
             document.querySelector('#' + el).className = "white-button" 
