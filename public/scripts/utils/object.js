@@ -277,6 +277,8 @@ const makeBackButton = () => {
 // is called in main()
 const makeNavButtons  = (allObject, specimenObject) => {
     
+    let museum = urlParams.get("museum")
+
     const nextObject = allObject[allObject.indexOf(specimenObject)+1]
     const previousObject = allObject[allObject.indexOf(specimenObject)-1]
 
@@ -285,18 +287,18 @@ const makeNavButtons  = (allObject, specimenObject) => {
     document.getElementById("next-object").onclick = () => {
         if (allObject.indexOf(specimenObject) !== allObject.length-1) {
             if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
-                window.location.href=`${museumURLPath}/object/?id=${nextObject.catalogNumber.replace(/[A-Z]/,'').trim()}&samling=${sessionStorage.getItem('chosenCollection')}&museum=nhm&lang=${sessionStorage.getItem('language')}`
+                window.location.href=`${museumURLPath}/object/?id=${nextObject.catalogNumber.replace(/[A-Z]/,'').trim()}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}`
             } else {
-                window.location.href=`${museumURLPath}/object/?id=${nextObject.catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=nhm&lang=${sessionStorage.getItem('language')}`
+                window.location.href=`${museumURLPath}/object/?id=${nextObject.catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}`
             }
         }
     }
     document.getElementById("previous-object").onclick = () => {
         if (allObject.indexOf(specimenObject) !== 0) {
             if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
-                window.location.href=`${museumURLPath}/object/?id=${previousObject.catalogNumber.replace(/[A-Z]/,'').trim()}&samling=${sessionStorage.getItem('chosenCollection')}&museum=nhm&lang=${sessionStorage.getItem('language')}`
+                window.location.href=`${museumURLPath}/object/?id=${previousObject.catalogNumber.replace(/[A-Z]/,'').trim()}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}`
             } else {
-                window.location.href=`${museumURLPath}/object/?id=${previousObject.catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=nhm&lang=${sessionStorage.getItem('language')}`
+                window.location.href=`${museumURLPath}/object/?id=${previousObject.catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}`
             }
         }
     }

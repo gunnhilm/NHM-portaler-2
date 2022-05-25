@@ -46,9 +46,13 @@ function renderObjectText(lang){
         specimenObject = allObject.find(x => x.catalogNumber === id)
         
     }
-    let headCollection = collectionName(coll,"head")
-    document.querySelector("#head-collection").innerHTML = headCollection
-    
+
+    let museum = urlParams.get("museum")
+    if (museum === "nhm") {
+        let headCollection = collectionName(coll,"head")
+        document.querySelector("#head-collection").innerHTML = headCollection
+    } 
+        
     document.querySelector("#back-to-result").innerHTML = textItems.searchButtonHeader[index]
     document.querySelector("#next-object").innerHTML = textItems.nextObject[index]
     document.querySelector("#previous-object").innerHTML = textItems.previousObject[index]
@@ -59,7 +63,6 @@ function renderObjectText(lang){
     document.querySelector("#previous-photo").innerHTML = textItems.previousPhoto[index]
 
     if (coll === 'utad') {
-        //document.querySelector("#head-species-name").innerHTML = textItems.speciesName[index].bold()
         if (document.querySelector("#head-vernacularName")) {document.querySelector("#head-vernacularName").innerHTML=textItems.vernacularName[index]}
         if (document.querySelector("#head-basisOfRecord")) {document.querySelector("#head-basisOfRecord").innerHTML=textItems.basisOfRecord[index]}
         if (document.querySelector("#head-lengde")) {document.querySelector("#head-lengde").innerHTML=textItems.lengde[index]}
