@@ -154,9 +154,9 @@ function renderText (lang) {
         if (document.querySelector('#paleontologi')) {document.querySelector('#paleontologi').innerHTML = textItems.paleontologi[index]}
         if (document.querySelector('#other')) {document.querySelector('#other').innerHTML = textItems.otherCollections[index]}
         document.querySelector('#empty-search-button').innerHTML = textItems.emptySearch[index]
-        //document.querySelector('#select-collection-label').innerHTML = textItems.selectCollection[index]
         document.querySelector('#hits-per-page').innerHTML = textItems.hitsPerPage[index]
-        if (sessionStorage.getItem('string')) {
+        console.log('kommer vi hit')
+        if (sessionStorage.getItem('string') && document.querySelector('#first').innerHTML.includes('F')) {
             document.getElementById("head-nb-hits").innerHTML = textItems.nbHitsText[index]
         }
         if (document.getElementById("nb-hits").innerHTML.includes('1000')) {

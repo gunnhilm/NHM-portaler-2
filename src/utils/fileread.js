@@ -45,13 +45,6 @@ const getFileList = (museum) => {
 const fileListObject = (museum) => {
     let fileList = getFileList(museum)
     let fileListObject = fileList
-    //console.log(fileListObject)
-    // fileList.forEach(el => {
-    //     if (el.orgGroup) {
-    //         orgGroups.push(el.orgGroup)
-    //     }
-    // })
-    // let uniqueOrgGroups = [...new Set(orgGroups)]
     return fileListObject
 }
 
@@ -91,12 +84,10 @@ const setSubcollections = (museum, orgGroup) => {
     const fileList = getFileList(museum)
     let coll = []
     fileList.forEach(el => {
-        console.log(el)
         if (el.orgGroup === orgGroup) {
             coll.push(el.name)
         }
     })
-    console.log(coll)
     return coll
 }
 
@@ -113,7 +104,6 @@ const setCollection = (museum, samling) => {
     } 
     
     else {
-        console.log('her')
         fileList.forEach(element => {
             if (element.name === samling){
                 musitFile = pathToMuseum + element.name + element.occurrenceFileSuffix
@@ -137,11 +127,9 @@ const whichFileDb = (museum,collection) => {
 
 const search = (museum, samling, searchTerm, linjeNumber = 0, limit = 20, callback) => {
     // velg riktig MUSIT dump fil å lese
-    console.log(samling + ' fileread 89')
     myLogger.log( museum + '\t' + samling + '\t' + searchTerm + '\t' + date + '\tsimple search');
    
     musitFile = setCollection(museum,samling)
-    console.log(musitFile)
     if (fs.existsSync(musitFile)) {
         // cleaning the searchterm before making the search so that we get a more precise
         // remove whiteSpace
@@ -294,7 +282,6 @@ const advSearch = (museum, samling, searchSpecies, searchCollector, searchDate, 
 const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 20, callback) => {
     myLogger.log( museum + '\t' + samling + '\t' + searchObjects + '\t' + date + '\tnumber search');
     // velg riktig MUSIT dump fil å lese
-    console.log(searchObjects)
     musitFile = setCollection(museum,samling)
     if (fs.existsSync(musitFile)) {
         // cleaning the searchterm before making the search so that we get a more precise
@@ -320,7 +307,6 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
         } else {
             objectNumbers.push(searchObjects)
         }
-        console.log('linje 284' + searchObjects)
         let suffix
         // if (samling == "sopp" || samling == "moser") {
         //     suffix = true
@@ -351,11 +337,6 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
                 let catNoInFile = lineArray[headers.indexOf('catalogNumber')].toLowerCase().trim()
                 
                 let source = getSource(museum, samling)
-                // if (source === "corema") {
-                //     catNoInFile = catNoInFile.substring(catNoInFile.indexOf('-',catNoInFile.indexOf('-')+1)+1,catNoInFile.indexOf('/'))
-                //     console.log('b' + catNoInFile)
-                // }
-
 
                 for (const el of objectNumbers) {
                     

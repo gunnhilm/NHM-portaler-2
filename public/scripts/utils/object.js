@@ -659,6 +659,9 @@ async function showObjectData (specimenObject,objectTable,order) {
             console.log(specimenObject)
             if (specimenObject.musitCollectionCode === "F") {cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.objectHeaderColl[index]}${collectionName("sopp","table")}</span>`}
             else if (specimenObject.musitCollectionCode === "L") {cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.objectHeaderColl[index]}${collectionName("lav","table")}</span>`}
+            else if (specimenObject.musitCollectionCode === "V") {cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.objectHeaderColl[index]}${collectionName("vascular","table")}</span>`}
+            else if (specimenObject.musitCollectionCode === "ENT") {cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.objectHeaderColl[index]}${collectionName("entomology","table")}</span>`}
+            
         }
         else {cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.objectHeaderColl[index]}${collectionName(coll,"table")}</span>`}
     }
@@ -701,17 +704,17 @@ async function showObjectData (specimenObject,objectTable,order) {
     addRow(objectTable)
     cell1.innerHTML = textItems.itemType[index]
     if (order === 'first') {
-        if (prefix) {  cell2.innerHTML = specimenObject.basisOfRecord } 
+        if (prefix) {  cell2.innerHTML = specimenObject.basisOfRecord.replace(/"/g, '') } 
         else { 
-            cell2.innerHTML = specimenObject.preparationType 
+            cell2.innerHTML = specimenObject.preparationType.replace(/"/g, '') 
             addRow(objectTable)
             cell1.innerHTML = textItems.preservation[index]
-            cell2.innerHTML = specimenObject.preservation
+            cell2.innerHTML = specimenObject.preservation.replace(/"/g, '')
             addRow(objectTable)
             cell1.innerHTML = '<br>'
         }
     } else {
-        cell2.innerHTML = specimenObject.musitBasisOfRecord        
+        cell2.innerHTML = specimenObject.musitBasisOfRecord.replace(/"/g, '')
     }
 }
 
@@ -735,6 +738,7 @@ async function showItemData (specimenObject,objectTable,order) {
     itemArray = []
     tempItemArray.forEach (element => itemArray.push({itemNumber: element}))
     // add properties to the item-objects
+    if (specimenObject.RelCleanCatNo) {itemRelCleanCatNoArray = specimenObject.RelCleanCatNo.split(" | ")}
     itemTypeArray = specimenObject.materialSampleType.split(" | ")
     dateArray = specimenObject.preparationDate.split(" | ")
     methodArray = specimenObject.preparationMaterials.split(" | ")
@@ -747,6 +751,7 @@ async function showItemData (specimenObject,objectTable,order) {
     preservationArray = specimenObject.preservationType.split(" | ")
 
     for (i=0; i<itemArray.length; i++) {
+        if (specimenObject.RelCleanCatNo) {itemArray[i].RelCleanCatNo = itemRelCleanCatNoArray[i]}
         itemArray[i].itemType = itemTypeArray[i]
         itemArray[i].date = dateArray[i]
         itemArray[i].method =methodArray[i]
@@ -768,6 +773,7 @@ async function showItemData (specimenObject,objectTable,order) {
     cell1.innerHTML = '<br>'
     // loop over array
     itemArray.forEach( item => {
+        console.log(item)
         if (item.itemType === "Specimen") { 
             showObjectData(item, document.getElementById("object-table"), "first")
         } else if (item.preparationType.includes("Sperm") || item.preparationType.includes("sperm")) {
@@ -786,7 +792,7 @@ async function showItemData (specimenObject,objectTable,order) {
                 let fileListPost = fileList.find(el => el.name === sessionStorage.getItem('chosenCollection'))
                 let associatedCollection = fileListPost.associatedCollection
                 if (sessionStorage.getItem('source') === 'musit') {
-                    cell1.innerHTML = `<a id="object-link" target="_blank" href="${museumURLPath}/object/?id=${specimenObject.RelCleanCatNo}&samling=${associatedCollection}&museum=nhm&lang=${sessionStorage.getItem('language')}&isNew=yes"> ${item.itemNumber} </a>`
+                    cell1.innerHTML = `<a id="object-link" target="_blank" href="${museumURLPath}/object/?id=${item.RelCleanCatNo}&samling=${associatedCollection}&museum=nhm&lang=${sessionStorage.getItem('language')}&isNew=yes"> ${item.itemNumber} </a>`
                 } else {
                     //cell1.innerHTML = specimenObject.institutionCode + '-' + specimenObject.collectionCode + '-' + specimenObject.catalogNumber
                     cell1.innerHTML = `<a id="object-link" href="${museumURLPath}/object/?id=${specimenObject.RelCatNo}&samling=${associatedCollection}&museum=nhm&lang=${sessionStorage.getItem('language')}"> ${specimenObject.institutionCode}-${specimenObject.collectionCode}-${specimenObject.catalogNumber} </a>`
@@ -798,14 +804,14 @@ async function showItemData (specimenObject,objectTable,order) {
             //row2 item type
             addRow(objectTable)
             cell1.innerHTML = textItems.itemType[index]
-            cell2.innerHTML = item.itemType.replace(/"/g, '')
+            if (item.itemType) {cell2.innerHTML = item.itemType.replace(/"/g, '')}
             //row3 extraction date
             addRow(objectTable)
             cell1.innerHTML = textItems.subTypeHeader[index]
-            cell2.innerHTML = item.preparationType.replace(/"/g, '')
+            if (item.preparationType) {cell2.innerHTML = item.preparationType.replace(/"/g, '')}
             addRow(objectTable)
             
-            if (item.itemType.includes("DNA")) {  // tidligere versjon: "gDNA" - fra preparationType
+            if (item.itemType && item.itemType.includes("DNA")) {  // tidligere versjon: "gDNA" - fra preparationType
                 cell1.innerHTML = textItems.extractionDate[index]
             // } else if (item.itemType === 'Voucher') { // change
             //     cell1.innerHTML = ''
@@ -819,7 +825,7 @@ async function showItemData (specimenObject,objectTable,order) {
             //     cell2.innerHTML = specimenObject.itemType
             // } else {
             if (!item.preservation || item.preservation == '"') {cell2.innerHTML = ''} else {cell2.innerHTML = item.preservation.replace(/"/g, '')}
-            if (item.itemType.includes("DNA")) { // tidligere versjon: "gDNA" - fra preparationType
+            if (item.itemType && item.itemType.includes("DNA")) { // tidligere versjon: "gDNA" - fra preparationType
                 addRow(objectTable)
                 cell1.innerHTML = textItems.method[index]
                 if (!item.method || item.method == '"') {cell2.innerHTML = ''} else {cell2.innerHTML = item.method.replace(/"/g, '')}
@@ -928,7 +934,7 @@ async function showData (specimenObject, orgGroup) {
 
     console.log(specimenObject)
     if (orgGroup === 'botanikk' || orgGroup === 'mykologi' || orgGroup === 'zoologi') {
-        let nameArray = italicSpeciesname(specimenObject.scientificName)
+        let nameArray = italicSpeciesname(specimenObject.scientificName.replace(/"/g, ''))
         document.querySelector("#species-name").innerHTML = `<span style=font-style:italic>${nameArray[0]}</span>` + ' ' + `<span>${nameArray[1]}</span>`
         document.querySelector("#unc").innerHTML = `<span>${specimenObject.identificationRemarks}</span>`
         document.querySelector("#coll-date").innerHTML = `<span>${specimenObject.eventDate}</span>`

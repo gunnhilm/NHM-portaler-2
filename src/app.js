@@ -113,7 +113,6 @@ app.get('/search', (req, res) => {
         throw new Error ('collection not chosen') 
     } else {
         try {
-            console.log(req.query.samling + ' app linje 116')
             fileRead.search(req.query.museum, req.query.samling, req.query.search, req.query.linjeNumber,req.query.limit , (error, results) => {
                 res.send({
                     unparsed: results
@@ -131,7 +130,6 @@ app.get('/advSearch', (req, res) => {
     if (!req.query.samling) {
         throw new Error ('collection not chosen') 
     } else {
-        console.log('here inn app.js')
         try {
             fileRead.advSearch(req.query.museum, req.query.samling, req.query.searchSpecies, req.query.searchCollector, req.query.searchDate, req.query.searchCountry, req.query.searchCounty, req.query.searchMunicipality, req.query.searchLocality, req.query.searchCollNo, req.query.searchTaxType, req.query.linjeNumber,req.query.limit,req.query.hasPhoto , (error, results) => {
                 res.send({
@@ -241,7 +239,6 @@ app.get('/which', (req,res) => {
         try {
             let fileDb = fileRead.whichFileDb(req.query.museum, req.query.collection, (error, result) => {
             })
-            console.log(fileDb)
             res.send(fileDb)
         } catch (error) {
             console.log(error)
@@ -249,59 +246,6 @@ app.get('/which', (req,res) => {
         }
     }
 })
-// for å laste ned søkeresultatene
-// app.get('/download', (req, res) => {
-//     console.log("i app download")
-//     if (!req.query.search) {
-//         return res.send({
-//             error: 'ingen data å laste ned'
-//         })
-//     } else {
-
-//         fileRead.search(req.query.samling, req.query.search, req.query.linjeNumber,req.query.limit, (error, results) => {
-
-            
-//             if (results){
-//                  res.send({
-//                     unparsed: results
-//                 }) 
-              
-//             } else {
-//                 console.log('Error: no results came back from seach')
-//             }
-//         })
-//     }
-// })
-
-// // to download image(s)
-// app.get('/downloadImage', (req, res) => {
-//     console.log(req.query)
-//     if (!req.query.search) {
-//         console.log('feil?')
-//         return res.send({
-//             error: 'ingen bilder å laste ned'
-//         })
-//     }
-//      else {
-//          console.log('app-image-download')
-//         const url = 'http://www.unimus.no/felles/bilder/web_hent_bilde.php?id=13254255&type=jpeg'
-//         const path = './images/image.jpg' 
-//         downloadImage(url, path, () => {
-//             console.log('✅ Done!')
-//           })
-        
-//     }
-// })
-
-// // move to fileRead
-// const downloadImage = (url, path, callback) => {
-//     request.head(url, (err, res, body) => {
-//       request(url)
-//         .pipe(fs.createWriteStream(path))
-//         .on('close', callback)
-//     })
-//   }
-  
  
 // footer date get
 app.get('/footer-date', (req, res) => {
@@ -321,7 +265,6 @@ app.get('/footer-date', (req, res) => {
 
 // objektvisningen
 app.get('*/object', (req, res) => {
-    console.log(req.query.id)
     if (!req.query.id) {
         return res.send({
             error: 'Du må oppgi et objekt'
@@ -339,7 +282,6 @@ app.get('*/advancedSearch', (req, res) => {
  })
 
 app.get('*/tools', (req, res) => {
-    console.log('tools')
     res.render('tools', {
     })
 })
@@ -457,9 +399,7 @@ app.get('*/checkCoord', (req, res) => {
         return res.render('checkCoord', {
         })
     } else if (req.query.download) {
-        console.log('vi starter download');
         const filePath = 'src/data/' + req.query.museum + '/geoError/' + req.query.download
-        console.log(filePath);
         res.download(filePath)
     } else {
         checkCoord.startUp(req, (error, results) => {
