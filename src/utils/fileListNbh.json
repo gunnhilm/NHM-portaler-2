@@ -5,7 +5,7 @@
             "forklaring": "i kombinasjon med name objektet gir occurranceFile filnavn for occurrance fila" ,
             "OccurranceFile": "_occurrence.txt",
             "mediaFile": "_media.txt",
-            "museum": "nhm" 
+            "museum": "nbh" 
         },
         "coremaFiles" : ["occurrence", "amplification","materialsample","multimedia","permit","preparation","preservation","resourcerelationship"]
     },

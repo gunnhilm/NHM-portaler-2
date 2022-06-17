@@ -839,8 +839,8 @@ async function showItemData (specimenObject,objectTable,order) {
                 cell1.innerHTML = 'BOLD ProcessID:'
                 if (!item.processID || item.processID == '"') {cell2.innerHTML = ''}
                 else {
-                    const url = `http://www.boldsystems.org/index.php/Public_RecordView?processid=${item.processID}`
-                    cell2.innerHTML = `<a href="${url}" target="_blank">${item.processID}</a>`
+                    const url = `http://www.boldsystems.org/index.php/Public_RecordView?processid=${item.processID.replace(/"/g, '')}`
+                    cell2.innerHTML = `<a href="${url}" target="_blank">${item.processID.replace(/"/g, '')}</a>`
                 } 
                 addRow(objectTable)
                 cell1.innerHTML = 'Genbank Acc.No:'

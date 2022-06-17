@@ -149,9 +149,13 @@ const resultTable = (subMusitData, musitData) => {
                     let coll = collection.value
                     cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}&samling=${coll}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${subMusitData[i].catalogNumber} </a>`
                 }
-                
                 if (sessionStorage.getItem('organismGroup').includes('geologi')) {
-                    cell2.innerHTML = `<span>${subMusitData[i].scientificName}</span>`
+                    if (sessionStorage.getItem('chosenCollection') === 'oslofeltet') {
+                        cell2.innerHTML = `<span>${subMusitData[i].kingdom}</span>`    
+                    } else {
+                        cell2.innerHTML = `<span>${subMusitData[i].scientificName}</span>`
+                    }
+                    
                 } else if (sessionStorage.getItem('organismGroup').includes('zoologi')) {
                     cell2.innerHTML = `<span style=font-style:italic>${subMusitData[i].genus} ${subMusitData[i].specificEpithet}</span>`
                 } else {
@@ -210,7 +214,7 @@ const resultTable = (subMusitData, musitData) => {
                 
                 cell1.className = 'row-1 row-ID'
                 cell2.className = 'row-2 row-name'
-                cell3.className = 'row-2 row-uncertainty'
+                cell3.className = 'row-3 row-uncertainty'
                 cell4.className = 'row-4 row-innsamler'
                 cell5.className = 'row-5 row-dato'
                 cell6.className = 'row-6 row-land'
@@ -224,13 +228,15 @@ const resultTable = (subMusitData, musitData) => {
             }
           
         }
-        
+        if (!subMusitData[0].hasOwnProperty('uncertainty')) {
+            hide_column(2)
+        }
+
         // hide habitat for collections that do not have it
         if (!subMusitData[0].hasOwnProperty('habitat')) {
             hide_column(8)
-            
         }
-        // hide corema-link-column for UM and TMU
+                // hide corema-link-column for UM and TMU
         if (window.location.href.includes('tmu') || window.location.href.includes('/um') || window.location.href.includes('/nbh')) {
             hide_column(9)
         }

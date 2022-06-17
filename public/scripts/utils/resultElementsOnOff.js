@@ -295,7 +295,10 @@ fillResultHeaders = (org,cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,c
     cell1.innerHTML = `<button id='musitIDButton' class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>` 
     cell2.innerHTML = `<button id='scientificNameButton' class='sort'>${textItems.headerTaxon[index].bold()} ${getArrows('scientificName')} </button>`
     ////////her
-    cell3.innerHTML = `<button id='uncertaintyButton' class='sort'>${textItems.headerUncertainty[index].bold()} ${getArrows('identificationRemarks')} </button>` 
+    // if (!org === 'geologi') {
+        cell3.innerHTML = `<button id='uncertaintyButton' class='sort'>${textItems.headerUncertainty[index].bold()} ${getArrows('identificationRemarks')} </button>` 
+    // }
+    
     if (org === 'geologi') {
         cell4.innerHTML = `<button id='collectorButton' class='sort'>${textItems.headerCollectorGeo[index].bold()} ${getArrows('recordedBy')}</button>`    
     } else {
