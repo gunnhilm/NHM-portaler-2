@@ -368,8 +368,8 @@ const bulkResultTable = (subBulkData, bulkData) => {
             const cell7 = row.insertCell(6)
             const cell8 = row.insertCell(7)
             const cell9 = row.insertCell(8)
-            const cell10 = row.insertCell(9)
-            const cell11 = row.insertCell(10)
+            // const cell10 = row.insertCell(9)
+            const cell11 = row.insertCell(9)
             if (i === -1) {     // her kommer tittellinjen
                 fillResultHeadersBulk(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell11,bulkData)
                 
@@ -405,9 +405,9 @@ const bulkResultTable = (subBulkData, bulkData) => {
                 let comma2
                 if (subBulkData[i].stateProvince) {comma1 = ', '} else { comma1 = ''}
                 if (subBulkData[i].locality) {comma2 = ', '} else { comma2 = ''}
-                //let concatLocality = subBulkData[i].country + comma1 + subBulkData[i].stateProvince + comma2 + subBulkData[i].locality
-                //cell6.innerHTML = concatLocality
-                cell6.innerHTML = subBulkData[i].locality_concatenated
+                let concatLocality = subBulkData[i].country + comma1 + subBulkData[i].stateProvince + comma2 + subBulkData[i].locality
+                cell6.innerHTML = concatLocality
+                // cell6.innerHTML = subBulkData[i].locality_concatenated
 
                 let commaP1
                 let commaP2

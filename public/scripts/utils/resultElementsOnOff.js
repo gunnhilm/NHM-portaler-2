@@ -365,7 +365,8 @@ fillResultHeadersBulk = (cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,c
     addSortingText('collectorButton', 'recordedBy', musitData, 'bulkResultTable')
     addSortingText('dateButton', 'eventDate', musitData, 'bulkResultTable')
     //addSortingText('unitTypeButton', 'unitType', musitData)
-    addSortingText('localityButton', 'locality_concatenated', musitData, 'bulkResultTable')
+    addSortingText('localityButton', 'locality', musitData, 'bulkResultTable')
+    // addSortingText('localityButton', 'locality_concatenated', musitData, 'bulkResultTable')
     //addSortingText('amountButton', 'amount', musitData)
     addSortingText('noteButton', 'note', musitData, 'bulkResultTable')
 }
