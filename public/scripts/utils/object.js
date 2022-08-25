@@ -34,6 +34,7 @@ const loadStringObject = () => {
     let objectJSON = ''
     //if( sessionStorage.getItem('databaseSearch') === 'musit' ) {
         objectJSON = sessionStorage.getItem('string')
+        
     //} else if (sessionStorage.getItem('databaseSearch') === 'corema') {
     //    objectJSON = sessionStorage.getItem('coremaString')
     //}
@@ -269,6 +270,13 @@ const makeBackButton = () => {
     // back-to-result-button
     document.getElementById("back-to-result").onclick = () => {
         window.location.href=`${museumURLPath}`
+    }
+}
+
+const makeCloseButton = () => {
+    // close object page when opened in new tab
+    document.getElementById("objClose").onclick = () => {
+        close()
     }
 }
 // functionality regarding navigation-buttons (next object, previous object, back-to-searc-result)
@@ -859,151 +867,158 @@ async function showItemData (specimenObject,objectTable,order) {
 // calls makeUTADTable(obj) or makeGeoTable(obj) or makePalTable(obj) or makeBioTable(obj)
 // is called below
 async function showData (specimenObject, orgGroup) {
-    if (orgGroup === 'other') {
-        makeUTADTable(specimenObject)
-    } else if (orgGroup === 'geologi') {
-        makeGeoTable(specimenObject)
-    } else if (orgGroup === 'paleontologi') {
-        makePalTable(specimenObject)
-    } else {
-        makeBioTable(specimenObject, orgGroup)
-    }
-    
-    
-    let prefix
-    let regnoEl
-    if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
-        prefix = 'NHMO-J-'
-        regnoEl = `<span>${prefix}${specimenObject.catalogNumber.replace(/[A-Z]/,'').trim()}</span>` 
-    } else if (specimenObject.catalogNumber.includes('/')) {
-        prefix = specimenObject.institutionCode + '-' + specimenObject.collectionCode + '-'
-        let strippedCatNo = specimenObject.catalogNumber.substring(0,specimenObject.catalogNumber.indexOf('/'))
-        regnoEl =  `<span>${prefix}${strippedCatNo}</span>`
-    } else{
-        prefix = specimenObject.institutionCode + '-' + specimenObject.collectionCode + '-'
-        regnoEl = `<span>${prefix}${specimenObject.catalogNumber}</span>` 
-    }
-
-    // data only displayed if existing
-    let collNo = ''
-    if( specimenObject.recordNumber ) {
-        collNo = `<span>${specimenObject.recordNumber}</span>`
-    } 
-
-    let headArtsobs = ''
-    let artsobsID = ''
-    if( specimenObject.ArtObsID ) {
-        artsobsID = `<span>${specimenObject.ArtObsID}</span>`
-    } 
-
-    let headHabitat = ''
-    let habitat = ''
-    if (specimenObject.habitat ) {
-        habitat = `<span>${specimenObject.habitat}</span>`
-    }
-
-    //let headSex = ''
-    let sex = ''
-    if (specimenObject.sex) { sex =  `<span>${specimenObject.sex}</span>`}
-    let lifeStage = ''
-    if (specimenObject.lifeStage) { lifeStage =  `<span>${specimenObject.lifeStage}</span>`}
-    let samplingProtocol = ''
-    if (specimenObject.samplingProtocol) { samplingProtocol =  `<span>${specimenObject.samplingProtocol}</span>`}
-    //let headTypeStatus = ''
-    let typeStatus = ''
-    if (specimenObject.typeStatus) { typeStatus =  `<span>${specimenObject.typeStatus}</span>`}
-
-    
-    if (sessionStorage.getItem('organismGroup').includes('paleontologi') ) {
-        document.querySelector("#musit-regno").innerHTML = `<span>PMO ${specimenObject.catalogNumber}</span>`
-    } 
-    // else if (!sessionStorage.getItem('chosenCollection').includes('dna') & !sessionStorage.getItem('chosenCollection').includes('birds') & !sessionStorage.getItem('chosenCollection').includes('mammals')) {
-    //     document.querySelector("#musit-regno").innerHTML = regnoEl
-    // }
-     else {
-        document.querySelector("#musit-regno").innerHTML = regnoEl
-   
-   //     document.querySelector("#musit-regno").innerHTML = `<span>${object.catalogNumber.replace(/[A-Z]/,'').trim()}</span>`
-    }
-    
-    const concatLocality = country(specimenObject) + stateProvince(specimenObject) + county(specimenObject) + locality(specimenObject)
-    let taxonomy = ''
-    if (specimenObject.kingdom || specimenObject.class || specimenObject.order || specimenObject.family) {
-        taxonomy = taxonomyString(specimenObject)
-    }
-
-    console.log(specimenObject)
-    if (orgGroup === 'botanikk' || orgGroup === 'mykologi' || orgGroup === 'zoologi') {
-        let nameArray = italicSpeciesname(specimenObject.scientificName.replace(/"/g, ''))
-        document.querySelector("#species-name").innerHTML = `<span style=font-style:italic>${nameArray[0]}</span>` + ' ' + `<span>${nameArray[1]}</span>`
-        document.querySelector("#unc").innerHTML = `<span>${specimenObject.identificationRemarks}</span>`
-        document.querySelector("#coll-date").innerHTML = `<span>${specimenObject.eventDate}</span>`
-        document.querySelector("#coll").innerHTML = `<span>${specimenObject.recordedBy}</span>`
-        document.querySelector("#collNo").innerHTML = collNo
-        document.querySelector("#det").innerHTML =  `<span>${specimenObject.identifiedBy}</span>`
-        document.querySelector("#det-date").innerHTML = `<span>${specimenObject.dateIdentified}</span>`
-        document.querySelector("#artsobsID").innerHTML = artsobsID
-        document.querySelector('#sex').innerHTML = sex
-        document.querySelector('#lifeStage').innerHTML = lifeStage
-        document.querySelector("#habitat").innerHTML = habitat
-        document.querySelector('#taxonomy').innerHTML = taxonomy
-        document.querySelector('#typeStatus').innerHTML = typeStatus
-        document.querySelector("#locality").innerHTML = `<span>${concatLocality}</span>`
-        document.querySelector("#coordinates").innerHTML = `<span>${coordinates(specimenObject)}</span>`
-        document.querySelector('#samplingProtocol').innerHTML = samplingProtocol
-    }
-
-    if(!window.location.href.includes('tmu') && !window.location.href.includes('/um') && !window.location.href.includes('/nbh')) {
-    
-        let table1 = document.getElementById("object-table")
-        let table2 = document.getElementById('ass-object-table')
-        let table3 = document.getElementById('sperm-table')
-        
-        if (sessionStorage.getItem('file').includes('stitch')) {
-            if (sessionStorage.getItem('source') === 'corema') {
-                if (specimenObject.RelCatNo) { // associated collection exist in musit
-                    await showObjectData(specimenObject,table1,"second")    
-                    await showItemData(specimenObject,table2,"first")
-                    table3.style.display = 'none'
-                    table2.style = 'border-top:solid grey'
-                } else { // both preserved specimen (if exists) and samples are in corema
-                    if (specimenObject.materialSampleType.includes("Specimen")) { // preserved specimen exists
-                        // change this: make coremaBasisOfRecord an array
-                        if (specimenObject.materialSampleType === "Specimen") { // only (one) preserved specimen exist
-                            table2.style.display = 'none'
-                            table3.style.display = 'none'
-                        }
-                        await showItemData(specimenObject,table2,"first")
-                        table2.style = 'border-top:solid grey'
-                        // }
-                        
-                    } else {
-                        await showItemData(specimenObject,table1,"first")
-                        table2.style.display = 'none'
-                    }
-                    
-                    
-                }
-            } else if (sessionStorage.getItem('source') === 'musit') {
-                await showObjectData(specimenObject,table1,"first")
-                if (specimenObject.RelCatNo) {
-                    await showItemData(specimenObject,table2,"second")
-                    table2.style = 'border-top:solid grey'
-                } else {table2.style.display = 'none'}
-                table3.style.display = 'none'
-            }
-            
+    try {
+        console.log(specimenObject)
+        if (orgGroup === 'other') {
+            makeUTADTable(specimenObject)
+        } else if (orgGroup === 'geologi') {
+            makeGeoTable(specimenObject)
+        } else if (orgGroup === 'paleontologi') {
+            makePalTable(specimenObject)
         } else {
-            table1.style.display = 'none'
-            // document.getElementById('object-table-cell').style.border = 'none'
-            document.getElementById('object-table').style.border = 'none'
+            makeBioTable(specimenObject, orgGroup)
         }
-        // align object-table and items-table by making their above divs same height
-        let dataTableHeight = document.getElementById('left-table').getBoundingClientRect()
-        let mapDivHeight = document.getElementById('map-style').getBoundingClientRect()
         
-        let divHeight
-        if (dataTableHeight.height > mapDivHeight.height) {divHeight = dataTableHeight.height} else {divHeight = mapDivHeight.height}
+        
+        let prefix
+        let regnoEl
+        if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
+            prefix = 'NHMO-J-'
+            regnoEl = `<span>${prefix}${specimenObject.catalogNumber.replace(/[A-Z]/,'').trim()}</span>` 
+        } else if (specimenObject.catalogNumber.includes('/')) {
+            prefix = specimenObject.institutionCode + '-' + specimenObject.collectionCode + '-'
+            let strippedCatNo = specimenObject.catalogNumber.substring(0,specimenObject.catalogNumber.indexOf('/'))
+            regnoEl =  `<span>${prefix}${strippedCatNo}</span>`
+        } else{
+            prefix = specimenObject.institutionCode + '-' + specimenObject.collectionCode + '-'
+            regnoEl = `<span>${prefix}${specimenObject.catalogNumber}</span>` 
+        }
+
+        // data only displayed if existing
+        let collNo = ''
+        if( specimenObject.recordNumber ) {
+            collNo = `<span>${specimenObject.recordNumber}</span>`
+        } 
+
+        let headArtsobs = ''
+        let artsobsID = ''
+        if( specimenObject.ArtObsID ) {
+            artsobsID = `<span>${specimenObject.ArtObsID}</span>`
+        } 
+
+        let headHabitat = ''
+        let habitat = ''
+        if (specimenObject.habitat ) {
+            habitat = `<span>${specimenObject.habitat}</span>`
+        }
+
+        //let headSex = ''
+        let sex = ''
+        if (specimenObject.sex) { sex =  `<span>${specimenObject.sex}</span>`}
+        let lifeStage = ''
+        if (specimenObject.lifeStage) { lifeStage =  `<span>${specimenObject.lifeStage}</span>`}
+        let samplingProtocol = ''
+        if (specimenObject.samplingProtocol) { samplingProtocol =  `<span>${specimenObject.samplingProtocol}</span>`}
+        //let headTypeStatus = ''
+        let typeStatus = ''
+        if (specimenObject.typeStatus) { typeStatus =  `<span>${specimenObject.typeStatus}</span>`}
+
+        
+        if (sessionStorage.getItem('organismGroup').includes('paleontologi') ) {
+            document.querySelector("#musit-regno").innerHTML = `<span>PMO ${specimenObject.catalogNumber}</span>`
+        } 
+        // else if (!sessionStorage.getItem('chosenCollection').includes('dna') & !sessionStorage.getItem('chosenCollection').includes('birds') & !sessionStorage.getItem('chosenCollection').includes('mammals')) {
+        //     document.querySelector("#musit-regno").innerHTML = regnoEl
+        // }
+        else {
+            document.querySelector("#musit-regno").innerHTML = regnoEl
+    
+    //     document.querySelector("#musit-regno").innerHTML = `<span>${object.catalogNumber.replace(/[A-Z]/,'').trim()}</span>`
+        }
+        
+        const concatLocality = country(specimenObject) + stateProvince(specimenObject) + county(specimenObject) + locality(specimenObject)
+        let taxonomy = ''
+        if (specimenObject.kingdom || specimenObject.class || specimenObject.order || specimenObject.family) {
+            taxonomy = taxonomyString(specimenObject)
+        }
+
+        console.log(specimenObject)
+        if (orgGroup === 'botanikk' || orgGroup === 'mykologi' || orgGroup === 'zoologi') {
+            let nameArray = italicSpeciesname(specimenObject.scientificName.replace(/"/g, ''))
+            document.querySelector("#species-name").innerHTML = `<span style=font-style:italic>${nameArray[0]}</span>` + ' ' + `<span>${nameArray[1]}</span>`
+            document.querySelector("#unc").innerHTML = `<span>${specimenObject.identificationRemarks}</span>`
+            document.querySelector("#coll-date").innerHTML = `<span>${specimenObject.eventDate}</span>`
+            document.querySelector("#coll").innerHTML = `<span>${specimenObject.recordedBy}</span>`
+            document.querySelector("#collNo").innerHTML = collNo
+            document.querySelector("#det").innerHTML =  `<span>${specimenObject.identifiedBy}</span>`
+            document.querySelector("#det-date").innerHTML = `<span>${specimenObject.dateIdentified}</span>`
+            document.querySelector("#artsobsID").innerHTML = artsobsID
+            document.querySelector('#sex').innerHTML = sex
+            document.querySelector('#lifeStage').innerHTML = lifeStage
+            document.querySelector("#habitat").innerHTML = habitat
+            document.querySelector('#taxonomy').innerHTML = taxonomy
+            document.querySelector('#typeStatus').innerHTML = typeStatus
+            document.querySelector("#locality").innerHTML = `<span>${concatLocality}</span>`
+            document.querySelector("#coordinates").innerHTML = `<span>${coordinates(specimenObject)}</span>`
+            document.querySelector('#samplingProtocol').innerHTML = samplingProtocol
+        }
+
+        if(!window.location.href.includes('tmu') && !window.location.href.includes('/um') && !window.location.href.includes('/nbh')) {
+        
+            let table1 = document.getElementById("object-table")
+            let table2 = document.getElementById('ass-object-table')
+            let table3 = document.getElementById('sperm-table')
+            
+            if (sessionStorage.getItem('file').includes('stitch')) {
+                if (sessionStorage.getItem('source') === 'corema') {
+                    if (specimenObject.RelCatNo) { // associated collection exist in musit
+                        await showObjectData(specimenObject,table1,"second")    
+                        await showItemData(specimenObject,table2,"first")
+                        table3.style.display = 'none'
+                        table2.style = 'border-top:solid grey'
+                    } else { // both preserved specimen (if exists) and samples are in corema
+                        if (specimenObject.materialSampleType.includes("Specimen")) { // preserved specimen exists
+                            // change this: make coremaBasisOfRecord an array
+                            if (specimenObject.materialSampleType === "Specimen") { // only (one) preserved specimen exist
+                                table2.style.display = 'none'
+                                table3.style.display = 'none'
+                            }
+                            await showItemData(specimenObject,table2,"first")
+                            table2.style = 'border-top:solid grey'
+                            // }
+                            
+                        } else {
+                            await showItemData(specimenObject,table1,"first")
+                            table2.style.display = 'none'
+                        }
+                        
+                        
+                    }
+                } else if (sessionStorage.getItem('source') === 'musit') {
+                    await showObjectData(specimenObject,table1,"first")
+                    if (specimenObject.RelCatNo) {
+                        await showItemData(specimenObject,table2,"second")
+                        table2.style = 'border-top:solid grey'
+                    } else {table2.style.display = 'none'}
+                    table3.style.display = 'none'
+                }
+                
+            } else {
+                table1.style.display = 'none'
+                // document.getElementById('object-table-cell').style.border = 'none'
+                document.getElementById('object-table').style.border = 'none'
+            }
+            // align object-table and items-table by making their above divs same height
+            let dataTableHeight = document.getElementById('left-table').getBoundingClientRect()
+            let mapDivHeight = document.getElementById('map-style').getBoundingClientRect()
+            
+            let divHeight
+            if (dataTableHeight.height > mapDivHeight.height) {divHeight = dataTableHeight.height} else {divHeight = mapDivHeight.height}
+        }
+    } catch (error) {
+        document.getElementById('musit-regno').innerHTML = textItems.objError[index]
+        // textItems.serverError[index]
+
     }
 }
 
@@ -1154,14 +1169,19 @@ async function main () {
    
    
    // get the correct object
+   console.log(allObject)
     let specimenObject = await getspecimenData(allObject)
     if(Array.isArray(allObject) && (allObject.length > 2) && urlParams.get("isNew") != "yes") {
-    makeNavButtons(allObject, specimenObject)
-    makeBackButton()
-   } else {
+        makeNavButtons(allObject, specimenObject)
+        makeBackButton()
+    } else {
        hideNavButtons()
        makeBackButton()
-       if (urlParams.get("isNew") == "yes") { document.getElementById("back-to-result").style.display = 'none' }
+       if (urlParams.get("isNew") == "yes") { 
+        document.getElementById("back-to-result").style.display = 'none'
+        makeCloseButton()
+        document.getElementById("objClose").style.display = 'inline'
+    }
        
    }
    //renderObjectText(language)

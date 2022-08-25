@@ -125,7 +125,7 @@ const resultTable = (subMusitData, musitData) => {
                     museum = 'nhm'
                 }
                 
-                
+                // console.log(sessionStorage.getItem('chosenCollection'))
                 let prefix
                 if (sessionStorage.getItem('organismGroup').includes('paleontologi')) {
                     prefix = 'PMO '
@@ -147,6 +147,7 @@ const resultTable = (subMusitData, musitData) => {
                     cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${strippedCatNo} </a>`
                 } else {
                     let coll = collection.value
+                    
                     cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}&samling=${coll}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${subMusitData[i].catalogNumber} </a>`
                 }
                 if (sessionStorage.getItem('organismGroup').includes('geologi')) {

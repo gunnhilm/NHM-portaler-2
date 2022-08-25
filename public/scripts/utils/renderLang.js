@@ -108,7 +108,7 @@ function renderText (lang) {
     }
 
     // index page
-    if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler')& !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools') & !location.href.includes('checkCoord') & !location.href.includes('dataError')) {
+    if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler')& !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools') & !location.href.includes('checkCoord') & !location.href.includes('dataError') & !location.href.includes('barcod')) {
 
         //document.querySelector('#vennligst').innerHTML = textItems.vennligst[index] 
         if(document.querySelector('#header-advSearch-page')) { document.querySelector('#header-advSearch-page').innerHTML = textItems.headerAdvSearchPage[index]}
@@ -206,8 +206,22 @@ function renderText (lang) {
         document.querySelector('#data-error-text').innerHTML = textItems.dataErrorText[index]
         document.querySelector('#arts-obs-link').innerHTML = textItems.artsObsLink[index]
         document.querySelector('#arts-obs-text').innerHTML = textItems.artsObsText[index]
+        document.querySelector('#bc-header').innerHTML = textItems.bcText[index]
+        document.querySelector('#bc-fungi-link').innerHTML = textItems.sopp[index]
+        document.querySelector('#bc-lichen-link').innerHTML = textItems.lav[index]
+        document.querySelector('#bc-mammals-link').innerHTML = textItems.bcPattedyr[index]
+        document.querySelector('#bc-lep-link').innerHTML = textItems.bcLep[index]
+        document.querySelector('#bc-herptiles-link').innerHTML = textItems.bcHerptiles[index]
         //document.querySelector('#coordinate-link').innerHTML = textItems.coordinateLink[index]
-
+        if (window.location.href.includes('/tmu') || window.location.href.includes('/nbh') || window.location.href.includes('/um')) {
+            document.querySelector('#bc-fungi-link').style.display = "none"
+            document.querySelector('#bc-mammals-link').style.display = "none"
+            document.querySelector('#bc-lep-link').style.display = "none"
+            document.querySelector('#bc-herptiles-link').style.display = "none"
+            document.querySelector('#bc-lichen-link').style.display = "none"
+            document.querySelector('#bc-header').style.display = "none"
+            
+        }
     }
 
     // Stat page

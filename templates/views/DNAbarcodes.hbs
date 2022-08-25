@@ -14,15 +14,20 @@
                 <p class="page-header" id="getBarcodeHeader"></p>
                 <p class="neutral" id="getBarcodeText"></p>
                 <br>
-
-            <table id="barcode-table" style="border:solid">
-                <th>
-                    <td>Species</td>
-                    <td>Sequenced specimens</td>
-                    <td>Awaiting sequencing</td>
-                    <td>Sampled for sequencing</td>
-                </th>
-            </table>
+                <form id="search-bc-form">
+                    <div  style="float: left; width:200px">
+                        <input id="search-bc-text" type="text" class="input"    title="Skriv inn søkeord">
+                    </div>
+                    
+                    <div style="float: left; width:60px; padding-left:10px; display: inline">
+                        <button class="blue-button" id="search-bc-button" title="Søk" >Søk</button>
+                    </div>
+                </form>
+                <br><br><br>
+                <table id="barcode-table" style="border:solid; bordercolor:grey">
+                
+                </table>
+                <br>
             </div>
             {{>footer}}
         </div>
@@ -34,6 +39,7 @@
         <script src="/museum/scripts/utils/renderLang.js"></script>
         <script src="/museum/scripts/utils/papaparse/papaparse.min.js"></script>
         <script src="/museum/scripts/utils/tools/DNAbarcodes/DNAbarcodes.js"></script>
+        
         
 
     </body>

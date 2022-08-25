@@ -1,5 +1,6 @@
 const fs = require('fs')
 const fasta = require('bionode-fasta')
+var Fasta = require('biojs-io-fasta');
 
 const readFasta = (callback) => {
     
@@ -12,11 +13,18 @@ const readFasta = (callback) => {
 }
 
 const readFasta2 = () => {
-    fasta.obj('./src/data/nhm/fasta.fas').on(data, function() {
+    fasta.obj('./src/data/nhm/fasta.fas', function(data) {
         console.log(data)
     })
-   
+    
 }
+
+const readFasta3 = () => {
+    Fasta.read('./src/data/nhm/fasta.fas', function(seqs) { 
+        console.log(seqs)
+    })
+}
+    
 
 // response.on('end', function () {
 //     console.log(req.data);

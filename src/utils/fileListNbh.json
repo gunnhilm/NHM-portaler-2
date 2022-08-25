@@ -31,7 +31,7 @@
         "source": "musit",
         "orgGroup": "botanikk",
         "name": "moser",
-        "zipFileName": "moss_knm",
+        "zipFileName": "moss_kmn",
         "mediaFile": "_media",
         "occurrenceFileSuffix": "_occurrence.txt", 
         "url": "https://www.unimus.no/nedlasting/datasett/naturhistorie/moss_kmn.zip"

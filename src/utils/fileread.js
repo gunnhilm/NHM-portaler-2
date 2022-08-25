@@ -125,6 +125,7 @@ const whichFileDb = (museum,collection) => {
     return result
 }
 
+
 const search = (museum, samling, searchTerm, linjeNumber = 0, limit = 20, callback) => {
     // velg riktig MUSIT dump fil å lese
     myLogger.log( museum + '\t' + samling + '\t' + searchTerm + '\t' + date + '\tsimple search');
@@ -287,6 +288,7 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
         // cleaning the searchterm before making the search so that we get a more precise
         // remove whiteSpace
         searchObjects = searchObjects.trim()
+        console.log(searchObjects + ' line291')
         let objectNumbers = []
         if (searchObjects.includes(',')) {
             objectNumbers = searchObjects.split(',')
@@ -307,11 +309,17 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
         } else {
             objectNumbers.push(searchObjects)
         }
+        console.log(objectNumbers + ' line 312')
         let suffix
-        // if (samling == "sopp" || samling == "moser") {
-        //     suffix = true
-        // } else {suffix = false }
-        suffix = false
+        console.log(samling + ' ' + museum)
+        if (samling === 'moser') {
+            suffix = true
+        } else if (samling === "sopp" && museum === "tmu") {
+            suffix = true
+        } else {
+            suffix = false
+        }
+            
         let results = ''
         const readInterface = readline.createInterface({
             input: fs.createReadStream(musitFile),
@@ -335,7 +343,6 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
                 }
                 let lineArray = line.split('\t')
                 let catNoInFile = lineArray[headers.indexOf('catalogNumber')].toLowerCase().trim()
-                
                 let source = getSource(museum, samling)
 
                 for (const el of objectNumbers) {
@@ -367,8 +374,8 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
             }
             
         }).on('close', function () {
-            const resulstAndLine = {results, count }
-            callback(undefined, resulstAndLine)
+            const resultsAndLine = {results, count }
+            callback(undefined, resultsAndLine)
         })
        
     } else {
@@ -468,6 +475,7 @@ const checkRegion = (region, lat, long, callback) => {
     })
 }
 
+
  
 module.exports = { 
     search,
@@ -480,5 +488,6 @@ module.exports = {
     setSubcollections,
     whichFileDb,
     checkRegion
+    
  } 
 

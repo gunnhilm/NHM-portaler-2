@@ -36,10 +36,8 @@ async  function setSpecimenData () {
 
             // If the object is not in local storage, the get it from the server
             let urlParams = new URLSearchParams(document.location.search); 
-            console.log(urlParams)   
             sessionStorage.setItem('chosenCollection', urlParams.get("samling"))
             const url = '/museum' + '/objListSearch/?' + 'searchObjects=' + urlParams.get("id") +'&museum=' + urlParams.get("museum") + '&samling=' + urlParams.get("samling") + '&linjeNumber=0&limit=1000'
-            console.log(url)
             fetch(url).then((response) => {
                 if (!response.ok) {
                     
@@ -51,7 +49,7 @@ async  function setSpecimenData () {
                                 errorMessage.innerHTML = textItems.serverError[index]
                                 return console.log(data.error)
                             } else {
-                                const JSONdata = JSON.parse(data)                          
+                                const JSONdata = JSON.parse(data)    
                                 const parsedResults = Papa.parse(JSONdata.unparsed.results, {
                                     delimiter: "\t",
                                     newline: "\n",
@@ -155,6 +153,7 @@ const getFileListObjPage = async () => {
 
 // runs in file object.js
 async function newObjectPageMain() {
+    console.log(testIfNewPage(urlParams.get("isNew")))
     if (testIfNewPage(urlParams.get("isNew"))) {
         await getFileListObjPage()
         await setItems()

@@ -623,7 +623,6 @@ const updateFooter = () => {
     if (chosenCollection) {
         sessionStorage.setItem('chosenCollection', chosenCollection)
         const url =  urlPath + '/footer-date/?&samling=' + chosenCollection + '&museum=' + museum
-
         fetch(url).then((response) => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');

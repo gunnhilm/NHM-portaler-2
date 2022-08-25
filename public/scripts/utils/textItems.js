@@ -44,6 +44,9 @@ const textItems = {
     evertebrater: ["Evertebrater", "Evertebrates"],
     fugler: ["Fugler - Specimens og DNA", "Birds - Specimens and DNA"],
     pattedyr: ["Pattedyr - Specimens og DNA", "Mammals - Specimens and DNA"],
+    bcPattedyr: ["Pattedyr", "Mammals"],
+    bcLep: ["Sommerfugl", "Lepidoptera"],
+    bcHerptiles: ["Herptiler", "Herptiles"],
     dna_vascular: ["Karplanter - DNA", "Vascular plants - DNA"],
     dna_insekter: ["Insekter - DNA", "Insects - DNA"],
     fishHerp: ["Fisk og herptiler - DNA", "Fish and herptiles - DNA"],
@@ -202,6 +205,8 @@ const textItems = {
     preparedBy: ['Ekstrahert av:','Prepared by:'],
     concentration: ['DNA konsentrasjon:','DNA concentration'],
     coordPlaceholder: ['&lt;Ingen koordinater&gt;', '&lt;No coordinates&gt;'],
+    objError: ['Finner ikke objekt - noe er feil. Kontakt ev. nhm-samlingsportaler@nhm.uio.no eller aktuell samling.', 
+    'Cannot find object - something went wrong. Contact nhm-samlingsportaler@nhm.uio.no or relevant collection.'],
         // Objectpage UTAD items
         Kommentar: ['Kommentar:', 'Comments:'],
         Tilstand: ['Tilstand:', 'Condition:'],
@@ -242,6 +247,7 @@ const textItems = {
     dataErrorText: ["Utnytt de verktøyene som tilbys fra GBIF og Bionomia til å oppdage feil i dataene.","Utilize the tools available from GBIF and Bionomia to discover errors in the data."],
     artsObsLink: ["Last ned data fra artsobservasjoner", "Download data from artsobservasjoner"],
     artsObsText: ["Last ned data og bilder fra artsobservasjoner i et format som gjør det lett å importere det til MUSIT-databasen.","Download data from artsobservasjoner in a formate that is easy to import into the MUSIT database."],
+    bcText: ["Oversikt over DNA strekkoder i Norge for:", "Overview of DNA barcodes from Norway for:"],
     
     //ShowStat page
     showStatHeader: ["Statistikk over samlingene", "Statistics from the collections"],
@@ -293,6 +299,13 @@ const textItems = {
     
     // checkCoord page
     checkCoordHeader: ['Sjekk koordinater', 'Check coordinates'],
+
+    // DNA barcodes page
+    bcHeaderFungi: ['Strekkodete sopp i NorBOL','Barcoded fungi in NorBOL'],
+    bcHeaderMammals: ['Strekkodete pattedyr i NorBOL', 'Barcoded mammals in NorBOL'],
+    bcHeaderLep: ['Strekkodete sommerfugler i NorBOL', 'Barcoded Lepidopterans in NorBOL'],
+    bcHeaderHerptiles: ['Strekkodete herptiler i NorBOL', 'Barcoded herptiles in NorBOL'],
+
 
     // dataError page
     dataErrorHeader: ['Finn feil i dataene', 'Find errors in the data'],

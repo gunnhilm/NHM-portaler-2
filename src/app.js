@@ -12,6 +12,13 @@ const helmet = require('helmet')
 const { response } = require('express')
 const cors = require('cors');
 const fetch = require('node-fetch');
+// var Fasta = require('biojs-io-fasta');
+const fasta = require('bionode-fasta')
+var Fasta = require('biojs-io-fasta');
+// const FileReader = require('FileReader')
+const fs = require('fs')
+const readline = require('readline')
+const csvParser = require('csv-parser')
 
 
 const app = express()
@@ -126,6 +133,7 @@ app.get('/search', (req, res) => {
     }
 })
 
+
 app.get('/advSearch', (req, res) => {
     if (!req.query.samling) {
         throw new Error ('collection not chosen') 
@@ -149,7 +157,6 @@ app.get('/objListSearch', (req, res) => {
     if (!req.query.samling) {
         throw new Error ('collection not chosen') 
     } else {
-        
         try {
             fileRead.objListSearch(req.query.museum, req.query.samling, req.query.searchObjects,req.query.linjeNumber,req.query.limit , (error, results) => {
                 res.send({
@@ -276,6 +283,7 @@ app.get('*/object', (req, res) => {
     }
 })
 
+
 app.get('*/advancedSearch', (req, res) => {
     res.render('advancedSearch', {
      })
@@ -299,7 +307,7 @@ app.get('*/showStat', (req, res) => {
                 }) 
             
             } else {
-                console.log('Error: cold not read statdata file')
+                console.log('Error: could not read statdata file')
             }
         })
     }
@@ -341,7 +349,7 @@ app.get('*/artsObs', (req, res) => {
                     unparsed: results
                 }) 
             } else {
-                console.log('Error: cold not read kommunedata file: ' + error)
+                console.log('Error: could not read kommunedata file: ' + error)
             }
         })
     } else {
@@ -354,19 +362,76 @@ app.get('*/DNAbarcodes', (req, res) => {
         return res.render('DNAbarcodes', {})
     } else {
         try { 
-            getDNAbarcoding.readFasta2( (error, results) => {
-                if (results){
-                    res.send({
-                        unparsed: results
-                    }) 
-                } else {
-                    console.log('Error: cold not read fasta file')
-                }
-            })
+            let coll = req.query.coll
+            console.log(coll)
+            let barcoded_species = []
+            if (!fs.existsSync(`./src/data/nhm/fasta_${coll}.fas`)) {
+                console.log('fasta.fas file does  not exist')
+            } else {
+                const readInterface = readline.createInterface({
+                    input: fs.createReadStream(`./src/data/nhm/fasta_${coll}.fas`),
+                    console: false
+                })
+                readInterface.on('line', function(line) {
+                    if (line.includes('|')) { 
+                        let variables = line.split("|")
+                        let processID = variables[0]
+                        let species = variables[1]
+                        let regno = variables[2]
+                        let regno2
+                        let county
+                        if (coll === "mammals") {
+                            regno2 = variables[3]
+                            county = variables[4]   
+                        } else {
+                            county = variables[3]
+                        }
+                        
+                        let existingRecord = barcoded_species.find(item => item.species === species)
+                        if (existingRecord) {
+                            existingRecord.number ++
+                            existingRecord.processIDs.push(processID)
+                            existingRecord.regnos2.push(regno2)
+                            existingRecord.regnos.push(regno)
+                            existingRecord.counties.push(county)
+
+                        } else {
+                            barcoded_species.push({"species": species, "number": 1, "processIDs": [processID], "regnos": [regno], "regnos2": [regno2], "counties": [county]})
+                        }
+                    }
+                })
+                .on('close', function () {
+                    barcoded_species.sort((a, b) => {
+                        let fa = a.species.toLowerCase(),
+                        fb = b.species.toLowerCase()
+                        if (fa < fb) {
+                            return -1
+                        }
+                        if (fa > fb) {
+                            return 1
+                        }
+                        return 0
+                    })
+                    res.send(barcoded_species)
+                })
+            }
         } catch(error) {
             console.log('error in getDNAbarcoding on backend ' + error)
             throw new Error ('error in getDNAbarcoding')
         }
+    }
+})
+
+// barcoding: page with details for one species
+app.get('*/bcSpecies', (req, res) => {
+    if (!req.query.id) {
+        return res.send({
+            error: 'error in barcoding fungi overview'
+        }) 
+    } else {
+        res.render('bcSpecies', {
+            mySpecies: req.query.id
+        })
     }
 })
 
