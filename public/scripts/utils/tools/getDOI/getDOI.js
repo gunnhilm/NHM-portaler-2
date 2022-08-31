@@ -10,7 +10,7 @@ const papaParseConfig = {
 	transformHeader: undefined,
 	dynamicTyping: false,
 	skipEmptyLines: 'greedy',
-	delimitersToGuess: [ ' ',',', '\t', '|', ';']
+	delimitersToGuess: [',', '\t', '|', ';']
 }
 
 
