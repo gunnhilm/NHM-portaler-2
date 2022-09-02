@@ -310,6 +310,7 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
             objectNumbers.push(searchObjects)
         }
         console.log(objectNumbers + ' line 312')
+        // check if collection has suffix "/" in catalogNumber
         let suffix
         console.log(samling + ' ' + museum)
         if (samling === 'moser') {
@@ -336,7 +337,7 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
                 results = line
                 headers = line.split('\t')
             } else {
-                // check if collection has suffix "/" in catalogNumber
+                
                 
                 if (objectNumbers.length === 0) {
                     readInterface.close()
@@ -344,16 +345,23 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
                 let lineArray = line.split('\t')
                 let catNoInFile = lineArray[headers.indexOf('catalogNumber')].toLowerCase().trim()
                 let source = getSource(museum, samling)
-
-                for (const el of objectNumbers) {
+                
+                for (let el of objectNumbers) {
                     
                     // for collections with suffixes in catNo ('.../1'). When complete suffix is entered in search term, all is good
+                    // when complete suffix is entered, but musit-catalog-number has only "/", without number:
+                    if (suffix && el.includes('/') && catNoInFile.length == catNoInFile.indexOf('/')+1) {
+                        el = el.substring(0,el.indexOf('/'))
+                        catNoInFile = catNoInFile.substring(0,catNoInFile.indexOf('/'))
+                    } else 
                         // when no suffix is included in search term: 
                     if (suffix && !el.includes('/')) {
+                        console.log('en')
                         catNoInFile = catNoInFile.substring(0,catNoInFile.indexOf('/'))
                     }
                         // when only '/' is included:
                     else if (suffix && el.includes('/') && el.length == el.indexOf('/')+1) {
+                        console.log('to')
                         catNoInFile = catNoInFile.substring(0,catNoInFile.indexOf('/')+1)
                     }
                     // remove leading 0's from catalogNumber in dump-file
@@ -366,6 +374,7 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
                     
                     if ( catNoInFile === el.trim()) {
                         // søk for en match i linja  (line.indexOf(searchTerm) !== -1)
+                        console.log('her')
                         results =  results +  '\n' + line
                         resultCount++
                         objectNumbers.splice(objectNumbers.indexOf(el),1)

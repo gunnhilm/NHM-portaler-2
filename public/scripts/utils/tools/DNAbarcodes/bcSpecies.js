@@ -84,34 +84,36 @@ const fillTable = (data) => {
             coll = "dna_fish_herptiles"
         }
         console.log(data.regnos[i])
-        if (data.regnos2[i]) {
-            if (data.regnos2[i].includes('ANM'))  {
-                objButton.style = "background-color:white; border:none"
-            }
-        }
+       
         if (!coll === "sopp" & !coll === "lav" & !coll === "mammals" & !coll === "Lep" || !data.regnos[i].match(/[a-zA-Z]/)) { // dette funker vel ikke
             objButton.style = "background-color:white; border:none"
             console.log('en')
         } else if (data.regnos[i].includes('VM')) {
             console.log('to')
             objButton.style = "background-color:white; border:none"
-        }  else {
+        }  else if (coll === "Lep" && !data.regnos[i].includes("NHMO-DAR")) {
             console.log('fire')
-            if (coll === "Lep" && !data.regnos[i].includes("NHMO-DAR")) {
-                objButton.style = "background-color:white; border:none"
-            } else {
+            objButton.style = "background-color:white; border:none"
+        } else if (coll === 'mammals' && data.regnos2[i].includes('ANM')) {
+                // if (data.regnos2[i].includes('ANM'))  {
+                    console.log('anm')
+                    objButton.style = "background-color:white; border:none"
+                // }
+            }
+            else {
                 if (coll === "Lep") {coll = "dna_entomology"}
                 museum = "nhm"
                 if (data.regnos[i].includes('TROM')) {
                     museum = "tmu"
                 }
+                
                 console.log(coll)
                 objButton.style = "background-color:white; border:none; color:blue; text-decoration:underline"
                 objButton.onclick = function() {
                     museumURLPath = urlPath + "/" + museum
                     window.open(href=`${museumURLPath}/object/?id=${regno}&samling=${coll}&museum=${museum}&lang=${sessionStorage.getItem('language')}&isNew=yes`)
                 }
-            }
+            // }
         }
         
         cell2.appendChild(objButton)

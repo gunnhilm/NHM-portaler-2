@@ -49,7 +49,8 @@ async  function setSpecimenData () {
                                 errorMessage.innerHTML = textItems.serverError[index]
                                 return console.log(data.error)
                             } else {
-                                const JSONdata = JSON.parse(data)    
+                                const JSONdata = JSON.parse(data)   
+                                console.log(data) 
                                 const parsedResults = Papa.parse(JSONdata.unparsed.results, {
                                     delimiter: "\t",
                                     newline: "\n",

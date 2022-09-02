@@ -159,6 +159,7 @@ app.get('/objListSearch', (req, res) => {
     } else {
         try {
             fileRead.objListSearch(req.query.museum, req.query.samling, req.query.searchObjects,req.query.linjeNumber,req.query.limit , (error, results) => {
+                
                 res.send({
                     unparsed: results
                 })

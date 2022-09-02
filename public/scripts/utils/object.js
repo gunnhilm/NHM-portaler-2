@@ -94,18 +94,22 @@ async  function getspecimenData (allObject) {
         const urlParams = new URLSearchParams(window.location.search)
         const id = urlParams.get('id')
         let specimenObject = {}
+        console.log(allObject[0])
         try {
             if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
                 specimenObject = allObject.find(x => x.catalogNumber.replace(/[A-Z]/,'').trim() === id)
             }
-            //  else if (allObject[0].catalogNumber.includes('/')) {
-            //     specimenObject = allObject.find(x => x.catalogNumber.substring(0,x.catalogNumber.indexOf('/')) === id)
-            // }
+             else if (allObject[0].catalogNumber.includes('/')) {
+                console.log(id)
+                specimenObject = allObject.find(x => x.catalogNumber.substring(0,x.catalogNumber.indexOf('/')) === id.substring(0,id.indexOf('/')))
+            }
              else {
                 specimenObject = allObject.find(x => x.catalogNumber === id)
             }
+            console.log(specimenObject)
             resolve(specimenObject)
         } catch (error) {
+            document.getElementById('musit-regno').innerHTML = textItems.objError[index]
             reject(new Error(error));
             console.log(error);
 
