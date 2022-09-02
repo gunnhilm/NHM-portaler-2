@@ -84,15 +84,19 @@ const fillTable = (data) => {
             coll = "dna_fish_herptiles"
         }
         console.log(data.regnos[i])
-        if (!coll === "sopp" & !coll === "lav" & !coll === "mammals" & !coll === "Lep" || !data.regnos[i].match(/[a-zA-Z]/)) { // dette funker vel ikke
-            objButton.style = "background-color:white; border:none"
-        } else if (data.regnos[i].includes('VM')) {
-            objButton.style = "background-color:white; border:none"
-        } else if (data.regnos2[i]) {
+        if (data.regnos2[i]) {
             if (data.regnos2[i].includes('ANM'))  {
                 objButton.style = "background-color:white; border:none"
             }
-        } else {
+        }
+        if (!coll === "sopp" & !coll === "lav" & !coll === "mammals" & !coll === "Lep" || !data.regnos[i].match(/[a-zA-Z]/)) { // dette funker vel ikke
+            objButton.style = "background-color:white; border:none"
+            console.log('en')
+        } else if (data.regnos[i].includes('VM')) {
+            console.log('to')
+            objButton.style = "background-color:white; border:none"
+        }  else {
+            console.log('fire')
             if (coll === "Lep" && !data.regnos[i].includes("NHMO-DAR")) {
                 objButton.style = "background-color:white; border:none"
             } else {
@@ -101,6 +105,7 @@ const fillTable = (data) => {
                 if (data.regnos[i].includes('TROM')) {
                     museum = "tmu"
                 }
+                console.log(coll)
                 objButton.style = "background-color:white; border:none; color:blue; text-decoration:underline"
                 objButton.onclick = function() {
                     museumURLPath = urlPath + "/" + museum
