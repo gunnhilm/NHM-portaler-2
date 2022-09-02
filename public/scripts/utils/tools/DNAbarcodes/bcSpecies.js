@@ -83,9 +83,15 @@ const fillTable = (data) => {
          else if (coll === "herptiles") {
             coll = "dna_fish_herptiles"
         }
-        console.log(coll)
+        console.log(data.regnos[i])
         if (!coll === "sopp" & !coll === "lav" & !coll === "mammals" & !coll === "Lep" || !data.regnos[i].match(/[a-zA-Z]/)) { // dette funker vel ikke
             objButton.style = "background-color:white; border:none"
+        } else if (data.regnos[i].includes('VM')) {
+            objButton.style = "background-color:white; border:none"
+        } else if (data.regnos2[i]) {
+            if (data.regnos2[i].includes('ANM'))  {
+                objButton.style = "background-color:white; border:none"
+            }
         } else {
             if (coll === "Lep" && !data.regnos[i].includes("NHMO-DAR")) {
                 objButton.style = "background-color:white; border:none"
