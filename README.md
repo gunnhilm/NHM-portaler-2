@@ -61,4 +61,4 @@ In a console window form the "NHM-portaler-2" folder run "npm run start" or "npm
 Start your apache server, if you are using Apachelounge from a console window in the folder  C:\Apache24\bin run "httpd.exe".
 
 ## in the browser
-Your portal is now available at http://localhost/nhm
+Your portal is now available at [http://localhost:3000/museum/nhm]
