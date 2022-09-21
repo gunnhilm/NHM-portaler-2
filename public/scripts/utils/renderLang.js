@@ -155,7 +155,6 @@ function renderText (lang) {
         if (document.querySelector('#other')) {document.querySelector('#other').innerHTML = textItems.otherCollections[index]}
         document.querySelector('#empty-search-button').innerHTML = textItems.emptySearch[index]
         document.querySelector('#hits-per-page').innerHTML = textItems.hitsPerPage[index]
-        console.log('kommer vi hit')
         if (sessionStorage.getItem('string') && document.querySelector('#first').innerHTML.includes('F')) {
             document.getElementById("head-nb-hits").innerHTML = textItems.nbHitsText[index]
         }
@@ -343,20 +342,34 @@ document.querySelector('#language').addEventListener('click', (e) => {
                 index = 1
             }
 
+            // tror det blir feil her, når tabellen er smalere, og celler skal hoppes over
+            // finn cellene basert på ... klasse
             const headerRow = document.querySelector("#myTable").rows[0]
             cell1 = headerRow.cells[0]
             cell2 = headerRow.cells[1]
+            // cell3 = document.getElementsByClassName("row-uncertainty")
             cell3 = headerRow.cells[2]
+            // cell4 = document.getElementsByClassName('row-innsamler')            
             cell4 = headerRow.cells[3]
-            cell5 = headerRow.cells[4]
-            cell6 = headerRow.cells[5]
-            cell7 = headerRow.cells[6]
-            cell8 = headerRow.cells[7]
-            cell9 = headerRow.cells[8]
-            cell10 = headerRow.cells[9]
-            cell11 = headerRow.cells[10]
-            cell12 = headerRow.cells[11]
-            cell13 = headerRow.cells[12]
+            cell5 = document.getElementsByClassName('row-dato')
+            // cell5 = headerRow.cells[4]
+            cell6 = document.getElementsByClassName('row-land')
+            // cell6 = headerRow.cells[5]
+            cell7 = document.getElementsByClassName('row-kommune')
+            // cell7 = headerRow.cells[6]
+            cell8 = document.getElementsByClassName('row-sted')
+            // cell8 = headerRow.cells[7]
+            cell9 = document.getElementsByClassName('row-habitat')
+            // cell9 = headerRow.cells[8]
+            cell10 = document.getElementsByClassName('row-sampleType')
+            // cell10 = headerRow.cells[9]
+            cell11 = document.getElementsByClassName('row-photo')
+            // cell11 = headerRow.cells[10]
+            cell12 = document.getElementsByClassName('row-coordinates')
+            // cell12 = headerRow.cells[11]
+            cell13 = document.getElementsByClassName('row-checkbox')
+            // cell13 = headerRow.cells[12]
+            
  
             stringData = sessionStorage.getItem('string')
             musitData = JSON.parse(stringData)      
@@ -370,6 +383,7 @@ document.querySelector('#language').addEventListener('click', (e) => {
                 if (sessionStorage.getItem('organismGroup').includes('geologi')) {
                     org = 'geologi'
                 } else { org = 'other'}
+                console.log('her')
                 fillResultHeaders(org,cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell10,cell11,cell12,cell13,musitData)
             }
         

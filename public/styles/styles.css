@@ -89,7 +89,7 @@ header {
     .sub-header-right{
         display: none;
         /* width: 100%;
-        float:right;
+        float:right; 
          */
     }
 
@@ -101,16 +101,22 @@ header {
         width: 60px;
         
     }
+    .row-uncertainty {
+        display: none;
+    }
     .row-sampleType {
         display: none;
     }
     .row-land {
         display: none;
     }
+    .cell3 {
+        display: none;
+    }
     .cell10  {
         display: none;
     }
-    .cell5 {
+    .cell6 {
         display: none;
     }
     #language {
@@ -139,7 +145,7 @@ header {
     .row-innsamler {
         display: none;
     }
-    .cell3 {
+    .cell4 {
         display: none;
     }
    

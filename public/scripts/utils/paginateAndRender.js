@@ -79,7 +79,8 @@ function hide_column(col_no) {
 //	is called by 
 //	drawList()
 //	addSortingText(…)
-const resultTable = (subMusitData, musitData) => {    
+const resultTable = (subMusitData, musitData) => {   
+    console.log(subMusitData[0]) 
     try {
         
         table.innerHTML = ""
@@ -90,9 +91,11 @@ const resultTable = (subMusitData, musitData) => {
             const cell3 = row.insertCell(2) // uncertainty (før innsamler)
             cell3.className += "cell3"
             const cell4 = row.insertCell(3) //Innsamler (før dato)
+            cell4.className += "cell4"
             const cell5 = row.insertCell(4) //Dato (før land)
             cell5.className += "cell5";
             const cell6 = row.insertCell(5) // Land (før kommune)
+            cell6.className += "cell6"
             const cell7 = row.insertCell(6) // Kommune (før sted)
             const cell8 = row.insertCell(7) // Sted (før foto)
             const cell9 = row.insertCell(8) // Habitat (før koord)
@@ -106,6 +109,7 @@ const resultTable = (subMusitData, musitData) => {
                 if (sessionStorage.getItem('organismGroup').includes('geologi')) {
                     org = 'geologi'
                 } else { org = 'other'}
+                
                 fillResultHeaders(org,cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell10,cell11,cell12,cell13,musitData)
                 
             } else {        // Her kommer innmaten i tabellen, selve resultatene
@@ -158,7 +162,12 @@ const resultTable = (subMusitData, musitData) => {
                     }
                     
                 } else if (sessionStorage.getItem('organismGroup').includes('zoologi')) {
-                    cell2.innerHTML = `<span style=font-style:italic>${subMusitData[i].genus} ${subMusitData[i].specificEpithet}</span>`
+                    if (subMusitData[i].specificEpithet != "") {
+                        cell2.innerHTML = `<span style=font-style:italic>${subMusitData[i].genus} ${subMusitData[i].specificEpithet}</span>`
+                    } else {
+                        cell2.innerHTML = `<span style=font-style:italic>${subMusitData[i].scientificName}</span>`
+                    }
+                    
                 } else {
                     let nameArray = italicSpeciesname(subMusitData[i].scientificName)
                     cell2.innerHTML = `<span style=font-style:italic>${nameArray[0].replace(/\"/g,'')}</span>` + ' ' + `<span>${nameArray[1].replace(/\"/g,'')}</span>`
@@ -229,7 +238,7 @@ const resultTable = (subMusitData, musitData) => {
             }
           
         }
-        if (!subMusitData[0].hasOwnProperty('uncertainty')) {
+        if (!subMusitData[0].hasOwnProperty('identificationRemarks')) {
             hide_column(2)
         }
 
