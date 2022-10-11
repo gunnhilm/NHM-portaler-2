@@ -259,7 +259,6 @@ const getArtsObsData = async (artsObsNumber, MUSITNo)=> {
         museumCollection = addMuseum()
 
         // fix scientificName
-        console.log(valgtSamling);
         if(valgtSamling === 'sopp') { // 
             scientificName = fixScientificName(resultObj.scientificName)
             resultObj.scientificName = scientificName
@@ -407,7 +406,7 @@ async function getImageUrls(keyObj) {
             url = 'https://api.gbif.org/v1/occurrence/search?dataset_Key=b124e1e0-4755-430f-9eab-894f25a9b59c&catalogNumber=' + key
             obj = await (await fetch(url)).json();
             tempObj = obj.results[0].extensions["http://rs.gbif.org/terms/1.0/Multimedia"]
-            if(tempObj){
+            if(tempObj.length > 0){
                 lisens = tempObj[0]["http://purl.org/dc/terms/license"]
             }
             
