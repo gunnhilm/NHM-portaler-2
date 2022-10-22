@@ -4,6 +4,7 @@ const fileRead = require('./utils/fileread')
 const getStatFile = require('./utils/getStatFile')
 const checkCoord = require('./utils/checkCoords')
 const artsObsReadFile = require('./utils/artsobs/artsObs')
+const adbAPI2 = require('./utils/artsobs/adbAPI2')
 const footerDate = require('./utils/footerDate')
 const hbs = require('hbs')
 const helmet = require('helmet')
@@ -430,6 +431,71 @@ app.get('*/bcSpecies', (req, res) => {
     }
 })
 
+app.get('*/barcodeValidation', (req, res) => {
+    try { 
+        if (!fs.existsSync(`./src/data/nhm/prøveoversikt_strekkoding_sopp_220921_NYESTE.csv`)) {
+            console.log('validation-file does  not exist')
+        } else {
+            const readInterface = readline.createInterface({
+                input: fs.createReadStream(`./src/data/nhm/prøveoversikt_strekkoding_sopp_220921_NYESTE.csv`),
+                console: false
+            })
+            let validationArray = []
+            readInterface.on('line', function(line) {
+                if (!line.startsWith('MUSIT')) {
+                    lineArray = line.split(';')
+                    let validationObject = {
+                        musitRegno: lineArray[0],
+                        validationStatus: lineArray[46],
+                        validationMethod: lineArray[48],
+                        expert: lineArray[70]
+                    }
+                    validationArray.push(validationObject)
+                }
+            })
+            .on('close', function () {
+                res.send(validationArray)
+            })
+        }
+    } catch(error) {
+        console.log('error in barcoding-validatgion on backend ' + error)
+        throw new Error ('error in getValidationData')
+    }
+})
+
+app.get('*/getNamelist', (req, res) => {
+    console.log(req.query)
+    adbAPI2.getNamelist(req.query.nameFile, (error, results) => {
+        res.send({
+            unparsed:results
+        })
+    })
+})
+
+app.get('*/getCandidates', (req, res) => {
+    adbAPI2.getCandidates(req.query.candidateFile, (error, results) => {
+        res.send({
+            unparsed:results
+        })
+    })
+})
+
+app.get('*/getNorwegianName', (req, res) => {
+    if (req.query.latinName){ 
+        adbAPI2.getNorwegianName(req.query.latinName, (error, results) => {
+            if(results){
+                console.log(results + ' linje 438 app.js')
+                res.send({
+                    unparsed: results
+                }) 
+            } else {
+                console.log('Error: could not get Norwegian name: ' + error)
+            }
+        })
+    } else {
+        res.render('getNorwegianName', {})
+    }
+})
 
 //proxy for downloading images from artsdatabanken
 // https://dev.to/eckhardtd/downloading-images-in-the-browser-with-node-js-4f0h

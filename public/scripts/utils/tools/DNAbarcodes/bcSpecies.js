@@ -39,15 +39,56 @@ const getFastaData = () => {
     })
 }
 
+// const getValidationData = () => {
+//     return new Promise(resolve => {
+//         const url =   urlPath + `/barcodeValidation/`
+//         fetch(url).then((response) => { 
+//             response.text().then((data) => {
+//                 if(data.error) {
+//                     return console.log(data.error)
+//                 } else {          
+//                     try {
+//                         data = JSON.parse(data)
+//                         resolve(data)
+//                     } catch (error) {
+//                         console.log(error);
+//                     }
+//                 }
+//             })
+//         })
+//     })
+// }
+
 function addRow(table) {
     row = table.insertRow(-1)
     cell1 = row.insertCell(0)
     cell2 = row.insertCell(1)
     cell3 = row.insertCell(2)
-    cell4 = row.insertCell(3)
+    // cell4 = row.insertCell(3)
+    // cell5 = row.insertCell(4)
+    // cell6 = row.insertCell(5)
 }
 
 const fillTable = (data) => {
+    
+    addRow(countyTable)
+    cell1.innerHTML = ''
+
+    addRow(countyTable)
+    cell1.innerHTML = 'County'
+    cell1.style.fontWeight = 'bold'
+    cell2.innerHTML = 'Regno'
+    cell2.style.fontWeight = 'bold'
+    cell3.innerHTML = 'ProcessID'
+    cell3.style.fontWeight = 'bold'
+    // cell4.innerHTML = 'Validation status'
+    // cell4.style.fontWeight = 'bold'
+    // cell5.innerHTML = 'Validation method'
+    // cell5.style.fontWeight = 'bold'
+    // cell6.innerHTML = 'Expert'
+    // cell6.style.fontWeight = 'bold'
+
+
     for (i=0;i<data.regnos.length;i++) {
         addRow(countyTable)
         cell1.innerHTML =  data.counties[i]
@@ -122,8 +163,15 @@ const fillTable = (data) => {
         let processID = data.processIDs[i].substr(1)
         const url = `http://www.boldsystems.org/index.php/Public_RecordView?processid=${processID}`
         cell3.innerHTML = `<a href="${url}" target="_blank">${processID}</a>`
+        cell3.style = "padding-right:20px"
+
+        // cell4.innerHTML = data.validationStatus[i]
+        // cell4.style = "padding-right:20px"
+
+        // cell5.innerHTML = data.validationMethod[i]
+        // cell5.style = "padding-right:20px"
         
-        
+        // cell6.innerHTML = data.expert[i]
     }
 }
 
@@ -137,7 +185,29 @@ async function main() {
     let speciesObject = data.find((el) => {
         return el.species === relSpecies.replace("_"," ")
     })
+    // // console.log(speciesObject)
+    // speciesObject.validationStatus = []
+    // speciesObject.validationMethod = []
+    // speciesObject.expert = []
+    
+    // validationData = await getValidationData()
+
+        // for (i=0;i<speciesObject.regnos.length;i++) {
+        //     let validationObject = validationData.find((el) => {
+        //         return el.musitRegno === speciesObject.regnos[i]
+        //     })
+        //     console.log(validationObject)
+        //     speciesObject.validationStatus.push(validationObject.validationStatus)
+        //     speciesObject.validationMethod.push(validationObject.validationMethod)
+        //     speciesObject.expert.push(validationObject.expert)
+            
+        // }
+        // console.log(speciesObject)
+
+    
+
     fillTable(speciesObject)
+
     
 }
 
