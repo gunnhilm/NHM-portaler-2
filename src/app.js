@@ -315,6 +315,10 @@ app.get('/nhm/journaler', (req, res) => {
      })
  })
 
+ app.get('*/loans', (req, res) => {
+    res.render('loans', {
+     })
+ })
 
 app.get('/about', (req, res) => {
    res.render('about', {
