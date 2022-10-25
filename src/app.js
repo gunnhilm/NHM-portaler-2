@@ -6,6 +6,7 @@ const checkCoord = require('./utils/checkCoords')
 const artsObsReadFile = require('./utils/artsobs/artsObs')
 const adbAPI2 = require('./utils/artsobs/adbAPI2')
 const footerDate = require('./utils/footerDate')
+const loan = require('./utils/loans')
 const hbs = require('hbs')
 const helmet = require('helmet')
 const { response } = require('express')
@@ -14,14 +15,16 @@ const fetch = require('node-fetch');
 const fs = require('fs')
 const readline = require('readline')
 const csvParser = require('csv-parser')
-
+const bodyParser = require('body-parser');
 
 const app = express()
 
 // Sikkerhets app som beskytter mot uønskede headers osv.
 app.use(helmet())
 const port = process.env.PORT || 3000
-    
+
+// reciving json to server
+app.use(bodyParser.json());
 
 // define paths for Express
 const publicDirectoryPath = path.join(__dirname, '../public')
@@ -316,9 +319,14 @@ app.get('/nhm/journaler', (req, res) => {
  })
 
  app.get('*/loans', (req, res) => {
-    res.render('loans', {
-     })
+        res.render('loans', {})
  })
+
+ app.post('*/post-loan', (req, res) => {
+    console.log('Got body:', req.body);
+    loan.requestLoan(req.body)
+    res.sendStatus(200);
+});
 
 app.get('/about', (req, res) => {
    res.render('about', {

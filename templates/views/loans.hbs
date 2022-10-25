@@ -13,15 +13,31 @@
             
             <div class="content">
                 <br><br><br><br>
-Her kommer loan teksten
-                
+                Her kommer loan teksten<br>
+                1. en tabell over objekter du vil låne<br>
+                2. låneskjemma
+                <div id="container"><br></div>
+                <div id="loan-form"><br>
+                    <form action="" id="loan-form">
+                        <label for="institution">Institution:</label>
+                        <input type="text" id="institution" name="institution" value=""><br>
+                        <label for="fname">First name:</label>
+                        <input type="text" id="fname" name="fname" value=""><br>
+                        <label for="lname">Last name:</label>
+                        <input type="text" id="lname" name="lname" value=""><br>
+                        <input type="submit" value="submit" />
+                    </form>
+
+                </div>
             </div>
+
             {{>footer}}
         </div>
+
         <link rel="stylesheet" href="/museum/styles/styles.css">
         <link id="museumStyle" rel="stylesheet" type="text/css" href= "">
         <script src="/museum/scripts/utils/showCorrectMuseum.js"></script>
-        <script src="/museum/scripts/utils/showCorrectMuseum.js"></script>
+        <script src="/museum/scripts/utils/tools/loans/loansPage.js"></script>
 
     </body>
 </html>

@@ -18,16 +18,22 @@ const startLoans = () => {
         alert (' Select object to loan')
     } else {
         console.log(loanArray);
+        const loanItems = JSON.stringify(loanArray)
+        sessionStorage.setItem("loanItems", loanItems)
     }
 }
 
-
+const openPage = () => {
+    window.location.replace('loans')
+}
 
 // When some pushes the loan button
 loansButton.addEventListener('click', (e) => {
     e.preventDefault()
     console.log('lån');
     startLoans()
+    openPage()
+    
 
 })
 

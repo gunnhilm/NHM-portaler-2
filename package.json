@@ -12,6 +12,7 @@
   "author": "",
   "license": "UNLICENSED",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "csv-parser": "^2.3.3",
     "dompurify": "^2.2.6",
