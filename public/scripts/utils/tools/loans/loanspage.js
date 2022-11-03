@@ -1,18 +1,43 @@
 const form = document.getElementById('loan-form');
-const urlPath = '/museum'
 
-
-form.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const form = new FormData(event.target);
-    // Display the key/value pairs
-    for (const pair of form.entries()) {
-        console.log(`${pair[0]}, ${pair[1]}`);
+const getLoanItems = (storagKey) => {
+    let items = sessionStorage.getItem(storagKey)
+    if (items) {
+        items = JSON.parse(items)
+        return items
+    } else {
+        return false
     }
+}
+const getDataendSendIt = () => {
+
+    const requestArray = []
+    const loanObjects = []
+    console.log(loanObjects);
+    requestArray.push('formObject')
+    requestArray.push(loanObjects)
+    console.log(requestArray[1]);
+    console.log(requestArray);
+    
+    // get list of objects for loan
+    let items = getLoanItems("loanItems")
+    if (items) {
+        for (let i = 0; i < items.length; i++) {
+            requestArray[1].push(items[i])
+        } 
+    }
+    // console.log(requestArray[1]);
+    const form = new FormData(event.target);
+        // Display the key/value pairs
+        for (const pair of form.entries()) {
+            console.log(`${pair[0]}, ${pair[1]}`);
+            requestArray
+        }
+
     const stringForm = JSON.stringify(Object.fromEntries(form))
-    console.log(stringForm);
+    // console.log(stringForm);
     const url = '/museum/post-loan/'
-  
+  return
     fetch(url, {
         method: 'POST', // or 'PUT'
         headers: {
@@ -32,6 +57,14 @@ form.addEventListener('submit', (event) => {
     .catch((error) => {
         console.error('Error:', error);
     });
+}
+
+
+// send information to server
+form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    getDataendSendIt()
+
 
 });
 
@@ -65,7 +98,7 @@ const addClickFunc = (buttonId)  => {
 // creates the headers in the table
 // in: table (html-table, to show on the page)
 // in: keys (array?, source of header titles)
-// is called in journalResultTable(..)
+// is called in loanResultTable(..)
 function addHeaders(table, headerItems) {
       const tr = document.createElement('tr'); // Header row
         for( let i = 0; i < headerItems.length; i++ ) {
@@ -83,7 +116,7 @@ function addHeaders(table, headerItems) {
 // in: children (array, containing content to table, i.e. data on journals) 
 // calls addHeaders(..)
 // is called in dojournalSearch(..)
-const journalResultTable = (children) => {
+const loanResultTable = (children) => {
     const table = document.createElement('table');
     table.setAttribute('id', 'loans-item-table')
     table.setAttribute('class', 'result-table')
@@ -116,7 +149,7 @@ const journalResultTable = (children) => {
         
     }
     // send tabellen til frontend
-    document.getElementById('container').appendChild(table);
+    document.getElementById('table-container').appendChild(table);
     // add functionallity to removebutton
     for( let i = 0; i < children.length; ++i ) {
         const removeID = 'remove' + i
@@ -132,10 +165,11 @@ const showTable = () => {
         tbl.parentNode.removeChild(tbl)
     }
 
-    let items = sessionStorage.getItem("loanItems")
+    let items = getLoanItems("loanItems")
     if (items) {
-    items = JSON.parse(items)
-        journalResultTable(items)
+    loanResultTable(items)
+    } else  {
+        alert(' there has been some error, please return to the searchpage and try again')
     }
 }
 
