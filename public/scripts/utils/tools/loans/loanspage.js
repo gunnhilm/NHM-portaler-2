@@ -9,7 +9,7 @@ const getLoanItems = (storagKey) => {
         return false
     }
 }
-const getDataendSendIt = () => {
+const getDataAndSendIt = () => {
 
     const requestArray = []
     const loanObjects = []
@@ -37,7 +37,7 @@ const getDataendSendIt = () => {
     const stringForm = JSON.stringify(Object.fromEntries(form))
     // console.log(stringForm);
     const url = '/museum/post-loan/'
-  return
+  
     fetch(url, {
         method: 'POST', // or 'PUT'
         headers: {
@@ -45,15 +45,15 @@ const getDataendSendIt = () => {
         },
         body: stringForm,
       })
-    .then(res => {
-        if (!res.ok) {                                   
-            throw new Error("HTTP error " + res.status); 
-        }                                                
-        return res.json();                               
-    })
-    .then((result) => {
-        console.log('Success:', result);
-    })
+    // .then(res => {
+    //     if (!res.ok) {                                   
+    //         throw new Error("HTTP error " + res.status); 
+    //     }                                                
+    //     return res.json();                               
+    // })
+    // .then((result) => {
+    //     console.log('Success:', result);
+    // })
     .catch((error) => {
         console.error('Error:', error);
     });
@@ -63,7 +63,7 @@ const getDataendSendIt = () => {
 // send information to server
 form.addEventListener('submit', (event) => {
     event.preventDefault();
-    getDataendSendIt()
+    getDataAndSendIt()
 
 
 });

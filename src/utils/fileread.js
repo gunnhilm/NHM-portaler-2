@@ -12,13 +12,15 @@ const fileListNbh = require('./fileListNbh')
 const { Console } = require("console");
 
 // formate date
-let date_ob = new Date();
-const date = date_ob.getFullYear() + ("0" + (date_ob.getMonth() + 1)).slice(-2)  + ("0" + date_ob.getDate()).slice(-2) + date_ob.getHours() + date_ob.getMinutes() + date_ob.getSeconds()
+const getDate = () => {
+    return new Date().toISOString().replace(/\..+/, '')
+}
 
+const fileDate = new Date().toISOString().replace(/T.+/, '')
 // make a new logger
 const myLogger = new Console({
-  stdout: fs.createWriteStream("./log/" + date + "_normalStdout.txt"),
-  stderr: fs.createWriteStream("./log/" + date + "_errStdErr.txt"),
+  stdout: fs.createWriteStream("./log/" +  Date.now() + "_normalStdout.txt"),
+  stderr: fs.createWriteStream("./log/" +  Date.now() + "_errStdErr.txt"),
 });
 
 function makeHeader () {
@@ -128,6 +130,7 @@ const whichFileDb = (museum,collection) => {
 
 const search = (museum, samling, searchTerm, linjeNumber = 0, limit = 20, callback) => {
     // velg riktig MUSIT dump fil å lese
+    const date = getDate()
     myLogger.log( museum + '\t' + samling + '\t' + searchTerm + '\t' + date + '\tsimple search');
    
     musitFile = setCollection(museum,samling)
@@ -195,6 +198,7 @@ const search = (museum, samling, searchTerm, linjeNumber = 0, limit = 20, callba
 const advSearch = (museum, samling, searchSpecies, searchCollector, searchDate, searchCountry, searchCounty, searchMunicipality, searchLocality, searchCollNo, searchTaxType, linjeNumber = 0, limit = 20, hasPhoto, callback) => {
     // velg riktig MUSIT dump fil å lese
     let concatSearchterm = searchSpecies + ' ' + searchCollector + ' ' +  searchDate + ' ' +  searchCountry + ' ' +  searchCounty + ' ' +  searchMunicipality + ' ' +  searchLocality + ' ' +  searchCollNo + ' ' +  searchTaxType
+    const date = getDate()
     myLogger.log( museum + '\t' + samling + '\t' + concatSearchterm + '\t' + date + '\tadvsearch');
     musitFile = setCollection(museum,samling)
     if (fs.existsSync(musitFile)) {
@@ -281,6 +285,7 @@ const advSearch = (museum, samling, searchSpecies, searchCollector, searchDate, 
 
 // object list search, seach for object number or several numbers, searchObjects = one or more object numbers without prefixes, comma or space separated
 const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 20, callback) => {
+    const date = getDate()
     myLogger.log( museum + '\t' + samling + '\t' + searchObjects + '\t' + date + '\tnumber search');
     // velg riktig MUSIT dump fil å lese
     musitFile = setCollection(museum,samling)
