@@ -25,7 +25,8 @@
     "nodemailer": "^6.8.0",
     "papaparse": "^5.2.0",
     "path": "^0.12.7",
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "x-frame-options": "^1.0.0"
   },
   "devDependencies": {
     "eslint": "^8.6.0",

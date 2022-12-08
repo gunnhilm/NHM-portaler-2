@@ -203,7 +203,7 @@ const getNamelist = async (nameFile, callback) => {
         if (!fs.existsSync(nameFile)) {
             console.log('adb-file does  not exist')
         } else {
-            console.log(nameFile)
+            // console.log(nameFile)
             const readInterface = readline.createInterface({
                 input: fs.createReadStream(nameFile),
                 console: false
@@ -211,7 +211,7 @@ const getNamelist = async (nameFile, callback) => {
             let count = 0  // iterates over each line of the current file
             let nameListObjects = []
             readInterface.on('line', function(line) {
-                if (count === 1) {console.log(line)}
+                // if (count === 1) {console.log(line)}
                 
                 count++
                 let headers = []
@@ -225,7 +225,7 @@ const getNamelist = async (nameFile, callback) => {
                     // and not a subspecies (field 24)
                     // and if the species exists in Norway (field 41; "FinnesINorge")
                     // and the name is not a synonym (field 31)
-                    if (variables[22] && !variables[23] && variables[40].includes('Ja') && variables[30].includes('Gyldig')) {
+                    if (variables[22] && !variables[23] && !variables[24] && !variables[25] && variables[40].includes('Ja') && variables[30].includes('Gyldig')) {
                         let latinName
                         if (variables[0].startsWith("\"")) {
                             latinName = JSON.parse(variables[19]) + " " + JSON.parse(variables[22])
