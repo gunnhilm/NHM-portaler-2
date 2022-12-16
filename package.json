@@ -17,7 +17,7 @@
     "csv-parser": "^2.3.3",
     "dompurify": "^2.2.6",
     "easy-template-x": "^3.0.2",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-validator": "^6.14.2",
     "FileReader": "^0.10.2",
     "hbs": "^4.1.1",
