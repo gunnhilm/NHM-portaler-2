@@ -16,7 +16,8 @@ const fs = require('fs')
 const readline = require('readline')
 const csvParser = require('csv-parser')
 const bodyParser = require('body-parser');
-
+// Include Express Validator Functions
+const { body, validationResult } = require('express-validator');
 const app = express()
 
 // Sikkerhets app som beskytter mot uønskede headers osv.
@@ -322,11 +323,38 @@ app.get('/nhm/journaler', (req, res) => {
         res.render('loans', {})
  })
 
- app.post('*/post-loan', (req, res) => {
-    console.log('Got body:', req.body);
+ // vallidation of input
+ const validateUser = [
+    body('lenderInfo.Institution').trim().escape(),
+    body('lenderInfo.country').trim().escape(),
+    body('lenderInfo.rname').trim().escape(),
+    body('lenderInfo.cname').trim().escape(),
+    body('lenderInfo.oname').trim().escape(),
+    body('lenderInfo.paddress').trim().escape(),
+    body('lenderInfo.saddress').trim().escape(),
+    body('lenderInfo.phone').trim().escape(),
+    body('lenderInfo.purpose').trim().escape(),
+    body('lenderInfo.Special-documents').trim().escape(),
+    body('lenderInfo.email').trim().normalizeEmail().isEmail(),
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()){
+            console.log(errors);
+            return res.status(400).json({ errors: errors.array() });
+        }
+        next();
+    },
+];
+
+
+ app.post('*/post-loan', validateUser,
+ (req, res, next) => {
+    console.log('**************************************************************************');
+    console.log(req.body);
     loan.requestLoan(req.body)
-    res.sendStatus(200);
-});
+     res.send('Success')
+ },
+);
 
 app.get('/about', (req, res) => {
    res.render('about', {

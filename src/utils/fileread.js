@@ -16,7 +16,6 @@ const getDate = () => {
     return new Date().toISOString().replace(/\..+/, '')
 }
 
-const fileDate = new Date().toISOString().replace(/T.+/, '')
 // make a new logger
 const myLogger = new Console({
   stdout: fs.createWriteStream("./log/" +  Date.now() + "_normalStdout.txt"),

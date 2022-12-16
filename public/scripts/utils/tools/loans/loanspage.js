@@ -1,5 +1,19 @@
 const form = document.getElementById('loan-form');
 
+const updateCountryList = () => {
+    const countrySelect = document.getElementById("country");
+    const options = [];
+    const option = document.createElement('option');
+    for (let i = 0; i < countryList.length; i++) {
+        const element = countryList[i];
+        option.text = option.value = element;
+        options.push(option.outerHTML);
+    }
+    countrySelect.insertAdjacentHTML('beforeEnd', options.join('\n'));
+}
+
+updateCountryList()
+
 const getLoanItems = (storagKey) => {
     let items = sessionStorage.getItem(storagKey)
     if (items) {
@@ -9,35 +23,27 @@ const getLoanItems = (storagKey) => {
         return false
     }
 }
-const getDataAndSendIt = () => {
 
-    const requestArray = []
-    const loanObjects = []
-    console.log(loanObjects);
-    requestArray.push('formObject')
-    requestArray.push(loanObjects)
-    console.log(requestArray[1]);
-    console.log(requestArray);
-    
+const getDataAndSendIt = () => {
+    const loanInfo = {}
+    loanInfo.lenderInfo = {}
     // get list of objects for loan
     let items = getLoanItems("loanItems")
-    if (items) {
-        for (let i = 0; i < items.length; i++) {
-            requestArray[1].push(items[i])
-        } 
-    }
-    // console.log(requestArray[1]);
-    const form = new FormData(event.target);
-        // Display the key/value pairs
-        for (const pair of form.entries()) {
-            console.log(`${pair[0]}, ${pair[1]}`);
-            requestArray
-        }
+    const formData = new FormData(form);
 
-    const stringForm = JSON.stringify(Object.fromEntries(form))
-    // console.log(stringForm);
-    const url = '/museum/post-loan/'
-  
+    // Display the key/value pairs
+    for (const pair of formData.entries()) {
+        loanInfo.lenderInfo[pair[0]] = pair[1]
+    }
+    loanInfo.items = []
+    
+    for (let i = 0; i < items.length; i++) {
+        const element = items[i];
+        loanInfo.items[i] = element
+        
+    }
+    const stringForm = JSON.stringify(loanInfo)
+    const url = '/museum/post-loan/' 
     fetch(url, {
         method: 'POST', // or 'PUT'
         headers: {
@@ -45,15 +51,13 @@ const getDataAndSendIt = () => {
         },
         body: stringForm,
       })
-    // .then(res => {
-    //     if (!res.ok) {                                   
-    //         throw new Error("HTTP error " + res.status); 
-    //     }                                                
-    //     return res.json();                               
-    // })
-    // .then((result) => {
-    //     console.log('Success:', result);
-    // })
+    .then(res => {
+        if (!res.ok) {                                   
+            throw new Error("HTTP error " + res.status); 
+        }                                                
+        console.log('Success:', res);     
+        // alert('Epost sendt')                         
+    })
     .catch((error) => {
         console.error('Error:', error);
     });
@@ -64,9 +68,12 @@ const getDataAndSendIt = () => {
 form.addEventListener('submit', (event) => {
     event.preventDefault();
     getDataAndSendIt()
-
-
 });
+
+
+
+
+// resultattabell
 
 // fuctonallity for remove button
 const addClickFunc = (buttonId)  => {
@@ -92,9 +99,6 @@ const addClickFunc = (buttonId)  => {
     })
 }
 
-
-// resultattabell
-
 // creates the headers in the table
 // in: table (html-table, to show on the page)
 // in: keys (array?, source of header titles)
@@ -111,7 +115,6 @@ function addHeaders(table, headerItems) {
         }
 }
     
-
 // creates table for the journals and fills it
 // in: children (array, containing content to table, i.e. data on journals) 
 // calls addHeaders(..)
@@ -156,8 +159,6 @@ const loanResultTable = (children) => {
         addClickFunc(removeID)
     }
 }
-
-
 
 const showTable = () => {
     var tbl = document.getElementById('loans-item-table');
