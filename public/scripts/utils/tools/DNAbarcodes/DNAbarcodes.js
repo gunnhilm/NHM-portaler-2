@@ -8,7 +8,8 @@ const urlParamsTop = new URLSearchParams(window.location.search)
 let table = document.getElementById("barcode-table")
 let bcColl = urlParamsTop.get("coll")
 let adbFile
-const adbFilePath = './src/data/NHM/'
+const adbFilePath = './src/data/nhm/'
+// const adbFilePath = './data/NHM/'
 
 if (bcColl === "sopp") {
     document.getElementById("getBarcodeHeader").innerHTML = textItems.bcHeaderFungi[1] 
@@ -27,7 +28,7 @@ else if (bcColl === "herptiles") {
 }
 
 
-document.getElementById("getBarcodeText").innerHTML = "Last updated 17.10.22 <br> <br>Legend: <br>1: Specimens sequenced <br> 2: Sampled specimens, to be sequenced <br> 3: Specimens selected for sampling<br><br> Click on species name to see which specimens are barcoded, and which county (fylke) they are from"
+document.getElementById("getBarcodeText").innerHTML = "Last updated 17.10.22 <br><br><br> Click on species name to see which specimens are barcoded, and which county (fylke) they are from"
 listExplDiv = document.createElement('div')
 
 document.querySelector('#search-bc-text').placeholder = 'Search for latin name' //textItems.placeholder[index]
@@ -38,8 +39,10 @@ document.querySelector('#search-bc-text').placeholder = 'Search for latin name' 
 // is called in main() 
 /// nameFile must be saved with UTF-8-BOM in notepad (not notepad++)
 async function getNamelist (nameFile) {
+    console.log(urlPath)
     return new Promise (resolve => {
         const url = urlPath + `/getNamelist/?nameFile=${nameFile}`
+        console.log(url)
         fetch(url)
             .then((response) => {
                 response.text()
@@ -278,7 +281,7 @@ function fillOnlyBarcoded(data, candidates, sumSpecimens) {
 // in: nameList (array of objects, on for each norwegian species, from adb), data (array of objects, one object for each species, from bold)
 // is called in main() and bcSearch()
 function fillTable (nameList, data, candidates, group, blank) {
-    console.log(nameList)
+    // console.log(nameList)
     addRow(table)
     cell1.innerHTML = 'Species'
     cell1.style.fontWeight = "bold"
@@ -303,7 +306,6 @@ function fillTable (nameList, data, candidates, group, blank) {
     // asco and all phyla and blank search fungi: not all names
     console.log(group)
     let sumSpecimensAndSpecies
-    let sumVariable
     if (bcColl === "sopp" && blank === 'blank') {
         sumSpecimensAndSpecies = fillOnlyBarcoded(data, candidates, sumSpecimens)
     } else if (bcColl === "sopp" && group === 'all') {
@@ -392,7 +394,7 @@ async function main() {
     
     // get array with objects with latin and norwegian names of species livingin norway (based on a namefile downloaded from ADB (should be done automatically once a week))
     nameList = await getNamelist(adbFile)
-    // console.log(nameList.unparsed)    
+    console.log(nameList.unparsed)    
     data = await getFastaData() //Gjør en request til server om å få innholdet i fasta.fas
     // go through data (list of objects with DNA sequence (?)) and add norwegian names...
     data.forEach(el => {

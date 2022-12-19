@@ -211,6 +211,7 @@ function renderText (lang) {
         document.querySelector('#bc-mammals-link').innerHTML = textItems.bcPattedyr[index]
         document.querySelector('#bc-lep-link').innerHTML = textItems.bcLep[index]
         document.querySelector('#bc-herptiles-link').innerHTML = textItems.bcHerptiles[index]
+        document.querySelector('#bc-birds-link').innerHTML = textItems.bcFugler[index]
         //document.querySelector('#coordinate-link').innerHTML = textItems.coordinateLink[index]
         if (window.location.href.includes('/tmu') || window.location.href.includes('/nbh') || window.location.href.includes('/um')) {
             document.querySelector('#bc-fungi-link').style.display = "none"

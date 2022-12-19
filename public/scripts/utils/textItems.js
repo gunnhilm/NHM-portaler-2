@@ -47,6 +47,7 @@ const textItems = {
     bcPattedyr: ["Pattedyr", "Mammals"],
     bcLep: ["Sommerfugl", "Lepidoptera"],
     bcHerptiles: ["Herptiler", "Herptiles"],
+    bcFugler: ["Fugler", "Birds"],
     dna_vascular: ["Karplanter - DNA", "Vascular plants - DNA"],
     dna_insekter: ["Insekter - DNA", "Insects - DNA"],
     fishHerp: ["Fisk og herptiler - DNA", "Fish and herptiles - DNA"],
@@ -305,6 +306,7 @@ const textItems = {
     bcHeaderMammals: ['Strekkodete pattedyr i NorBOL', 'Barcoded mammals in NorBOL'],
     bcHeaderLep: ['Strekkodete sommerfugler i NorBOL', 'Barcoded Lepidopterans in NorBOL'],
     bcHeaderHerptiles: ['Strekkodete herptiler i NorBOL', 'Barcoded herptiles in NorBOL'],
+    bcHeaderBirds: ['Strekkodete fugler i NorBOL', 'Barcoded birds in NorBOL'],
 
 
     // dataError page

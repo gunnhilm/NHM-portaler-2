@@ -191,17 +191,40 @@ const resultTable = (subMusitData, musitData) => {
                 cell8.innerHTML = subMusitData[i].locality
                 cell9.innerHTML = subMusitData[i].habitat
                 if (museumURLPath = urlPath + "/nhm") {
+                    // if we are in a corema-collection
                     if (document.querySelector('#collection-select  option:checked').label.includes('DNA')) {
-                        if (!subMusitData[i].preparationType || subMusitData[i].preparationType === '' || !(/[a-zA-Z]/).test(subMusitData[i].preparationType)) {
-                            if (subMusitData[i].basisOfRecord) { cell10.innerHTML = subMusitData[i].basisOfRecord }
-                            else if (subMusitData[i].coremaBasisOfRecord) {cell10.innerHTML = subMusitData[i].coremaBasisOfRecord}
-                        } else { cell10.innerHTML = subMusitData[i].preparationType.replace(/\"/g,'') }
+                        if (sessionStorage.getItem('chosenCollection').includes('dna_')) {
+                            let musitBasisOfRecord
+                            if (subMusitData[i].musitBasisOfRecord) {musitBasisOfRecord = subMusitData[i].musitBasisOfRecord}
+                            cell10.innerHTML = subMusitData[i].materialSampleType + ' | ' + musitBasisOfRecord
+                        } else {
+                            // if there is no data in preparationType (subtype of sample): use basisOfRecord or coremaBasisOfRecord
+                            if (!subMusitData[i].preparationType || subMusitData[i].preparationType === '' || !(/[a-zA-Z]/).test(subMusitData[i].preparationType)) {
+                                if (subMusitData[i].basisOfRecord) { cell10.innerHTML = subMusitData[i].basisOfRecord }
+                                else if (subMusitData[i].coremaBasisOfRecord) {cell10.innerHTML = subMusitData[i].coremaBasisOfRecord}
+                            } else 
+                            // { cell10.innerHTML = subMusitData[i].preparationType.replace(/\"/g,'') }
+                            { 
+                                let musitBasisOfRecord
+                                if (subMusitData[i].musitBasisOfRecord) {musitBasisOfRecord = subMusitData[i].musitBasisOfRecord}
+                                else if (subMusitData[i].basisOfRecord) {musitBasisOfRecord = subMusitData[i].basisOfRecord}
+                                cell10.innerHTML = subMusitData[i].preparationType.replace(/\"/g,'')  + ' | ' + musitBasisOfRecord
+                            }
+                        }
+
+                        
+                    // if we are in a musit collection (or other)
                     } else { 
+                        // if there is no data in preparationType (subtype of sample): use basisOfRecord or coremaBasisOfRecord (e.g. "MaterialSample")
                         if (!subMusitData[i].preparationType || subMusitData[i].preparationType === '') {
                             if (subMusitData[i].basisOfRecord) { cell10.innerHTML = subMusitData[i].basisOfRecord }
                             else if (subMusitData[i].coremaBasisOfRecord) {cell10.innerHTML = subMusitData[i].coremaBasisOfRecord}
+                        // if there is data in preparationType: use that
                         } else if (subMusitData[i].preparationType != '') {
-                            cell10.innerHTML = subMusitData[i].preparationType.replace(/\"/g,'')
+                            let musitBasisOfRecord
+                                if (subMusitData[i].musitBasisOfRecord) {musitBasisOfRecord = subMusitData[i].musitBasisOfRecord}
+                                else if (subMusitData[i].basisOfRecord) {musitBasisOfRecord = subMusitData[i].basisOfRecord}
+                                cell10.innerHTML = subMusitData[i].preparationType.replace(/\"/g,'') + ' | ' + musitBasisOfRecord
                         } 
                     }
                     

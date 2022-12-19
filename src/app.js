@@ -6,7 +6,7 @@ const checkCoord = require('./utils/checkCoords')
 const artsObsReadFile = require('./utils/artsobs/artsObs')
 const adbAPI2 = require('./utils/artsobs/adbAPI2')
 const footerDate = require('./utils/footerDate')
-const loan = require('./utils/loans/loans') 
+// const loan = require('./utils/loans/loans') 
 const hbs = require('hbs')
 const helmet = require('helmet')
 const { response } = require('express')
@@ -458,6 +458,71 @@ app.get('*/DNAbarcodes', (req, res) => {
     }
 })
 
+app.get('*/DNAbarcodesBirds', (req, res) => {
+    if (!req.query.getFasta) {
+        return res.render('DNAbarcodesBirds', {})
+    } else {
+        try { 
+            let coll = req.query.coll
+            console.log(coll)
+            let barcoded_species = []
+            if (!fs.existsSync(`./src/data/nhm/fasta_${coll}.fas`)) {
+                console.log('fasta.fas file does  not exist')
+            } else {
+                const readInterface = readline.createInterface({
+                    input: fs.createReadStream(`./src/data/nhm/fasta_${coll}.fas`),
+                    console: false
+                })
+                readInterface.on('line', function(line) {
+                    if (line.includes('|')) { 
+                        let variables = line.split("|")
+                        let processID = variables[0]
+                        let species = variables[1]
+                        let regno = variables[2]
+                        let regno2
+                        let county
+                        if (coll === "mammals") {
+                            regno2 = variables[3]
+                            county = variables[4]   
+                        } else {
+                            county = variables[3]
+                        }
+                        
+                        let existingRecord = barcoded_species.find(item => item.species === species)
+                        if (existingRecord) {
+                            existingRecord.number ++
+                            existingRecord.processIDs.push(processID)
+                            existingRecord.regnos2.push(regno2)
+                            existingRecord.regnos.push(regno)
+                            existingRecord.counties.push(county)
+
+                        } else {
+                            barcoded_species.push({"species": species, "number": 1, "processIDs": [processID], "regnos": [regno], "regnos2": [regno2], "counties": [county]})
+                        }
+                    }
+                })
+                .on('close', function () {
+                    barcoded_species.sort((a, b) => {
+                        let fa = a.species.toLowerCase(),
+                        fb = b.species.toLowerCase()
+                        if (fa < fb) {
+                            return -1
+                        }
+                        if (fa > fb) {
+                            return 1
+                        }
+                        return 0
+                    })
+                    res.send(barcoded_species)
+                })
+            }
+        } catch(error) {
+            console.log('error in getDNAbarcoding on backend ' + error)
+            throw new Error ('error in getDNAbarcoding')
+        }
+    }
+})
+
 // barcoding: page with details for one species
 app.get('*/bcSpecies', (req, res) => {
     if (!req.query.id) {
@@ -504,8 +569,8 @@ app.get('*/barcodeValidation', (req, res) => {
 })
 
 app.get('*/getNamelist', (req, res) => {
-    console.log(req.query)
     adbAPI2.getNamelist(req.query.nameFile, (error, results) => {
+       console.log(results)
         res.send({
             unparsed:results
         })

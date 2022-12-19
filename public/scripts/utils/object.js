@@ -94,7 +94,7 @@ async  function getspecimenData (allObject) {
         const urlParams = new URLSearchParams(window.location.search)
         const id = urlParams.get('id')
         let specimenObject = {}
-        console.log(allObject[0])
+        // console.log(allObject[0])
         try {
             if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
                 specimenObject = allObject.find(x => x.catalogNumber.replace(/[A-Z]/,'').trim() === id)
@@ -106,9 +106,10 @@ async  function getspecimenData (allObject) {
              else {
                 specimenObject = allObject.find(x => x.catalogNumber === id)
             }
-            console.log(specimenObject)
+            // console.log(specimenObject)
             resolve(specimenObject)
         } catch (error) {
+            console.log('linje 112')
             document.getElementById('musit-regno').innerHTML = textItems.objError[index]
             reject(new Error(error));
             console.log(error);
@@ -649,6 +650,7 @@ const makeGeoTable = (specimenObject) => {
 // "Second" means trad.coll.object comes from other collection that the one we are in (typically DNA-bank)
 // "second" means we want link to other collection
 async function showObjectData (specimenObject,objectTable,order) {
+    console.log('showobjdata')
     objectTable.style.display='block'
     let coll = sessionStorage.getItem('chosenCollection')
     // let associatedCollection
@@ -761,7 +763,7 @@ async function showItemData (specimenObject,objectTable,order) {
     DNAConcArray = specimenObject.concentration.split(" | ")
     DNAConcUnitArray = specimenObject.concentrationUnit.split(" | ")
     preservationArray = specimenObject.preservationType.split(" | ")
-
+    
     for (i=0; i<itemArray.length; i++) {
         if (specimenObject.RelCleanCatNo) {itemArray[i].RelCleanCatNo = itemRelCleanCatNoArray[i]}
         itemArray[i].itemType = itemTypeArray[i]
@@ -784,13 +786,16 @@ async function showItemData (specimenObject,objectTable,order) {
     addRow(objectTable)
     cell1.innerHTML = '<br>'
     // loop over array
+    console.log(itemArray)
     itemArray.forEach( item => {
-        console.log(item)
+            
         if (item.itemType === "Specimen") { 
+            console.log(item)
             showObjectData(item, document.getElementById("object-table"), "first")
         } else if (item.preparationType.includes("Sperm") || item.preparationType.includes("sperm")) {
             showObjectData(item, document.getElementById('sperm-table'), "first")
         } else {
+            
             //row1 catno
             addRow(objectTable)
             if (order === 'first') {
@@ -872,7 +877,7 @@ async function showItemData (specimenObject,objectTable,order) {
 // is called below
 async function showData (specimenObject, orgGroup) {
     try {
-        console.log(specimenObject)
+        // console.log(specimenObject)
         if (orgGroup === 'other') {
             makeUTADTable(specimenObject)
         } else if (orgGroup === 'geologi') {
@@ -966,21 +971,15 @@ async function showData (specimenObject, orgGroup) {
             document.querySelector("#coordinates").innerHTML = `<span>${coordinates(specimenObject)}</span>`
             document.querySelector('#samplingProtocol').innerHTML = samplingProtocol
         }
-
-        if(!window.location.href.includes('tmu') && !window.location.href.includes('/um') && !window.location.href.includes('/nbh')) {
         
+        if(!window.location.href.includes('tmu') && !window.location.href.includes('/um') && !window.location.href.includes('/nbh')) {
             let table1 = document.getElementById("object-table")
             let table2 = document.getElementById('ass-object-table')
             let table3 = document.getElementById('sperm-table')
             
             if (sessionStorage.getItem('file').includes('stitch')) {
                 if (sessionStorage.getItem('source') === 'corema') {
-                    if (specimenObject.RelCatNo) { // associated collection exist in musit
-                        await showObjectData(specimenObject,table1,"second")    
-                        await showItemData(specimenObject,table2,"first")
-                        table3.style.display = 'none'
-                        table2.style = 'border-top:solid grey'
-                    } else { // both preserved specimen (if exists) and samples are in corema
+                    if (!specimenObject.RelCatNo || !(/[a-zA-Z0-9]/).test(specimenObject.RelCatNo)) { // both preserved specimen (if exists) and samples are in corema
                         if (specimenObject.materialSampleType.includes("Specimen")) { // preserved specimen exists
                             // change this: make coremaBasisOfRecord an array
                             if (specimenObject.materialSampleType === "Specimen") { // only (one) preserved specimen exist
@@ -988,15 +987,17 @@ async function showData (specimenObject, orgGroup) {
                                 table3.style.display = 'none'
                             }
                             await showItemData(specimenObject,table2,"first")
-                            table2.style = 'border-top:solid grey'
-                            // }
                             
-                        } else {
+                            table2.style = 'border-top:solid grey'
+                        } else { 
                             await showItemData(specimenObject,table1,"first")
                             table2.style.display = 'none'
                         }
-                        
-                        
+                    } else { // associated collection exist in musit
+                        await showObjectData(specimenObject,table1,"second")    
+                        await showItemData(specimenObject,table2,"first")
+                        table3.style.display = 'none'
+                        table2.style = 'border-top:solid grey'
                     }
                 } else if (sessionStorage.getItem('source') === 'musit') {
                     await showObjectData(specimenObject,table1,"first")
@@ -1020,6 +1021,7 @@ async function showData (specimenObject, orgGroup) {
             if (dataTableHeight.height > mapDivHeight.height) {divHeight = dataTableHeight.height} else {divHeight = mapDivHeight.height}
         }
     } catch (error) {
+        console.log('linje 1022')
         document.getElementById('musit-regno').innerHTML = textItems.objError[index]
         // textItems.serverError[index]
 
@@ -1130,7 +1132,7 @@ document.getElementById('large-map-object-button').onclick = () => {
 // put content in html-boxes
 async function renderItems () {
     try {
-        renderObjectText(language) // endret fra renderLang()
+        renderObjectText(language) // in renderLangObjPage.js
     } catch (error) {
         console.log(error);
     }
@@ -1173,7 +1175,7 @@ async function main () {
    
    
    // get the correct object
-   console.log(allObject)
+//    console.log(allObject)
     let specimenObject = await getspecimenData(allObject)
     if(Array.isArray(allObject) && (allObject.length > 2) && urlParams.get("isNew") != "yes") {
         makeNavButtons(allObject, specimenObject)

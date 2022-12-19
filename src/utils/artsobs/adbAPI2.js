@@ -201,9 +201,9 @@ const getCandidates = async (candidateFile,callback) => {
 const getNamelist = async (nameFile, callback) => {
     try {
         if (!fs.existsSync(nameFile)) {
-            console.log('adb-file does  not exist')
+            // console.log('adb-file does  not exist')
+            callback(undefined, {error: 'error'})
         } else {
-            // console.log(nameFile)
             const readInterface = readline.createInterface({
                 input: fs.createReadStream(nameFile),
                 console: false
@@ -258,7 +258,7 @@ const getNamelist = async (nameFile, callback) => {
             })
         }
     } catch (error) {
-        console.log(error)
+        callback(undefined, {error: 'error from catch'})
     }
 }
 
