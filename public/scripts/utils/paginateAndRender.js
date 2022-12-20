@@ -212,12 +212,8 @@ const resultTable = (subMusitData, musitData) => {
                     if (document.querySelector('#collection-select  option:checked').label.includes('DNA')) {
                         if (sessionStorage.getItem('chosenCollection').includes('dna_')) {
                             let musitBasisOfRecord
-                            if (subMusitData[i].musitBasisOfRecord) {
-                                musitBasisOfRecord = subMusitData[i].musitBasisOfRecord
-                                cell10.innerHTML = subMusitData[i].materialSampleType + ' | ' + musitBasisOfRecord
-                            } else {
-                                cell10.innerHTML = subMusitData[i].materialSampleType
-                            }
+                            if (subMusitData[i].musitBasisOfRecord) {musitBasisOfRecord = subMusitData[i].musitBasisOfRecord}
+                            cell10.innerHTML = subMusitData[i].materialSampleType + ' | ' + musitBasisOfRecord
                         } else {
                             // if there is no data in preparationType (subtype of sample): use basisOfRecord or coremaBasisOfRecord
                             if (!subMusitData[i].preparationType || subMusitData[i].preparationType === '' || !(/[a-zA-Z]/).test(subMusitData[i].preparationType)) {
@@ -227,18 +223,9 @@ const resultTable = (subMusitData, musitData) => {
                             // { cell10.innerHTML = subMusitData[i].preparationType.replace(/\"/g,'') }
                             { 
                                 let musitBasisOfRecord
-                                if (subMusitData[i].musitBasisOfRecord) {
-                                    musitBasisOfRecord = subMusitData[i].musitBasisOfRecord
-                                    cell10.innerHTML = subMusitData[i].preparationType.replace(/\"/g,'')  + ' | ' + musitBasisOfRecord
-                                }
-                                // else if (subMusitData[i].basisOfRecord) {
-                                //     musitBasisOfRecord = subMusitData[i].basisOfRecord
-                                //     cell10.innerHTML = subMusitData[i].preparationType.replace(/\"/g,'')  + ' | ' + musitBasisOfRecord
-                                // } 
-                                else {
-                                    cell10.innerHTML = subMusitData[i].preparationType.replace(/\"/g,'')
-                                }
-                                
+                                if (subMusitData[i].musitBasisOfRecord) {musitBasisOfRecord = subMusitData[i].musitBasisOfRecord}
+                                else if (subMusitData[i].basisOfRecord) {musitBasisOfRecord = subMusitData[i].basisOfRecord}
+                                cell10.innerHTML = subMusitData[i].preparationType.replace(/\"/g,'')  + ' | ' + musitBasisOfRecord
                             }
                         }
 
@@ -405,7 +392,8 @@ const UTADRestultTable = (subUTADData, UTADData) => {
                 //cell10.className = 'row-10 row-sampleType'
                 cell11.className = 'row-11 row-checkbox'
             }
-            showResultElements()
+            let isLoan = activateLoanButton()
+            showResultElements(isLoan)
             document.getElementById("empty-search-button").style.display = "inline-block"
             numberOfPages = getNumberOfPages(numberPerPage)
         }
@@ -502,7 +490,6 @@ const bulkResultTable = (subBulkData, bulkData) => {
         // if (!window.location.href.includes('/nhm') ) {
         //     hide_column(9)
         // }
-        let isLoan = activateLoanButton()
         showResultElements(isLoan)
         document.getElementById("empty-search-button").style.display = "inline-block"
         numberOfPages = getNumberOfPages(numberPerPage)
