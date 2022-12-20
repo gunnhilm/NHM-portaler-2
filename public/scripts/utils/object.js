@@ -650,7 +650,6 @@ const makeGeoTable = (specimenObject) => {
 // "Second" means trad.coll.object comes from other collection that the one we are in (typically DNA-bank)
 // "second" means we want link to other collection
 async function showObjectData (specimenObject,objectTable,order) {
-    console.log('showobjdata')
     objectTable.style.display='block'
     let coll = sessionStorage.getItem('chosenCollection')
     // let associatedCollection
@@ -951,7 +950,6 @@ async function showData (specimenObject, orgGroup) {
             taxonomy = taxonomyString(specimenObject)
         }
 
-        console.log(specimenObject)
         if (orgGroup === 'botanikk' || orgGroup === 'mykologi' || orgGroup === 'zoologi') {
             let nameArray = italicSpeciesname(specimenObject.scientificName.replace(/"/g, ''))
             document.querySelector("#species-name").innerHTML = `<span style=font-style:italic>${nameArray[0]}</span>` + ' ' + `<span>${nameArray[1]}</span>`

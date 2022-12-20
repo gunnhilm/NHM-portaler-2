@@ -28,7 +28,7 @@ else if (bcColl === "herptiles") {
 }
 
 
-document.getElementById("getBarcodeText").innerHTML = "Last updated 17.10.22 <br><br><br> Click on species name to see which specimens are barcoded, and which county (fylke) they are from"
+document.getElementById("getBarcodeText").innerHTML = "Last updated 17.10.22 <br><br><br> Click on species name to see which specimens are barcoded, and which county (fylke) they are from."
 listExplDiv = document.createElement('div')
 
 document.querySelector('#search-bc-text').placeholder = 'Search for latin name' //textItems.placeholder[index]
@@ -39,10 +39,8 @@ document.querySelector('#search-bc-text').placeholder = 'Search for latin name' 
 // is called in main() 
 /// nameFile must be saved with UTF-8-BOM in notepad (not notepad++)
 async function getNamelist (nameFile) {
-    console.log(urlPath)
     return new Promise (resolve => {
         const url = urlPath + `/getNamelist/?nameFile=${nameFile}`
-        console.log(url)
         fetch(url)
             .then((response) => {
                 response.text()
@@ -51,7 +49,6 @@ async function getNamelist (nameFile) {
                     return console.log(data.error)
                 } else {
                     data = JSON.parse(data)
-                    console.log(data)
                     resolve(data)
                 }
             })
@@ -115,7 +112,6 @@ const getFastaData = () => {
 const getCandidates = () => {
     return new Promise(resolve => {
         const url =   urlPath + `/getCandidates/?candidateFile=${adbFilePath}candidates_${bcColl}.txt`
-        console.log(url)
         fetch(url).then((response) => { 
             response.text().then((data) => {
                 if(data.error) {
@@ -138,7 +134,6 @@ const getCandidates = () => {
 // out: searchResultData (array?): all data in new table, that matches search
 // is called in bcSearchListener()
 const bcSearch = (searchTerm, data, nameList, candidates) => {
-    console.log(nameList)
     emptyTable()
     if (!searchTerm) {
         fillTable(nameList, data, candidates, 'search', 'blank')
@@ -241,7 +236,7 @@ function fillOnlyBarcoded(data, candidates, sumSpecimens) {
     for (i=0;i<data.length;i++) {
         addRow(table)
         let spButton = document.createElement('button')
-        species = data[i].species
+        const species = data[i].species
         spButton.innerHTML = species
         cell2.innerHTML = data[i].norwegianName.replace(/['"]+/g, '')
         cell2.style="font-size:13px"
@@ -281,7 +276,6 @@ function fillOnlyBarcoded(data, candidates, sumSpecimens) {
 // in: nameList (array of objects, on for each norwegian species, from adb), data (array of objects, one object for each species, from bold)
 // is called in main() and bcSearch()
 function fillTable (nameList, data, candidates, group, blank) {
-    // console.log(nameList)
     addRow(table)
     cell1.innerHTML = 'Species'
     cell1.style.fontWeight = "bold"
@@ -304,13 +298,12 @@ function fillTable (nameList, data, candidates, group, blank) {
     // render all on first render
     // basidio: render all
     // asco and all phyla and blank search fungi: not all names
-    console.log(group)
     let sumSpecimensAndSpecies
-    if (bcColl === "sopp" && blank === 'blank') {
+    if (bcColl === "sopp" && blank === 'blank') { // blank search for fungi
         sumSpecimensAndSpecies = fillOnlyBarcoded(data, candidates, sumSpecimens)
-    } else if (bcColl === "sopp" && group === 'all') {
+    } else if (bcColl === "sopp" && group === 'all') { // start fungi-page
         sumSpecimensAndSpecies = fillOnlyBarcoded(data, candidates, sumSpecimens)
-    } else if (group != "asco" && group != "all" ) {
+    } else if (group != "asco" && group != "all" ) { // basidio
         sumSpecimensAndSpecies = fillAllNames(nameList, data, candidates, sumSpecimens)
     } else if (group === 'all') {
         sumSpecimensAndSpecies = fillAllNames(nameList, data, candidates,sumSpecimens)
@@ -394,7 +387,6 @@ async function main() {
     
     // get array with objects with latin and norwegian names of species livingin norway (based on a namefile downloaded from ADB (should be done automatically once a week))
     nameList = await getNamelist(adbFile)
-    console.log(nameList.unparsed)    
     data = await getFastaData() //Gjør en request til server om å få innholdet i fasta.fas
     // go through data (list of objects with DNA sequence (?)) and add norwegian names...
     data.forEach(el => {
@@ -410,7 +402,6 @@ async function main() {
     table.style = "border-collapse: collapse"
     table.bordercolor = "grey"
     const candidates = await getCandidates()
-    console.log(candidates.unparsed)
     
     fillTable(nameList.unparsed, data, candidates.unparsed, 'all')
     bcSearchListener(nameList.unparsed, data, candidates.unparsed)
@@ -418,7 +409,7 @@ async function main() {
         makeFungiButtons(nameList.unparsed, data, candidates.unparsed)       
     } else {
         document.getElementById("fungi-buttons").appendChild(listExplDiv)
-        listExplDiv.innerHTML = "<br>"
+        listExplDiv.innerHTML = "<br> <br> Red species means we lack barcode sequence."
     }
 }
 
