@@ -305,7 +305,6 @@ const doObjListSearch = (limit = 20) => {
     document.getElementById("please-wait").style.display = "block"
     // hide download button
     emptyResultElements()
-    console.log(chosenCollection)
     // mustChoose
     if (!chosenCollection) {
         errorMessage.innerHTML = textItems.mustChoose[index]

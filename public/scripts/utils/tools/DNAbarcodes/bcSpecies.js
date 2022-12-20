@@ -101,8 +101,6 @@ const fillTable = (data) => {
         if (data.regnos[i].includes('NOMAM')) {regno = data.regnos2[i]}
         else {regno = data.regnos[i]}
         
-        console.log(data)
-        
         objButton.innerHTML = regno
         
         if (data.regnos[i].includes('_')) {
@@ -128,16 +126,12 @@ const fillTable = (data) => {
        
         if (!coll === "sopp" & !coll === "lav" & !coll === "mammals" & !coll === "Lep" || !data.regnos[i].match(/[a-zA-Z]/)) { // dette funker vel ikke
             objButton.style = "background-color:white; border:none"
-            console.log('en')
         } else if (data.regnos[i].includes('VM')) {
-            console.log('to')
             objButton.style = "background-color:white; border:none"
         }  else if (coll === "Lep" && !data.regnos[i].includes("NHMO-DAR")) {
-            console.log('fire')
             objButton.style = "background-color:white; border:none"
         } else if (coll === 'mammals' && data.regnos2[i].includes('ANM')) {
                 // if (data.regnos2[i].includes('ANM'))  {
-                    console.log('anm')
                     objButton.style = "background-color:white; border:none"
                 // }
             }
@@ -148,7 +142,6 @@ const fillTable = (data) => {
                     museum = "tmu"
                 }
                 
-                console.log(coll)
                 objButton.style = "background-color:white; border:none; color:blue; text-decoration:underline"
                 objButton.onclick = function() {
                     museumURLPath = urlPath + "/" + museum
