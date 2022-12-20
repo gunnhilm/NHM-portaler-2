@@ -297,7 +297,7 @@ function fillTable (nameList, data, candidates, group, blank) {
     // all but fungi:
     // render all on first render
     // basidio: render all
-    // asco and all phyla and blank search fungi: not all names
+    // all phyla and blank search fungi: not all names
     let sumSpecimensAndSpecies
     if (bcColl === "sopp" && blank === 'blank') { // blank search for fungi
         sumSpecimensAndSpecies = fillOnlyBarcoded(data, candidates, sumSpecimens)
@@ -305,7 +305,11 @@ function fillTable (nameList, data, candidates, group, blank) {
         sumSpecimensAndSpecies = fillOnlyBarcoded(data, candidates, sumSpecimens)
     } else if (group != "asco" && group != "all" ) { // basidio
         sumSpecimensAndSpecies = fillAllNames(nameList, data, candidates, sumSpecimens)
-    } else if (group === 'all') {
+    } 
+    // else if (group === "asco") { 
+    //     sumSpecimensAndSpecies = fillAllNames(nameList, data, candidates, sumSpecimens)
+    // }
+     else if (group === 'all') {
         sumSpecimensAndSpecies = fillAllNames(nameList, data, candidates,sumSpecimens)
     } else {
         sumSpecimensAndSpecies = fillOnlyBarcoded(data, candidates, sumSpecimens)
@@ -332,14 +336,14 @@ const emptyTable = () => {
 }
 
 function makeFungiButtons (nameList, data, candidates) {
-    // if fungi, add Basidiomycota and Ascomycota buttons to page
+    // if fungi, add Basidiomycota and All-phyla buttons to page
     let basidioButton = document.createElement("button")    
-    let ascoButton = document.createElement("button")
+    // let ascoButton = document.createElement("button")
     let allButton = document.createElement("button")
-    let fungiButtonArray = [ allButton,ascoButton,basidioButton ]
+    let fungiButtonArray = [ allButton, basidioButton ]
     basidioButton.innerHTML = "Basidiomycetes - all Norwegian species"
-    ascoButton.innerHTML = "Ascomycetes"
-    allButton.innerHTML = "All phyla"
+    // ascoButton.innerHTML = "Ascomycetes"
+    allButton.innerHTML = "All barcoded species, all phyla"
     fungiButtonArray.forEach(el => {
         el.classList.add('blue-button')
         document.getElementById("fungi-buttons").appendChild(el)
@@ -366,14 +370,15 @@ function makeFungiButtons (nameList, data, candidates) {
         emptyTable()
         fillTable(basidioNames, data, candidates, 'Basidio')
     }
-    ascoButton.onclick = function() {
-        listExplDiv.innerHTML = "<br><br>Ascomycetes - all barcoded species:"
-        ascoNames = nameList.filter(function(el, index, arr) {
-            return el.phylum === 'Ascomycota'
-        })
-        emptyTable()
-        fillTable(ascoNames, data, candidates, 'asco')
-    }
+    // ascoButton.onclick = function() {
+    //     listExplDiv.innerHTML = "<br><br>Ascomycetes - all barcoded species:"
+    //     ascoNames = nameList.filter(function(el, index, arr) {
+    //         return el.phylum === 'Ascomycota'
+    //     })
+    //     console.log(ascoNames)
+    //     emptyTable()
+    //     fillTable(ascoNames, data, candidates, 'asco')
+    // }
     allButton.onclick = function() {
         listExplDiv.innerHTML = "<br><br>All barcoded fungi species in NorBOL:"    
         emptyTable()
