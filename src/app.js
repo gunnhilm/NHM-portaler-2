@@ -6,7 +6,7 @@ const checkCoord = require('./utils/checkCoords')
 const artsObsReadFile = require('./utils/artsobs/artsObs')
 const adbAPI2 = require('./utils/artsobs/adbAPI2')
 const footerDate = require('./utils/footerDate')
-// const loan = require('./utils/loans/loans') 
+const loan = require('./utils/loans/loans') 
 const hbs = require('hbs')
 const helmet = require('helmet')
 const { response } = require('express')
@@ -327,11 +327,11 @@ app.get('/nhm/journaler', (req, res) => {
  const validateUser = [
     body('lenderInfo.Institution').trim().escape(),
     body('lenderInfo.country').trim().escape(),
-    body('lenderInfo.rname').trim().escape(),
-    body('lenderInfo.cname').trim().escape(),
-    body('lenderInfo.oname').trim().escape(),
-    body('lenderInfo.paddress').trim().escape(),
-    body('lenderInfo.saddress').trim().escape(),
+    body('lenderInfo.responsible-person').trim().escape(),
+    body('lenderInfo.contact-person').trim().escape(),
+    body('lenderInfo.other-person').trim().escape(),
+    body('lenderInfo.post-address').trim().escape(),
+    body('lenderInfo.street-address').trim().escape(),
     body('lenderInfo.phone').trim().escape(),
     body('lenderInfo.purpose').trim().escape(),
     body('lenderInfo.Special-documents').trim().escape(),
@@ -349,8 +349,8 @@ app.get('/nhm/journaler', (req, res) => {
 
  app.post('*/post-loan', validateUser,
  (req, res, next) => {
-    console.log('**************************************************************************');
-    console.log(req.body);
+    // console.log('**************************************************************************');
+    // console.log(req.body);
     loan.requestLoan(req.body)
      res.send('Success')
  },

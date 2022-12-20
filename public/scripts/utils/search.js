@@ -548,6 +548,7 @@ const doSearch = (limit = 20) => {
                                     sessionStorage.setItem('string', JSON.stringify(parsedResults.data))      
                                     
                                     load() 
+                                    activateLoanButton()
                                     
                                     } catch (error) {
                                         console.log(error);
