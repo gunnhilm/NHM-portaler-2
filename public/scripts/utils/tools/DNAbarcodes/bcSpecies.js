@@ -1,5 +1,5 @@
-const urlParamsTop = new URLSearchParams(window.location.search)
-let coll = urlParamsTop.get("coll")
+// const urlParamsTop = new URLSearchParams(window.location.search)
+let bcColl = urlParamsTop.get("coll")
 
 let index
 language = urlParamsTop.get("lang")
@@ -18,82 +18,53 @@ document.getElementById("head-species").innerHTML = relSpecies.replace("_"," ")
 
 
 let countyTable = document.getElementById("county-table")
+let awaitingTable = document.getElementById("awaiting-table")
+let failedTable = document.getElementById("failed-table")
 
-const getFastaData = () => {
-    return new Promise(resolve => {
-        const url =   urlPath + `/DNAbarcodes/?getFasta=true&coll=${coll}`
-        fetch(url).then((response) => { 
-            response.text().then((data) => {
-                if(data.error) {
-                    return console.log(data.error)
-                } else {          
-                    try {
-                        data = JSON.parse(data)
-                        resolve(data)
-                    } catch (error) {
-                        console.log(error);
-                    }
-                }
-            })
-        })
-    })
-}
 
-// const getValidationData = () => {
-//     return new Promise(resolve => {
-//         const url =   urlPath + `/barcodeValidation/`
-//         fetch(url).then((response) => { 
-//             response.text().then((data) => {
-//                 if(data.error) {
-//                     return console.log(data.error)
-//                 } else {          
-//                     try {
-//                         data = JSON.parse(data)
-//                         resolve(data)
-//                     } catch (error) {
-//                         console.log(error);
-//                     }
-//                 }
-//             })
-//         })
-//     })
-// }
 
 function addRow(table) {
     row = table.insertRow(-1)
     cell1 = row.insertCell(0)
     cell2 = row.insertCell(1)
     cell3 = row.insertCell(2)
-    // cell4 = row.insertCell(3)
-    // cell5 = row.insertCell(4)
-    // cell6 = row.insertCell(5)
+    if (bcColl === "sopp") {
+        cell4 = row.insertCell(3)
+        cell5 = row.insertCell(4)
+        cell6 = row.insertCell(5)
+        cell7 = row.insertCell(6)
+    }
 }
 
-const fillTable = (data) => {
-    
+const fillTableSpecies = (data, validationObject) => {
+    console.log(data)
     addRow(countyTable)
     cell1.innerHTML = ''
 
     addRow(countyTable)
-    cell1.innerHTML = 'County'
+    cell1.innerHTML ='Regno'
     cell1.style.fontWeight = 'bold'
-    cell2.innerHTML = 'Regno'
+    cell2.innerHTML = 'County'
     cell2.style.fontWeight = 'bold'
-    cell3.innerHTML = 'ProcessID'
+    cell3.innerHTML = 'Date'
     cell3.style.fontWeight = 'bold'
-    // cell4.innerHTML = 'Validation status'
-    // cell4.style.fontWeight = 'bold'
-    // cell5.innerHTML = 'Validation method'
-    // cell5.style.fontWeight = 'bold'
-    // cell6.innerHTML = 'Expert'
-    // cell6.style.fontWeight = 'bold'
-
+    cell4.innerHTML = 'ProcessID'
+    cell4.style.fontWeight = 'bold'
+    if (bcColl === "sopp") {
+        cell5.innerHTML = 'Validation status'
+        cell5.style = "padding-right:20px"
+        cell5.style.fontWeight = 'bold'
+        cell6.innerHTML = 'Validation method'
+        cell6.style = "padding-right:20px"
+        cell6.style.fontWeight = 'bold'
+        
+        cell7.innerHTML = 'Expert'
+        cell7.style.fontWeight = 'bold'
+    }
+    
 
     for (i=0;i<data.regnos.length;i++) {
         addRow(countyTable)
-        cell1.innerHTML =  data.counties[i]
-        cell1.style = "padding-right:20px"
-        
         let museum = "nhm"
         let objButton = document.createElement('button')
        
@@ -108,63 +79,129 @@ const fillTable = (data) => {
         } else {
             regno=data.regnos[i].substr(data.regnos[i].lastIndexOf('-')+1)
         }
-        
-        // if (data.regnos[i].substr(0, data.regnos[i].lastIndexOf('-')+1) === 'O-F-') {
-        //     coll = "sopp"
-        // } else 
         if (data.regnos[i].includes('DFL')) {
-            coll = "dna_fungi_lichens"
+            bcColl = "dna_fungi_lichens"
         } 
-        
-        // else if (data.regnos[i].includes('TROM')) {
-        //     coll = "sopp"
-        // }
-         else if (coll === "herptiles") {
-            coll = "dna_fish_herptiles"
+         else if (bcColl === "herptiles") {
+            bcColl = "dna_fish_herptiles"
         }
-        console.log(data.regnos[i])
-       
-        if (!coll === "sopp" & !coll === "lav" & !coll === "mammals" & !coll === "Lep" || !data.regnos[i].match(/[a-zA-Z]/)) { // dette funker vel ikke
+        if (!bcColl === "sopp" & !bcColl === "lav" & !bcColl === "mammals" & !bcColl === "Lep" || !data.regnos[i].match(/[a-zA-Z]/)) { // dette funker vel ikke
             objButton.style = "background-color:white; border:none"
         } else if (data.regnos[i].includes('VM')) {
             objButton.style = "background-color:white; border:none"
-        }  else if (coll === "Lep" && !data.regnos[i].includes("NHMO-DAR")) {
+        }  else if (bcColl === "Lep" && !data.regnos[i].includes("NHMO-DAR")) {
             objButton.style = "background-color:white; border:none"
-        } else if (coll === 'mammals' && data.regnos2[i].includes('ANM')) {
-                // if (data.regnos2[i].includes('ANM'))  {
-                    objButton.style = "background-color:white; border:none"
-                // }
+        } else if (bcColl === 'mammals' && data.regnos2[i].includes('ANM')) {
+            objButton.style = "background-color:white; border:none"
+        } else {
+            if (bcColl === "Lep") {bcColl = "dna_entomology"}
+            museum = "nhm"
+            if (data.regnos[i].includes('TROM')) {
+                museum = "tmu"
             }
-            else {
-                if (coll === "Lep") {coll = "dna_entomology"}
-                museum = "nhm"
-                if (data.regnos[i].includes('TROM')) {
-                    museum = "tmu"
-                }
-                
-                objButton.style = "background-color:white; border:none; color:blue; text-decoration:underline"
-                objButton.onclick = function() {
-                    museumURLPath = urlPath + "/" + museum
-                    window.open(href=`${museumURLPath}/object/?id=${regno}&samling=${coll}&museum=${museum}&lang=${sessionStorage.getItem('language')}&isNew=yes`)
-                }
-            // }
+            
+            objButton.style = "background-color:white; border:none; color:blue; text-decoration:underline"
+            objButton.onclick = function() {
+                museumURLPath = urlPath + "/" + museum
+                window.open(href=`${museumURLPath}/object/?id=${regno}&samling=${bcColl}&museum=${museum}&lang=${sessionStorage.getItem('language')}&isNew=yes`)
+            }
         }
         
-        cell2.appendChild(objButton)
+        cell1.appendChild(objButton)
+        cell1.style = "padding-right:20px"
+        
+        cell2.innerHTML =  data.counties[i]
         cell2.style = "padding-right:20px"
+        
 
         let processID = data.processIDs[i].substr(1)
         const url = `http://www.boldsystems.org/index.php/Public_RecordView?processid=${processID}`
-        cell3.innerHTML = `<a href="${url}" target="_blank">${processID}</a>`
-        cell3.style = "padding-right:20px"
+        cell4.innerHTML = `<a href="${url}" target="_blank">${processID}</a>`
+        cell4.style = "padding-right:20px"
 
-        // cell4.innerHTML = data.validationStatus[i]
-        // cell4.style = "padding-right:20px"
-
-        // cell5.innerHTML = data.validationMethod[i]
-        // cell5.style = "padding-right:20px"
+        if (bcColl === "sopp") {
+            let index
+            const isSame = (element) => element === data.regnos[i].toString()
+            index = validationObject.musitRegno.findIndex(isSame)
+            cell3.innerHTML = validationObject.year[index]
+            cell3.style = "padding-right:20px"
+            if (validationObject.validationStatus[index]) {
+                cell5.innerHTML = validationObject.validationStatus[index]
+                cell5.style = "padding-right:40px"
+            } else {
+                cell5.innerHTML = "not validated"
+                cell5.style = "padding-right:40px"
+            }
+            
+            cell6.innerHTML = validationObject.validationMethod[index]
+            cell6.style = "padding-right:20px"
+            
+            cell7.innerHTML = validationObject.expert[index]
+        }
         
-        // cell6.innerHTML = data.expert[i]
+    }
+}
+
+const fillTableFailed = (validationObject) => {
+    addRow(failedTable)
+    cell1.innerHTML = ''
+    addRow(failedTable)
+    cell1.innerHTML = 'Regno'
+    cell1.style.fontWeight = 'bold'
+    cell2.innerHTML = 'Date'
+    cell2.style.fontWeight = 'bold'
+    cell3.innerHTML = 'ProcessID'
+    cell3.style.fontWeight = 'bold'
+    
+    for (i=0;i<validationObject.musitRegno.length;i++) {
+        if (validationObject.seqLength[i] === '0' || validationObject.seqLength[i] ==='0[n]') {
+            addRow(failedTable)
+            cell1.innerHTML = validationObject.musitRegno[i]
+            cell1.style = "padding-right:20px"
+            cell2.innerHTML = validationObject.year[i]
+            cell2.style = "padding-right:20px"
+            cell3.innerHTML = validationObject.processID[i]
+            cell3.style = "padding-right:20px"
+        
+        }
+        // let regno
+        // if (data.regnos[i].includes('_')) {
+        //     regno = data.regnos[i].substr(data.regnos[i].lastIndexOf('_')+1) + '/1'
+        // } else {
+        //     regno=data.regnos[i].substr(data.regnos[i].lastIndexOf('-')+1)
+        // }
+        // if (data.regnos[i].includes('DFL')) {
+        //     bcColl = "dna_fungi_lichens"
+        // } 
+        // console.log(data.regnos[i])
+        
+    }
+}
+
+const fillTableAwaiting = (validationObject) => {
+    console.log(validationObject)
+    addRow(awaitingTable)
+    cell1.innerHTML = ''
+    addRow(awaitingTable)
+    cell1.innerHTML = 'Regno'
+    cell1.style.fontWeight = 'bold'
+    cell2.innerHTML = 'Date'
+    cell2.style.fontWeight = 'bold'
+    cell3.innerHTML = 'ProcessID'
+    cell3.style.fontWeight = 'bold'
+    
+    for (i=0;i<validationObject.musitRegno.length;i++) {
+        if (validationObject.seqLength[i] === 'pending') {
+            addRow(awaitingTable)
+            cell1.innerHTML = validationObject.musitRegno[i]
+            cell1.style = "padding-right:20px"
+            cell2.innerHTML = validationObject.year[i]
+            cell2.style = "padding-right:20px"
+            cell3.innerHTML = validationObject.processID[i]
+            cell3.style = "padding-right:20px"
+        
+        }
+        
     }
 }
 
@@ -175,33 +212,21 @@ document.getElementById('bcClose').onclick = function () {
 
 async function main() {
     data = await getFastaData() //Gjør en request til server om å få innholdet i fasta.fas
-    let speciesObject = data.find((el) => {
+    fungiOverview = await getOverview()
+    // speciesObject kommer fra fastafil fra bold (og har ikke med de uten sekvens)
+    let speciesObject = data.unparsed.find((el) => {
         return el.species === relSpecies.replace("_"," ")
     })
-    // // console.log(speciesObject)
-    // speciesObject.validationStatus = []
-    // speciesObject.validationMethod = []
-    // speciesObject.expert = []
-    
-    // validationData = await getValidationData()
-
-        // for (i=0;i<speciesObject.regnos.length;i++) {
-        //     let validationObject = validationData.find((el) => {
-        //         return el.musitRegno === speciesObject.regnos[i]
-        //     })
-        //     console.log(validationObject)
-        //     speciesObject.validationStatus.push(validationObject.validationStatus)
-        //     speciesObject.validationMethod.push(validationObject.validationMethod)
-        //     speciesObject.expert.push(validationObject.expert)
-            
-        // }
-        // console.log(speciesObject)
-
-    
-
-    fillTable(speciesObject)
-
-    
+    // overviewObject kommer fra excel-oversiktsfil
+    let overviewObject = fungiOverview.find((el => {
+        return el.species === relSpecies.replace("_"," ")
+    }))
+    fillTableSpecies(speciesObject, overviewObject)
+    let candidates = await getCandidates()
+    fillTableAwaiting(overviewObject)
+    if (bcColl === "sopp") {
+        fillTableFailed(overviewObject)
+    }
 }
 
 main()

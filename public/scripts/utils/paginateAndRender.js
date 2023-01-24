@@ -190,8 +190,6 @@ const resultTable = (subMusitData, musitData) => {
                 cell9.innerHTML = subMusitData[i].habitat
                 if (museumURLPath = urlPath + "/nhm") {
                     // if we are in a corema-collection
-                    console.log(sessionStorage.getItem('chosenCollection'))
-                    console.log(subMusitData[i])
                     if (document.querySelector('#collection-select  option:checked').label.includes('DNA')) {
                         if (sessionStorage.getItem('chosenCollection').includes('dna_')) {
                             let musitBasisOfRecord

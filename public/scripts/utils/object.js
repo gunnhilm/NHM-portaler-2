@@ -1,6 +1,6 @@
 // Description of file: Renders text on object.hbs
 let index
-const urlParamsTop = new URLSearchParams(window.location.search)
+// const urlParamsTop = new URLSearchParams(window.location.search)
 language = urlParams.get("lang")
 if (language === "Norwegian") {
     index = 0
@@ -737,11 +737,10 @@ async function showObjectData (specimenObject,objectTable,order) {
 // in: order - string; "first" or "second". "First" means trad.coll.object comes from the collecton we are in (typically musit)
 // "Second" means trad.coll.object comes from other collection that the one we are in (typically DNA-bank)
 
-async function showItemData (specimenObject,objectTable,order) {
+async function showItemData (specimenObject,objectTable,order,overviewObject) {
     objectTable.style.display='block'
 // put corema-items in itemArray as objects
     tempItemArray = []
-    
     if(order === 'first') { // hvis hovedobjekt er corema
         tempItemArray = specimenObject.fullCatalogNumber.split(" | ")
     } else { // hvis hovedobjekt er musit
@@ -781,21 +780,22 @@ async function showItemData (specimenObject,objectTable,order) {
     cell1.innerHTML = '<br>'
     addRow(objectTable)
     cell1.id = 'itemsHeader'
+    
+    console.log(textItems.itemsHeader)
     cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.itemsHeader[index]}${collectionName("DNA","table")}</span>`
     addRow(objectTable)
     cell1.innerHTML = '<br>'
     // loop over array
-    console.log(itemArray)
     itemArray.forEach( item => {
-            
         if (item.itemType === "Specimen") { 
             console.log(item)
             showObjectData(item, document.getElementById("object-table"), "first")
         } else if (item.preparationType.includes("Sperm") || item.preparationType.includes("sperm")) {
             showObjectData(item, document.getElementById('sperm-table'), "first")
         } else {
-            
             //row1 catno
+            console.log(item)
+            
             addRow(objectTable)
             if (order === 'first') {
                 if (sessionStorage.getItem('source') === 'musit') {
@@ -814,6 +814,8 @@ async function showItemData (specimenObject,objectTable,order) {
                     cell1.innerHTML = `<a id="object-link" href="${museumURLPath}/object/?id=${specimenObject.RelCatNo}&samling=${associatedCollection}&museum=nhm&lang=${sessionStorage.getItem('language')}"> ${specimenObject.institutionCode}-${specimenObject.collectionCode}-${specimenObject.catalogNumber} </a>`
                 }
             }
+            console.log('linje 744')
+                
             cell1.style.textDecoration  = 'underline'
             cell1.style.fontWeight = 'normal'
             cell1.style.fontSize = '18px'
@@ -861,22 +863,45 @@ async function showItemData (specimenObject,objectTable,order) {
                 addRow(objectTable)
                 cell1.innerHTML = 'Genbank Acc.No:'
                 if (!item.genAccNo || item.genAccNo == '"') {cell2.innerHTML = ''} else {cell2.innerHTML = item.genAccNo.replace(/"/g, '')}
+                addRow(objectTable)
+                cell1.innerHTML = textItems.validated[index]
+                console.log(overviewObject)
+                if (Object.keys(overviewObject).length != 0) {
+                    if (overviewObject.validationStatus !== 'Validert') {
+                        cell2.innerHTML = textItems.no[index]
+                    } else {
+                        cell2.innerHTML = textItems.yes[index]
+                        addRow(objectTable)
+                        cell1.innerHTML = textItems.validationMethod[index]
+                        cell2.innerHTML = overviewObject.validationMethod
+                        if (overviewObject.validationMethod.includes('pert')) {
+                            addRow(objectTable)
+                            cell1.innerHTML = textItems.expert[index]
+                            cell2.innerHTML = overviewObject.expert
+                        }
+                        
+                    }
+                    // console.log(overviewObject)
+                    
+                } else {
+                    cell2.innerHTML = 'Unknown'
+                }
+                
             }
             addRow(objectTable)
             cell1.innerHTML = '<br>'
         }
         
     })
-    
+    console.log('linje 889')
 }
 
 // calls function that build table and fill headers,
 // and fills data in table for zoology and botany and mycology
 // calls makeUTADTable(obj) or makeGeoTable(obj) or makePalTable(obj) or makeBioTable(obj)
 // is called below
-async function showData (specimenObject, orgGroup) {
+async function showData (specimenObject, orgGroup, overviewObject) {
     try {
-        // console.log(specimenObject)
         if (orgGroup === 'other') {
             makeUTADTable(specimenObject)
         } else if (orgGroup === 'geologi') {
@@ -940,10 +965,7 @@ async function showData (specimenObject, orgGroup) {
         // }
         else {
             document.querySelector("#musit-regno").innerHTML = regnoEl
-    
-    //     document.querySelector("#musit-regno").innerHTML = `<span>${object.catalogNumber.replace(/[A-Z]/,'').trim()}</span>`
         }
-        
         const concatLocality = country(specimenObject) + stateProvince(specimenObject) + county(specimenObject) + locality(specimenObject)
         let taxonomy = ''
         if (specimenObject.kingdom || specimenObject.class || specimenObject.order || specimenObject.family) {
@@ -974,7 +996,6 @@ async function showData (specimenObject, orgGroup) {
             let table1 = document.getElementById("object-table")
             let table2 = document.getElementById('ass-object-table')
             let table3 = document.getElementById('sperm-table')
-            
             if (sessionStorage.getItem('file').includes('stitch')) {
                 if (sessionStorage.getItem('source') === 'corema') {
                     if (!specimenObject.RelCatNo || !(/[a-zA-Z0-9]/).test(specimenObject.RelCatNo)) { // both preserved specimen (if exists) and samples are in corema
@@ -984,23 +1005,26 @@ async function showData (specimenObject, orgGroup) {
                                 table2.style.display = 'none'
                                 table3.style.display = 'none'
                             }
-                            await showItemData(specimenObject,table2,"first")
-                            
+                            await showItemData(specimenObject,table2,"first",overviewObject)
+                            console.log('linje 1005')
                             table2.style = 'border-top:solid grey'
-                        } else { 
-                            await showItemData(specimenObject,table1,"first")
+                        } else {
+                            await showItemData(specimenObject,table1,"first",overviewObject)
+                            console.log('her')    
                             table2.style.display = 'none'
                         }
                     } else { // associated collection exist in musit
                         await showObjectData(specimenObject,table1,"second")    
-                        await showItemData(specimenObject,table2,"first")
+                        await showItemData(specimenObject,table2,"first",overviewObject)
                         table3.style.display = 'none'
                         table2.style = 'border-top:solid grey'
                     }
                 } else if (sessionStorage.getItem('source') === 'musit') {
                     await showObjectData(specimenObject,table1,"first")
+                    
                     if (specimenObject.RelCatNo) {
-                        await showItemData(specimenObject,table2,"second")
+                        console.log(overviewObject)
+                        await showItemData(specimenObject,table2,"second",overviewObject)
                         table2.style = 'border-top:solid grey'
                     } else {table2.style.display = 'none'}
                     table3.style.display = 'none'
@@ -1019,10 +1043,7 @@ async function showData (specimenObject, orgGroup) {
             if (dataTableHeight.height > mapDivHeight.height) {divHeight = dataTableHeight.height} else {divHeight = mapDivHeight.height}
         }
     } catch (error) {
-        console.log('linje 1022')
         document.getElementById('musit-regno').innerHTML = textItems.objError[index]
-        // textItems.serverError[index]
-
     }
 }
 
@@ -1188,11 +1209,32 @@ async function main () {
     }
        
    }
-   //renderObjectText(language)
-   await showData(specimenObject, orgGroup)
-   showMedia(specimenObject)
-   drawMapObject(specimenObject)
-   renderItems()
+   let overviewObject = {}
+//    console.log(specimenObject.collectionCode)
+   if (specimenObject.collectionCode === "F") {
+        fungiOverview = await getOverview() // Makes a request to server to get an array of all species in the fungal-barcoding-overview-file, and number of validated and failed sequences
+        // console.log(fungiOverview)
+        overviewObject = fungiOverview.find((el => {
+            objIndex = el.musitRegno.findIndex(el => el.includes(specimenObject.catalogNumber))
+            if (objIndex != -1) {
+                return el
+            }
+        }))
+        
+        if (Object.keys(overviewObject).length != 0) {
+            let arrayIndex = overviewObject.musitRegno.findIndex(el => el.includes(specimenObject.catalogNumber))
+            overviewObject.expert = overviewObject.expert[arrayIndex]
+            overviewObject.musitRegno = overviewObject.musitRegno[arrayIndex]
+            overviewObject.processID = overviewObject.processID[arrayIndex]
+            overviewObject.seqLength = overviewObject.seqLength[arrayIndex]
+            overviewObject.validationMethod = overviewObject.validationMethod[arrayIndex]
+            overviewObject.validationStatus = overviewObject.validationStatus[arrayIndex]
+        }
+    }
+    await showData(specimenObject, orgGroup, overviewObject)
+    showMedia(specimenObject)
+    drawMapObject(specimenObject)
+    renderItems()
 }
 
 main()

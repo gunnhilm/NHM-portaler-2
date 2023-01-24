@@ -262,6 +262,57 @@ const getNamelist = async (nameFile, callback) => {
     }
 }
 
+const getRedlist = async (nameFile, callback) => {
+    try {
+        if (!fs.existsSync(nameFile)) {
+            // console.log('adb-file does  not exist')
+            callback(undefined, {error: 'error'})
+        } else {
+            const readInterface = readline.createInterface({
+                input: fs.createReadStream(nameFile),
+                console: false
+            })
+            let count = 0  // iterates over each line of the current file
+            let redlistObjects = []
+            readInterface.on('line', function(line) {
+                // if (count === 1) {console.log(line)}
+                count++
+                let headers = []
+                if (count === 1) { // head line
+                    headers = line.split('\t')
+                } else {
+                    let variables = line.split('\t')
+                    // dette er hardkodet, finn heller variablene etter header-navn
+                    let latinName
+                    let redObject = {
+                        "latinName" : variables[6],
+                        "redlistStatus" : variables[11]
+                    }
+                    // if (!nameListObjects.includes(nameObject))
+                    redlistObjects.push(redObject)    
+                    
+                }
+                
+            }).on('close', function () {
+                // redlistObjects.sort((a, b) => {
+                //     let fa = a.latinName.toLowerCase(),
+                //     fb = b.latinName.toLowerCase()
+                //     if (fa < fb) {
+                //         return -1
+                //     }
+                //     if (fa > fb) {
+                //         return 1
+                //     }
+                //     return 0
+                // })
+                callback(undefined, redlistObjects)
+            })
+        }
+    } catch (error) {
+        callback(undefined, {error: 'error from catch'})
+    }
+}
+
 const getRedlistStatus = async (latinName, redlistYear) => {
         try {
             redlistYear = 'Rødliste ' + redlistYear
@@ -314,5 +365,6 @@ const getRedlistStatus = async (latinName, redlistYear) => {
 module.exports = { 
     getNorwegianName,
     getNamelist,
-    getCandidates
+    getCandidates,
+    getRedlist
 }

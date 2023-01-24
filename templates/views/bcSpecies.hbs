@@ -31,19 +31,21 @@
                             </div>
                             <div style="width:100%; float:left; min-width:300px;" >
                                 <br>
-                                <div id="sequenced" style="font-weight:bold">Sequenced</div>
+                                <div id="sequenced" style="font-weight:bold;text-decoration:underline">Sequenced</div>
                                 <div >
                                     <table id = "county-table" style="font-size:14px"></table>
                                 </div>
                                 <br>
-                                <div id="sampled" style="font-weight:bold">Sampled</div>
+                                <div id="sampled" style="font-weight:bold;text-decoration:underline">Awaiting sequencing</div>
                                 <div >
-                                    <table id = "county-table"></table>
+                                    <table id = "awaiting-table" style="font-size:14px"></table>
                                 </div>
                                 <br>
-                                <div >
-                                    <table id = "county-table"></table>
-                                </div><div id="selected" style="font-weight:bold">Selected</div>
+                                <div id="selected" style="font-weight:bold;text-decoration:underline">Failed sequences</div>
+                                <div>
+                                    <table id = "failed-table" style="font-size:14px"></table>
+                                </div>
+                                
                             </div>
                             
                         </td>
@@ -64,7 +66,9 @@
                 <script src="/museum/scripts/utils/renderLangObjPage.js"></script>
                 <script src="/museum/scripts/utils/ol/ol.js"></script>
                 <script src="/museum/scripts/utils/map.js"></script>
+                <script src="/museum/scripts/utils/tools/DNAbarcodes/barcodesCommonFunctions.js"></script>
                 <script src="/museum/scripts/utils/tools/DNAbarcodes/bcSpecies.js"></script>
+                
                 
                  
             </div>
