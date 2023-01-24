@@ -21,6 +21,7 @@
     "source": "musit",
     "orgGroup": "botanikk",
     "name": "alger",
+    "loan": true,
     "zipFileName": "alge_o",
     "mediaFile": "_media",
     "occurrenceFileSuffix": "_occurrence.txt", 

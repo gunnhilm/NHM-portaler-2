@@ -156,10 +156,12 @@ emptyResultElements = () => {
 
 // display buttons rendered with search result
 // is called by resultTable() in paginateAndRender.js
-showResultElements = () => {
+showResultElements = (loan) => {
     document.querySelector('#hits-row').style.display = 'block'
     document.querySelector('#head-nb-hits').innerHTML = textItems.nbHitsText[index]
-    document.querySelector('#loan-button').style.display = "block" 
+    if(loan){
+        document.querySelector('#loan-button').style.display = "block" 
+    }
     document.querySelector('#download-button').style.display = "block"
     document.querySelector('#download-photo-button').style.display = "block"
     document.getElementById("empty-search-button").style.display = "inline-block"

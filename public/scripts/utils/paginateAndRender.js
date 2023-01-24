@@ -5,6 +5,26 @@
 
 const hitsPerPage = document.querySelector('#number-per-page')
 
+// show or hide LoansButton; base on FileList if Loans = true 
+// in resultsElementsOnOff -> showResultElements(isLoan)
+let isLoan = false
+function activateLoanButton () {
+    console.log('sjekker lån');
+    const collection = sessionStorage.getItem('chosenCollection')
+    console.log(collection);
+    let tempList = JSON.parse(sessionStorage.getItem('fileList'))
+    for (const el of tempList) {
+        if (el.name === collection && el.loan) {
+            console.log('her blir det lån');
+            return true
+        }
+    }
+    tempList = ""
+}
+
+
+
+
 // change: take from fileList
 async function whichFileAndDb_main (museum,collection) {
     //return new Promise(function(resolve, reject) {
@@ -126,8 +146,7 @@ const resultTable = (subMusitData, musitData) => {
                     museumURLPath = urlPath + "/nhm"
                     museum = 'nhm'
                 }
-                
-                // console.log(sessionStorage.getItem('chosenCollection'))
+
                 let prefix
                 if (sessionStorage.getItem('organismGroup').includes('paleontologi')) {
                     prefix = 'PMO '
@@ -141,9 +160,7 @@ const resultTable = (subMusitData, musitData) => {
                 }
                 
                 if (subMusitData[i].catalogNumber.includes('J')) { subMusitData[i].catalogNumber = subMusitData[i].catalogNumber.substring(2)}
-               
-                //cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${subMusitData[i].catalogNumber} </a>`
-               
+                
                 if (subMusitData[i].catalogNumber.includes('/')) { // mose-data
                     let strippedCatNo = subMusitData[i].catalogNumber.substring(0,subMusitData[i].catalogNumber.indexOf('/'))
                     cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${strippedCatNo} </a>`
@@ -193,12 +210,8 @@ const resultTable = (subMusitData, musitData) => {
                     if (document.querySelector('#collection-select  option:checked').label.includes('DNA')) {
                         if (sessionStorage.getItem('chosenCollection').includes('dna_')) {
                             let musitBasisOfRecord
-                            if (subMusitData[i].musitBasisOfRecord) {
-                                musitBasisOfRecord = subMusitData[i].musitBasisOfRecord
-                                cell10.innerHTML = subMusitData[i].materialSampleType + ' | ' + musitBasisOfRecord
-                            } else {
-                                cell10.innerHTML = subMusitData[i].materialSampleType
-                            }
+                            if (subMusitData[i].musitBasisOfRecord) {musitBasisOfRecord = subMusitData[i].musitBasisOfRecord}
+                            cell10.innerHTML = subMusitData[i].materialSampleType + ' | ' + musitBasisOfRecord
                         } else {
                             // if there is no data in preparationType (subtype of sample): use basisOfRecord or coremaBasisOfRecord
                             if (!subMusitData[i].preparationType || subMusitData[i].preparationType === '' || !(/[a-zA-Z]/).test(subMusitData[i].preparationType)) {
@@ -208,18 +221,9 @@ const resultTable = (subMusitData, musitData) => {
                             // { cell10.innerHTML = subMusitData[i].preparationType.replace(/\"/g,'') }
                             { 
                                 let musitBasisOfRecord
-                                if (subMusitData[i].musitBasisOfRecord) {
-                                    musitBasisOfRecord = subMusitData[i].musitBasisOfRecord
-                                    cell10.innerHTML = subMusitData[i].preparationType.replace(/\"/g,'')  + ' | ' + musitBasisOfRecord
-                                }
-                                // else if (subMusitData[i].basisOfRecord) {
-                                //     musitBasisOfRecord = subMusitData[i].basisOfRecord
-                                //     cell10.innerHTML = subMusitData[i].preparationType.replace(/\"/g,'')  + ' | ' + musitBasisOfRecord
-                                // } 
-                                else {
-                                    cell10.innerHTML = subMusitData[i].preparationType.replace(/\"/g,'')
-                                }
-                                
+                                if (subMusitData[i].musitBasisOfRecord) {musitBasisOfRecord = subMusitData[i].musitBasisOfRecord}
+                                else if (subMusitData[i].basisOfRecord) {musitBasisOfRecord = subMusitData[i].basisOfRecord}
+                                cell10.innerHTML = subMusitData[i].preparationType.replace(/\"/g,'')  + ' | ' + musitBasisOfRecord
                             }
                         }
 
@@ -242,8 +246,6 @@ const resultTable = (subMusitData, musitData) => {
                 } 
                 if( subMusitData[i].associatedMedia ) {   
                     cell11.innerHTML = `<span class="fas fa-camera"></span>`
-                // } else if( subMusitData[i].identifier ) {   
-                //     cell11.innerHTML = `<span class="fas fa-camera"></span>`
                 }
                 if( subMusitData[i].decimalLongitude) {
                     cell12.innerHTML = '<span class="fas fa-compass"></span>'
@@ -287,8 +289,8 @@ const resultTable = (subMusitData, musitData) => {
         
 
         
-            
-        showResultElements()
+        let isLoan = activateLoanButton()
+        showResultElements(isLoan)
         document.getElementById("empty-search-button").style.display = "inline-block"
         numberOfPages = getNumberOfPages(numberPerPage)
 
@@ -388,7 +390,8 @@ const UTADRestultTable = (subUTADData, UTADData) => {
                 //cell10.className = 'row-10 row-sampleType'
                 cell11.className = 'row-11 row-checkbox'
             }
-            showResultElements()
+            let isLoan = activateLoanButton()
+            showResultElements(isLoan)
             document.getElementById("empty-search-button").style.display = "inline-block"
             numberOfPages = getNumberOfPages(numberPerPage)
         }
@@ -478,22 +481,16 @@ const bulkResultTable = (subBulkData, bulkData) => {
                 cell7.className = 'row-7 row-placement'
                 cell8.className = 'row-8 row-note'
                 cell11.className = 'row-11 row-checkbox'
-                
             }
-          
         }
         
         // hide corema-link-column for UM and TMU
         // if (!window.location.href.includes('/nhm') ) {
         //     hide_column(9)
         // }
-
-        
-        showResultElements()
+        showResultElements(isLoan)
         document.getElementById("empty-search-button").style.display = "inline-block"
         numberOfPages = getNumberOfPages(numberPerPage)
-        
-        
     }  
     catch(error) {
         errorMessage.innerHTML = textItems.errorRenderResult[index]
@@ -506,8 +503,6 @@ const bulkResultTable = (subBulkData, bulkData) => {
             checkSeveralBoxes(subBulkData)
         }
     }
-
-    
 }
 
 // pagination part

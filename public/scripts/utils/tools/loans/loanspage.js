@@ -43,6 +43,7 @@ const getDataAndSendIt = () => {
         
     }
     const stringForm = JSON.stringify(loanInfo)
+    console.log(loanInfo);
     const url = '/museum/post-loan/' 
     fetch(url, {
         method: 'POST', // or 'PUT'

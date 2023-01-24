@@ -7,6 +7,21 @@ const templatePath = path.join(__dirname, '../loans/templates/PROFORMA_INVOICE.d
 const template = fs.readFileSync(templatePath);
 const outFilePath =  path.join(__dirname, '../loans/temps/proforma_invoice.docx')
 
+function parseLoanData(data) {
+  let lenderInfo = '<p> <h3>Lender Information </h3></p>'
+  for (const [key, value] of Object.entries(data.lenderInfo)) {
+    lenderInfo = lenderInfo + '<b>' + key + '</b>: ' + value + '<br>'
+  }
+
+  let specimenData = '<tr><th>CatalogNummer</th> <th>Scienfific Name</th> <th>Country</th> <th>Locality</th> <th>Collection date</th> <th>Collector</th></tr>'
+  for (let i = 0; i < Object.keys(data.items).length; i++) {
+    specimenData = specimenData + '<tr><td>' + data.items[i].catalogNumber + '</td> <td>' + data.items[i].scientificName + '</td> <td>' + data.items[i].country + '</td> <td>' + data.items[i].locality + '</td> <td>' +data.items[i].eventDate + '</td> <td>' + data.items[i].recordedBy + '</td> </tr>'
+  }
+
+  parsedData = '<p>' + lenderInfo + '</p><br><br>' + '<table>' + specimenData + '</table>'
+  return parsedData
+}
+
 // async..await is not allowed in global scope, must use a wrapper
 async function main(data) {
   // create reusable transporter object using the default SMTP transport
@@ -24,9 +39,9 @@ async function main(data) {
   let info = await transporter.sendMail({
     from: '"Eirik Rindal" <eirik.rindal@nhm.uio.no>', // sender address
     to: "eirik.rindal@nhm.uio.no", // list of receivers
-    subject: "Hello ✔", // Subject line
-    text: data.cname, // plain text body
-    html: "<b>Hello world? </b>" +data.cname, // html body
+    subject: "Loan reguest", // Subject line
+    // text: data.cname, // plain text body
+    html: data, // html body
   });
 
   console.log("Message sent: %s", info.messageId);
@@ -49,12 +64,11 @@ async function writeInvoice(fields)  {
   fs.writeFileSync(outFilePath, doc)
 }
 
-
 const requestLoan = (data) => {
-    console.log('i lån på server');
-    console.log(data.lenderInfo);
-    writeInvoice(data)
-    // main(data).catch(console.error);
+
+    // writeInvoice(data)
+   const parsedData =  parseLoanData(data)
+    main(parsedData).catch(console.error);
 }
 
 module.exports = {requestLoan}

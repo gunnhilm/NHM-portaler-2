@@ -1,5 +1,11 @@
 //loans button 
 const loansButton = document.querySelector('#loan-button')
+console.log('vi er her');
+document.getElementById("loan-button").style.display = "none";
+// document.querySelector('#loan-button').style.display = "none";
+
+
+
 
 const getSelectedItems = () => {
     const searchResult = JSON.parse(sessionStorage.getItem('string'))
@@ -17,14 +23,16 @@ const startLoans = () => {
     if (loanArray === 0) {
         alert (' Select object to loan')
     } else {
-        console.log(loanArray);
         const loanItems = JSON.stringify(loanArray)
         sessionStorage.setItem("loanItems", loanItems)
     }
 }
 
 const openPage = () => {
-    window.location.replace('loans')
+    let url = window.location.href
+    url = url + '/loans'
+    window.location.href = url
+    // window.location.replace('loans')
 }
 
 // When some pushes the loan button
