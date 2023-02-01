@@ -781,7 +781,6 @@ async function showItemData (specimenObject,objectTable,order,overviewObject) {
     addRow(objectTable)
     cell1.id = 'itemsHeader'
     
-    console.log(textItems.itemsHeader)
     cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.itemsHeader[index]}${collectionName("DNA","table")}</span>`
     addRow(objectTable)
     cell1.innerHTML = '<br>'
@@ -794,8 +793,6 @@ async function showItemData (specimenObject,objectTable,order,overviewObject) {
             showObjectData(item, document.getElementById('sperm-table'), "first")
         } else {
             //row1 catno
-            console.log(item)
-            
             addRow(objectTable)
             if (order === 'first') {
                 if (sessionStorage.getItem('source') === 'musit') {
@@ -814,7 +811,6 @@ async function showItemData (specimenObject,objectTable,order,overviewObject) {
                     cell1.innerHTML = `<a id="object-link" href="${museumURLPath}/object/?id=${specimenObject.RelCatNo}&samling=${associatedCollection}&museum=nhm&lang=${sessionStorage.getItem('language')}"> ${specimenObject.institutionCode}-${specimenObject.collectionCode}-${specimenObject.catalogNumber} </a>`
                 }
             }
-            console.log('linje 744')
                 
             cell1.style.textDecoration  = 'underline'
             cell1.style.fontWeight = 'normal'
@@ -853,6 +849,11 @@ async function showItemData (specimenObject,objectTable,order,overviewObject) {
                 addRow(objectTable)
                 cell1.innerHTML = textItems.concentration[index]
                 if (!item.DNAConc || item.DNAConc == '"') {cell2.innerHTML = ''} else {cell2.innerHTML = item.DNAConc.replace(/"/g, '') + ' ' + item.DNAConcUnit.replace(/"/g, '')}
+                // GenBAnk acc no
+                addRow(objectTable)
+                cell1.innerHTML = 'Genbank Acc.No:'
+                if (!item.genAccNo || item.genAccNo == '"') {cell2.innerHTML = ''} else {cell2.innerHTML = item.genAccNo.replace(/"/g, '')}
+                // BOLD process ID
                 addRow(objectTable)    
                 cell1.innerHTML = 'BOLD ProcessID:'
                 if (!item.processID || item.processID == '"') {cell2.innerHTML = ''}
@@ -860,12 +861,15 @@ async function showItemData (specimenObject,objectTable,order,overviewObject) {
                     const url = `http://www.boldsystems.org/index.php/Public_RecordView?processid=${item.processID.replace(/"/g, '')}`
                     cell2.innerHTML = `<a href="${url}" target="_blank">${item.processID.replace(/"/g, '')}</a>`
                 } 
+                
+                // seq length
                 addRow(objectTable)
-                cell1.innerHTML = 'Genbank Acc.No:'
-                if (!item.genAccNo || item.genAccNo == '"') {cell2.innerHTML = ''} else {cell2.innerHTML = item.genAccNo.replace(/"/g, '')}
+                cell1.innerHTML = textItems.seqLength[index]
+                if (Object.keys(overviewObject).length != 0) {
+                    cell2.innerHTML = overviewObject.seqLength
+                }
                 addRow(objectTable)
                 cell1.innerHTML = textItems.validated[index]
-                console.log(overviewObject)
                 if (Object.keys(overviewObject).length != 0) {
                     if (overviewObject.validationStatus !== 'Validert') {
                         cell2.innerHTML = textItems.no[index]
@@ -893,7 +897,6 @@ async function showItemData (specimenObject,objectTable,order,overviewObject) {
         }
         
     })
-    console.log('linje 889')
 }
 
 // calls function that build table and fill headers,
@@ -1023,7 +1026,6 @@ async function showData (specimenObject, orgGroup, overviewObject) {
                     await showObjectData(specimenObject,table1,"first")
                     
                     if (specimenObject.RelCatNo) {
-                        console.log(overviewObject)
                         await showItemData(specimenObject,table2,"second",overviewObject)
                         table2.style = 'border-top:solid grey'
                     } else {table2.style.display = 'none'}
@@ -1220,6 +1222,7 @@ async function main () {
                 return el
             }
         }))
+        console.log(overviewObject)
         
         if (Object.keys(overviewObject).length != 0) {
             let arrayIndex = overviewObject.musitRegno.findIndex(el => el.includes(specimenObject.catalogNumber))

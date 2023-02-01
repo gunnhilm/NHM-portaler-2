@@ -220,7 +220,7 @@ function renderText (lang) {
             document.querySelector('#bc-herptiles-link').style.display = "none"
             document.querySelector('#bc-lichen-link').style.display = "none"
             document.querySelector('#bc-header').style.display = "none"
-            
+            document.querySelector('#bc-birds-link').style.display = "none"
         }
     }
 
