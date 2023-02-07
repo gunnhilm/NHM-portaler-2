@@ -51,11 +51,12 @@ const putRequestTogether = (arrayOfNumbers) => {
     }
     const data = {
         "creator": brukerNavn,
-        "notification_address": [epost],
-        "send_notification": "true",
-        "created": '2020',
+        "notificationAddress": [epost],
+        "sendNotification": "true",
+        "format": "DWCA",
         "predicate": nested_predicate,
     }
+    console.log(data);
 return data
 }
 
@@ -81,6 +82,7 @@ async function sendRequest(request) {
     const xhr = new XMLHttpRequest();
     const passstring = brukerNavn + ':' + password;
     const base64Credentials = btoa(passstring)
+
     xhr.open("POST", url, true);
     xhr.setRequestHeader("accept", "application/json");
     xhr.setRequestHeader("content-type", "application/json");
