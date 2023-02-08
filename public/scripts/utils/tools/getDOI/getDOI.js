@@ -61,6 +61,7 @@ return data
 }
 
 const getDOI = (downloadKey) => {
+    var downLoadDate = new Date().toLocaleDateString();
     console.log('start på andre nedlstning');
     const metaDataUrl = 'https://api.gbif.org/v1/occurrence/download/' + downloadKey
     fetch(metaDataUrl)
@@ -69,9 +70,10 @@ const getDOI = (downloadKey) => {
         console.log(result.doi)
         console.log(result.downloadLink);
         document.getElementById("please-wait").style.display = "none"
+        document.getElementById("Citation").textContent = 'Citation: GBIF.org (' + (downLoadDate)  + ') GBIF Occurrence Download  https://doi.org/' + result.doi
         document.getElementById("DOI-result").textContent = 'DOIlink:  https://doi.org/' + result.doi
         document.getElementById("Download-link").textContent = 'Download link: ' + result.downloadLink
-        alert(result.doi + '\n' + result.downloadLink)
+        // alert(result.doi + '\n' + result.downloadLink)
     });
 };
 
