@@ -1215,24 +1215,27 @@ async function main () {
 //    console.log(specimenObject.collectionCode)
    if (specimenObject.collectionCode === "F") {
         fungiOverview = await getOverview() // Makes a request to server to get an array of all species in the fungal-barcoding-overview-file, and number of validated and failed sequences
-        // console.log(fungiOverview)
+        console.log(fungiOverview)
+        console.log(specimenObject)
         overviewObject = fungiOverview.find((el => {
-            objIndex = el.musitRegno.findIndex(el => el.includes(specimenObject.catalogNumber))
+            objIndex = el.musitRegno.findIndex(el2 => el2.includes(specimenObject.catalogNumber))
             if (objIndex != -1) {
                 return el
             }
         }))
-        console.log(overviewObject)
+       
+        if (overviewObject) {
+            if (Object.keys(overviewObject).length != 0) {
+                let arrayIndex = overviewObject.musitRegno.findIndex(el => el.includes(specimenObject.catalogNumber))
+                overviewObject.expert = overviewObject.expert[arrayIndex]
+                overviewObject.musitRegno = overviewObject.musitRegno[arrayIndex]
+                overviewObject.processID = overviewObject.processID[arrayIndex]
+                overviewObject.seqLength = overviewObject.seqLength[arrayIndex]
+                overviewObject.validationMethod = overviewObject.validationMethod[arrayIndex]
+                overviewObject.validationStatus = overviewObject.validationStatus[arrayIndex]
+            }
+        } 
         
-        if (Object.keys(overviewObject).length != 0) {
-            let arrayIndex = overviewObject.musitRegno.findIndex(el => el.includes(specimenObject.catalogNumber))
-            overviewObject.expert = overviewObject.expert[arrayIndex]
-            overviewObject.musitRegno = overviewObject.musitRegno[arrayIndex]
-            overviewObject.processID = overviewObject.processID[arrayIndex]
-            overviewObject.seqLength = overviewObject.seqLength[arrayIndex]
-            overviewObject.validationMethod = overviewObject.validationMethod[arrayIndex]
-            overviewObject.validationStatus = overviewObject.validationStatus[arrayIndex]
-        }
     }
     await showData(specimenObject, orgGroup, overviewObject)
     showMedia(specimenObject)
