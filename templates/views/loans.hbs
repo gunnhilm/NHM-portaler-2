@@ -99,7 +99,7 @@
         <br><br>
         <div class="container">
             <h3>Fill in loan form:</h3>
-            <form ID="loan-form">
+            <form ID="loan-form" enctype="multipart/form-data" >
                 <div class="row">
                     <div class="col-25">
                    <label for="Institution" >Institution<span class="formbuilder-required">*</span></</label>
@@ -159,7 +159,7 @@
                 </div>
                 <div class="row">
                     <div class="col-25">
-                    <label for="|">e-mail conntact person<span class="formbuilder-required">*</span></label>
+                    <label for="email">e-mail conntact person<span class="formbuilder-required">*</span></label>
                     </div>
                     <div class="col-75">
                     <input type="email" class="loan-form" name="email" access="false" id="email" required="required" aria-required="true"><br>
@@ -189,7 +189,15 @@
                     <textarea id="Special-documents" name="Special-documents" placeholder="www.custum_import.somethig" style="height:200px"></textarea>
                     </div>
                 </div>
-     
+                <div class="row">
+                    <div class="col-25">
+                    <label for="inFiles">Upload attachments</label>
+                    </div>
+                    <div class="col-75">
+                   <input type="file" id="inFiles" name="inFiles" multiple>
+                    </div>
+                </div>
+                
                 <br>
                 <div class="row">
                     <input type="submit" value="Send request">

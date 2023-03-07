@@ -24,40 +24,67 @@ const getLoanItems = (storagKey) => {
     }
 }
 
+const getAdminItems = () => {
+    let museum = sessionStorage.getItem('museum')
+    let collection = sessionStorage.getItem('chosenCollection')
+
+    if(museum && collection){
+        const admin = {}
+        admin.museum = museum
+        admin.collection = collection
+        return admin
+    } else {
+        alert('Someting is wrong, you need to start over' )
+        let url = window.location.pathname
+        url = url.replace('/loans','')
+        window.location.assign(url)
+    }
+}
+
+
+
 const getDataAndSendIt = () => {
     const loanInfo = {}
-    loanInfo.lenderInfo = {}
-    // get list of objects for loan
-    let items = getLoanItems("loanItems")
     const formData = new FormData(form);
 
-    // Display the key/value pairs
-    for (const pair of formData.entries()) {
-        loanInfo.lenderInfo[pair[0]] = pair[1]
-    }
+    // loanInfo.loaneeInfo = {}
+
+    // for (const pair of formData.entries()) {
+    //     loanInfo.loaneeInfo[pair[0]] = pair[1]
+    //     console.log(pair[0] + ' = ' + pair[1]);
+    // }
+
+    // get list of objects for loan
+    let items = getLoanItems("loanItems")
     loanInfo.items = []
     
     for (let i = 0; i < items.length; i++) {
         const element = items[i];
         loanInfo.items[i] = element
-        
     }
+
+    // get info about collection etc.
+    loanInfo.admin = {}
+    let admin = getAdminItems()
+    loanInfo.admin = admin
     const stringForm = JSON.stringify(loanInfo)
-    console.log(loanInfo);
+    formData.append('loanInfo', stringForm)
+    console.log(formData);
+
     const url = '/museum/post-loan/' 
     fetch(url, {
-        method: 'POST', // or 'PUT'
         headers: {
-          'Content-Type': 'application/json',
+            // "Content-Type": "application/x-www-form-urlencoded",
+            // "Content-Type": "undefined",
         },
-        body: stringForm,
+        method: 'POST', // or 'PUT'
+        body: formData,
       })
     .then(res => {
         if (!res.ok) {                                   
             throw new Error("HTTP error " + res.status); 
         }                                                
-        console.log('Success:', res);     
-        // alert('Epost sendt')                         
+        console.log('Success:', res);                              
     })
     .catch((error) => {
         console.error('Error:', error);

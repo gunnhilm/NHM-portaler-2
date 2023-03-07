@@ -23,6 +23,9 @@ document.querySelector('#bc-mammals-link').href = museumURLPath + '/DNAbarcodes/
 document.querySelector('#bc-lep-link').href = museumURLPath + '/DNAbarcodes/?museum=nhm&coll=Lep'
 document.querySelector('#bc-herptiles-link').href = museumURLPath + '/DNAbarcodes/?museum=nhm&coll=herptiles'
 document.querySelector('#bc-birds-link').href = museumURLPath + '/DNAbarcodesBirds'
+document.querySelector('#loan-info-link').href = museumURLPath + '/loanInfo'
+
+
 
 // document.querySelector('#coordinate-link').href = museumURLPath + '/checkCoord'
 

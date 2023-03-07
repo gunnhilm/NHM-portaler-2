@@ -17,9 +17,10 @@ const fs = require('fs')
 const readline = require('readline')
 const csvParser = require('csv-parser')
 const bodyParser = require('body-parser');
-// Include Express Validator Functions
-const { body, validationResult } = require('express-validator');
+
 const app = express()
+const multer  = require('multer')
+// const upload = multer()
 
 // Sikkerhets app som beskytter mot uønskede headers osv.
 app.use(helmet())
@@ -27,6 +28,8 @@ const port = process.env.PORT || 3000
 
 // reciving json to server
 app.use(bodyParser.json());
+
+
 
 // define paths for Express
 const publicDirectoryPath = path.join(__dirname, '../public')
@@ -295,7 +298,6 @@ app.get('*/tools', (req, res) => {
     })
 })
 
-
 app.get('*/showStat', (req, res) => {
     if (!req.query.getStat) {
             return res.render('showStat', {
@@ -324,38 +326,48 @@ app.get('/nhm/journaler', (req, res) => {
         res.render('loans', {})
  })
 
- // vallidation of input
- const validateUser = [
-    body('lenderInfo.Institution').trim().escape(),
-    body('lenderInfo.country').trim().escape(),
-    body('lenderInfo.responsible-person').trim().escape(),
-    body('lenderInfo.contact-person').trim().escape(),
-    body('lenderInfo.other-person').trim().escape(),
-    body('lenderInfo.post-address').trim().escape(),
-    body('lenderInfo.street-address').trim().escape(),
-    body('lenderInfo.phone').trim().escape(),
-    body('lenderInfo.purpose').trim().escape(),
-    body('lenderInfo.Special-documents').trim().escape(),
-    body('lenderInfo.email').trim().normalizeEmail().isEmail(),
-    (req, res, next) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()){
-            console.log(errors);
-            return res.status(400).json({ errors: errors.array() });
-        }
-        next();
+ 
+
+
+const storage = multer.diskStorage({
+    destination: function (req, file, callback) {
+        callback(null, path.join(__dirname, './utils/loans/fileUploads'));
     },
-];
+    filename: function (req, file, callback) {
+        // console.log(file.originalname);
+        callback(null, file.originalname);
+    }
+});
+
+const upload = multer({ storage: storage }).array('inFiles')
 
 
- app.post('*/post-loan', validateUser,
- (req, res, next) => {
-    // console.log('**************************************************************************');
-    // console.log(req.body);
-    loan.requestLoan(req.body)
-     res.send('Success')
+app.post('*/post-loan', async (req, res) => {
+    upload(req, res, function (err) {
+        
+        if (err) {
+            console.log(err)
+        } else {
+            console.log(req.files[0].originalname);
+            // const tempObj = Object.assign({},req.body)
+            // req.body = tempObj;// solution this line
+            console.log(res.files);
+            // console.log('The filename is ' + req.files.filename[0]);
+            // console.log('fil navn');
+            // console.log(req.filename);
+            loan.requestLoan(req.body, req.files)
+            res.send('Success')
+        }
+    })
  },
 );
+
+
+app.get('*/loanInfo', (req, res) => {
+    res.render('loanInfo', {})
+})
+
+
 
 app.get('/about', (req, res) => {
    res.render('about', {

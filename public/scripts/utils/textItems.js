@@ -255,7 +255,9 @@ const textItems = {
     artsObsLink: ["Last ned data fra artsobservasjoner", "Download data from artsobservasjoner"],
     artsObsText: ["Last ned data og bilder fra artsobservasjoner i et format som gjør det lett å importere det til MUSIT-databasen.","Download data from artsobservasjoner in a formate that is easy to import into the MUSIT database."],
     bcText: ["Oversikt over DNA strekkoder i Norge for:", "Overview of DNA barcodes from Norway for:"],
-    
+    loanInfoLink:["Finn et lån","Find a loan"],
+    loanInfoText:["Sjekk om et objekt er utlånt og hvilken lånesak det tilhører.","Check if an object is on loan and what is the case number."],
+
     //ShowStat page
     showStatHeader: ["Statistikk over samlingene", "Statistics from the collections"],
     showStatText: ["Disse tallene reflekterer hva som er registrert i museets databaser. Da kun et fåtall av samlingene har alle objektene registrert i databasene, reflekterer ikke disse tallene nødvendigvis samlingenes totale bredde.",

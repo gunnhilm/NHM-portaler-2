@@ -6,3 +6,4 @@ log/
 .eslintrc.js
 .vscode
 credentials.js
+*.doc

@@ -250,6 +250,7 @@ const getArtsObsData = async (artsObsNumber, MUSITNo)=> {
         console.log('feil med resultater fra artsobs');
         return
     }
+
     try{
         // fix ArtsObs entries
         let Koordinater = resultObj.decimalLatitude + 'N ' + resultObj.decimalLongitude + 'E'

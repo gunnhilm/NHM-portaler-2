@@ -126,6 +126,7 @@
     "source": "corema",
     "orgGroup": "zoologi",
     "name": "birds",
+    "loan": true,
     "zipFileName": "occurrence",
     "mediaFile": "_multimedia",
     "occurrenceFileSuffix": "_stitched.txt",

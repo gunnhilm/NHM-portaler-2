@@ -75,6 +75,8 @@ const getFileList = async () => {
 //      emptyResultElements() in resultElementsOnOff.js
 // is called by emptySearchButton.eventlistener, upateFooter() when error
 const emptySearch = (comesFrom) => {
+    console.log('emptySearch, comes from ' + comesFrom)
+
     if (comesFrom === "organism-button") {
         sessionStorage.removeItem('collection')
         collection.value = "vennligst"
@@ -546,7 +548,6 @@ const doSearch = (limit = 20) => {
                                     sessionStorage.setItem('string', JSON.stringify(parsedResults.data))      
                                     
                                     load() 
-                                    activateLoanButton()
                                     
                                     } catch (error) {
                                         console.log(error);
