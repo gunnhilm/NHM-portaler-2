@@ -325,6 +325,10 @@ const textItems = {
     binomiaHeader: ['Sjekk mot binomia.net', 'Compare with binomia.net'],
     binomiaText: ['<br><br>Innsamlingsdato sjekkes mot levetiden til innsamleren ved hjelp av "Frictionless Data" fra bionomia.net. Uoverensstemmelser kan lastes ned her:',
                 '<br><br>Collecting date is checked against the collector`s life span by the help of "Frictionless Data" from bionomia.net. Discrepancies can be downloaded here:'],
-    errorResultsHeaders: [['Problemer og flagg', 'Antall poster'],['Issues and flags', 'Number of records']]
+    errorResultsHeaders: [['Problemer og flagg', 'Antall poster'],['Issues and flags', 'Number of records']],
+
+    // LoanIfo page
+    loanInfoHeader: ["Søk etter lån","Search for loan"],
+    loanInfoText: ["Skriv inn objektnummer (eller annen informasjon) for å få opp informasjon om lånet", "Type in object number (or other information) to search for information about the loan."]
     
 }

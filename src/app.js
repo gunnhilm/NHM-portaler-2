@@ -8,6 +8,7 @@ const adbAPI2 = require('./utils/artsobs/adbAPI2')
 const barcoding = require('./utils/barcoding/barcoding')
 const footerDate = require('./utils/footerDate')
 const loan = require('./utils/loans/loans') 
+const LoanInfo =  require('./utils/loans/loanInfo/loanInfoserver') 
 const hbs = require('hbs')
 const helmet = require('helmet')
 const { response } = require('express')
@@ -364,7 +365,20 @@ app.post('*/post-loan', async (req, res) => {
 
 
 app.get('*/loanInfo', (req, res) => {
-    res.render('loanInfo', {})
+    if (!req.query.search) {
+        res.render('loanInfo', {})
+    } else {
+        LoanInfo.LoanInfoSearch(req.query.search, limit = 20, (error, results) => {
+            if (results){
+                res.send({
+                    unparsed: results
+                }) 
+            } else {
+                console.log('Error: could not read loanInfo file ' + error)
+            }
+        })
+    }
+
 })
 
 

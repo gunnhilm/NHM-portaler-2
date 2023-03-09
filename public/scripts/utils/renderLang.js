@@ -215,6 +215,7 @@ function renderText (lang) {
         document.querySelector('#loan-info-link').innerHTML = textItems.loanInfoLink[index]
         document.querySelector('#loan-info-text').innerHTML = textItems.loanInfoText[index]
         //document.querySelector('#coordinate-link').innerHTML = textItems.coordinateLink[index]
+        
         if (window.location.href.includes('/tmu') || window.location.href.includes('/nbh') || window.location.href.includes('/um')) {
             document.querySelector('#bc-fungi-link').style.display = "none"
             document.querySelector('#bc-mammals-link').style.display = "none"
@@ -223,6 +224,8 @@ function renderText (lang) {
             document.querySelector('#bc-lichen-link').style.display = "none"
             document.querySelector('#bc-header').style.display = "none"
             document.querySelector('#bc-birds-link').style.display = "none"
+            document.querySelector('#loan-info-link').style.display = "none"
+            document.querySelector('#loan-info-text').style.display = "none"
         }
     }
 
@@ -296,6 +299,7 @@ function renderText (lang) {
         document.querySelector('#checkCoordHeader').innerHTML = textItems.checkCoordHeader[index]
     }
 
+    // dataErros page
     if (location.href.includes('dataErrors')) {
         document.querySelector('#dataErrorHeader').innerHTML = textItems.dataErrorHeader[index]
         document.querySelector('#select-collection-label').innerHTML = textItems.selectCollectionError[index] 
@@ -304,6 +308,14 @@ function renderText (lang) {
         document.querySelector('#GBIF-text').innerHTML = textItems.GBIFText[index]
         document.querySelector('#binomia-text').innerHTML = textItems.binomiaText[index]
     }
+    // loanInfo page
+    if (location.href.includes('loanInfo')) {
+        document.querySelector('#header-loan-info-page').innerHTML = textItems.loanInfoHeader[index]
+        document.querySelector('#text-loan-info-page').innerHTML = textItems.loanInfoText[index] 
+        document.querySelector('#search-button').innerHTML = textItems.searchButton[index]
+
+    }
+    
 }
 
 let language
