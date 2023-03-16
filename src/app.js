@@ -368,7 +368,7 @@ app.get('*/loanInfo', (req, res) => {
     if (!req.query.search) {
         res.render('loanInfo', {})
     } else {
-        LoanInfo.LoanInfoSearch(req.query.search, limit = 20, (error, results) => {
+        LoanInfo.LoanInfoSearch(req.query.search, limit = 1000, (error, results) => {
             if (results){
                 res.send({
                     unparsed: results

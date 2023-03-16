@@ -1,7 +1,24 @@
 const searchForm = document.querySelector('form') 
 const loanInfoSearch = document.getElementById('loan-search-text')
-const errorMessage = document.getElementById('head-nb-hits')
+const hitsElement = document.getElementById('head-nb-hits')
 const nbHitsElement = document.getElementById('nb-hits') 
+const maxHitsElement = document.getElementById('max-hits')
+
+const pleaseWaitOn = () => {
+    document.getElementById("please-wait").style.display = "block"
+}
+
+
+
+const pleaseWaitOff = () => {
+    document.getElementById("please-wait").style.display = "none"
+}
+
+const hideElements = () => {
+    hitsElement.innerText = ""
+    nbHitsElement.innerText = ""
+    maxHitsElement.innerText = ""
+}
 
 // figures out which museum we are in
 // out: string, abbreviation for museum
@@ -92,12 +109,14 @@ function sortTable() {
 
 
 const doLoanInfoSearch = () => {
+    hideElements()
     removeResults()
     const elem = document.getElementById('loan-result-table');
     if (elem)
     {
         document.getElementById('container').removeChild(elem);
     }
+    pleaseWaitOn()
     const searchTerm = loanInfoSearch.value
     if (!searchTerm) {
         alert ('Skriv inn søkeord / Search field empty')
@@ -110,6 +129,7 @@ const doLoanInfoSearch = () => {
             } else {
                 try {
                     response.text().then((data) => {
+                        pleaseWaitOff()
                         if(data.error) {
                             errorMessage.innerHTML = textItems.serverError[index]
                             console.log(error);
@@ -123,10 +143,16 @@ const doLoanInfoSearch = () => {
                                 header: true,
                             })  
                             console.log(parsedResults);
-                            console.log('her kommer første read: ' + Object.keys(parsedResults.data[0]).length);
-                            loanResultTable(parsedResults.data, Object.keys(parsedResults.data[0]).length)
-                            errorMessage.innerText = textItems.nbHitsText[index] 
+                            if (parsedResults.data.length > 0) {
+                                console.log('her kommer første read: ' + Object.keys(parsedResults.data[0]).length);
+                                loanResultTable(parsedResults.data, Object.keys(parsedResults.data[0]).length)
+                            }
+
+                            hitsElement.innerText = textItems.nbHitsText[index] 
                             nbHitsElement.innerText = JSONdata.unparsed.resultCount
+                            if(JSONdata.unparsed.resultCount === 1000) {
+                                maxHitsElement.innerText = textItems.tooManyHits[index] 
+                            }
                         }
                     })
                         

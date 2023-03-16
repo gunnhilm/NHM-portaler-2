@@ -330,5 +330,4 @@ const textItems = {
     // LoanIfo page
     loanInfoHeader: ["Søk etter lån","Search for loan"],
     loanInfoText: ["Skriv inn objektnummer (eller annen informasjon) for å få opp informasjon om lånet", "Type in object number (or other information) to search for information about the loan."]
-    
 }
