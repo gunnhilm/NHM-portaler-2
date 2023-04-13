@@ -1,7 +1,7 @@
 const readline = require('readline');
 const fs = require('fs')
 
-const setLoanfile = (museum = 'NHM', samling) => {
+const setLoanfile = (museum = 'nhm', samling) => {
     const loanInfoFile = './src/data/' + museum +'/loanInfo.txt'  
     return loanInfoFile 
 }
@@ -83,7 +83,7 @@ let holdArray = []
             
         }).on('close', function () {
             const resulstAndLine = {results, resultCount }
-            console.log(resulstAndLine.results);
+            // console.log(resulstAndLine.results);
             
             callback(undefined, resulstAndLine)
         })

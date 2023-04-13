@@ -119,12 +119,12 @@ const doLoanInfoSearch = () => {
     pleaseWaitOn()
     const searchTerm = loanInfoSearch.value
     if (!searchTerm) {
-        alert ('Skriv inn søkeord / Search field empty')
-        
+        alert ('Skriv inn søkeord / Search field empty')  
     } else {
         const url = urlPath + '/loanInfo/?search=' + searchTerm  // normal search
         fetch(url).then((response) => {
             if (!response.ok) {
+                pleaseWaitOff()
                 throw 'noe går galt med søk, respons ikke ok'
             } else {
                 try {
@@ -144,7 +144,6 @@ const doLoanInfoSearch = () => {
                             })  
                             console.log(parsedResults);
                             if (parsedResults.data.length > 0) {
-                                console.log('her kommer første read: ' + Object.keys(parsedResults.data[0]).length);
                                 loanResultTable(parsedResults.data, Object.keys(parsedResults.data[0]).length)
                             }
 
@@ -159,7 +158,6 @@ const doLoanInfoSearch = () => {
                 } catch (error) {
                     console.log('Feil med søk');
                 }
-            
             }
         })
     }

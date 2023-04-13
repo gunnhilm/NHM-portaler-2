@@ -61,6 +61,12 @@ const GBifIdentifiers = {
             CatalogueNumber: 'xxxxx/x',
             OccurrenceID: 'urn:catalog:O:F:',
             key: 'e4deab67-0998-4140-b573-0ba1f624eb3e'
+        },
+        Palaeontology: {
+            source: 'FoxPro',
+            CatalogueNumber: 'xxx.xxx',
+            OccurrenceID: '	NHMO:PMO:',
+            key: 'b2522b78-18ec-4ba6-ba16-9c9e215ce9e6'
         }
     },
     um: {
