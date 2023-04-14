@@ -205,7 +205,7 @@ const textItems = {
     method: ['Ekstraksjonsmetode:','Method of extraction:'],
     preparedBy: ['Ekstrahert av:','Prepared by:'],
     concentration: ['DNA konsentrasjon:','DNA concentration'],
-    seqLength: ['Sekvenslengde', 'Sequence length'],
+    seqLength: ['Sekvenslengde:', 'Sequence length:'],
     validated: ['Validert:','Validated:'],
     yes: ['Ja','Yes'],
     no: ['Nei','No'],

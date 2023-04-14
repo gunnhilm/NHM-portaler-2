@@ -23,7 +23,20 @@ async function lastModified (infile) {
 // }
 // b = printLastModified()
 // console.log(b)
-
+const getFastaFileUpdatedDate = (file, callback) => {
+    try {
+        if (fs.existsSync(file)) {
+            fs.stat(file, function(err, stats) {
+                let time = stats.mtime
+                const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+                time = time.toLocaleString('NO', options)
+                callback(undefined, time)
+            })
+        } 
+    } catch (error) {
+        console.log('Error in footerdate');      
+    }
+}
 // reads fasta-file with all sequences from NorBOL downloaded from BOLD.
 // Gunnhild updates fasta-file irregularly, its static
 // returns array with objects; one object for each species, with musit-regnos, processIDs and counties
@@ -34,6 +47,9 @@ const getFasta = async (query, callback) => {
         if (!fs.existsSync(`./src/data/nhm/fasta_${coll}.fas`)) {
             console.log('fasta.fas file does  not exist')
         } else {
+            //find last modified date of fasta-file - unfinished
+            file = `./src/data/nhm/fasta_${coll}.fas`
+            
             const readInterface = readline.createInterface({
                 input: fs.createReadStream(`./src/data/nhm/fasta_${coll}.fas`),
                 console: false
@@ -95,23 +111,23 @@ const getOverview = async (query, callback) => {
     const readInterface = readline.createInterface({
         input: fs.createReadStream(`./src/utils/barcoding/sopp_oversikt.txt`),
         console: false
-    })
+    }) 
     let overviewArray = []
     let lineCount
     lineCount = 0
     let headers = []
     readInterface.on('line', function(line) {
+        
         lineCount ++
         lineArray = line.split('\t')
 
         if (lineCount === 1) {
             headers = lineArray  
         }
-
+ 
         if (lineCount != 1) {
                 let processID = lineArray[headers.indexOf('BOLD Process-ID')]
                 let musitRegno = lineArray[headers.indexOf('MUSIT no with prefix')]
-                // console.log(musitRegno)
                 let species = lineArray[headers.indexOf('Vitenskapelig navn i BOLD')].trim()
                 let seqLength = lineArray[headers.indexOf('sekvenslengde')]
                 let validationStatus = lineArray[headers.indexOf('Validert vitenskapelig navn etter strekkoding')]
@@ -144,7 +160,35 @@ const getOverview = async (query, callback) => {
         callback(undefined, overviewArray)
     })
 }
+
+const getCandidates = async (candidateFile,callback) => {
+    try {
+        let candidate_species = []
+        const readInterface = readline.createInterface({
+            input: fs.createReadStream(candidateFile),
+            console: false
+        })
+        readInterface.on('line', function(line) {
+            let existingRecord = candidate_species.find(item => item.species === line)
+            if (existingRecord) {
+                existingRecord.number ++
+                candidate_species.push
+            } else {
+                candidate_species.push({"species": line, "number": 1})
+            }
+        })
+        .on('close', function () {
+            callback(undefined, candidate_species)
+        })
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+
+
 module.exports = { 
     getFasta,
-    getOverview
+    getOverview,
+    getCandidates
 }

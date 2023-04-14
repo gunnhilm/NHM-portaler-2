@@ -50,7 +50,7 @@ async  function setSpecimenData () {
                                 return console.log(data.error)
                             } else {
                                 const JSONdata = JSON.parse(data)   
-                                console.log(data) 
+                                // console.log(data) 
                                 const parsedResults = Papa.parse(JSONdata.unparsed.results, {
                                     delimiter: "\t",
                                     newline: "\n",
@@ -58,7 +58,7 @@ async  function setSpecimenData () {
                                     header: true,
                                 }) 
                                 specimenObject = parsedResults.data
-                                console.log(specimenObject)
+                                // console.log(specimenObject)
                                 sessionStorage.setItem('string', JSON.stringify(specimenObject))
                                 resolve(specimenObject)
                             }
@@ -88,7 +88,7 @@ async function whichFileAndDb_two (museum,collection) {
                             return console.log(data.error)
                         } else {
                             let data1 = JSON.parse(data)
-                            console.log(data1[0])
+                            // console.log(data1[0])
                             sessionStorage.setItem('file', data1[0])
                             sessionStorage.setItem('source', data1[1])
                         }

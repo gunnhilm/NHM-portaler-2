@@ -781,7 +781,8 @@ async function showItemData (specimenObject,objectTable,order,overviewObject) {
     addRow(objectTable)
     cell1.id = 'itemsHeader'
     
-    cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.itemsHeader[index]}${collectionName("DNA","table")}</span>`
+    // cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.itemsHeader[index]}${collectionName("DNA","table")}</span>`
+    cell1.innerHTML = 'petter'
     addRow(objectTable)
     cell1.innerHTML = '<br>'
     // loop over array
@@ -1215,8 +1216,8 @@ async function main () {
 //    console.log(specimenObject.collectionCode)
    if (specimenObject.collectionCode === "F") {
         fungiOverview = await getOverview() // Makes a request to server to get an array of all species in the fungal-barcoding-overview-file, and number of validated and failed sequences
-        console.log(fungiOverview)
-        console.log(specimenObject)
+        // console.log(fungiOverview)
+        // console.log(specimenObject)
         overviewObject = fungiOverview.find((el => {
             objIndex = el.musitRegno.findIndex(el2 => el2.includes(specimenObject.catalogNumber))
             if (objIndex != -1) {

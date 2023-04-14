@@ -436,6 +436,7 @@ app.get('*/DNAbarcodes', (req, res) => {
         // callback(undefined, {error: 'no getfasta in query'})
     } else {
         barcoding.getFasta(req.query, (error, results) => {
+            console.log(results)
             res.send({
                 unparsed:results
             })
@@ -491,7 +492,7 @@ app.get('*/getNamelist', (req, res) => {
 })
 
 app.get('*/getCandidates', (req, res) => {
-    adbAPI2.getCandidates(req.query.candidateFile, (error, results) => {
+    barcoding.getCandidates(req.query.candidateFile, (error, results) => {
         res.send({
             unparsed:results
         })

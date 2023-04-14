@@ -174,30 +174,6 @@ async function getNorwegianName(latinName, callback) {
     
 }
 
-const getCandidates = async (candidateFile,callback) => {
-    try {
-        let candidate_species = []
-        const readInterface = readline.createInterface({
-            input: fs.createReadStream(candidateFile),
-            console: false
-        })
-        readInterface.on('line', function(line) {
-            let existingRecord = candidate_species.find(item => item.species === line)
-            if (existingRecord) {
-                existingRecord.number ++
-                candidate_species.push
-            } else {
-                candidate_species.push({"species": line, "number": 1})
-            }
-        })
-        .on('close', function () {
-            callback(undefined, candidate_species)
-        })
-    } catch (e) {
-        console.log(e)
-    }
-}
-
 const getNamelist = async (nameFile, callback) => {
     try {
         if (!fs.existsSync(nameFile)) {
@@ -365,6 +341,5 @@ const getRedlistStatus = async (latinName, redlistYear) => {
 module.exports = { 
     getNorwegianName,
     getNamelist,
-    getCandidates,
     getRedlist
 }

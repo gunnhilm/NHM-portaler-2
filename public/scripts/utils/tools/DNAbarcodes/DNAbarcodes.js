@@ -2,11 +2,14 @@
 // four taxa, with separate lists: fungi, mammals, Lepidoptera and Herptiles
 // 
 
+// const { getBCFileUpdatedDate } = require("../../../../../src/utils/barcoding/barcoding")
+
 // const { resolve } = require("path")
 
 
 let table = document.getElementById("barcode-table")
 let bcColl = urlParamsTop.get("coll")
+console.log(bcColl)
 let adbFile
 let redlistFile = `${adbFilePath}rodliste-2021.txt`
 if (bcColl === "sopp") {
@@ -26,7 +29,7 @@ else if (bcColl === "herptiles") {
 }
 
 
-document.getElementById("getBarcodeText").innerHTML = "Last updated 17.10.22 <br><br><br> Click on species name to see which specimens are barcoded, and which county (fylke) they are from."
+document.getElementById("getBarcodeText").innerHTML = "Last updated 13.4.23 <br><br><br> Click on species name to see which specimens are barcoded, and which county (fylke) they are from."
 listExplDiv = document.createElement('div')
 
 document.querySelector('#search-bc-text').placeholder = 'Search for latin name' //textItems.placeholder[index]
@@ -133,6 +136,7 @@ const bcSearch = (searchTerm, data, nameList, candidates,fungiOverview) => {
         fillTable(nameList, data, candidates, 'search', 'blank','noFungiOverview')
     } else {
         searchResultData = data.filter(el => el.species.toLowerCase().includes(searchTerm.toLowerCase()))
+        console.log(searchResultData)
         // construct shorter nameList that match search-criteria
         let strippedNameList = nameList.filter(el => el.latinName.toLowerCase().includes(searchTerm.toLowerCase()))
         // searchResultData.forEach(resultElement => {
@@ -686,6 +690,15 @@ async function main() {
         document.getElementById("fungi-buttons").appendChild(listExplDiv)
         listExplDiv.innerHTML = "<br> <br> Red species means we lack barcode sequence."
     }
+    // const soppFile = `./src/utils/barcoding/sopp_oversikt.txt`
+    // soppoversiktsDate = getBCFileUpdatedDate(file,(error,date)=> {
+    //     if (error) {
+    //         return
+    //     } else {
+    //         return(date)
+    //     }
+    // })
+    
 }
 
 main()

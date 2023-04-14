@@ -1,5 +1,6 @@
 // const urlParamsTop = new URLSearchParams(window.location.search)
 let bcColl = urlParamsTop.get("coll")
+console.log(bcColl)
 
 let index
 language = urlParamsTop.get("lang")
@@ -37,7 +38,6 @@ function addRow(table) {
 }
 
 const fillTableSpecies = (data, validationObject) => {
-    console.log(data)
     addRow(countyTable)
     cell1.innerHTML = ''
 
@@ -46,20 +46,18 @@ const fillTableSpecies = (data, validationObject) => {
     cell1.style.fontWeight = 'bold'
     cell2.innerHTML = 'County'
     cell2.style.fontWeight = 'bold'
-    cell3.innerHTML = 'Date'
+    cell3.innerHTML = 'ProcessID'
     cell3.style.fontWeight = 'bold'
-    cell4.innerHTML = 'ProcessID'
-    cell4.style.fontWeight = 'bold'
     if (bcColl === "sopp") {
-        cell5.innerHTML = 'Validation status'
+        cell4.innerHTML = 'Validation status'
+        cell4.style = "padding-right:20px"
+        cell4.style.fontWeight = 'bold'
+        cell5.innerHTML = 'Validation method'
         cell5.style = "padding-right:20px"
         cell5.style.fontWeight = 'bold'
-        cell6.innerHTML = 'Validation method'
-        cell6.style = "padding-right:20px"
-        cell6.style.fontWeight = 'bold'
         
-        cell7.innerHTML = 'Expert'
-        cell7.style.fontWeight = 'bold'
+        cell6.innerHTML = 'Expert'
+        cell6.style.fontWeight = 'bold'
     }
     
 
@@ -73,18 +71,25 @@ const fillTableSpecies = (data, validationObject) => {
         else {regno = data.regnos[i]}
         
         objButton.innerHTML = regno
-        
         if (data.regnos[i].includes('_')) {
             regno = data.regnos[i].substr(data.regnos[i].lastIndexOf('_')+1) + '/1'
         } else {
             regno=data.regnos[i].substr(data.regnos[i].lastIndexOf('-')+1)
         }
-        if (data.regnos[i].includes('DFL')) {
-            bcColl = "dna_fungi_lichens"
-        } 
-         else if (bcColl === "herptiles") {
+        // denne må fikses. når den er med blir kandidat-fila for sopp feil
+        // når den ikke er med fungerer trolig ikke lenke til ... O-dFL...
+        // if 
+        // (data.regnos[i].includes('DFL')) {
+        //     bcColl = "dna_fungi_lichens"
+        // } 
+        //  else 
+         if (bcColl === "herptiles") {
             bcColl = "dna_fish_herptiles"
         }
+        if (data.regnos[i].includes('TEB')) {
+            console.log('hit')
+            objButton.style = "background-color:white; border:none"
+        } else
         if (!bcColl === "sopp" & !bcColl === "lav" & !bcColl === "mammals" & !bcColl === "Lep" || !data.regnos[i].match(/[a-zA-Z]/)) { // dette funker vel ikke
             objButton.style = "background-color:white; border:none"
         } else if (data.regnos[i].includes('VM')) {
@@ -116,27 +121,29 @@ const fillTableSpecies = (data, validationObject) => {
 
         let processID = data.processIDs[i].substr(1)
         const url = `http://www.boldsystems.org/index.php/Public_RecordView?processid=${processID}`
-        cell4.innerHTML = `<a href="${url}" target="_blank">${processID}</a>`
-        cell4.style = "padding-right:20px"
+        cell3.innerHTML = `<a href="${url}" target="_blank">${processID}</a>`
+        cell3.style = "padding-right:20px"
 
         if (bcColl === "sopp") {
             let index
-            const isSame = (element) => element === data.regnos[i].toString()
-            index = validationObject.musitRegno.findIndex(isSame)
-            cell3.innerHTML = validationObject.year[index]
-            cell3.style = "padding-right:20px"
+            // const isSame = (element) => element === data.regnos[i].toString()
+            // index = validationObject.musitRegno.findIndex(isSame)
+            const isSame = (element) => element === data.processIDs[i].substring(1).toString()
+            index = validationObject.processID.findIndex(isSame)
+            cell4.innerHTML = validationObject.year[index]
+            cell4.style = "padding-right:20px"
             if (validationObject.validationStatus[index]) {
-                cell5.innerHTML = validationObject.validationStatus[index]
-                cell5.style = "padding-right:40px"
+                cell4.innerHTML = validationObject.validationStatus[index]
+                cell4.style = "padding-right:40px"
             } else {
-                cell5.innerHTML = "not validated"
-                cell5.style = "padding-right:40px"
+                cell4.innerHTML = "not validated"
+                cell4.style = "padding-right:40px"
             }
             
-            cell6.innerHTML = validationObject.validationMethod[index]
-            cell6.style = "padding-right:20px"
+            cell5.innerHTML = validationObject.validationMethod[index]
+            cell5.style = "padding-right:20px"
             
-            cell7.innerHTML = validationObject.expert[index]
+            cell6.innerHTML = validationObject.expert[index]
         }
         
     }
@@ -179,7 +186,6 @@ const fillTableFailed = (validationObject) => {
 }
 
 const fillTableAwaiting = (validationObject) => {
-    console.log(validationObject)
     addRow(awaitingTable)
     cell1.innerHTML = ''
     addRow(awaitingTable)
@@ -191,6 +197,7 @@ const fillTableAwaiting = (validationObject) => {
     cell3.style.fontWeight = 'bold'
     
     for (i=0;i<validationObject.musitRegno.length;i++) {
+        console.log(validationObject)
         if (validationObject.seqLength[i] === 'pending') {
             addRow(awaitingTable)
             cell1.innerHTML = validationObject.musitRegno[i]
@@ -223,9 +230,12 @@ async function main() {
     }))
     fillTableSpecies(speciesObject, overviewObject)
     let candidates = await getCandidates()
-    fillTableAwaiting(overviewObject)
+    
     if (bcColl === "sopp") {
+        fillTableAwaiting(overviewObject)
         fillTableFailed(overviewObject)
+    } else {
+
     }
 }
 
