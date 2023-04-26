@@ -320,7 +320,7 @@ const getArtsObsData = async (artsObsNumber, MUSITNo)=> {
         return resultString
     } catch (error) {
         console.log(error);
-        alert('Feil med dataene')
+        // alert('Feil med dataene')
         console.log('feil med dataene fra GBif');
     }
 }
