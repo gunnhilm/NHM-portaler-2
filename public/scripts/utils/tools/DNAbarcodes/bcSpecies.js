@@ -1,3 +1,4 @@
+console.log(sessionStorage.getItem('string'))
 // const urlParamsTop = new URLSearchParams(window.location.search)
 let bcColl = urlParamsTop.get("coll")
 console.log(bcColl)
@@ -229,13 +230,12 @@ async function main() {
         return el.species === relSpecies.replace("_"," ")
     }))
     fillTableSpecies(speciesObject, overviewObject)
-    let candidates = await getCandidates()
+    let candidates
     
     if (bcColl === "sopp") {
+        candidates = await getCandidates()
         fillTableAwaiting(overviewObject)
         fillTableFailed(overviewObject)
-    } else {
-
     }
 }
 

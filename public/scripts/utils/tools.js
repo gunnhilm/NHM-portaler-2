@@ -25,7 +25,7 @@ document.querySelector('#bc-herptiles-link').href = museumURLPath + '/DNAbarcode
 document.querySelector('#bc-birds-link').href = museumURLPath + '/DNAbarcodesBirds'
 document.querySelector('#loan-info-link').href = museumURLPath + '/loanInfo'
 
-
+console.log(sessionStorage.getItem('string'))
 
 // document.querySelector('#coordinate-link').href = museumURLPath + '/checkCoord'
 

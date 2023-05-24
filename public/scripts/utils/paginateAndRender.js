@@ -440,13 +440,13 @@ const bulkResultTable = (subBulkData, bulkData) => {
                 } else {
                     prefix = ''
                 }
-                
+                // console.log(subBulkData[i])  
                 //cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subBulkData[i].catalogNumber&samling=${sessionStorage.getItem('chosenCollection')}}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${subBulkData[i].catalogNumber} </a>`
                 cell1.innerHTML =  prefix + subBulkData[i].catalogNumber
                 cell2.innerHTML = subBulkData[i].scientificName
                 cell3.innerHTML = subBulkData[i].recordedBy
                 cell4.innerHTML = subBulkData[i].eventDate
-                cell5.innerHTML = subBulkData[i].preparations
+                cell5.innerHTML = subBulkData[i].Preparations
                 
                 let comma1
                 let comma2
@@ -461,9 +461,9 @@ const bulkResultTable = (subBulkData, bulkData) => {
                 if (subBulkData[i].room) {commaP1 = ', '} else {commaP1 = ''}
                 if (subBulkData[i].cupboard) {commaP2 = ', '} else {commaP2 = ''}
                 let placement = subBulkData[i].building + commaP1 + subBulkData[i].room + commaP2 + subBulkData[i].cupboard
-                //cell7.innerHTML = placement
-                cell7.style.display= 'none'
-                cell8.innerHTML = subBulkData[i].note
+                cell7.innerHTML = subBulkData[i].individualCount
+                // cell7.style.display= 'none'
+                cell8.innerHTML = subBulkData[i].Note
                 cell9.style.display = 'none'
                 cell11.innerHTML = `<input type="checkbox" id=checkbox${i} onclick="registerChecked(${i})" ></input>`
                 if (investigateChecked(i)) {

@@ -292,7 +292,6 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
         // cleaning the searchterm before making the search so that we get a more precise
         // remove whiteSpace
         searchObjects = searchObjects.trim()
-        console.log(searchObjects + ' line291')
         let objectNumbers = []
         if (searchObjects.includes(',')) {
             objectNumbers = searchObjects.split(',')
@@ -313,10 +312,8 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
         } else {
             objectNumbers.push(searchObjects)
         }
-        console.log(objectNumbers + ' line 312')
         // check if collection has suffix "/" in catalogNumber
         let suffix
-        console.log(samling + ' ' + museum)
         if (samling === 'moser') {
             suffix = true
         } else if (samling === "sopp" && museum === "tmu") {
@@ -360,12 +357,10 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
                     } else 
                         // when no suffix is included in search term: 
                     if (suffix && !el.includes('/')) {
-                        console.log('en')
                         catNoInFile = catNoInFile.substring(0,catNoInFile.indexOf('/'))
                     }
                         // when only '/' is included:
                     else if (suffix && el.includes('/') && el.length == el.indexOf('/')+1) {
-                        console.log('to')
                         catNoInFile = catNoInFile.substring(0,catNoInFile.indexOf('/')+1)
                     }
                     // remove leading 0's from catalogNumber in dump-file
@@ -378,7 +373,6 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
                     
                     if ( catNoInFile === el.trim()) {
                         // søk for en match i linja  (line.indexOf(searchTerm) !== -1)
-                        console.log('her')
                         results =  results +  '\n' + line
                         resultCount++
                         objectNumbers.splice(objectNumbers.indexOf(el),1)

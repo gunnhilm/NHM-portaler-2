@@ -51,7 +51,7 @@ if (!sessionStorage.getItem('propsSorted')) {
             {id: 'processID',
             sortedOnce: false,
             sortedTwice: false},
-            {id: 'preparations',
+            {id: 'Preparations',
             sortedOnce: false,
             sortedTwice: false},
             {id: 'placement',
@@ -63,10 +63,13 @@ if (!sessionStorage.getItem('propsSorted')) {
             // {id: 'amount',
             // sortedOnce: false,
             // sortedTwice: false},
+            {id: 'individualCount',
+            sortedOnce: false,
+            sortedTwice: false},
             {id: 'stateProvince',
             sortedOnce: false,
             sortedTwice: false},
-            {id: 'note',
+            {id: 'Note',
             sortedOnce: false,
             sortedTwice: false},
             {id: 'locality_concatenated',
@@ -227,7 +230,7 @@ function addSortingText(id, prop, musitData, fromFunction) { // her er musitData
             if (id === 'musitIDButton' && sessionStorage.getItem("chosenCollection") != "fossiler" &&  !musitData[0].catalogNumber.includes('/')) { 
                 musitData.sort(sort_by(prop,reverse, parseInt))
                 
-            }  else if (id === 'breddeButton' || id === 'hoydeButton' || id === 'lengdeButton') {
+            }  else if (id === 'breddeButton' || id === 'hoydeButton' || id === 'lengdeButton'  ) {
                 musitData.sort(sort_by(prop,reverse))
             } else {
                 if (id === 'photoButton' | id === 'coordinateButton') {
@@ -262,11 +265,11 @@ function addSortingText(id, prop, musitData, fromFunction) { // her er musitData
             sessionStorage.setItem('string', JSON.stringify(musitData))
             sessionStorage.setItem('propsSorted', JSON.stringify(propsSorted))
             if(fromFunction === 'bulkResultTable') {
-                console.log('sort ' + prop)
                 bulkResultTable(subMusitData, musitData)
             } else if (fromFunction === 'UTADRestultTable') {
                 UTADRestultTable(subMusitData, musitData) 
             } else /*if (fromFunction === 'resultTable')*/ {
+                console.log('hit')
                 resultTable(subMusitData, musitData) 
             }
             
@@ -347,10 +350,10 @@ fillResultHeadersBulk = (cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,c
     cell2.innerHTML = `<button id='scientificNameButton' class='sort'>${textItems.headerTaxon[index].bold()} ${getArrows('scientificName')} </button>`
     cell3.innerHTML = `<button id='collectorButton' class='sort'>${textItems.headerCollector[index].bold()} ${getArrows('recordedBy')}</button>`
     cell4.innerHTML = `<button id='dateButton' class='sort'>${textItems.headerDate[index].bold()} ${getArrows('eventDate')}</button>`
-    cell5.innerHTML = `<button id='preparationsButton' class='sort'>${textItems.headerPreparations[index].bold()} ${getArrows('preparations')} </button>`
+    cell5.innerHTML = `<button id='preparationsButton' class='sort'>${textItems.headerPreparations[index].bold()} ${getArrows('Preparations')} </button>`
     cell6.innerHTML = `<button id='localityButton' class='sort'>${textItems.headerLocality[index].bold()} ${getArrows('locality')}</button>`
-    cell7.style.display = 'none'
-    cell8.innerHTML = `<button id='noteButton' class='sort'>${textItems.headerNotes[index].bold()} ${getArrows('note')}</button>`
+    cell7.innerHTML = `<button id='countButton' class='sort'>${textItems.headerCount[index].bold()} ${getArrows('individualCount')}</button>`
+    cell8.innerHTML = `<button id='noteButton' class='sort'>${textItems.headerNotes[index].bold()} ${getArrows('Note')}</button>`
     cell9.style.display = 'none'
     cell11.innerHTML = `<select id='checkboxSelect' class='sort'>
         <option value="select" id="select">${textItems.select[index].bold()}</option>
@@ -362,14 +365,12 @@ fillResultHeadersBulk = (cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,c
 
     addSortingText('musitIDButton', 'catalogNumber', musitData, 'bulkResultTable')  // Tabellen blir sortert på nummer
     addSortingText('scientificNameButton', 'scientificName', musitData, 'bulkResultTable')
-    addSortingText('preparationsButton', 'preparations', musitData, 'bulkResultTable')
+    addSortingText('preparationsButton', 'Preparations', musitData, 'bulkResultTable')
     addSortingText('collectorButton', 'recordedBy', musitData, 'bulkResultTable')
     addSortingText('dateButton', 'eventDate', musitData, 'bulkResultTable')
-    //addSortingText('unitTypeButton', 'unitType', musitData)
     addSortingText('localityButton', 'locality', musitData, 'bulkResultTable')
-    // addSortingText('localityButton', 'locality_concatenated', musitData, 'bulkResultTable')
-    //addSortingText('amountButton', 'amount', musitData)
-    addSortingText('noteButton', 'note', musitData, 'bulkResultTable')
+    addSortingText('countButton', 'individualCount', musitData, 'bulkResultTable')
+    addSortingText('noteButton', 'Note', musitData, 'bulkResultTable')
 }
 
 // puts content in headerbuttons in utad-result-table

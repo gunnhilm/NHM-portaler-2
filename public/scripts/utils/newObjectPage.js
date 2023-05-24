@@ -45,6 +45,7 @@ async  function setSpecimenData () {
                 } else {
                     try {
                         response.text().then((data) => {
+                            console.log(data)
                             if(data.error) {
                                 errorMessage.innerHTML = textItems.serverError[index]
                                 return console.log(data.error)

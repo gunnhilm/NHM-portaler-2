@@ -79,6 +79,7 @@ const textItems = {
     headerEcology: ["Habitat", "Ecology"],
     headerCoremaNo: ["Corema no", "Corema no"],
     headerPreparations: ["Type materiale","Type of material"],
+    headerCount: ["Antall individer","Number of individual"],
     headerPlacement: ["Plassering", "Placement"],
     //headerUnitType: ["Type batch", "Type of batch"],
     //headerAmount: ["Antall batcher", "Number of batches"],

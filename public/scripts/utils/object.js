@@ -1,3 +1,4 @@
+console.log(sessionStorage.getItem('string'))
 // Description of file: Renders text on object.hbs
 let index
 // const urlParamsTop = new URLSearchParams(window.location.search)
@@ -33,7 +34,8 @@ const getOrganismGroup = () => {
 const loadStringObject = () => {
     let objectJSON = ''
     //if( sessionStorage.getItem('databaseSearch') === 'musit' ) {
-        objectJSON = sessionStorage.getItem('string')
+        console.log(sessionStorage.getItem('string'))
+    objectJSON = sessionStorage.getItem('string')
         
     //} else if (sessionStorage.getItem('databaseSearch') === 'corema') {
     //    objectJSON = sessionStorage.getItem('coremaString')
@@ -109,7 +111,6 @@ async  function getspecimenData (allObject) {
             // console.log(specimenObject)
             resolve(specimenObject)
         } catch (error) {
-            console.log('linje 112')
             document.getElementById('musit-regno').innerHTML = textItems.objError[index]
             reject(new Error(error));
             console.log(error);
@@ -781,8 +782,7 @@ async function showItemData (specimenObject,objectTable,order,overviewObject) {
     addRow(objectTable)
     cell1.id = 'itemsHeader'
     
-    // cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.itemsHeader[index]}${collectionName("DNA","table")}</span>`
-    cell1.innerHTML = 'petter'
+    cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.itemsHeader[index]}${collectionName("DNA","table")}</span>`
     addRow(objectTable)
     cell1.innerHTML = '<br>'
     // loop over array
@@ -1177,7 +1177,8 @@ async function main () {
     if (!sessionStorage.getItem('chosenCollection')) {
         location.replace(`${window.location.href}&isNew=yes`)
     }
-   // from file newObjectPage.js
+    
+    // from file newObjectPage.js
    await newObjectPageMain()
    const urlParams = new URLSearchParams(window.location.search)
    await whichFileAndDb(urlParams.get("museum"),urlParams.get("samling")) 
@@ -1187,6 +1188,7 @@ async function main () {
         document.querySelector('#language').innerHTML = "Norwegian website"
     }
       // from file renderLangObjPage.js
+      
 
    // renderObjectText(language)
    const orgGroup = getOrganismGroup()

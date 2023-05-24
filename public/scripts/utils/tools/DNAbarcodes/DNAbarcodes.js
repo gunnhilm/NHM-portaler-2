@@ -5,7 +5,7 @@
 // const { getBCFileUpdatedDate } = require("../../../../../src/utils/barcoding/barcoding")
 
 // const { resolve } = require("path")
-
+console.log(sessionStorage.getItem('string'))
 
 let table = document.getElementById("barcode-table")
 let bcColl = urlParamsTop.get("coll")
@@ -677,10 +677,13 @@ async function main() {
     })
     table.style = "border-collapse: collapse"
     table.bordercolor = "grey"
-    const candidates = await getCandidates()
+    let candidates
+    candidates = await getCandidates()
+    
     
     let overviewParameter
     if (bcColl === "sopp") {overviewParameter = fungiOverview} else {overviewParameter = "noFungiOverview"}
+    
     bcSearchListener(nameList.unparsed, data.unparsed, candidates.unparsed,overviewParameter)
     if (bcColl === "sopp") {
         fillTable(nameList.unparsed, data.unparsed, candidates.unparsed, 'all','not blank', fungiOverview)
