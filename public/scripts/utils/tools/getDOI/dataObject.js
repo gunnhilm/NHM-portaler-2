@@ -1,5 +1,6 @@
 // UUIDene til NHMs dataset hos GBIF
 // eslint-disable-next-line no-unused-vars
+// also used by get citations function in stat page
 const GBifIdentifiers = {
     nhm: {
         Mammals : {

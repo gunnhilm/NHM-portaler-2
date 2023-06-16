@@ -54,7 +54,7 @@ Number.prototype.format = function(n, x, s, c) {
 // populate dropdown with list of collections
 const collSelect = (data) => {
   const selectElement = document.getElementById('collection-select');
-  console.log(data.total)
+  // console.log(data.total)
   const collections = data.total[3].collections.collectionsIncluded
   for (let i = 0; i < collections.length; i++) {
     selectElement.add(new Option(collections[i]));
@@ -481,12 +481,10 @@ collection.addEventListener('change', () => {
 // is called in this file (showStat.js)
 async function main() {
   data = await getData() //Gjør en request til server omå få JSON datafila
-  console.log(data);
+  // console.log(data);
   collSelect(data)
   makeGraphs(data)  // Tegn opp grafene for første gang
   populateTable(data) // Lag hovedtabel med samlingstall
 }
-
-
 
 main()
