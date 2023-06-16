@@ -149,15 +149,15 @@ async function  requestLoan (formData, fileData) {
   console.log(fileData);
   validateInput(formData)
   console.log('after san');
-  // console.log(formData);
-// const data = getFormData(formData)
-// // console.log(data);
-//   const lenderInfo = getCorrectInfo(data)
-//   const itemData = getItemData(data.items)
-  // const invoiceFileName = await writeFile(data, lenderInfo, itemData, outFilePath, invoiceTemplatePath)
-  // const shippingDocumentationFileName = await writeFile(data, lenderInfo, itemData, shippingDocumentationFilePath, shippingDocTemplatePath )
-  // const parsedData =  parseLoanData(data)
-  // email(parsedData, invoiceFileName, shippingDocumentationFileName).catch(console.error);
+  console.log(formData);
+const data = getFormData(formData)
+// console.log(data);
+  const lenderInfo = getCorrectInfo(data)
+  const itemData = getItemData(data.items)
+  const invoiceFileName = await writeFile(data, lenderInfo, itemData, outFilePath, invoiceTemplatePath)
+  const shippingDocumentationFileName = await writeFile(data, lenderInfo, itemData, shippingDocumentationFilePath, shippingDocTemplatePath )
+  const parsedData =  parseLoanData(data)
+  email(parsedData, invoiceFileName, shippingDocumentationFileName).catch(console.error);
 }
 
 module.exports = {requestLoan}

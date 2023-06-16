@@ -7,3 +7,4 @@ log/
 .vscode
 credentials.js
 *.doc
+src/utils/loans/fileUploads/

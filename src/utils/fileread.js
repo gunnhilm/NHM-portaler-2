@@ -469,6 +469,7 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
 //     }
 // }
 
+// request må byttes ut med fetch pga vunerability
 const checkRegion = (region, lat, long, callback) => {
     const url = 'https://ws.geonorge.no/' + region + 'info/v1/punkt?ost=' + long + '&nord=' + lat + '&koordsys=4258'
     request({ url, json: true }, (error, {body}) => {
