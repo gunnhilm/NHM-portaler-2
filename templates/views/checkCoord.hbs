@@ -2,8 +2,11 @@
 <html>
     <head>
         <title>Check if coordinates are correct</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-        
+         {{!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline', connect-src *.geonorge.no 'unsafe-inline'";>  --}}
+        {{!-- <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval', connect-src * 'unsafe-inline'"; > --}}
+        {{!-- <meta http-equiv="Content-Security-Policy" content="connect-src *.geonorge.no";>  --}}
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0";>
     </head>
     <body>
         <div class="wrapper">
@@ -14,7 +17,7 @@
                 <p class="page-header" id="checkCoordHeader"></p>
 
                 <div>
-                    <table>
+                    {{!-- <table>
                         <tr>
                             <td>
                                 <p>
@@ -26,7 +29,7 @@
                                 <a href="http://localhost/museum/nhm/src/data/nhm/geoError/KoordinatError_lav_occurrence.txt" download="KoordinatError_lav_occurrence.txt">Save koordinate Errors</a>
                             </td>
                         </tr>
-                    </table>
+                    </table> --}}
                 </div>
                 
                 <div>
@@ -49,20 +52,10 @@
 
 
                 <br>
-                    <label for="coord-select" id="select-coord-label"></label>
-                    <select id="coord-select" style="height:30px; border-radius:4px;">
-                        <option value="" id="selectCoordOption"></option>
-                        <option value="searchStorage" id="searchStorage">Siste søk</option>
-                        {{!-- <option value="um" id="um">UM</option>
-                        <option value="vm" id="vm">VM</option>
-                        <option value="tmu" id="tmu">TMU</option>
-                        <option value="nbh" id="nbh">NBH</option>
-                        <option value="other-museum" id="other-museum">other</option> --}}
-                    </select>
+
                     <br><br>
                     <p class="neutral" id="coordResult"></p>
                     <table id="coord-results" border="1"></table>
-                    <button id='checkCoordMap'>Kart</button>
             </div>
             {{>footer}}
         </div>

@@ -133,6 +133,7 @@ emptyTable = () => {
 emptyResultElements = () => {
     document.querySelector('#hits-row').style.display = 'none'
     document.getElementById("loan-button").style.display = "none"
+    document.querySelector('#check-coordinates-button').style.display = "none"
     document.getElementById("download-button").style.display = "none"
     document.getElementById("download-photo-button").style.display = "none"
     document.getElementById("head-nb-hits").innerHTML = ""
@@ -165,6 +166,7 @@ showResultElements = (loan) => {
     if(loan){
         document.querySelector('#loan-button').style.display = "block" 
     }
+    document.querySelector('#check-coordinates-button').style.display = "block"
     document.querySelector('#download-button').style.display = "block"
     document.querySelector('#download-photo-button').style.display = "block"
     document.getElementById("empty-search-button").style.display = "inline-block"

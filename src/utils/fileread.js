@@ -1,6 +1,6 @@
 // https://stackabuse.com/reading-a-file-line-by-line-in-node-js/
 const readline = require('readline');
-const request = require('request')
+const festch = require('node-fetch')
 const fs = require('fs')
 const fileListNhm = require('./fileListNhm')
 const fileListTmu = require('./fileListTmu')
@@ -470,17 +470,20 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
 // }
 
 // request må byttes ut med fetch pga vunerability
-const checkRegion = (region, lat, long, callback) => {
+const checkRegion = async (region, lat, long, callback) => {
     const url = 'https://ws.geonorge.no/' + region + 'info/v1/punkt?ost=' + long + '&nord=' + lat + '&koordsys=4258'
-    request({ url, json: true }, (error, {body}) => {
-        if (error) {
-            callback('Unable to connect to geonorge.', undefined)
-        } else if (body.error) {
-            callback('Unable to find location.', undefined)
-        } else {
-            callback(undefined, body.kommunenavn)
-        }
-    })
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        // for å få norskt og ikke samiskt kommunenavn tilbake
+        const url2 = 'https://ws.geonorge.no/kommuneinfo/v1/kommuner/' + data.kommunenummer
+        const response2 = await fetch(url2)
+        const data2 = await response2.json();
+        callback(undefined, data2.kommunenavnNorsk)
+    } catch (error) {
+        console.log(error);
+        callback(error, undefined)
+    }
 }
 
 

@@ -17,6 +17,7 @@ const downloadPhotoButton = document.getElementById('download-photo-button')
 //empty-search button 
 const emptySearchButton = document.querySelector('#empty-search-button')
 
+const checkCoordinates = document.querySelector('#check-coordinates-button')
 // rendered with result table, in footer
 const updated = document.querySelector('#last-updated');
 
@@ -67,8 +68,6 @@ const getFileList = async () => {
         
     })
 }
-
-
 
 // empties session’s search-result (sessionStorage), removes elements from page, resets pagination variables
 // calls emptyTable() in resultElementsOnOff.js
@@ -185,42 +184,13 @@ function makeButtons() {
         } else {
             el.className = "white-button" 
         }
-        //el.className = "white-button"
     })
 }
-
-
-// function addOrgGroups() {
-    
-//     url_orgGroup = urlPath + '/orgGroups/?museum=' + museum
-//     let orgGroups = []
-//     fetch(url_orgGroup).then((response) => {
-//         if (!response.ok) {
-//             throw 'noe er galt med respons til organismegrupper fra museum'
-//         } else {
-//             try {
-//                 response.text().then((data) => {
-//                     const JSONdata = JSON.parse(data)
-//                     JSONdata.forEach(el => {
-//                         orgGroups.push(el)
-//                     })
-//                     sessionStorage.setItem('organismGroups', orgGroups)
-//                     makeButtons()
-//                 })
-//             }
-//             catch (error) {
-//                 console.log(error)
-//                 reject(error)
-//             }
-//         }
-//     })
-// }
 
 // put organism-group-buttons into array
 
 let buttonArray = []
 // addOrgGroups()
-
 
 function addTextInCollSelect(a) {
     if (a == 'moser') {return textItems.moser[index]}
@@ -247,7 +217,6 @@ function addTextInCollSelect(a) {
     else if (a == 'utad') {return textItems.utad[index]}
     else if (a == 'bulk') {return textItems.bulk[index]}
 }
-
     
 function addCollectionsToSelect(orgGroup) {
     sessionStorage.setItem('organismGroup', orgGroup)
@@ -335,6 +304,14 @@ function addCollectionsToSelect(orgGroup) {
     }
 }
 
+// when check coordinates- button is clicked
+checkCoordinates.addEventListener('click', (e) => {
+    e.preventDefault()
+    let url = window.location.href
+    url = url + '/checkCoord'
+    window.location.href = url
+})
+
 // download search-result to file
 // in: filename(string, name of outputfile)
 // in: text (string, the text that goes into the file, that is, the search result)
@@ -375,7 +352,6 @@ downloadButton.addEventListener('click', (e) => {
     }
     download("download.txt", downloadResult)
 })
-
 
 // https://huynvk.dev/blog/download-files-and-zip-them-in-your-browsers-using-javascript
 const downloadImage = async (url) => {
@@ -432,7 +408,6 @@ downloadPhotoButton.addEventListener('click', (e) => {
         }
     }
 })
-
 
 // deletes previous search results, resets value that says if search failed, resets Boolean sorting-values for result, hides buttons, performs search
 // in: limit (number, line number of search result where search stops)
@@ -644,7 +619,6 @@ const updateFooter = () => {
     }
 }
 
-
 const loopButtons = () => {
     orgGroups = sessionStorage.getItem('organismGroups').split(',')
     let orgGroup = sessionStorage.getItem('organismGroup')
@@ -658,8 +632,6 @@ const loopButtons = () => {
     })
     
 } 
-
-
 
 // shows previous search-result when returning to main-page, if it exists in this session
 // calls renderText(language), updateFooter(), load()
@@ -739,7 +711,6 @@ emptySearchButton.addEventListener('click', (e) => {
 
 document.getElementById('large-map-button').onclick = () => {
     window.open(href= urlPath + "/" + getCurrentMuseum() + "/map")
-    
 }
 
 //Download map as png-file
@@ -829,41 +800,6 @@ if(select) {
         checkSeveralBoxes(pageList)
     }
 }
-
-
-// window.onload = function () {
-    
-//     let museum = getCurrentMuseum()
-//     if (museum === "um") {
-//         if (sessionStorage.getItem("umRunBefore") === null) {
-//             sessionStorage.removeItem('organismGroup')
-//             //document.getElementById("collection-select").style.display = "none"
-//             emptySearch()
-//             localStorage.setItem("umRunBefore", true)
-//         }    
-//     } else if (museum === "tmu") {
-//         if (sessionStorage.getItem("tmuRunBefore") === null) {
-//             sessionStorage.removeItem('organismGroup')
-//             //document.getElementById("collection-select").style.display = "none"
-//             emptySearch()
-//             sessionStorage.setItem("tmuRunBefore", true)
-//         }
-//     } else if (museum === "nbh") {
-//         if (sessionStorage.getItem("nbhRunBefore") === null) {
-//             sessionStorage.removeItem('organismGroup')
-//             //document.getElementById("collection-select").style.display = "none"
-//             emptySearch()
-//             sessionStorage.setItem("nbhRunBefore", true)
-//         }
-//     } else if (museum === "nhm") {
-//         if (sessionStorage.getItem("nhmRunBefore") === null) {
-//             sessionStorage.removeItem('organismGroup')
-//             //document.getElementById("collection-select").style.display = "none"
-//             emptySearch('window-onload')
-//             sessionStorage.setItem("nhmRunBefore", true)
-//         }
-//     }
-// }
 
 window.onload = function () {
     if (window.performance) {

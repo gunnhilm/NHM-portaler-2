@@ -24,7 +24,12 @@ const multer  = require('multer')
 // const upload = multer()
 
 // Sikkerhets app som beskytter mot uønskede headers osv.
-app.use(helmet())
+app.use(
+    helmet({
+        contentSecurityPolicy: false,
+        xPermittedCrossDomainPolicies: false,
+  })
+)
 const port = process.env.PORT || 3000
 
 // reciving json to server
