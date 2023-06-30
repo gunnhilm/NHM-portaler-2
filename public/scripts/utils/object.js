@@ -1,4 +1,3 @@
-console.log(sessionStorage.getItem('string'))
 // Description of file: Renders text on object.hbs
 let index
 // const urlParamsTop = new URLSearchParams(window.location.search)
@@ -33,8 +32,6 @@ const getOrganismGroup = () => {
 // is called in this file (object.js)
 const loadStringObject = () => {
     let objectJSON = ''
-    //if( sessionStorage.getItem('databaseSearch') === 'musit' ) {
-        console.log(sessionStorage.getItem('string'))
     objectJSON = sessionStorage.getItem('string')
         
     //} else if (sessionStorage.getItem('databaseSearch') === 'corema') {

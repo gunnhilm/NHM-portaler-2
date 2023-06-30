@@ -208,18 +208,24 @@ const resultTable = (subMusitData, musitData) => {
                 if (museumURLPath = urlPath + "/nhm") {
                     // if we are in a corema-collection
                     if (document.querySelector('#collection-select  option:checked').label.includes('DNA')) {
+                        // corema-collections that are both in corema and musit (entomology, fungi, vascular, lichen)
                         if (sessionStorage.getItem('chosenCollection').includes('dna_')) {
                             let musitBasisOfRecord
                             if (subMusitData[i].musitBasisOfRecord) {musitBasisOfRecord = subMusitData[i].musitBasisOfRecord}
                             cell10.innerHTML = subMusitData[i].materialSampleType + ' | ' + musitBasisOfRecord
+                        // collections only in corema
+                        } else if (sessionStorage.getItem('chosenCollection') === 'mammals' || sessionStorage.getItem('chosenCollection') === 'birds') {
+                            console.log(subMusitData[i])
+                            if (subMusitData[i].preparationType) {cell10.innerHTML = subMusitData[i].preparationType}
+                        
                         } else {
+                            console.log(subMusitData[i])
                             // if there is no data in preparationType (subtype of sample): use basisOfRecord or coremaBasisOfRecord
                             if (!subMusitData[i].preparationType || subMusitData[i].preparationType === '' || !(/[a-zA-Z]/).test(subMusitData[i].preparationType)) {
                                 if (subMusitData[i].basisOfRecord) { cell10.innerHTML = subMusitData[i].basisOfRecord }
                                 else if (subMusitData[i].coremaBasisOfRecord) {cell10.innerHTML = subMusitData[i].coremaBasisOfRecord}
-                            } else 
-                            // { cell10.innerHTML = subMusitData[i].preparationType.replace(/\"/g,'') }
-                            { 
+                            } else { 
+                                // { cell10.innerHTML = subMusitData[i].preparationType.replace(/\"/g,'') }
                                 let musitBasisOfRecord
                                 if (subMusitData[i].musitBasisOfRecord) {musitBasisOfRecord = subMusitData[i].musitBasisOfRecord}
                                 else if (subMusitData[i].basisOfRecord) {musitBasisOfRecord = subMusitData[i].basisOfRecord}
