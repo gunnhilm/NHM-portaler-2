@@ -242,6 +242,8 @@ document.getElementById('norske-kommuner').addEventListener('change',function(){
     getNeighbors(valgtLKommune).then((data) => visNaboer(data))
 })
 
+
+
 let kommuneListe = ''
 const main = async () => {
     await getMunicipalityList().then((data) =>kommuneListe = data)
