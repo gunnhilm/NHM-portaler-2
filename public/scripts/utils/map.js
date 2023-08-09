@@ -25,6 +25,15 @@ const span = document.getElementsByClassName("close")[0];
 // }
 
 
+// figures out which museum we are in
+// out: string, abbreviation for museum
+// is called by doSearch() and updateFooter()
+const getCurrentMuseumMapPage = () => {
+    const pathArray = window.location.pathname.split('/')
+    const museum = pathArray[2]
+    return museum
+}
+
 // draws map with clickable red markes for all records in search result with coordinates
 // in: parsedData (JSON, search result)
 // out: map with markers
@@ -207,6 +216,7 @@ const drawMap = (parsedData) => {
                         let cfeatures = feature.get('features')
                         
                         try {
+                            
                             let museumURLPath
                             if (window.location.href.includes('/um')) { 
                                 museumURLPath = urlPath + "/um"
@@ -216,8 +226,8 @@ const drawMap = (parsedData) => {
                                 museumURLPath = urlPath + "/nhm"
                             }
 
-                            let museum = getCurrentMuseum()
-
+                            let museum = getCurrentMuseumMapPage()
+                            
                             if (cfeatures.length > 1) {
                                 
                                 if( cfeatures.length > 10 ) {
