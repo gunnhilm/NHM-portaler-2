@@ -1,4 +1,5 @@
 
+
 // render search-fields in search-page; HTML elements
 const renderAdvSearchFields = (searchFields) => {
     const advTable = document.getElementById("adv_table")
@@ -317,9 +318,9 @@ const doObjListSearch = (limit = 20) => {
     else {
         const url = urlPath + '/objListSearch/?searchObjects=' + searchObjects + '&museum=' + museum + 
         '&samling=' + chosenCollection + '&linjeNumber=0' + '&limit=' + limit
- 
         fetch(url).then((response) => {
             if (!response.ok) {
+                errorMessage.innerHTML = 'feil i url-lengde'
                 throw 'noe går galt med objektliste-søk, respons ikke ok'
                 
             } else {
@@ -402,13 +403,15 @@ const doObjListSearch = (limit = 20) => {
                 }
                 catch (error) {
                     console.error(error)
+                    
                     reject(error);
                 }
             }
             document.getElementById("please-wait").style.display = "none"
         }).catch((error) => {
             console.log(error);
-            errorMessage.innerHTML = textItems.serverError[index]
+            nbHitsElement.innerHTML = textItems.serverErrorObj[index]
+            
             document.getElementById("please-wait").style.display = "none"
         })
     }

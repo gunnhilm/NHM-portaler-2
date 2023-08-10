@@ -1,6 +1,6 @@
 // https://stackabuse.com/reading-a-file-line-by-line-in-node-js/
 const readline = require('readline');
-const festch = require('node-fetch')
+
 const fs = require('fs')
 const fileListNhm = require('./fileListNhm')
 const fileListTmu = require('./fileListTmu')
@@ -284,7 +284,9 @@ const advSearch = (museum, samling, searchSpecies, searchCollector, searchDate, 
 
 // object list search, seach for object number or several numbers, searchObjects = one or more object numbers without prefixes, comma or space separated
 const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 20, callback) => {
+    console.log('hit')
     const date = getDate()
+    
     myLogger.log( museum + '\t' + samling + '\t' + searchObjects + '\t' + date + '\tnumber search');
     // velg riktig MUSIT dump fil å lese
     musitFile = setCollection(museum,samling)

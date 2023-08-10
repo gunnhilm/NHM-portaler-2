@@ -163,10 +163,12 @@ app.get('/advSearch', (req, res) => {
 
 
 app.get('/objListSearch', (req, res) => {
+    console.log('her')
     if (!req.query.samling) {
         throw new Error ('collection not chosen') 
     } else {
         try {
+            
             fileRead.objListSearch(req.query.museum, req.query.samling, req.query.searchObjects,req.query.linjeNumber,req.query.limit , (error, results) => {
                 
                 res.send({
