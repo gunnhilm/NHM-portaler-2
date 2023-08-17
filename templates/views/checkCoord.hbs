@@ -2,9 +2,6 @@
 <html>
     <head>
         <title>Check if coordinates are correct</title>
-         {{!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline', connect-src *.geonorge.no 'unsafe-inline'";>  --}}
-        {{!-- <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval', connect-src * 'unsafe-inline'"; > --}}
-        {{!-- <meta http-equiv="Content-Security-Policy" content="connect-src *.geonorge.no";>  --}}
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0";>
     </head>
@@ -15,28 +12,15 @@
             <div class="content">
                 <br><br><br><br>
                 <p class="page-header" id="checkCoordHeader"></p>
-
-                <div>
-                    {{!-- <table>
-                        <tr>
-                            <td>
-                                <p>
-                                <label for="error-filer-list" id="error-filer-list-label">Velg samling</label>
-                                <select id="error-filer-list"  style=" height:30px; border-radius:4px; overflow-y:auto" ></select>
-                                </p>
-                            </td>
-                            <td> 
-                                <a href="http://localhost/museum/nhm/src/data/nhm/geoError/KoordinatError_lav_occurrence.txt" download="KoordinatError_lav_occurrence.txt">Save koordinate Errors</a>
-                            </td>
-                        </tr>
-                    </table> --}}
-                </div>
+                
                 
                 <div>
                     <table>
+                        <tr><td>Her kan du få en oversikt over en kommunnes nabokommuner. <br></td></tr>
                         <tr>
                             <td>
                                 <p>
+                                
                                 <label for="norske-kommuner" id="norske-kommuner-label">Velg kommune</label>
                                 <input list="norske-kommuner-list" placeholder="Start typing..." id="norske-kommuner">
                                 <datalist id="norske-kommuner-list">
@@ -54,6 +38,7 @@
                 <br>
 
                     <br><br>
+                    <p>Basert på ditt søk, listes her opp de poster der koordinatene og kommune ikke stemmer overens. Korreksjoner må gjøres i samlingsdatabasen. </p>
                     <p class="neutral" id="coordResult"></p>
                     <table id="coord-results" border="1"></table>
             </div>
