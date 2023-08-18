@@ -284,9 +284,7 @@ const advSearch = (museum, samling, searchSpecies, searchCollector, searchDate, 
 
 // object list search, seach for object number or several numbers, searchObjects = one or more object numbers without prefixes, comma or space separated
 const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 20, callback) => {
-    console.log('hit')
     const date = getDate()
-    
     myLogger.log( museum + '\t' + samling + '\t' + searchObjects + '\t' + date + '\tnumber search');
     // velg riktig MUSIT dump fil å lese
     musitFile = setCollection(museum,samling)
@@ -323,7 +321,6 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
         } else {
             suffix = false
         }
-            
         let results = ''
         const readInterface = readline.createInterface({
             input: fs.createReadStream(musitFile),
@@ -349,35 +346,41 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
                 let catNoInFile = lineArray[headers.indexOf('catalogNumber')].toLowerCase().trim()
                 let source = getSource(museum, samling)
                 
-                for (let el of objectNumbers) {
-                    
+                // console.log('linje ' + count)
+                // console.log(objectNumbers.length + ' lengde')
+                // for (let el of objectNumbers) {
+                for (let i=0;i<objectNumbers.length;i++) {
+                    // console.log(objectNumbers[i])
                     // for collections with suffixes in catNo ('.../1'). When complete suffix is entered in search term, all is good
                     // when complete suffix is entered, but musit-catalog-number has only "/", without number:
-                    if (suffix && el.includes('/') && catNoInFile.length == catNoInFile.indexOf('/')+1) {
-                        el = el.substring(0,el.indexOf('/'))
+                    if (suffix && objectNumbers[i].includes('/') && catNoInFile.length == catNoInFile.indexOf('/')+1) {
+                        objectNumbers[i] = objectNumbers[i].substring(0,objectNumbers[i].indexOf('/'))
                         catNoInFile = catNoInFile.substring(0,catNoInFile.indexOf('/'))
                     } else 
                         // when no suffix is included in search term: 
-                    if (suffix && !el.includes('/')) {
-                        catNoInFile = catNoInFile.substring(0,catNoInFile.indexOf('/'))
+                    if (suffix && !objectNumbers[i].includes('/')) {
+                        if(catNoInFile.includes('/')) {
+                            catNoInFile = catNoInFile.substring(0,catNoInFile.indexOf('/'))
+                        }
                     }
                         // when only '/' is included:
-                    else if (suffix && el.includes('/') && el.length == el.indexOf('/')+1) {
-                        catNoInFile = catNoInFile.substring(0,catNoInFile.indexOf('/')+1)
+                    else if (suffix && objectNumbers[i].includes('/') && objectNumbers[i].length == objectNumbers[i].indexOf('/')+1) {
+                        if(catNoInFile.includes('/')) {
+                            catNoInFile = catNoInFile.substring(0,catNoInFile.indexOf('/')+1)
+                        }
                     }
                     // remove leading 0's from catalogNumber in dump-file
                     
-                    if (String(el).charAt(0) != "0") {
+                    if (String(objectNumbers[i]).charAt(0) != "0") {
                         let match = catNoInFile.match(/^0+/)
                         let level = match ? match[0].length : 0
                         catNoInFile = catNoInFile.substring(level,catNoInFile.length)    
                     }
-                    
-                    if ( catNoInFile === el.trim()) {
+                   
+                    if ( catNoInFile === objectNumbers[i].trim()) {
                         // søk for en match i linja  (line.indexOf(searchTerm) !== -1)
                         results =  results +  '\n' + line
                         resultCount++
-                        objectNumbers.splice(objectNumbers.indexOf(el),1)
                     } 
                 }
             }

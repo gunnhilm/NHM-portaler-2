@@ -325,7 +325,7 @@ const doObjListSearch = (limit = 20) => {
                 
             } else {
                 try {
-
+                    console.log(url)
                     response.text().then((data) => {
                         if(data.error) {
                             errorMessage.innerHTML = textItems.serverError[index]

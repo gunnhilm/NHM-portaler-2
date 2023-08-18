@@ -9,9 +9,7 @@ const hitsPerPage = document.querySelector('#number-per-page')
 // in resultsElementsOnOff -> showResultElements(isLoan)
 let isLoan = false
 function activateLoanButton () {
-    console.log('sjekker lån');
     const collection = sessionStorage.getItem('chosenCollection')
-    console.log(collection);
     let tempList = JSON.parse(sessionStorage.getItem('fileList'))
     for (const el of tempList) {
         if (el.name === collection && el.loan) {
