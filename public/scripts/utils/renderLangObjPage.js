@@ -101,6 +101,7 @@ function renderObjectText(lang){
             document.querySelector("#head-coll").innerHTML = textItems.headColl[index].bold()
             document.querySelector("#head-locality").innerHTML = textItems.headLocality[index].bold()
             document.querySelector("#head-coordinates").innerHTML = textItems.headCoordinates[index].bold()
+            
         }
         
         if (specimenObject.recordNumber) {
@@ -111,6 +112,12 @@ function renderObjectText(lang){
         if(!specimenObject.decimalLatitude || !specimenObject.decimalLongitude) {
             if (document.querySelector("#map-object")) {
                 document.querySelector("#map-object").innerHTML = textItems.mapAlt[index]
+            }
+        }
+        if (specimenObject.coordinateUncertaintyInMeters) {
+            console.log("er vi ikke her")
+            if (document.querySelector("#head-coordinatesUncertainty")) {
+                document.querySelector("#head-coordinatesUncertainty").innerHTML = textItems.headCoordinatesUncertainty[index].bold()
             }
         }
 

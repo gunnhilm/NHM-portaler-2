@@ -510,6 +510,9 @@ const makeBioTable = () => {
         const coor = table.insertRow(-1)
         const coorH =   coor.insertCell(0); coorH.id = 'head-coordinates'; coorH.class = 'bold';
         const coorC =   coor.insertCell(1); coorC.id = 'coordinates'; coorC.style = 'border-spacing: 10px 0';
+        const coorUnc = table.insertRow(-1)
+        const coorUncH = coorUnc.insertCell(0);coorUncH.id='head-coordinatesUncertainty'; coorUncH.class = 'bold';
+        const coorUncC = coorUnc.insertCell(1); coorUncC.id='coordinatesUncertainty'; coorUncC.style='border-spacing: 10px 0';
         const arts = table.insertRow(-1)
         const artsH =   arts.insertCell(0); artsH.id = 'head-artsobs'; artsH.class = 'bold'; artsH.style = 'white-space:pre'
         const artsC =   arts.insertCell(1); artsC.id = 'artsobsID'; artsC.style = 'border-spacing: 10px 0';
@@ -946,6 +949,11 @@ async function showData (specimenObject, orgGroup, overviewObject) {
             habitat = `<span>${specimenObject.habitat}</span>`
         }
 
+        let coordinateUncertainty = ''
+        if (specimenObject.coordinateUncertaintyInMeters) {
+            coordinateUncertainty = `<span>${specimenObject.coordinateUncertaintyInMeters}</span>`
+        }
+
         //let headSex = ''
         let sex = ''
         if (specimenObject.sex) { sex =  `<span>${specimenObject.sex}</span>`}
@@ -990,6 +998,7 @@ async function showData (specimenObject, orgGroup, overviewObject) {
             document.querySelector('#typeStatus').innerHTML = typeStatus
             document.querySelector("#locality").innerHTML = `<span>${concatLocality}</span>`
             document.querySelector("#coordinates").innerHTML = `<span>${coordinates(specimenObject)}</span>`
+            document.querySelector('#coordinatesUncertainty').innerHTML = coordinateUncertainty
             document.querySelector('#samplingProtocol').innerHTML = samplingProtocol
         }
         
@@ -1198,6 +1207,7 @@ async function main () {
    // get the correct object
 //    console.log(allObject)
     let specimenObject = await getspecimenData(allObject)
+    console.log(specimenObject)
     if(Array.isArray(allObject) && (allObject.length > 2) && urlParams.get("isNew") != "yes") {
         makeNavButtons(allObject, specimenObject)
         makeBackButton()

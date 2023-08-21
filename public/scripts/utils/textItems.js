@@ -181,6 +181,7 @@ const textItems = {
     headCollNo: ['Innsamlingsnummer: ', 'Collecting number: '],
     headLocality: ['Lokalitet: ', 'Locality: '],
     headCoordinates: ['Koordinater: ', 'Coordinates: '],
+    headCoordinatesUncertainty: ['Usikkerhet i koordinater (m): ', 'Uncertainty in coordinates (m): '],
     headArtsobs: ['Artsobservasjon ID: ', 'Species Observation ID: '],
     headSex: ['Kjønn:', 'Sex:'],
     headLifeStage: ['Livsstadium:', 'Life stage:'],
@@ -249,8 +250,6 @@ const textItems = {
     statistikkLink: ["Statistikk", "Statistics"],
     statistikkTekst: ["Se statistikk over samlingene; antall objekter, utvikling over tid osv.", "See statistics of the collections; number of objects, development over time etc."],
     DOILink: ["Lag DOI fra GBIF", "Get DOI from GBIF"],
-    DOIText: ["Lag en lenke til dataene fra samlingsobjekter. Ved utlån av materiale eller bruk av objekter til forskning kan man få en DOI som det henvises til i en vitenskapelig artikkel slik at man kan refere til samlingene på en entydig måte. Dette er en forutsetning for å kunne utnytte de muligheter som ligger i bionomia.net.",
-                "Make a link to the data of collection objecs. When loaning out material or use of objects for scientific research, you can get a DOI to include in a scientific paper so that you can refer to the collections in an unabiguous way. This is a prerequisite to take advantage in the opportunities that lies in bionomia.net"],
     coordinateLink: ["Sjekk koordinater", "Check coordinates"],
     dataErrorLink: ["Finn feil i dataene", "Find errors in the data"],
     dataErrorText: ["Utnytt de verktøyene som tilbys fra GBIF og Bionomia til å oppdage feil i dataene.","Utilize the tools available from GBIF and Bionomia to discover errors in the data."],
@@ -292,6 +291,10 @@ const textItems = {
 
     // getDOI page
     getDOIHeader: ['Få DOI fra GBIF basert på en liste med museumsnumre','Get DOI from GBIF from a list of museum numbers'],
+    DOIText: ["Lag en lenke til dataene fra samlingsobjekter. Ved utlån av materiale eller bruk av objekter til forskning kan man få en DOI som det henvises til i en vitenskapelig artikkel slik at man kan refere til samlingene på en entydig måte. Dette er en forutsetning for å kunne utnytte de muligheter som ligger i <a href='https://www.bionomia.net' target='_blank'>Bionomia.",
+                "Make a link to the data of collection objecs. When loaning out material or use of objects for scientific research, you can get a DOI to include in a scientific paper so that you can refer to the collections in an unabiguous way. This is a prerequisite to take advantage in the opportunities that lies in <a href='https://www.bionomia.net' target='_blank'>Bionomia."],
+    DOIText2: ["For å bruke denne siden må du ha et GBiF brukernavn og passord. Hvis du ikke har dette så gå til <a href='https://www.gbif.org/'>www.gbif.org</a> og registrer deg. Brukernavnet ditt står på toppen av profilsiden din. <br><br>For at søke mot GBiF skal bli riktig må du passe på å har riktig format på 'Catalogue number'. Dette varierer fra museum til museum og samling til samling. Du kan gå inn på GBiF sine sider og se hvordan det skal være for den valgt samlingen ved å klikke her: <a href='https://www.gbif.org/dataset/search?q=' id='gbif-Link'>GBiF dataset</a>",
+                "To use this functionality you need to have a GBiF username and password. If you don't have this, go to <a href='https://www.gbif.org/'>www.gbif.org</a> and register. Your username is stated at the top of your profile-page. <br><br>To make a correct search in GBiF you need to make sure you have the right format for the 'Catalogue number'. This varies between museums and between collections. You can go to GBiF's web pages and see how it should be for the chosen collection by clicking her: <a href='https://www.gbif.org/dataset/search?q=' id='gbif-Link'>GBiF dataset</a>"],
     selectMuseum: ['--Velg museum--', '--Select museum--'],
     selectCollection: ['--Velg samling--', '--Select collection--'],
     onloggingData: ['GBIF påloggingsdata:', 'GBIF onlogging information:'],

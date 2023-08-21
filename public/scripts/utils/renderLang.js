@@ -200,7 +200,6 @@ function renderText (lang) {
         document.querySelector('#statistikk-link').innerHTML = textItems.statistikkLink[index]
         document.querySelector('#statistics-text').innerHTML = textItems.statistikkTekst[index]
         document.querySelector('#DOI-link').innerHTML = textItems.DOILink[index]
-        document.querySelector('#DOI-text').innerHTML = textItems.DOIText[index]
         document.querySelector('#data-error-link').innerHTML = textItems.dataErrorLink[index]
         document.querySelector('#data-error-text').innerHTML = textItems.dataErrorText[index]
         document.querySelector('#arts-obs-link').innerHTML = textItems.artsObsLink[index]
@@ -293,6 +292,9 @@ function renderText (lang) {
         document.querySelector('#pasteRequest').innerHTML = textItems.pasteRequest[index]
         document.querySelector('#resetButton').innerHTML = textItems.resetButton[index]
         document.querySelector('#results').innerHTML = textItems.results[index]
+        document.querySelector('#DOIText1').innerHTML = textItems.DOIText[index]
+        document.querySelector('#DOIText2').innerHTML = textItems.DOIText2[index]
+        
     }
 
     if (location.href.includes('checkCoord')) {
