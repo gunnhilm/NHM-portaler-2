@@ -92,6 +92,19 @@ const setSubcollections = (museum, orgGroup) => {
     return coll
 }
 
+const getAllcollections = (museum) => {
+    const fileList = getFileList(museum)
+    let coll = []
+    fileList.forEach(el => {
+            coll.push(el.name)
+    })
+    // console.log(coll);
+    // const filtered = result.filter(Boolean)
+    // return filtered 
+    // remove null items
+    return coll.filter(Boolean)
+}
+
 const setCollection = (museum, samling) => {
     const fileList = getFileList(museum)
     let musitFile = ''
@@ -123,6 +136,7 @@ const whichFileDb = (museum,collection) => {
             result.push(element.source)
         }
     })
+
     return result
 }
 
@@ -503,7 +517,8 @@ module.exports = {
     getOrgGroup,
     setSubcollections,
     whichFileDb,
-    checkRegion
+    checkRegion,
+    getAllcollections
     
  } 
 

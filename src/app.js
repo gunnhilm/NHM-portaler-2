@@ -9,6 +9,7 @@ const barcoding = require('./utils/barcoding/barcoding')
 const footerDate = require('./utils/footerDate')
 const loan = require('./utils/loans/loans') 
 const LoanInfo =  require('./utils/loans/loanInfo/loanInfoServer') 
+const labels = require('./utils/labels/skilleark')
 const hbs = require('hbs')
 const helmet = require('helmet')
 const { response } = require('express')
@@ -237,7 +238,12 @@ app.get('/groupOfOrg', (req, res) => {
 app.get('/collections', (req, res) => {
     if (!req.query.museum) {
         throw new Error ('no museum...')
-    }else {
+    } else if (!req.query.orgGroup) {
+        console.log('getting coll list');
+        let coll = fileRead.getAllcollections(req.query.museum, req.query.orgGroup, (error, results) => {
+        })
+        res.send(coll)
+    }  else {
         try {
             let coll = fileRead.setSubcollections(req.query.museum, req.query.orgGroup, (error, results) => {
             })
@@ -614,6 +620,44 @@ app.get('/checkRegion2', (req, res) => {
     }
 })
     
+app.get('*/labels', (req, res) => {     
+    if (!req.query.search) {
+        labels.getValidNames((error, results) => {
+            if (error) {
+                console.log(error);
+                return res.status(500).send({
+                 unparsed: error.message
+                 })
+             }
+            res.render('labels', {
+                results: results
+            }) 
+        })
+    } else {
+        try {
+            labels.writeskilleArk(req.query.search, (error, results) => {
+            console.log('her kommer doc');
+            console.log('resultater ved app: ' + results)
+            if (error) {
+               return res.status(500).send({
+                unparsed: error.message
+                })
+            }
+            res.download(results, function(error) {
+                if(error) {
+                    console.log(error);
+                }
+            })
+         })
+        } catch (error) {
+            console.log('her kommer feilen' + error);
+            return res.status(500).send({
+                unparsed: error
+            })
+        }
+    
+    }
+})
     
 app.get('*', (req, res) => {
     res.render('404', {})
