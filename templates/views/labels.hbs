@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html lang="no">
+    <head>
+        <title>Labels</title> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    </head>
+  
+    <body>
+        {{>header}}
+        labels
+        <table>
+            <tr>
+                <td>
+                    <label for="museum-select" id="select-museum-label"></label>
+                    <select id="museum-select" style="height:30px; border-radius:4px;">
+                        <option value="" id="selectMuseum"></option>
+                        <option value="nhm" id="nhm">NHM</option>
+                        <option value="um" id="um">UM</option>
+                        <option value="vm" id="vm">VM</option>
+                        <option value="tmu" id="tmu">TMU</option>
+                        <option value="nbh" id="nbh">NBH</option>
+                    </select>
+                    &nbsp;
+                    &nbsp;
+
+                    <label for="collection-select" id="select-collection-label"></label>
+                    <select id="collection-select" style="height:30px; border-radius:4px;">
+                        <option value="" id="selectCollection"></option>
+                    </select>
+                </td>
+            </tr>
+            
+        </table>
+
+
+
+
+
+        <form id="label-names">
+            <p>Please enter some text below:</p>
+            <input type="text" id="scientific-names">
+            <button id="label-name-submit" type="submit">Submit</button>
+        </form>
+
+ {{>footer}}
+        <link rel="stylesheet" href="/museum/styles/styles.css">
+        <link id="museumStyle" rel="stylesheet" type="text/css" href= "">
+        <script src="/museum/scripts/utils/showCorrectMuseum.js"></script>
+        <script src="/museum/scripts/utils/textItems.js"></script>
+        <script src="/museum/scripts/utils/renderLangHeader.js"></script>
+        <script src="/museum/scripts/utils/renderLang.js"></script>
+         <script src="/museum/scripts/utils/tools/labels/labels.js"></script>
+     </body>
+</html>

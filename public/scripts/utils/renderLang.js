@@ -108,7 +108,7 @@ function renderText (lang) {
     }
 
     // index page
-    if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler')& !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools') & !location.href.includes('checkCoord') & !location.href.includes('dataError') & !location.href.includes('barcod')& !location.href.includes('loanInfo')) {
+    if (!location.href.includes('labels') & !location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler')& !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools') & !location.href.includes('checkCoord') & !location.href.includes('dataError') & !location.href.includes('barcod')& !location.href.includes('loanInfo')) {
 
         //document.querySelector('#vennligst').innerHTML = textItems.vennligst[index] 
         if(document.querySelector('#header-advSearch-page')) { document.querySelector('#header-advSearch-page').innerHTML = textItems.headerAdvSearchPage[index]}
@@ -295,6 +295,12 @@ function renderText (lang) {
         document.querySelector('#DOIText1').innerHTML = textItems.DOIText[index]
         document.querySelector('#DOIText2').innerHTML = textItems.DOIText2[index]
         
+    }
+
+    // labels page
+    if (location.href.includes('labels')) {
+        document.querySelector('#selectMuseum').innerHTML = textItems.selectMuseum[index] 
+        document.querySelector('#selectCollection').innerHTML = textItems.selectCollection[index] 
     }
 
     if (location.href.includes('checkCoord')) {
