@@ -195,7 +195,8 @@ const getNamelist = async (nameFile, callback) => {
                     headers = line.split(';')
                     
                 } else {
-                    let variables = line.split(';')
+                    let variables
+                    if (nameFile.includes('tab')) { variables = line.split('\t')} else {variables = line.split(';')}
                     // dette er hardkodet, finn heller variablene etter header-navn
                     // check if the line represents a species (i.e. has value in field 23, which is "Art" (epithet))
                     // and not a subspecies (field 24)
@@ -213,7 +214,6 @@ const getNamelist = async (nameFile, callback) => {
                             "norwegianName" : variables[41],
                             "phylum" : variables[3]
                         }
-                        // if (!nameListObjects.includes(nameObject))
                         nameListObjects.push(nameObject)    
                     }
                     

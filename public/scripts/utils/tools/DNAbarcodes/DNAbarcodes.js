@@ -9,27 +9,24 @@ console.log(sessionStorage.getItem('string'))
 
 let table = document.getElementById("barcode-table")
 let bcColl = urlParamsTop.get("coll")
-console.log(bcColl)
 let adbFile
 let redlistFile = `${adbFilePath}rodliste-2021.txt`
 if (bcColl === "sopp") {
     document.getElementById("getBarcodeHeader").innerHTML = textItems.bcHeaderFungi[1] 
-    adbFile = `${adbFilePath}ArtsnavnebaseCSV_fungi.txt`
+    adbFile = `${adbFilePath}ArtsnavnebaseCSV_fungi_tab.txt`
 } else if (bcColl === "mammals") {
     document.getElementById("getBarcodeHeader").innerHTML = textItems.bcHeaderMammals[1]
     adbFile = `${adbFilePath}ArtsnavnebaseCSV_mammals.txt`
-}
-else if (bcColl === "Lep") {
+} else if (bcColl === "Lep") {
     document.getElementById("getBarcodeHeader").innerHTML = textItems.bcHeaderLep[1]
     adbFile = `${adbFilePath}ArtsnavnebaseCSV_lepidoptera.txt`
-}
-else if (bcColl === "herptiles") {
+} else if (bcColl === "herptiles") {
     document.getElementById("getBarcodeHeader").innerHTML = textItems.bcHeaderHerptiles[1]
     adbFile = `${adbFilePath}ArtsnavnebaseCSV_herptiles.txt`
 }
 
 
-document.getElementById("getBarcodeText").innerHTML = "Last updated 13.4.23 <br><br><br> Click on species name to see which specimens are barcoded, and which county (fylke) they are from."
+document.getElementById("getBarcodeText").innerHTML = "Last updated 4.9.23 <br><br><br> Click on species name to see which specimens are barcoded, and which county (fylke) they are from."
 listExplDiv = document.createElement('div')
 
 document.querySelector('#search-bc-text').placeholder = 'Search for latin name' //textItems.placeholder[index]
@@ -152,7 +149,7 @@ const bcSearch = (searchTerm, data, nameList, candidates,fungiOverview) => {
     }
 }
 
-//  search-from listener
+//  search-form listener
 // in: nameList(array of objects, one from each norwegian species, from adb), data (array of objects, one for each sequenced species, from bold)
 const bcSearchListener = (nameList,data, candidates,fungiOverview) => {
     document.querySelector('#search-bc-form').addEventListener('submit', (e) => {
@@ -285,6 +282,7 @@ function fillAllNames (nameList, data, candidates, sumSpecimens, fungiOverview) 
     }
 }
 
+// fills rows in table with actual data
 function fillOnlyBarcoded(data, candidates, sumSpecimens, fungiOverview) {
     barcodedSpecies = []
     for (i=0;i<data.length;i++) {
@@ -660,9 +658,13 @@ async function expandTable (missingBarcodes) {
 async function main() {
     // get array with objects with latin and norwegian names of species livingin norway (based on a namefile downloaded from ADB (should be done automatically once a week))
     nameList = await getNamelist(adbFile)
+    console.log(nameList)
     // getFastaData() ligger i barcodesCommonFunctions.js
-    data = await getFastaData() //Gjør en request til server om å få innholdet i fasta.fas. 
+    data = await getFastaData() //Gjør en request til server om å få innholdet i fasta.fas.
+    // console.log(data)
     fungiOverview = await getOverview() // Makes a request to server to get an array of all species in the fungal-barcoding-overview-file, and number of validated and failed sequences
+    // let lookingFor = fungiOverview.find(el => el.species ==="Cantharellus cibarius")
+    // console.log(lookingFor)
     redList = await getRedlist(redlistFile)
     // go through data (list of objects with DNA sequence (?)) and add norwegian names...
     data.unparsed.forEach(el => {

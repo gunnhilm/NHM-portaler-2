@@ -37,6 +37,7 @@ const getFastaFileUpdatedDate = (file, callback) => {
         console.log('Error in footerdate');      
     }
 }
+
 // reads fasta-file with all sequences from NorBOL downloaded from BOLD.
 // Gunnhild updates fasta-file irregularly, its static
 // returns array with objects; one object for each species, with musit-regnos, processIDs and counties
@@ -134,6 +135,7 @@ const getOverview = async (query, callback) => {
                 let validationMethod = lineArray[headers.indexOf('valideringsmetode')]
                 let expert = lineArray[headers.indexOf('Ekspert')]
                 let year = lineArray[headers.indexOf('Innsamlingsdato')]
+                let validator = lineArray[headers.indexOf('Validator')]
                 // let amount = 1
             
             let existingRecord = overviewArray.find(item => item.species === species)
@@ -146,9 +148,10 @@ const getOverview = async (query, callback) => {
                 existingRecord.validationMethod.push(validationMethod)
                 existingRecord.expert.push(expert)
                 existingRecord.year.push(year)
+                existingRecord.validator.push(validator)
             } else {
                 overviewArray.push({"processID": [processID], "musitRegno": [musitRegno], "species": species, "seqLength": [seqLength],
-                "validationStatus": [validationStatus], "validationMethod": [validationMethod], "expert": [expert], "amount": 1, "year": [year]})    
+                "validationStatus": [validationStatus], "validationMethod": [validationMethod], "expert": [expert], "validator": [validator], "amount": 1, "year": [year]})    
             }
             
             // }

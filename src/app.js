@@ -442,7 +442,6 @@ app.get('*/DNAbarcodes', (req, res) => {
         // callback(undefined, {error: 'no getfasta in query'})
     } else {
         barcoding.getFasta(req.query, (error, results) => {
-            console.log(results)
             res.send({
                 unparsed:results
             })

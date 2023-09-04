@@ -35,6 +35,7 @@ function addRow(table) {
         cell5 = row.insertCell(4)
         cell6 = row.insertCell(5)
         cell7 = row.insertCell(6)
+
     }
 }
 
@@ -56,9 +57,10 @@ const fillTableSpecies = (data, validationObject) => {
         cell5.innerHTML = 'Validation method'
         cell5.style = "padding-right:20px"
         cell5.style.fontWeight = 'bold'
-        
-        cell6.innerHTML = 'Expert'
+        cell6.innerHTML = 'Validator'
         cell6.style.fontWeight = 'bold'
+        cell7.innerHTML = 'Expert'
+        cell7.style.fontWeight = 'bold'
     }
     
 
@@ -141,10 +143,18 @@ const fillTableSpecies = (data, validationObject) => {
                 cell4.style = "padding-right:40px"
             }
             
-            cell5.innerHTML = validationObject.validationMethod[index]
+            if (validationObject.validationMethod[index]) {
+                cell5.innerHTML = validationObject.validationMethod[index]
+            }
             cell5.style = "padding-right:20px"
+            if (validationObject.validator[index]) {
+                cell6.innerHTML = validationObject.validator[index]
+            }
+            cell6.style = "padding-right:10px"
+            if (validationObject.expert[index]) {
+                cell7.innerHTML = validationObject.expert[index]
+            }
             
-            cell6.innerHTML = validationObject.expert[index]
         }
         
     }
@@ -229,6 +239,7 @@ async function main() {
     let overviewObject = fungiOverview.find((el => {
         return el.species === relSpecies.replace("_"," ")
     }))
+    console.log(overviewObject)
     fillTableSpecies(speciesObject, overviewObject)
     let candidates
     
