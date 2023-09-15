@@ -76,7 +76,10 @@ function renderText (lang) {
     renderHeaderContent(lang)
     
     //Dropdown med valg av samlinger, index page og stat page
-    if (!location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler') & !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools') & !location.href.includes('checkCoord') & !location.href.includes('dataError') & !location.href.includes('advancedSearch')) {
+    const excludedKeywords = ['object', 'about', 'help', 'corema', 'map', 'journaler', 'getDOI', 'showStat', 'tools', 'checkCoord', 'dataError', 'advancedSearch'];
+
+    if (!excludedKeywords.some(keyword => location.href.includes(keyword))) {
+    // if (!location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler') & !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools') & !location.href.includes('checkCoord') & !location.href.includes('dataError') & !location.href.includes('advancedSearch')) {
     //if (location.href.substring(location.href.split('/',3).join('/').length).lengt === 12) { 
     
     // document.querySelector('#specimensOptgroup').innerHTML = textItems.specimensOptgroup[index]

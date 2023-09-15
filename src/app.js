@@ -619,45 +619,109 @@ app.get('/checkRegion2', (req, res) => {
     }
 })
     
-app.get('*/labels', (req, res) => {     
-    if (!req.query.search) {
-        labels.getValidNames((error, results) => {
-            if (error) {
-                console.log(error);
-                return res.status(500).send({
-                 unparsed: error.message
-                 })
-             }
-            res.render('labels', {
-                results: results
-            }) 
-        })
-    } else {
-        try {
-            labels.writeskilleArk(req.query.search, (error, results) => {
-            console.log('her kommer doc');
-            console.log('resultater ved app: ' + results)
-            if (error) {
-               return res.status(500).send({
-                unparsed: error.message
-                })
-            }
-            res.download(results, function(error) {
-                if(error) {
+// app.get('*/labels', (req, res) => {     
+//     try {
+//         console.log(req.query);
+//         console.log(req.body);
+//         if (req.query.museum && req.query.collection) {
+//             console.log('ikke søk');
+//             labels.getValidNames((error, results) => {
+//                 if (error) {
+//                     console.log(error);
+//                     return res.status(500).send({
+//                     unparsed: error.message
+//                     })
+//                 }
+//                 res.send({
+//                     results: results
+//                 }) 
+//             })
+//         } else if (req.query.museum && req.query.collection && req.query.search) {
+//                 console.log('skriver ark');
+//                 labels.writeskilleArk(req.query.search, (error, results) => {
+//                 console.log('her kommer doc');
+//                 console.log('resultater ved app: ' + results)
+//                 if (error) {
+//                 return res.status(500).send({
+//                     unparsed: error.message
+//                     })
+//                 }
+//                 res.download(results, function(error) {
+//                     if(error) {
+//                         console.log(error);
+//                     }
+//                 })
+//             })
+//         } else {
+//             res.render('labels', {
+//             }) 
+//         }
+//     } catch (error) {
+//         console.log('her kommer feilen' + error);
+//         return res.status(500).send({
+//             unparsed: error
+//         })
+//     }
+// })
+app.get('*/labels', async (req, res) => {
+    try {
+        const { museum, collection } = req.query;
+        if (museum && collection) {
+            console.log('returing collection list');
+            labels.getValidNames((error, results) => {
+                if (error) {
                     console.log(error);
+                    return res.status(500).send({
+                        unparsed: error.message
+                    });
                 }
-            })
-         })
-        } catch (error) {
-            console.log('her kommer feilen' + error);
-            return res.status(500).send({
-                unparsed: error
-            })
+                res.send({ results });
+            });
+        } else {
+            res.render('labels');
         }
-    
+    } catch (error) {
+        console.log('Error occurred: ' + error);
+        return res.status(500).send({
+            unparsed: error.toString()
+        });
     }
-})
-    
+});
+
+app.post('*/labels', async (req, res) => {
+    try {
+        const museum = req.body.museum; // Replace with the actual field names you're expecting in the request body
+        const collection = req.body.collection;
+        const search = req.body.search;
+        if (museum && collection && search) {
+            labels.writeskilleArk(search, museum, collection, (error, results) => {
+                if (error) {
+                    console.log('Error writing file:', error);
+                    return res.status(500).send({
+                        error: 'Error writing file'
+                    });
+                }
+
+                console.log('File written successfully');
+                res.download(results, (error) => {
+                    if (error) {
+                        console.log('Error sending file:', error);
+                    }
+                });
+            });
+        } else {
+            res.status(400).send({
+                error: 'Missing required fields'
+            });
+        }
+    } catch (error) {
+        console.log('Error occurred:', error);
+        res.status(500).send({
+            error: 'Internal server error'
+        });
+    }
+});
+
 app.get('*', (req, res) => {
     res.render('404', {})
 })

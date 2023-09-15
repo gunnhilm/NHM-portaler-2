@@ -55,42 +55,90 @@ const getPublications = async (museum) => {
  
 // citationTabell
 // data = object with header, and citations per year per collection
-const populateCitTable = (data) => {
-    const table = document.querySelector('#GBIF-citation-table')
-    headerArray = data.header
-    headerArray.sort()
-    //empty table if  there is already content
-    table.innerHTML = ''
+// const populateCitTable = (data) => {
+//     const table = document.querySelector('#GBIF-citation-table')
+//     headerArray = data.header
+//     headerArray.sort()
+//     //empty table if  there is already content
+//     table.innerHTML = ''
  
-    const row = table.insertRow(0)
+//     const row = table.insertRow(0)
 
-    for (let i = 0; i < headerArray.length; i++) {
-        row.insertCell(i).innerHTML = headerArray[i]
-    }
-    const header = ['Collection']
-    row.style = "border: solid"
-    const cell0 = row.insertCell(0)
-    cell0.innerHTML = header[0]
-    let index = 0
-    let rowNumber = 1
-    for (const [key, value] of Object.entries(data)) {
+//     for (let i = 0; i < headerArray.length; i++) {
+//         row.insertCell(i).innerHTML = headerArray[i]
+//     }
+//     const header = ['Collection']
+//     row.style = "border: solid"
+//     const cell0 = row.insertCell(0)
+//     cell0.innerHTML = header[0]
+//     let index = 0
+//     let rowNumber = 1
+//     for (const [key, value] of Object.entries(data)) {
 
-        if(key !== 'header'){
-            let dataRow = table.insertRow(rowNumber)
-            dataRow.insertCell(0).innerHTML = key
-            for (const [key, year] of Object.entries(value)) {
-                    dataRow.insertCell().innerHTML = year
-                    // const row1 = table.insertRow(1)
-                    // const cell_1 = row1.insertCell(0)
-                    // cell_1.innerHTML = fileLink
-            }
+//         if(key !== 'header'){
+//             let dataRow = table.insertRow(rowNumber)
+//             dataRow.insertCell(0).innerHTML = key
+//             for (const [key, year] of Object.entries(value)) {
+//                     dataRow.insertCell().innerHTML = year
+//                     // const row1 = table.insertRow(1)
+//                     // const cell_1 = row1.insertCell(0)
+//                     // cell_1.innerHTML = fileLink
+//             }
         
-            index++
-            console.log(index);
-            rowNumber++
+//             index++
+//             console.log(index);
+//             rowNumber++
+//         }
+//     }
+//     table.setAttribute("class", "summaryTable");
+// }
+
+// populateCitTable
+// data = object with header and citations per year per collection
+const populateCitTable = (data) => {
+    const table = document.querySelector('#GBIF-citation-table');
+    const headerArray = data.header.slice(); // Create a copy and sort it
+    headerArray.sort();
+    headerArray.splice(0, 0, 'Collection');
+    // Empty the table if there is already content
+    table.innerHTML = '';
+
+    // Create the header row
+    const headerRow = table.insertRow(0);
+    headerRow.style.fontWeight = 'bold'; // Make the header row bold
+    for (let i = 0; i < headerArray.length; i++) {
+        const headerCell = headerRow.insertCell(i);
+
+            headerCell.innerHTML = headerArray[i];
+
+    }
+
+
+
+
+    // Create rows for each collection
+    let rowNumber = 1;
+    for (const [collection, years] of Object.entries(data)) {
+        if (collection !== 'header') {
+            const dataRow = table.insertRow(rowNumber);
+            dataRow.insertCell(0).innerHTML = collection;
+
+            // Populate the cells with citation data for each year
+            let columnIndex = 1; // Start from the second column
+            for (const year of Object.values(years)) {
+                dataRow.insertCell(columnIndex).innerHTML = year;
+                columnIndex++;
+            }
+
+            rowNumber++;
         }
     }
-}
+
+    // Apply a class to the table for styling
+    table.setAttribute('class', 'summaryTable');
+};
+
+
 
   const mainCit = async () => {
     const museum = getMuseum()

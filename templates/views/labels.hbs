@@ -8,7 +8,7 @@
   
     <body>
         {{>header}}
-        labels
+        
         <table>
             <tr>
                 <td>
@@ -33,19 +33,24 @@
             
         </table>
 
+        <div style="display:none" id="dropdown-container">
+            <form id="label-names">
+                <p>Please enter some text below:</p>
+                <select id="scientific-names">
+                    <option value="value-1"></option>
+                </select>
+                {{!-- <input type="text" id="scientific-names"> --}}
+                <button id="label-name-submit" type="submit">Submit</button>
+            </form>
+        </div>
 
 
 
 
-        <form id="label-names">
-            <p>Please enter some text below:</p>
-            <input type="text" id="scientific-names">
-            <button id="label-name-submit" type="submit">Submit</button>
-        </form>
-
- {{>footer}}
         <link rel="stylesheet" href="/museum/styles/styles.css">
         <link id="museumStyle" rel="stylesheet" type="text/css" href= "">
+        <link rel="stylesheet" type="text/css" href="/museum/scripts/utils/selectr/selectr.min.css">
+        <script type="text/javascript" src="/museum/scripts/utils/selectr/selectr.min.js"></script>
         <script src="/museum/scripts/utils/showCorrectMuseum.js"></script>
         <script src="/museum/scripts/utils/textItems.js"></script>
         <script src="/museum/scripts/utils/renderLangHeader.js"></script>
