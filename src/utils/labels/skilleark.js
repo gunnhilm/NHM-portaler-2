@@ -14,32 +14,162 @@ const setCollection = (museum, samling) => {
     return musitFile 
 }
 
-// write skilleark
-async function writeFile(dataArray, outFilepath, templatePath)  {
-    console.log('writing for names'); 
+// // write skilleark
+// async function writeFile(dataArray, outFilepath, templatePath)  {
+//     console.log('writing for names'); 
+//     console.log(dataArray.length);
+//     let doc = ''
+//     const template = fs.readFileSync(templatePath);
+//     for (let i = 0; i < dataArray.length; i++) {
+//         const data = dataArray[i];          
+//         const synsArray = []
+//         for (let i = 0; i < data.Synonymer.length; i++) {
+//             const synObj = {}
+//             const element = data.Synonymer[i];
+//             synObj.Synonymer = element
+//             synsArray.push(synObj)
+//         }
+//         console.log(synsArray);
+//         const items = {
+//             'loop': [
+//                 {
+//                 validName: [
+//                     { 'Akseptert navn': data['Akseptert navn']}
+//                 ],
+//                 synonyms: synsArray,
+//                 'pagebreak': {
+//                     _type: 'rawXml',
+//                     xml: '<w:br w:type="page"/>',
+//                     replaceParagraph: false,  // Optional - should the plugin replace an entire paragraph or just the tag itself
+//                 },
+//             }]
+//         };
+//         const handler = new TemplateHandler();
+//         doc = await handler.process(template, items);
+//     }
+//     /*
+//     const items =  {
+//         'loop': [
+//             {
+//             'Akseptert navn': 'første navn',
+//             'Synonymer' : 'første synonym',
+//             'pagebreak': {
+//                     _type: 'rawXml',
+//                     xml: '<w:br w:type="page"/>',
+//                     replaceParagraph: false,  // Optional - should the plugin replace an entire paragraph or just the tag itself
+//                 },
+//             },{'Akseptert navn': 'andre navn',
+//             'Synonymer' : 'andre synonym',
+//             'pagebreak': {
+//                     _type: 'rawXml',
+//                     xml: '<w:br w:type="page"/>',
+//                     replaceParagraph: false,  // Optional - should the plugin replace an entire paragraph or just the tag itself
+//                 }
+//             }
+//         ]
+//     }
+//     */
+//     // const handler = new TemplateHandler();
+//     // doc = await handler.process(template, items);
+//     fs.writeFileSync(outFilepath, doc)
+//     return outFilepath
+//   }
+
+/*
+async function writeFile(dataArray, outFilepath, templatePath) {
+    console.log('writing for names');
+    console.log(dataArray.length);
+  
     const template = fs.readFileSync(templatePath);
+    let doc = '';
+    const items = { 'loop': [] };
+  
     for (let i = 0; i < dataArray.length; i++) {
-        const data = dataArray[i];          
-        const synsArray = []
-        for (let i = 0; i < data.Synonymer.length; i++) {
-            const synObj = {}
-            const element = data.Synonymer[i];
-            synObj.Synonymer = element
-            synsArray.push(synObj)
-        }
-        console.log(synsArray);
-        const items = {
+      const data = dataArray[i];
+      const synsArray = [];
+  
+      for (let j = 0; j < data.Synonymer.length; j++) {
+        const synObj = {};
+        const element = data.Synonymer[j];
+        synObj.Synonymer = element;
+        synsArray.push(synObj);
+      }
+  
+      console.log(synsArray);
+  
+      const item = {
         validName: [
-            { 'Akseptert navn': data['Akseptert navn']}
+          { 'Akseptert navn': data['Akseptert navn'] }
         ],
         synonyms: synsArray,
-        };
-        const handler = new TemplateHandler();
-        const doc = await handler.process(template, items);
+        'pagebreak': {
+          _type: 'rawXml',
+          xml: '<w:br w:type="page"/>',
+          replaceParagraph: false,
+        },
+      };
+  
+      items.loop.push(item);
+  
     }
-    fs.writeFileSync(outFilepath, doc)
-    return outFilepath
+  
+    const handler = new TemplateHandler();
+    doc = await handler.process(template, items);
+  
+    fs.writeFileSync(outFilepath, doc);
+    return outFilepath;
   }
+*/  
+
+async function writeFile(dataArray, outFilepath, templatePath) {
+    console.log('writing for names');
+    console.log(dataArray.length);
+  
+    const template = fs.readFileSync(templatePath);
+    let doc = '';
+    const items = { 'loop': [] };
+  
+    for (let i = 0; i < dataArray.length; i++) {
+      const data = dataArray[i];
+      const synsArray = [];
+  
+      for (let j = 0; j < data.Synonymer.length; j++) {
+        const synObj = {};
+        const element = data.Synonymer[j];
+        synObj.Synonymer = element;
+        synsArray.push(synObj);
+      }
+  
+      console.log(synsArray);
+  
+      const item = {
+        validName: [
+          { 'Akseptert navn': data['Akseptert navn'] }
+        ],
+        synonyms: synsArray,
+        'pagebreak': {
+          _type: 'rawXml',
+          xml: '<w:br w:type="page"/>',
+          replaceParagraph: false,
+        },
+      };
+  
+      if (i === dataArray.length - 1) {
+        delete item.pagebreak;
+      }
+  
+      items.loop.push(item);
+  
+    }
+  
+    const handler = new TemplateHandler();
+    doc = await handler.process(template, items);
+  
+    fs.writeFileSync(outFilepath, doc);
+    return outFilepath;
+  }
+  
+
 
 const search = async (searchTerm, museum, samling) => {
     const nameFile = setCollection(museum, samling); // Assuming you have a function setCollection() to determine the filename
@@ -85,29 +215,36 @@ const search = async (searchTerm, museum, samling) => {
     }
 }
 
-async function writeskilleArk(names, museum, collection, callback){
-    const outFilepath = path.join(__dirname, '../labels/out/skilleArk.doc')
-    const skilleArkTemplatePath = path.join(__dirname, '../labels/templates/SKILLEARK.docx')
+
+async function writeskilleArk(names, museum, collection) {
+    const outFilepath = path.join(__dirname, '../labels/out/skilleArk.doc');
+    const skilleArkTemplatePath = path.join(__dirname, '../labels/templates/SKILLEARK.docx');
+  
     try {
-        dataArray = []
-        if(Array.isArray(names)) {
-            for (let i = 0; i < names.length; i++) {
-                const element = names[i];
-                if(element === 'value-1') {
-                    continue
-                }
-                data = await search(element, museum, collection)
-                dataArray.push(data)
-            }
-        }    
-            const labelFile = await writeFile(dataArray, outFilepath, skilleArkTemplatePath) 
-            console.log('labelfile: ' + labelFile);
-            callback(undefined, labelFile)
-    
+      const dataArray = [];
+  
+      if (Array.isArray(names)) {
+        for (let i = 0; i < names.length; i++) {
+          const element = names[i];
+          if (element === 'value-1') {
+            continue;
+          }
+          const data = await search(element, museum, collection);
+          dataArray.push(data);
+        }
+      }
+  
+      const labelFile = await writeFile(dataArray, outFilepath, skilleArkTemplatePath);
+      console.log('labelfile: ' + labelFile);
+  
+      return labelFile;
+  
     } catch (error) {
-        callback(error)
+      throw error;
     }
-}
+  }
+
+
 
 function getValidNames(callback) {
     try {

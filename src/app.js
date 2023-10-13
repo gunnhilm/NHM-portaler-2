@@ -619,50 +619,7 @@ app.get('/checkRegion2', (req, res) => {
     }
 })
     
-// app.get('*/labels', (req, res) => {     
-//     try {
-//         console.log(req.query);
-//         console.log(req.body);
-//         if (req.query.museum && req.query.collection) {
-//             console.log('ikke søk');
-//             labels.getValidNames((error, results) => {
-//                 if (error) {
-//                     console.log(error);
-//                     return res.status(500).send({
-//                     unparsed: error.message
-//                     })
-//                 }
-//                 res.send({
-//                     results: results
-//                 }) 
-//             })
-//         } else if (req.query.museum && req.query.collection && req.query.search) {
-//                 console.log('skriver ark');
-//                 labels.writeskilleArk(req.query.search, (error, results) => {
-//                 console.log('her kommer doc');
-//                 console.log('resultater ved app: ' + results)
-//                 if (error) {
-//                 return res.status(500).send({
-//                     unparsed: error.message
-//                     })
-//                 }
-//                 res.download(results, function(error) {
-//                     if(error) {
-//                         console.log(error);
-//                     }
-//                 })
-//             })
-//         } else {
-//             res.render('labels', {
-//             }) 
-//         }
-//     } catch (error) {
-//         console.log('her kommer feilen' + error);
-//         return res.status(500).send({
-//             unparsed: error
-//         })
-//     }
-// })
+
 app.get('*/labels', async (req, res) => {
     try {
         const { museum, collection } = req.query;
@@ -688,39 +645,36 @@ app.get('*/labels', async (req, res) => {
     }
 });
 
-app.post('*/labels', async (req, res) => {
-    try {
-        const museum = req.body.museum; // Replace with the actual field names you're expecting in the request body
-        const collection = req.body.collection;
-        const search = req.body.search;
-        if (museum && collection && search) {
-            labels.writeskilleArk(search, museum, collection, (error, results) => {
-                if (error) {
-                    console.log('Error writing file:', error);
-                    return res.status(500).send({
-                        error: 'Error writing file'
-                    });
-                }
 
-                console.log('File written successfully');
-                res.download(results, (error) => {
-                    if (error) {
-                        console.log('Error sending file:', error);
-                    }
-                });
-            });
-        } else {
-            res.status(400).send({
-                error: 'Missing required fields'
-            });
-        }
-    } catch (error) {
-        console.log('Error occurred:', error);
-        res.status(500).send({
-            error: 'Internal server error'
+function validateRequest(req, res, next) {
+    const { museum, collection, search } = req.body;
+
+    if (!museum || !collection || !search) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    next(); // Continue processing if validation passes
+}
+
+app.post('*/labels', validateRequest, async (req, res) => {
+    try {
+        const { museum, collection, search } = req.body;
+        const results = await labels.writeskilleArk(search, museum, collection);
+
+        console.log('File written successfully');
+        res.download(results, (error) => {
+            if (error) {
+                console.log('Error sending file:', error);
+                res.status(500).json({ error: 'Error sending file' });
+            }
         });
+    } catch (error) {
+        console.error('Error occurred:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+
 
 app.get('*', (req, res) => {
     res.render('404', {})
