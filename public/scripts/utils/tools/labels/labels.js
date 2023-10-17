@@ -47,14 +47,23 @@ const getUserInput = async () => {
             body: JSON.stringify({ museum: valgtMuseum, collection: valgtSamling, search:scientificNames  })
         });
 
-        if (!response.ok) {
-            const responseData = await response.json();
-            console.log('Fail:', response);
-            throw new Error(`${response.status} ${response.statusText}`);
+        if (response.ok) {
+            const data = await response.json();
+            if (data.success) {
+                // // Generate a download link and trigger the download
+                const fileName = data.fileName
+                const origin = 'labels'
+                const downloadLink = document.createElement('a');
+                downloadLink.href = urlPath + '/download/?origin=' + origin + '&fileName=' + fileName;
+                downloadLink.download = fileName;
+                downloadLink.click();
+            } else {
+                console.error('Error:', data.error);
+            }
+        } else {
+            console.error('Request failed with status:', response.status);
         }
 
-        const data = await response.json();
-        console.log('Success:', data);
     } catch (error) {
         console.error(error);
         alert(`Oops! Something went wrong.\nServer says: ${error.message}`);
@@ -68,58 +77,134 @@ const getCollections = async (museum) => {
     return collections;
 }
 
+
+// const getValidNames = async (museum, collection) => {
+//     try {
+//       const url = urlPath + '/labels?museum=' + museum + '&collection=' + collection
+//       const response = await fetch(url);
+//       if (response) {
+//       const validNames = await response.json();
+//       const validNamesArray = JSON.parse(validNames.results);
+//       return validNamesArray;
+//     } else {
+//         return false
+//     }
+//     } catch (error) {
+//       throw error;
+//     }
+//   }
+
 const getValidNames = async (museum, collection) => {
-    const url = urlPath + '/labels?museum=' + museum + '&collection=' + collection
-    console.log(url);
-    const response = await fetch(url);
-    const validNames = await response.json()
-    const validNamesArray = JSON.parse(validNames.results);
-    return validNamesArray;
-}
+    try {
+      const url = urlPath + '/labels?museum=' + museum + '&collection=' + collection
+      const response = await fetch(url);
+      if (response.ok) {
+        const validNames = await response.json();
+        const validNamesArray = JSON.parse(validNames.results);
+        return validNamesArray;
+      } else {
+        throw new Error('Server responded with status ' + response.status);
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+  
 
 
-// When somebody selct a museum -> update the collections available
-document.getElementById('museum-select').addEventListener('change',async function(){
-    const valgtMuseum = document.getElementById('museum-select').value
+// When somebody selects a collection -> get list of valid names
+document.getElementById('collection-select').addEventListener('change', async function () {
+    try {
+        const valgtSamling = document.getElementById('collection-select').value;
+        const valgtMuseum = document.getElementById('museum-select').value;
 
-        // tøm list bortsett fra første linje
-        select.options.length = 1
-        let language
-        language = sessionStorage.getItem('language')
-        if (language === "English") {
-            index = 1
-        } else {
-            index = 0
+        const validNames = await getValidNames(valgtMuseum, valgtSamling);
+
+
+        for (let i = 0; i < validNames.length; i++) {
+            const element = validNames[i];
+            selector.add({
+                value: element,
+                text: element
+            });
         }
-        // første linje
-        select.options[0].disabled = true
-        // add collections
-        getCollections(valgtMuseum).then(collections => {
-            for (let i = 0; i < collections.length; i++) {
 
-                const element = collections[i];
-                select.options[select.options.length] = new Option([element], i);   
-            }
-        })
-})
+        document.getElementById('dropdown-container').style.display = "block";
+        
+    } catch (error) {
+        document.getElementById('dropdown-container').style.display = "none";
+        document.getElementById('sorry').innerText = "Beklager, det er ingen etiketter tilgjengelig for denne samlingen. Sorry, no labels available for this collection.";
+        document.getElementById('sorry').style.display = "block";
+  
+    }
+});
 
 
-// When somebody selct a collection -> get list of valid names
-document.getElementById('collection-select').addEventListener('change',async function(){
-    const valgtSamling = document.getElementById('collection-select').value
-    const valgtMuseum = document.getElementById('museum-select').value
-    getValidNames(valgtMuseum, valgtSamling)
-    .then(validNames => {
-            for (let i = 0; i < validNames.length; i++) {
-                const element = validNames[i];
-                selector.add({
-                    value: element,
-                    text: element
-                });
-            }
-            document.getElementById('dropdown-container').style.display = "block"
-        })  
-})
+// Function for creating and populating dropdown
+async function createDropdown() {
+    const museumSelect = document.getElementById('museum-select');
+    const collectionSelect = document.getElementById('collection-select');
+  
+    museumSelect.addEventListener('change', async () => {
+      const valgtMuseum = museumSelect.value;
+      const collections = await getCollections(valgtMuseum);
+  
+      // Clear existing options in collection select and add first option
+      collectionSelect.innerHTML = '<option value="">Velg samling</option>';
+  
+      // Add collection options to the collection select
+      for (let i = 0; i < collections.length; i++) {
+        const element = collections[i];
+        const option = new Option(element, i);
+          
+        // Set the option id equal to its value
+        const optionId = element.toLowerCase().replace(/\s/g, '-');
+        option.id = optionId;
+        
+        collectionSelect.options[collectionSelect.options.length] = option;
+  
+        // Set the option value equal to its id
+        option.value = optionId;
+      }
+    });
+  
+    // // Trigger change event for museum select to update collections
+    const changeEvent = new Event('change');
+    museumSelect.dispatchEvent(changeEvent);
+  
+    // Set id and value for collection select options
+    const options = collectionSelect.querySelectorAll('option');
+    for (let i = 0; i < options.length; i++) {
+      const option = options[i];
+      const optionId = option.value; // Get the option id
+      option.id = optionId.toLowerCase().replace(/\s/g, '-'); // Set the option id and transform to lowercase and replace spaces with hyphens
+      option.value = optionId; // Set the option value to the same as the id
+    }
+  }
+  
+
+  // Function for updating default value of dropdown
+  function updateDefaultValue(selector, value) {
+   // Set default collection value and find index
+    selector.value = value.toLowerCase();
+  }
+  
+  function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+  
+
+
+window.addEventListener('DOMContentLoaded', async function() {
+    const museumSelect = document.getElementById('museum-select');
+    updateDefaultValue(museumSelect,'NHM');
+    await createDropdown();
+    await delay(1000)
+    document.getElementById('collection-select').value = 'sopp';
+    document.getElementById('collection-select').dispatchEvent(new Event('change'));
+});
+  
+
 
 // send information to server
 form.addEventListener('submit', (event) => {

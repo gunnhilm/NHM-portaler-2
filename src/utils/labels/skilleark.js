@@ -1,86 +1,26 @@
 const readline = require('readline');
 const fs = require('fs')
+const fsPromises = require('fs').promises;
 const {TemplateHandler} = require('easy-template-x')
 const path = require('path');
 
 const setCollection = (museum, samling) => {
     console.log(museum + ' and ' + samling);
-    if (samling === 'fungi') {
-        musitFile = './src/utils/labels/namesAndSynonymsFungi.json'  
-    } else if (samling === 'lichens') {
-        musitFile = './src/data/' + museum +'/namesAndSynonymsLichens.json'  
+    if (samling === 'sopp') {
+      return musitFile = './src/utils/labels/namesAndSynonymsFungi.json'  
+    } if (samling === 'lichens') {
+      return musitFile = './src/data/' + museum +'/namesAndSynonymsLichens.json'  
+    } else {
+      return false
     }
-    // console.log(musitFile);
-    return musitFile 
 }
 
-// // write skilleark
-// async function writeFile(dataArray, outFilepath, templatePath)  {
-//     console.log('writing for names'); 
-//     console.log(dataArray.length);
-//     let doc = ''
-//     const template = fs.readFileSync(templatePath);
-//     for (let i = 0; i < dataArray.length; i++) {
-//         const data = dataArray[i];          
-//         const synsArray = []
-//         for (let i = 0; i < data.Synonymer.length; i++) {
-//             const synObj = {}
-//             const element = data.Synonymer[i];
-//             synObj.Synonymer = element
-//             synsArray.push(synObj)
-//         }
-//         console.log(synsArray);
-//         const items = {
-//             'loop': [
-//                 {
-//                 validName: [
-//                     { 'Akseptert navn': data['Akseptert navn']}
-//                 ],
-//                 synonyms: synsArray,
-//                 'pagebreak': {
-//                     _type: 'rawXml',
-//                     xml: '<w:br w:type="page"/>',
-//                     replaceParagraph: false,  // Optional - should the plugin replace an entire paragraph or just the tag itself
-//                 },
-//             }]
-//         };
-//         const handler = new TemplateHandler();
-//         doc = await handler.process(template, items);
-//     }
-//     /*
-//     const items =  {
-//         'loop': [
-//             {
-//             'Akseptert navn': 'første navn',
-//             'Synonymer' : 'første synonym',
-//             'pagebreak': {
-//                     _type: 'rawXml',
-//                     xml: '<w:br w:type="page"/>',
-//                     replaceParagraph: false,  // Optional - should the plugin replace an entire paragraph or just the tag itself
-//                 },
-//             },{'Akseptert navn': 'andre navn',
-//             'Synonymer' : 'andre synonym',
-//             'pagebreak': {
-//                     _type: 'rawXml',
-//                     xml: '<w:br w:type="page"/>',
-//                     replaceParagraph: false,  // Optional - should the plugin replace an entire paragraph or just the tag itself
-//                 }
-//             }
-//         ]
-//     }
-//     */
-//     // const handler = new TemplateHandler();
-//     // doc = await handler.process(template, items);
-//     fs.writeFileSync(outFilepath, doc)
-//     return outFilepath
-//   }
 
-/*
 async function writeFile(dataArray, outFilepath, templatePath) {
     console.log('writing for names');
     console.log(dataArray.length);
   
-    const template = fs.readFileSync(templatePath);
+    const template = await fsPromises.readFile(templatePath);
     let doc = '';
     const items = { 'loop': [] };
   
@@ -116,64 +56,14 @@ async function writeFile(dataArray, outFilepath, templatePath) {
     const handler = new TemplateHandler();
     doc = await handler.process(template, items);
   
-    fs.writeFileSync(outFilepath, doc);
-    return outFilepath;
+    await fsPromises.writeFile(outFilepath, doc)
+    return outFilepath; 
   }
-*/  
-
-async function writeFile(dataArray, outFilepath, templatePath) {
-    console.log('writing for names');
-    console.log(dataArray.length);
-  
-    const template = fs.readFileSync(templatePath);
-    let doc = '';
-    const items = { 'loop': [] };
-  
-    for (let i = 0; i < dataArray.length; i++) {
-      const data = dataArray[i];
-      const synsArray = [];
-  
-      for (let j = 0; j < data.Synonymer.length; j++) {
-        const synObj = {};
-        const element = data.Synonymer[j];
-        synObj.Synonymer = element;
-        synsArray.push(synObj);
-      }
-  
-      console.log(synsArray);
-  
-      const item = {
-        validName: [
-          { 'Akseptert navn': data['Akseptert navn'] }
-        ],
-        synonyms: synsArray,
-        'pagebreak': {
-          _type: 'rawXml',
-          xml: '<w:br w:type="page"/>',
-          replaceParagraph: false,
-        },
-      };
-  
-      if (i === dataArray.length - 1) {
-        delete item.pagebreak;
-      }
-  
-      items.loop.push(item);
-  
-    }
-  
-    const handler = new TemplateHandler();
-    doc = await handler.process(template, items);
-  
-    fs.writeFileSync(outFilepath, doc);
-    return outFilepath;
-  }
-  
 
 
 const search = async (searchTerm, museum, samling) => {
     const nameFile = setCollection(museum, samling); // Assuming you have a function setCollection() to determine the filename
-    if (fs.existsSync(nameFile)) {
+    if ( fs.existsSync(nameFile)) {
         return new Promise((resolve, reject) => {
             try {
                 searchTerm = searchTerm.trim().toLowerCase();
@@ -217,8 +107,9 @@ const search = async (searchTerm, museum, samling) => {
 
 
 async function writeskilleArk(names, museum, collection) {
-    const outFilepath = path.join(__dirname, '../labels/out/skilleArk.doc');
-    const skilleArkTemplatePath = path.join(__dirname, '../labels/templates/SKILLEARK.docx');
+  const FileName = `${Date.now()}_skilleArk.doc`;
+  const outFilepath = './public/forDownloads/labels/' + FileName;
+  const skilleArkTemplatePath = path.join(__dirname, '../labels/templates/SKILLEARK.docx');
   
     try {
       const dataArray = [];
@@ -234,39 +125,62 @@ async function writeskilleArk(names, museum, collection) {
         }
       }
   
-      const labelFile = await writeFile(dataArray, outFilepath, skilleArkTemplatePath);
-      console.log('labelfile: ' + labelFile);
-  
-      return labelFile;
+      await writeFile(dataArray, outFilepath, skilleArkTemplatePath);
+      return { FileName, outFilepath };
   
     } catch (error) {
       throw error;
     }
   }
 
-
-
-function getValidNames(callback) {
+  async function getValidNames(museum, collection) {
     try {
-        const museum = 'nhm'
-        const samling = 'fungi'
-        const nameFile = setCollection(museum, samling)
-        let data = fs.readFileSync(nameFile,
-        { encoding: 'utf8', flag: 'r' });
+        const nameFile = setCollection(museum, collection)
+        if(nameFile) {
+        let data = await fsPromises.readFile(nameFile, {
+            encoding: 'utf8',
+            flag: 'r'
+        })
         data = JSON.parse(data)
         const validNames = []
 
-        for (let i = 0; i <  10; i++) {// data.length; i++) {
+        for (let i = 0; i < data.length; i++) {
             const element = data[i]["Akseptert navn"];
             validNames.push(element)
         }
-        const nameString = JSON.stringify(validNames)
-        callback(undefined, nameString)
 
+        const nameString = JSON.stringify(validNames)
+        return nameString;
+      } else {
+        return false
+      }
     } catch (error) {
-        callback(error)    
+        throw error;
     }
 }
+
+
+// async function getValidNames(callback) {
+//     try {
+//         const museum = 'nhm'
+//         const samling = 'fungi'
+//         const nameFile = setCollection(museum, samling)
+//         let data = await fsPromises.readFile(nameFile,
+//         { encoding: 'utf8', flag: 'r' });
+//         data = JSON.parse(data)
+//         const validNames = []
+
+//         for (let i = 0; i <  data.length; i++) {
+//             const element = data[i]["Akseptert navn"];
+//             validNames.push(element)
+//         }
+//         const nameString = JSON.stringify(validNames)
+//         callback(undefined, nameString)
+
+//     } catch (error) {
+//         callback(error)    
+//     }
+// }
 
 module.exports = { 
     writeskilleArk,

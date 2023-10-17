@@ -22,6 +22,7 @@ const bodyParser = require('body-parser');
 
 const app = express()
 const multer  = require('multer')
+const { error } = require('console')
 // const upload = multer()
 
 // Sikkerhets app som beskytter mot uønskede headers osv.
@@ -52,6 +53,7 @@ hbs.registerPartials(partialsPath)
 // set up static directory to serve
 app.use(express.static(publicDirectoryPath))
 app.use(express.static(publicJournalPath))
+
 
 app.get('', (req, res) => {
     if (!req.query.search) {
@@ -618,32 +620,54 @@ app.get('/checkRegion2', (req, res) => {
         }
     }
 })
-    
 
 app.get('*/labels', async (req, res) => {
     try {
         const { museum, collection } = req.query;
         if (museum && collection) {
-            console.log('returing collection list');
-            labels.getValidNames((error, results) => {
-                if (error) {
-                    console.log(error);
-                    return res.status(500).send({
-                        unparsed: error.message
-                    });
-                }
-                res.send({ results });
-            });
+            console.log('returning collection list');
+            const results = await labels.getValidNames(museum, collection);
+            if (results) {
+              res.send({ results });
+            } else {
+              throw new Error("No data available"); // create a new Error object with an error message
+            }
         } else {
             res.render('labels');
         }
     } catch (error) {
         console.log('Error occurred: ' + error);
-        return res.status(500).send({
+        res.status(500).send({
             unparsed: error.toString()
         });
     }
 });
+
+
+// app.get('*/labels', async (req, res) => {
+//     try {
+//         const { museum, collection } = req.query;
+//         if (museum && collection) {
+//             console.log('returing collection list');
+//             labels.getValidNames((error, results) => {
+//                 if (error) {
+//                     console.log(error);
+//                     return res.status(500).send({
+//                         unparsed: error.message
+//                     });
+//                 }
+//                 res.send({ results });
+//             });
+//         } else {
+//             res.render('labels');
+//         }
+//     } catch (error) {
+//         console.log('Error occurred: ' + error);
+//         return res.status(500).send({
+//             unparsed: error.toString()
+//         });
+//     }
+// });
 
 
 function validateRequest(req, res, next) {
@@ -660,14 +684,7 @@ app.post('*/labels', validateRequest, async (req, res) => {
     try {
         const { museum, collection, search } = req.body;
         const results = await labels.writeskilleArk(search, museum, collection);
-
-        console.log('File written successfully');
-        res.download(results, (error) => {
-            if (error) {
-                console.log('Error sending file:', error);
-                res.status(500).json({ error: 'Error sending file' });
-            }
-        });
+        res.json({ success: true, downloadLink: results.outFilepath, fileName: results.FileName });
     } catch (error) {
         console.error('Error occurred:', error);
         res.status(500).json({ error: 'Internal server error' });
@@ -676,7 +693,25 @@ app.post('*/labels', validateRequest, async (req, res) => {
 
 
 
+// Serve downloadable file with logging
+app.get('*/download', (req, res) => {
+    const {origin , fileName} = req.query;
+   if (origin === 'labels')
+   {
+        const filePath = path.join( './public/forDownloads/labels', fileName); 
+
+        res.download(filePath, (error) => {
+            if (error) {
+                console.log('Error sending file:', error);
+                res.status(500).json({ error: 'Error sending file' });
+            }
+        });
+    }
+});
+
 app.get('*', (req, res) => {
+    console.log('from 404: ');
+    console.log(req.params);
     res.render('404', {})
 })
 
