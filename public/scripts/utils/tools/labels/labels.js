@@ -130,6 +130,7 @@ document.getElementById('collection-select').addEventListener('change', async fu
         }
 
         document.getElementById('dropdown-container').style.display = "block";
+        document.getElementById('sorry').style.display = "none";
         
     } catch (error) {
         document.getElementById('dropdown-container').style.display = "none";
