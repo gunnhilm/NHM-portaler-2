@@ -229,6 +229,7 @@ function fixScientificName(scientificName) {
 
 const getArtsObsData = async (artsObsNumber, MUSITNo)=> {
     const valgtSamling = document.getElementById('collection-select').value
+    console.log(artsObsNumber)
     // 'https://api.gbif.org/v1/occurrence/search?dataset_Key=b124e1e0-4755-430f-9eab-894f25a9b59c&catalogNumber=21957795'
     let url = 'https://api.gbif.org/v1/occurrence/search?dataset_Key=b124e1e0-4755-430f-9eab-894f25a9b59c&catalogNumber=' + artsObsNumber; 
     let obj = null;
@@ -241,7 +242,8 @@ const getArtsObsData = async (artsObsNumber, MUSITNo)=> {
     let scientificName = ''
     const kommuneObj = await getKommuneData()
     try {
-    obj = await (await fetch(url)).json();
+        obj = await (await fetch(url)).json();
+        console.log(obj)
         resultObj = obj.results[0]
         obj = null
     } catch (error) {
@@ -253,6 +255,7 @@ const getArtsObsData = async (artsObsNumber, MUSITNo)=> {
 
     try{
         // fix ArtsObs entries
+        console.log(resultObj)
         let Koordinater = resultObj.decimalLatitude + 'N ' + resultObj.decimalLongitude + 'E'
         resultObj.latLongCoords = Koordinater
 

@@ -33,7 +33,7 @@ const getOrganismGroup = () => {
 const loadStringObject = () => {
     let objectJSON = ''
     objectJSON = sessionStorage.getItem('string')
-        
+    console.log(objectJSON)
     //} else if (sessionStorage.getItem('databaseSearch') === 'corema') {
     //    objectJSON = sessionStorage.getItem('coremaString')
     //}
@@ -95,9 +95,11 @@ async  function getspecimenData (allObject) {
         let specimenObject = {}
         // console.log(allObject[0])
         try {
+            console.log(allObject)
             if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
                 specimenObject = allObject.find(x => x.catalogNumber.replace(/[A-Z]/,'').trim() === id)
             }
+           
              else if (allObject[0].catalogNumber.includes('/')) {
                 console.log(id)
                 specimenObject = allObject.find(x => x.catalogNumber.substring(0,x.catalogNumber.indexOf('/')) === id.substring(0,id.indexOf('/')))
@@ -984,7 +986,7 @@ async function showData (specimenObject, orgGroup, overviewObject) {
         if (orgGroup === 'botanikk' || orgGroup === 'mykologi' || orgGroup === 'zoologi') {
             let nameArray = italicSpeciesname(specimenObject.scientificName.replace(/"/g, ''))
             document.querySelector("#species-name").innerHTML = `<span style=font-style:italic>${nameArray[0]}</span>` + ' ' + `<span>${nameArray[1]}</span>`
-            document.querySelector("#unc").innerHTML = `<span>${specimenObject.identificationRemarks}</span>`
+            document.querySelector("#unc").innerHTML = `<span>${specimenObject.identificationQualifier}</span>`
             document.querySelector("#coll-date").innerHTML = `<span>${specimenObject.eventDate}</span>`
             document.querySelector("#coll").innerHTML = `<span>${specimenObject.recordedBy}</span>`
             document.querySelector("#collNo").innerHTML = collNo
@@ -1179,6 +1181,8 @@ function makeTable(specimenObject){
 
 
 async function main () {
+   
+
     // add isNew to url if opened in new tab
     if (!sessionStorage.getItem('chosenCollection')) {
         location.replace(`${window.location.href}&isNew=yes`)

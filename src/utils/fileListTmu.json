@@ -36,6 +36,15 @@
 },
 {
     "source": "musit",
+    "orgGroup": "botanikk",
+    "name": "alge",
+    "zipFileName": "alge_trom",
+    "mediaFile": "_media",
+    "occurrenceFileSuffix": "_occurrence.txt", 
+    "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/gz/alge_trom.gz"
+},
+{
+    "source": "musit",
     "orgGroup": "mykologi",
     "name": "sopp",
     "zipFileName": "fungus_trom",

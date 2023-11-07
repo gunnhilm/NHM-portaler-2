@@ -1,4 +1,3 @@
-console.log(sessionStorage.getItem('string'))
 // const urlParamsTop = new URLSearchParams(window.location.search)
 let bcColl = urlParamsTop.get("coll")
 console.log(bcColl)
@@ -39,6 +38,8 @@ function addRow(table) {
     }
 }
 
+// data kommer fra fastafil fra bold (og har ikke med de uten sekvens)
+// validationObject kommer fra excel-oversiktsfil
 const fillTableSpecies = (data, validationObject) => {
     addRow(countyTable)
     cell1.innerHTML = ''
@@ -57,10 +58,10 @@ const fillTableSpecies = (data, validationObject) => {
         cell5.innerHTML = 'Validation method'
         cell5.style = "padding-right:20px"
         cell5.style.fontWeight = 'bold'
-        cell6.innerHTML = 'Validator'
+        cell6.innerHTML = 'Validator/expert'
         cell6.style.fontWeight = 'bold'
-        cell7.innerHTML = 'Expert'
-        cell7.style.fontWeight = 'bold'
+        // cell7.innerHTML = 'Expert'
+        // cell7.style.fontWeight = 'bold'
     }
     
 
@@ -71,24 +72,23 @@ const fillTableSpecies = (data, validationObject) => {
        
         let regno
         if (data.regnos[i].includes('NOMAM')) {regno = data.regnos2[i]}
-        else {regno = data.regnos[i]}
-        
+        else if (data.regnos[i].includes('DFL')) { 
+            // bcColl = "dna_fungi_lichens"
+            const isSame = (element) => element === data.processIDs[i].substring(1).toString()
+            index = validationObject.processID.findIndex(isSame)
+            regno = validationObject.musitRegno[index]
+        } else {regno = data.regnos[i]}
         objButton.innerHTML = regno
+        
         if (data.regnos[i].includes('_')) {
             regno = data.regnos[i].substr(data.regnos[i].lastIndexOf('_')+1) + '/1'
-        } else {
+        } else  {
             regno=data.regnos[i].substr(data.regnos[i].lastIndexOf('-')+1)
         }
-        // denne må fikses. når den er med blir kandidat-fila for sopp feil
-        // når den ikke er med fungerer trolig ikke lenke til ... O-dFL...
-        // if 
-        // (data.regnos[i].includes('DFL')) {
-        //     bcColl = "dna_fungi_lichens"
-        // } 
-        //  else 
          if (bcColl === "herptiles") {
             bcColl = "dna_fish_herptiles"
         }
+
         if (data.regnos[i].includes('TEB')) {
             console.log('hit')
             objButton.style = "background-color:white; border:none"
@@ -107,12 +107,14 @@ const fillTableSpecies = (data, validationObject) => {
             if (data.regnos[i].includes('TROM')) {
                 museum = "tmu"
             }
-            
+           
+            if (data.regnos[i].includes('DFL')) { regno = validationObject.musitRegno[index].substr(validationObject.musitRegno[index].lastIndexOf('-')+1)}
             objButton.style = "background-color:white; border:none; color:blue; text-decoration:underline"
             objButton.onclick = function() {
                 museumURLPath = urlPath + "/" + museum
                 window.open(href=`${museumURLPath}/object/?id=${regno}&samling=${bcColl}&museum=${museum}&lang=${sessionStorage.getItem('language')}&isNew=yes`)
             }
+            // if (bcColl === "dna_fungi_lichens") {bcColl = "sopp"}
         }
         
         cell1.appendChild(objButton)
@@ -150,10 +152,10 @@ const fillTableSpecies = (data, validationObject) => {
             if (validationObject.validator[index]) {
                 cell6.innerHTML = validationObject.validator[index]
             }
-            cell6.style = "padding-right:10px"
-            if (validationObject.expert[index]) {
-                cell7.innerHTML = validationObject.expert[index]
-            }
+            // cell6.style = "padding-right:10px"
+            // if (validationObject.expert[index]) {
+            //     cell7.innerHTML = validationObject.expert[index]
+            // }
             
         }
         
@@ -239,12 +241,13 @@ async function main() {
     let overviewObject = fungiOverview.find((el => {
         return el.species === relSpecies.replace("_"," ")
     }))
-    console.log(overviewObject)
     fillTableSpecies(speciesObject, overviewObject)
     let candidates
+    const urlParams = new URLSearchParams(window.location.search)
     
-    if (bcColl === "sopp") {
+    if (urlParams.get("coll") === "sopp") {
         candidates = await getCandidates()
+        console.log(overviewObject)
         fillTableAwaiting(overviewObject)
         fillTableFailed(overviewObject)
     }

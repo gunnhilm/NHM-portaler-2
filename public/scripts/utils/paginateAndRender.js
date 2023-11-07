@@ -185,7 +185,7 @@ const resultTable = (subMusitData, musitData) => {
                     let nameArray = italicSpeciesname(subMusitData[i].scientificName)
                     cell2.innerHTML = `<span style=font-style:italic>${nameArray[0].replace(/\"/g,'')}</span>` + ' ' + `<span>${nameArray[1].replace(/\"/g,'')}</span>`
                 }    
-                cell3.innerHTML = subMusitData[i].identificationRemarks
+                cell3.innerHTML = subMusitData[i].identificationQualifier
                 // to avoid lots of text in collector-field: replace more than two names with et al. 
                 // when  collector is written "lastName, firstName", only first name is included, followed by et al. if more names
                 let recByArray = subMusitData[i].recordedBy.split(' ')
@@ -278,7 +278,7 @@ const resultTable = (subMusitData, musitData) => {
             }
           
         }
-        if (!subMusitData[0].hasOwnProperty('identificationRemarks')) {
+        if (!subMusitData[0].hasOwnProperty('identificationQualifier')) {
             hide_column(2)
         }
 

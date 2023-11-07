@@ -213,7 +213,7 @@ const textItems = {
     yes: ['Ja','Yes'],
     no: ['Nei','No'],
     validationMethod: ['Valideringsmetode:','Validation method:'],
-    expert: ['Validator:','Validator:'],
+    expert: ['Validator/Ekspert:','Validator/Expert:'],
     coordPlaceholder: ['&lt;Ingen koordinater&gt;', '&lt;No coordinates&gt;'],
     objError: ['Finner ikke objekt - noe er feil. Kontakt ev. nhm-samlingsportaler@nhm.uio.no eller aktuell samling.', 
     'Cannot find object - something went wrong. Contact nhm-samlingsportaler@nhm.uio.no or relevant collection.'],

@@ -44,8 +44,8 @@ async  function setSpecimenData () {
                     throw 'noe går galt med søk, respons ikke ok'  
                 } else {
                     try {
+
                         response.text().then((data) => {
-                            console.log(data)
                             if(data.error) {
                                 errorMessage.innerHTML = textItems.serverError[index]
                                 return console.log(data.error)
