@@ -69,6 +69,26 @@ const getFileList = async () => {
     })
 }
 
+const getOrganismGroups = async () => {
+    return new Promise((resolve,reject) => {
+        try {
+            const fileList = sessionStorage.getItem('fileList')
+            let tempOrgGroups = []
+            const JSONdata = JSON.parse(fileList)
+            JSONdata.forEach(el => {
+                if (el.orgGroup) {tempOrgGroups.push(el.orgGroup)}
+            })
+            //remove duplicates:
+            let orgGroups = [...new Set(tempOrgGroups)]
+            sessionStorage.setItem('organismGroups', orgGroups)
+            resolve(true)
+        } catch (error) {
+            console.log(error)
+            reject(error)
+        }
+    })
+}
+    
 // empties session’s search-result (sessionStorage), removes elements from page, resets pagination variables
 // calls emptyTable() in resultElementsOnOff.js
 //      emptyResultElements() in resultElementsOnOff.js
@@ -820,16 +840,16 @@ window.onload = function () {
 async function main () {
     await getFileList()
     const fileList = sessionStorage.getItem('fileList')
-    // put in function
-    let tempOrgGroups = []
-    const JSONdata = JSON.parse(fileList)
-    JSONdata.forEach(el => {
-        if (el.orgGroup) {tempOrgGroups.push(el.orgGroup)}
-    })
-    //remove duplicates:
-    let orgGroups = [...new Set(tempOrgGroups)]
-    sessionStorage.setItem('organismGroups', orgGroups)
-    
+    await getOrganismGroups()
+    // let tempOrgGroups = []
+    // const JSONdata = JSON.parse(fileList)
+    // JSONdata.forEach(el => {
+    //     if (el.orgGroup) {tempOrgGroups.push(el.orgGroup)}
+    // })
+    // //remove duplicates:
+    // let orgGroups = [...new Set(tempOrgGroups)]
+    // console.log(orgGroups)
+    // sessionStorage.setItem('organismGroups', orgGroups)
     makeButtons()
 
 }
