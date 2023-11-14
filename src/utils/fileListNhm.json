@@ -18,6 +18,14 @@
     }
 },
 {
+    "source": "archive",
+    "archiveGroups": ["archive", "fieldNotes", "illustrations"],
+    "archiveFiles":{
+        "archive": "archive",
+        "illustrations": "illustrations" 
+    }
+},
+{
     "source": "musit",
     "orgGroup": "botanikk",
     "name": "alger",

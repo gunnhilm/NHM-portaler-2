@@ -9,7 +9,7 @@ const fileListNbh = require('./fileListNbh')
 
 // logging av søkeord 
 // get the Console class
-const { Console } = require("console");
+const { Console, log } = require("console");
 
 // formate date
 const getDate = () => {
@@ -115,7 +115,12 @@ const setCollection = (museum, samling) => {
         musitFile = './src/data/' + museum +'/palJournaler.txt'  
     } else if (samling === 'botJournaler') {
         musitFile = './src/data/' + museum +'/botJournaler.txt'  
+    } else if (samling === 'archive') {
+        musitFile = './src/data/' + museum +'/archive.txt'  
+    }  else if (samling === 'illustrations') {
+        musitFile = './src/data/' + museum +'/illustrations.txt'  
     } 
+
     
     else {
         fileList.forEach(element => {

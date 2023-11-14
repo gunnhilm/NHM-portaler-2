@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+    <title>Historical archive</title>  
+    <link rel="stylesheet" href="/museum/styles/styles.css">
+    <link rel="stylesheet" href="/museum/styles/styles_NHM.css">
+    </head>
+  
+    <body>
+        <div class="wrapper">
+            {{>header}}
+            <div class="content">
+                <br><br><br><br>
+                <p class="page-header" id="header-archive-page"></p>
+                <p class="page-text" id="text-archive-page"></p>
+                <table>
+                    <tr>
+                        <td id="archive-type">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <form>
+                            <input id="archive-search-text" type="text" class="input" style="height:30px;  border-radius:4px; border-width: 1px" size="80">
+                            <button class="blue-button" id="search-button" style="margin-left:10px">Søk</button>
+                        </form>
+                        </td>
+                    </tr>
+                    <tr>
+                        
+                    </tr>
+                </table>
+                <table >
+                    <tr>
+                        <br>
+                        <td style="align:left" id="head-nb-hits"></td>
+                        <td style="align:left" id="nb-hits" ></td>
+                        <br>
+                    </tr>
+                    
+                </table>
+                <div id="container"><br></div>
+            </div>
+            {{>footer}}    
+        </div>
+        <script src="/museum/scripts/utils/papaparse/papaparse.min.js"></script>
+        <script src="/museum/scripts/utils/textItems.js"></script>
+        <script src="/museum/scripts/utils/renderLangHeader.js"></script>
+        <script src="/museum/scripts/utils/renderLang.js"></script>
+        <link id="museumStyle" rel="stylesheet" type="text/css" href= "">
+        <script src="/museum/scripts/utils/showCorrectMuseum.js"></script>
+        <script src="/museum/scripts/utils/tools/archive/archive.js"></script>
+       
+    </body>
+</html>

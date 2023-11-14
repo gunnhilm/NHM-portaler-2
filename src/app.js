@@ -22,7 +22,7 @@ const bodyParser = require('body-parser');
 
 const app = express()
 const multer  = require('multer')
-const { error } = require('console')
+const { error, log } = require('console')
 // const upload = multer()
 
 // Sikkerhets app som beskytter mot uønskede headers osv.
@@ -331,12 +331,6 @@ app.get('*/showStat', (req, res) => {
     }
 })
  
-// journal siden
-app.get('/nhm/journaler', (req, res) => {
-    res.render('journaler', {
-     })
- })
-
  app.get('*/loans', (req, res) => {
         res.render('loans', {})
  })
@@ -644,32 +638,6 @@ app.get('*/labels', async (req, res) => {
 });
 
 
-// app.get('*/labels', async (req, res) => {
-//     try {
-//         const { museum, collection } = req.query;
-//         if (museum && collection) {
-//             console.log('returing collection list');
-//             labels.getValidNames((error, results) => {
-//                 if (error) {
-//                     console.log(error);
-//                     return res.status(500).send({
-//                         unparsed: error.message
-//                     });
-//                 }
-//                 res.send({ results });
-//             });
-//         } else {
-//             res.render('labels');
-//         }
-//     } catch (error) {
-//         console.log('Error occurred: ' + error);
-//         return res.status(500).send({
-//             unparsed: error.toString()
-//         });
-//     }
-// });
-
-
 function validateRequest(req, res, next) {
     const { museum, collection, search } = req.body;
 
@@ -708,6 +676,28 @@ app.get('*/download', (req, res) => {
         });
     }
 });
+
+// journal siden
+app.get('/nhm/journaler', (req, res) => {
+    res.render('journaler', {
+     })
+ })
+
+ // arkivsiden
+ app.get('*/archive', (req, res) => {
+    console.log('vi viser');
+    const pageID = req.query.pageID;
+
+    console.log(pageID);
+    if (pageID) {
+        console.log('treffer');
+        res.render('item-page', { pageID: pageID });
+    } else {
+        res.render('archive', {});
+    }
+});
+
+
 
 app.get('*', (req, res) => {
     console.log('from 404: ');

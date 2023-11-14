@@ -244,7 +244,7 @@ const doJournalSearch = (limit = 2000) => {
                 }
             }
         })
-        updateFooter()
+        updateFooter(museum, journalCollection)
 } 
 
 
@@ -276,8 +276,10 @@ function sortTable() {
 
 // sends request to server for date of last change of the journal-datafile
 // is called in this file (journaler.js)
-const updateFooter = () => {
-        const url = urlPath + '/footer-date/?&samling=journaler' 
+const updateFooter = (museum, journalCollection) => {
+
+        const url = urlPath + '/footer-date/?&samling=' + journalCollection + '&museum=' + museum  
+        console.log(url);
         fetch(url).then((response) => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');

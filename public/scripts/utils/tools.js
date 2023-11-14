@@ -24,6 +24,7 @@ document.querySelector('#bc-lep-link').href = museumURLPath + '/DNAbarcodes/?mus
 document.querySelector('#bc-herptiles-link').href = museumURLPath + '/DNAbarcodes/?museum=nhm&coll=herptiles'
 document.querySelector('#bc-birds-link').href = museumURLPath + '/DNAbarcodesBirds'
 document.querySelector('#loan-info-link').href = museumURLPath + '/loanInfo'
+document.querySelector('#make-label-link').href = museumURLPath + '/labels'
 
 console.log(sessionStorage.getItem('string'))
 

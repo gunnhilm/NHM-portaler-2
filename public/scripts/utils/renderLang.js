@@ -111,7 +111,7 @@ function renderText (lang) {
     }
 
     // index page
-    if (!location.href.includes('labels') & !location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler')& !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools') & !location.href.includes('checkCoord') & !location.href.includes('dataError') & !location.href.includes('barcod')& !location.href.includes('loanInfo')) {
+    if (!location.href.includes('archive') & !location.href.includes('labels') & !location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler')& !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools') & !location.href.includes('checkCoord') & !location.href.includes('dataError') & !location.href.includes('barcod')& !location.href.includes('loanInfo')) {
 
         //document.querySelector('#vennligst').innerHTML = textItems.vennligst[index] 
         if(document.querySelector('#header-advSearch-page')) { document.querySelector('#header-advSearch-page').innerHTML = textItems.headerAdvSearchPage[index]}
@@ -216,6 +216,8 @@ function renderText (lang) {
         document.querySelector('#bc-birds-link').innerHTML = textItems.bcFugler[index]
         document.querySelector('#loan-info-link').innerHTML = textItems.loanInfoLink[index]
         document.querySelector('#loan-info-text').innerHTML = textItems.loanInfoText[index]
+        document.querySelector('#make-label-link').innerHTML = textItems.makeLabelLink[index]
+        document.querySelector('#make-label-text').innerHTML = textItems.makeLabeltext[index]
         //document.querySelector('#coordinate-link').innerHTML = textItems.coordinateLink[index]
         
         if (window.location.href.includes('/tmu') || window.location.href.includes('/nbh') || window.location.href.includes('/um')) {
