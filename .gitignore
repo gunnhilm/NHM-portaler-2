@@ -1,7 +1,6 @@
 node_modules/
 data/
 log/
-forDownloads/
 !data.txt
 *.gz
 .eslintrc.js
