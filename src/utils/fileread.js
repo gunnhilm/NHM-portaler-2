@@ -110,15 +110,15 @@ const setCollection = (museum, samling) => {
     let musitFile = ''
     const pathToMuseum = './src/data/' + museum + '/'
     if (samling === 'zooJournaler') {
-        musitFile = './src/data/' + museum +'/zooJournaler.txt'  
+        musitFile = './src/data/' + museum +'/archive/zooJournaler.txt'  
     } else if (samling === 'palJournaler') {
-        musitFile = './src/data/' + museum +'/palJournaler.txt'  
+        musitFile = './src/data/' + museum +'/archive/palJournaler.txt'  
     } else if (samling === 'botJournaler') {
-        musitFile = './src/data/' + museum +'/botJournaler.txt'  
+        musitFile = './src/data/' + museum +'/archive/botJournaler.txt'  
     } else if (samling === 'archive') {
-        musitFile = './src/data/' + museum +'/archive.txt'  
+        musitFile = './src/data/' + museum +'/archive/archive.txt'  
     }  else if (samling === 'illustrations') {
-        musitFile = './src/data/' + museum +'/illustrations.txt'  
+        musitFile = './src/data/' + museum +'/archive/illustrations.txt'  
     } 
 
     

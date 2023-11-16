@@ -10,7 +10,7 @@
 },
 {
     "source": "journals",
-    "journalGroups": ["zoologi", "paleontologi"],
+    "journalGroups": ["zoologi", "paleontologi", "botanikk"],
     "journalFiles":{
         "zoologi": "zooJournaler",
         "paleontologi": "palJournaler",
@@ -19,7 +19,7 @@
 },
 {
     "source": "archive",
-    "archiveGroups": ["archive", "fieldNotes", "illustrations"],
+    "archiveGroups": ["archive", "fieldNotes", "illustrations", "journals"],
     "archiveFiles":{
         "archive": "archive",
         "illustrations": "illustrations" 

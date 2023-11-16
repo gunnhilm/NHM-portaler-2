@@ -45,6 +45,7 @@ function addTextInButtons(a) {
     if (a == 'archive') {return textItems.archive[index]}
     else if (a == 'fieldNotes') {return textItems.fieldNotes[index]}
     else if (a == 'illustrations') {return textItems.illustrations[index]}
+    else if (a == 'journals') {return textItems.journals[index]}
 }
 
 function removeResults() {
@@ -58,52 +59,68 @@ function removeResults() {
     }
 
 }
-// buttons for the different types of archives
-function makeButtons() {
-    const buttonArray = []
-    let archiveTypes = []
-    let archiveFiles = []
-    let fileList = sessionStorage.getItem('fileList').split(',')
-    fileList = JSON.parse(fileList)
-    console.log(fileList);
-    for (let i = 0; i < fileList.length; i++) {
-            if(fileList[i].source === 'archive') {
-            archiveTypes = fileList[i].archiveGroups;
-            archiveFiles = fileList[i].archiveFiles
-        }
-        
+async function makeButtons() {
+  const buttonArray = [];
+  let archiveTypes = [];
+  let archiveFiles = [];
+  await getFileList();
+  let fileList = JSON.parse(sessionStorage.getItem('fileList'));
+  
+  for (let i = 0; i < fileList.length; i++) {
+    if (fileList[i].source === 'archive') {
+      archiveTypes = fileList[i].archiveGroups;
+      archiveFiles = fileList[i].archiveFiles;
     }
-    archiveTypes.forEach(el => {
-        button = document.createElement("button")
-        button.innerHTML = addTextInButtons(el)
-        button.id = el
-        button.className = "white-button"
-        document.getElementById("archive-type").appendChild(button)
-        buttonArray.push(button)   
-    })
-    buttonArray.forEach(el => {
-        el.addEventListener('click', (e) => {
-            removeResults()
-            buttonArray.forEach(el => {
-                el.className = "white-button"
-            })
-            
- 
-            for (const [key, value] of Object.entries(archiveFiles)) {
-               
-                if(el.id === key) { 
-                    archiveCollection = value
-                    console.log(archiveCollection);
-                    el.className = "blue-button" 
-                    errorMessage.innerText = "" // fjern feilmeldinger
-                    doarchiveSearch(2000)
-                }
-            }
-            e.preventDefault()
-        })
-    })
+  }
+  
+  const archiveTypeContainer = document.getElementById("archive-type");
+  
+  archiveTypes.forEach(el => {
+    const button = document.createElement("button");
+    button.innerHTML = addTextInButtons(el);
+    button.id = el;
+    button.className = "white-button";
+    archiveTypeContainer.appendChild(button);
+    buttonArray.push(button);
+  });
+  
+  buttonArray.forEach(el => {
+    el.addEventListener('click', (e) => {
+      removeResults();
+      buttonArray.forEach(button => {
+        button.className = "white-button";
+      });
+      
+      for (const [key, value] of Object.entries(archiveFiles)) {  
+        if (el.id === 'journals') { 
+          archiveCollection = value;
+          console.log(archiveCollection);
+          el.className = "blue-button";
+          errorMessage.innerText = ""; // remove error messages
+          
+          // Save the button ID to sessionStorage
+          sessionStorage.setItem('buttonID', el.id);
+          
+          const museum = getCurrentMuseum();
+          const url = `${urlPath}/${museum}/journaler`;
+          window.open(url, '_self');
+        } else if (el.id === key) { 
+          archiveCollection = value;
+          console.log(archiveCollection);
+          el.className = "blue-button";
+          errorMessage.innerText = ""; // remove error messages
+          
+          // Save the button ID to sessionStorage
+          sessionStorage.setItem('buttonID', el.id);
+          
+          doarchiveSearch(2000);
+        }
+      }
+      
+      e.preventDefault();
+    });
+  });
 }
-
 
 
 // resultattabell
@@ -111,8 +128,9 @@ function makeButtons() {
 // creates the headers in the table
 // in: table (html-table, to show on the page)
 // in: keys (array?, source of header titles)
+
 // is called in archiveResultTable(..)
-const archiveHeaderNamesToShow = ['Løpenr', 'Tekst på beholder', 'Indeks', 'Årstall/periode', 'Hvilket museum?', 'Person', 'PersonID (wikidata)', 'FotoID', 'Kommentarer']; // Define the headers to show
+const archiveHeaderNamesToShow = ['Regnr', 'Tekst på beholder', 'Indeks', 'Årstall/periode', 'Hvilket museum?', 'Person', 'PersonID (wikidata)', 'FotoID', 'Kommentarer']; // Define the headers to show
 const illustrationHeaderNamesToShow = ['Regnr', 'Comment', 'Størrelse', 'Figurnavn', 'Artsnavn (Latin)', 'Artsnavn (norsk)', 'Illustratør', 'Kilde', 'Copyright', 'Lokasjon disk']
 
 
@@ -144,7 +162,9 @@ const createArchiveTableAndFillIt = (data, archiveCollection) => {
       if (i === 0) {
         addHeaders(table, headerNamesToShow);
       }
-      const url = `${urlPath}/archive?pageID=`;
+      const museum = getCurrentMuseum()
+      const url = `${urlPath}/${museum}/archive?pageID=`;
+      const documentType = sessionStorage.getItem("buttonID")
       const row = table.insertRow();
       Object.entries(child).forEach(([key, value], index) => {
         if (headerNamesToShow.includes(key)) {
@@ -159,10 +179,9 @@ const createArchiveTableAndFillIt = (data, archiveCollection) => {
             tableCell.appendChild(document.createTextNode(value));
             tableCell.className = 'nowrap';
           } else if (key.includes('Regnr')) {
-            value = `<a href="${url}${value}">${value}</a>`;
-
+            value = `<a href="${url}${value}&documentType=${documentType}">${value}</a>`;
             tableCell.innerHTML = value;
-          } else {
+        } else {
             if (value.length > 500) {
                 value = value.substring(0, 500) + '[...]';
               }
@@ -174,9 +193,6 @@ const createArchiveTableAndFillIt = (data, archiveCollection) => {
   
     document.getElementById('container').appendChild(table);
   };
-
-
-
 
 
 // performs search and fetches data
@@ -224,6 +240,8 @@ const doarchiveSearch = async (limit = 2000) => {
       }
   
       updateFooter(museum, archiveCollection);
+      
+
     } catch (error) {
       console.error(error);
       errorMessage.innerText = textItems.serverError[index];
@@ -255,6 +273,10 @@ function sortTable() {
             .forEach(tr => table.appendChild(tr) );
     })));
 }
+
+
+
+
 
 
 // sends request to server for date of last change of the archive-datafile

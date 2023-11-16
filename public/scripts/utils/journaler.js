@@ -29,6 +29,7 @@ const getFileList = async () => {
                 try {
                     response.text().then((data) => {
                         JSONdata = JSON.parse(data)
+                        console.log(JSONdata);
                         sessionStorage.setItem('fileList',data)
                         resolve(true)
                     })
@@ -158,17 +159,18 @@ const journalResultTable = (children) => {
             
             if (index < columnsToShow) {
                 const cell = row.insertCell() 
-                //if(k.includes('FlipBook')) {
-                if (index === 0) {
-                    // child[k] = '<a href ="https://data.gbif.no/ggbn/flipbook' + child[k] + '">FlipBook</a>'
-                    child[k] = '<a href ="https://samlingsportal.nhm.uio.no/journaler/nhm/' + child[k] + '">FlipBook</a>'
-                    cell.appendChild(document.createTextNode(''));
-                    cell.innerHTML = child[k] 
+                if (k.startsWith('FlipBook')) {
+                    if (child[k]) {
+                        child[k] = '<a href ="https://samlingsportal.nhm.uio.no/journaler/nhm/' + child[k] + '">FlipBook</a>'
+                        cell.appendChild(document.createTextNode(''));
+                        cell.innerHTML = child[k] 
+                    }
                 } else if (k.startsWith('PDF')) {
-                    // child[k] = '<a href ="https://data.gbif.no/ggbn/flipbook' + child[k] + '"> PDF</a>'
-                    child[k] = '<a href ="https://samlingsportal.nhm.uio.no/journaler/nhm/' + child[k] + '"> PDF</a>'
-                    cell.appendChild(document.createTextNode(''));
-                    cell.innerHTML = child[k] 
+                    if (child[k]) {
+                        child[k] = '<a href ="https://samlingsportal.nhm.uio.no/journaler/nhm/' + child[k] + '"> PDF</a>'
+                        cell.appendChild(document.createTextNode(''));
+                        cell.innerHTML = child[k] 
+                    }
                 } else  if (k.includes('NHM ID')) {
                     cell.appendChild(document.createTextNode(child[k]))
                     cell.className = 'nowrap'

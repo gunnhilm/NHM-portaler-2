@@ -297,7 +297,7 @@ const textItems = {
     archive: ['Arkiv', 'Archive'],
     fieldNotes: ['Dagbøker', 'Field notes'],
     illustrations: ['Illustrasjoner', 'Illustrations'],
-
+    journals: ['Journaler', 'Journals'],
 
     // getDOI page
     getDOIHeader: ['Få DOI fra GBIF basert på en liste med museumsnumre','Get DOI from GBIF from a list of museum numbers'],

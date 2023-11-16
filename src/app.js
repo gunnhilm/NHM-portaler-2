@@ -10,6 +10,7 @@ const footerDate = require('./utils/footerDate')
 const loan = require('./utils/loans/loans') 
 const LoanInfo =  require('./utils/loans/loanInfo/loanInfoServer') 
 const labels = require('./utils/labels/skilleark')
+const archive = require('./utils/archive/archive_bck')
 const hbs = require('hbs')
 const helmet = require('helmet')
 const { response } = require('express')
@@ -685,17 +686,67 @@ app.get('/nhm/journaler', (req, res) => {
 
  // arkivsiden
  app.get('*/archive', (req, res) => {
-    console.log('vi viser');
     const pageID = req.query.pageID;
-
-    console.log(pageID);
     if (pageID) {
-        console.log('treffer');
         res.render('item-page', { pageID: pageID });
     } else {
         res.render('archive', {});
     }
 });
+// archive
+// item-page
+app.post('*/item-page/check-files', async (req, res) => {
+    const { folderName, fileName } = req.body;
+    const { filePath, matchingFiles } = await archive.checkFilesStartsWith(folderName, fileName);
+    console.log('app');
+    console.log(filePath);
+    console.log(matchingFiles);
+    // res.send({ folderPath, matchingFiles });
+    res.status(200).json({ filePath, matchingFiles });
+  });
+
+
+// show images or files
+app.get('*/archive/:folder/:filename', (req, res) => {
+
+    const { folder, filename } = req.params;
+    const filePath = path.join(__dirname, '..', '..', 'archive', folder, filename);
+    console.log(filePath);
+  
+    fs.readFile(filePath, (err, data) => {
+      if (err) {
+        console.log(`Error reading file: ${err}`);
+        res.status(404).end();
+      } else {
+        const fileExtension = path.extname(filename);
+        let contentType = '';
+  
+        switch (fileExtension) {
+          case '.jpg':
+          case '.jpeg':
+            contentType = 'image/jpeg';
+            break;
+          case '.png':
+            contentType = 'image/png';
+            break;
+          case '.pdf':
+            contentType = 'application/pdf';
+            break;
+          case '.tif':
+          case '.tiff':
+            contentType = 'image/tiff';
+            break;
+          default:
+            console.log(`Invalid file format: ${fileExtension}`);
+            res.status(400).end();
+            return;
+        }
+  
+        res.contentType(contentType);
+        res.send(data);
+      }
+    });
+  });
 
 
 

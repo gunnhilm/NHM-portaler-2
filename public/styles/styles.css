@@ -751,4 +751,44 @@ th {
     padding:5px;
 }
 
+/* item-page for archive*/
 
+table.item-page {
+    width: 50%;
+    border-collapse: collapse;
+  }
+  #results-container {
+    max-width: 100%;
+  }
+  
+  table.item-page th,
+  table.item-page td {
+    padding: 0.5em;
+    text-align: left;
+    vertical-align: middle;
+  }
+  
+  table.item-page th:first-child,
+  table.item-page td:first-child {
+    font-weight: bold;
+  }
+  
+  table.item-page tr:nth-child(even) {
+    background-color: #eee;
+  }
+  
+  table.item-page tr:nth-child(odd) {
+    background-color: #fff;
+  }
+
+  #item-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #item-image img {
+    max-width: 500px;
+    max-height: 500px;
+  }
+ 
