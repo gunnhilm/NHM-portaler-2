@@ -28,6 +28,8 @@ const textItems = {
     emptySearch: ["Tøm søk", "Empty search"],
     headerSearchPage: ["Søk i samlingene", "Search the collections"],
     vennligst: ["--Velg en samling--", "--Choose a collection--"],
+    searchProject: ["--Søk opp alle postene i et bulk-prosjekt--","--Search for all records in a bulk-project--"],
+    bulkSelectHeader: ["BULK-prosjekter<br><br>","BULK projects<br><br>"],
     simpleSearch: ["Enkelt søk", "Simple search"],
     searchButton: ["Søk", "Search"],
     //----Specimens
@@ -217,7 +219,11 @@ const textItems = {
     coordPlaceholder: ['&lt;Ingen koordinater&gt;', '&lt;No coordinates&gt;'],
     objError: ['Finner ikke objekt - noe er feil. Kontakt ev. nhm-samlingsportaler@nhm.uio.no eller aktuell samling.', 
     'Cannot find object - something went wrong. Contact nhm-samlingsportaler@nhm.uio.no or relevant collection.'],
-        // Objectpage UTAD items
+    citeObject: ["Siter dette objektet:","Cite this object:"],
+    
+    
+    
+    // Objectpage UTAD items
         Kommentar: ['Kommentar:', 'Comments:'],
         Tilstand: ['Tilstand:', 'Condition:'],
         Utlån: ['Utlån:', 'On loan:'],
@@ -279,12 +285,18 @@ const textItems = {
     // help page
     helpHeader: ["Hvordan søke", "How to search the collections"],
     helpText: [`Velg samling først, og skriv ett eller flere søkeord i søkefeltet. 
-    Du kan søke på latinsk artsnavn, lokalitet, katalognummer (f.eks. musit-nummer), geografi osv. Det skilles ikke på store og små bokstaver. Land må skrives på engelsk, andre felt kan inneholde engelsk eller norsk.<br><br><br>
-    <span class="bold" style="font-size: 16pt">Kontaktinformasjon:</span> <br><br> nhm-samlingsportaler@nhm.uio.no`, 
+    Du kan søke på latinsk artsnavn, lokalitet, katalognummer (f.eks. musit-nummer), geografi osv. Det skilles ikke på store og små bokstaver. Land må skrives på engelsk, andre felt kan inneholde engelsk eller norsk.<br><br><br>`, 
     `Choose collection first, and enter one or more search terms in the search field. 
-    You can search for latin species name, locality, catalog number (e.g. musit-number), geography etc. The search is case insensitive. Country is written in english, other fields can be either norwegian or english. <br><br><br>
-    <span class="bold" style="font-size: 16pt">Contact information:</span> <br><br> nhm-samlingsportaler@nhm.uio.no`],
-
+    You can search for latin species name, locality, catalog number (e.g. musit-number), geography etc. The search is case insensitive. Country is written in english, other fields can be either norwegian or english. <br><br><br>`],
+    citeHeader: ["Hvordan sitere objekter fra samlingene, eller bruk av portalen", "How to cite objects from the collections, or use of the portal"],
+    citeText: [`- For å sitere ett objekt i portalen, bruk url'en for dét objektets egen side. <br>
+    - Hvis du skal sitere flere objekter er det best å lage et datasett gjennom GBIF, og sitere det datsettet. 
+    Se vårt <a href= "${urlPath}/nhm/getDOI">verktøy</a> for dette. <br>
+    - Slik siterer du selve samlingsportalen: Rindal, Eirik; Marthinsen, Gunnhild (2023) NHMs samlingsportal`, 
+    `- To cite one object in the portal, use the url for that object's page. <br>
+    - To site several objects, the best way is to make a dataset through GBIF, and site that dataset. See our <a href="${urlPath}/nhm/getDOI">tool</a> for this.<br>
+    - How to cite the portal as such: Rindal, Eirik; Marthinsen, Gunnhild (2023) NHM's collection portal`],
+    contact: [`<span class="bold" style="font-size: 16pt">Kontaktinformasjon:</span> <br><br> nhm-samlingsportaler@nhm.uio.no`,`<span class="bold" style="font-size: 16pt">Contact information:</span> <br><br> nhm-samlingsportaler@nhm.uio.no`],
     // journals page
     journalHeader: ['Søk i journaler', 'Search old ledgers and documents'],
     journalText: ['Selv om NHMs samlinger i dag registreres i elektroniske databaser er det viktig å ivareta gamle journaler og andre dokumenter fra museets mer enn 200 år lange historie. For å sikre slike dokumenter for ettertiden og ikke minst for å gjøre dem tilgjengelige for både egne ansatte og andre interesserte, pågår det ved NHM et stadig arbeide med å scanne og tilrettelegge denne typer dokumenter.<br><br>I denne portalen kan du søke blant det som er tilgjengeliggjort av innkomstjournaler, samlingsjournaler, feltdagbøker, korrespondanse og mye mer med tilknytning til NHMs samlinger.<br><br> -	Vis alle dokumenter innen et fagfelt ved å klikke på knappen for fagfelt.<br>-	Søk på spesifikke samlinger, dokumenttyper osv. ved å legge inn de aktuelle søkebegrepene i søkefeltet og klikke Søk (all info som vises i tabellen med søkeresultatet er søkbar)<br><br>For å få tilgang til selve dokumentene, bruk en av lenkene i de to første kolonnene:<br>    -	FlipBook: Åpner en FlipBook-versjon av dokumentet direkte i nettleseren<br>    -	PDF: Laster ned en PDF-fil av dokumentet (NB! Enkelte filer kan være store å laste ned!)<br><br>I en del av filene er det lagt inn bokmerker for å gjøre det enklere å navigere i dem. Disse er tilgjengelige både i FlipBook- og PDF-versjonene.<br><br>',

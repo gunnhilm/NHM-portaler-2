@@ -150,7 +150,7 @@ const search = (museum, samling, searchTerm, linjeNumber = 0, limit = 20, callba
     // velg riktig MUSIT dump fil å lese
     const date = getDate()
     myLogger.log( museum + '\t' + samling + '\t' + searchTerm + '\t' + date + '\tsimple search');
-   
+   console.log(samling)
     musitFile = setCollection(museum,samling)
     if (fs.existsSync(musitFile)) {
         // cleaning the searchterm before making the search so that we get a more precise

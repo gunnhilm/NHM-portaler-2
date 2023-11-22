@@ -19,7 +19,7 @@ const emptySearchButton = document.querySelector('#empty-search-button')
 
 const checkCoordinates = document.querySelector('#check-coordinates-button')
 // rendered with result table, in footer
-const updated = document.querySelector('#last-updated');
+const updated = document.querySelector('#last-updated')
 
 // to decide wether map is to be drawn
 let searchFailed = false
@@ -194,6 +194,7 @@ function makeButtons() {
                 emptySearch('organism-button')
                 emptyCollection()
                 document.getElementById('search-cell').style.display = 'none'
+                document.getElementById('map-search').style = "border:none; padding:0px"
             }
             addCollectionsToSelect(el.id)
             e.preventDefault()
@@ -274,11 +275,11 @@ function addCollectionsToSelect(orgGroup) {
         })
         sessionStorage.setItem('options', JSON.stringify(coll))
         coll.forEach(el => {
-                            elOption = document.createElement("option")
-                            elOption.text = addTextInCollSelect(el)
-                            elOption.value = el
-                            elOption.id = el
-                            collection.add(elOption)
+            elOption = document.createElement("option")
+            elOption.text = addTextInCollSelect(el)
+            elOption.value = el
+            elOption.id = el
+            collection.add(elOption)
         })
         if (sessionStorage.getItem('chosenCollection')) {
             collection.value = sessionStorage.getItem('chosenCollection')
@@ -286,39 +287,6 @@ function addCollectionsToSelect(orgGroup) {
             collection.value = 'vennligst'
         }
 
-        // const url_coll = urlPath + '/collections/?museum=' + museum + '&orgGroup=' + orgGroup
-        // fetch(url_coll).then((response) => {
-        //     if (!response.ok) {
-        //         throw 'noe er galt med respons til samlinger til select'
-        //     } else {
-        //         try {
-        //             response.text().then((data) => {
-        //                 const JSONdata = JSON.parse(data)  
-        //                 sessionStorage.setItem('options', data)
-        //                 JSONdata.forEach(el => {
-        //                     elOption = document.createElement("option")
-        //                     elOption.text = addTextInCollSelect(el)
-        //                     elOption.value = el
-        //                     elOption.id = el
-        //                     collection.add(elOption)
-        //                     console.log(el)
-        //                 })
-        //                 if (sessionStorage.getItem('chosenCollection')) {
-        //                     collection.value = sessionStorage.getItem('chosenCollection')
-        //                     console.log(sessionStorage.getItem('chosenCollection'))
-        //                 } else {
-        //                     collection.value = 'vennligst'
-        //                 }
-        //             })
-        //         }
-        //         catch (error) {
-        //             console.log(error)
-        //             reject(error)
-        //         }
-        //     }
-        // }).catch((error) => {
-        //     console.log('feil i samlinger til select. ' + error)
-        // })
     } else {
         collection.value = 'vennligst'
     }
@@ -442,14 +410,15 @@ const doSearch = (limit = 20) => {
     currentPage = 1
     sessionStorage.removeItem('numberPerPage')
     sessionStorage.removeItem('propsSorted')
-    document.getElementById("map-search").innerHTML = ""  
+    const chosenCollection = collection.value
+    if (!chosenCollection === "bulk") { document.getElementById("map-search").innerHTML = "" }
     sessionStorage.removeItem('advSearchArray')
     // reset searchFailed value
     searchFailed = false
     resetSortedBoolean() // set all booleans in propsSorted-array in PaginateAndRender.js to false
     const searchTerm = search.value
     sessionStorage.setItem('searchTerm', searchTerm)
-    const chosenCollection = collection.value
+    
     sessionStorage.setItem('chosenCollection',chosenCollection)
     searchLineNumber = limit
     sessionStorage.setItem('limit', limit)
@@ -584,6 +553,7 @@ collection.addEventListener('change', (e) => {
     if (orgGroup == "geologi" || orgGroup == "paleontologi" || orgGroup == "other" ) {
         document.getElementById("advanced-accordion").style.display = "none"
         document.getElementById("advanced-panel").style.display = "none"
+        if (collection.value === "bulk") { bulkMain()}
     } else {
         if (document.getElementById("advanced-accordion").style.display === "none") {
             document.getElementById("advanced-accordion").style.display = "block"
@@ -626,8 +596,12 @@ const updateFooter = () => {
             }
         }).then ((data) => {
             data=JSON.parse(data)
-            lastUpdated = 'Dataene ble sist oppdatert: ' + data.date
+            // let collectionDoi
+            // if (collection.value)
+            lastUpdated = 'Dataene ble sist oppdatert: ' + data.date /*+ "   " + collectionDoi*/
             updated.textContent = lastUpdated
+            // document.getElementById("collection-doi").innerHTML = "doi"
+            // document.getElementById("collection-doi").style.disply="inline"
         }) .catch((error) => {
             console.error('There is a problem, probably file for collection does not exist', error)
             emptySearch('error in updateFooter()')

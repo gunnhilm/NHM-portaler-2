@@ -356,7 +356,7 @@ fillResultHeadersBulk = (cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,c
     cell6.innerHTML = `<button id='localityButton' class='sort'>${textItems.headerLocality[index].bold()} ${getArrows('locality')}</button>`
     cell7.innerHTML = `<button id='countButton' class='sort'>${textItems.headerCount[index].bold()} ${getArrows('individualCount')}</button>`
     cell8.innerHTML = `<button id='noteButton' class='sort'>${textItems.headerNotes[index].bold()} ${getArrows('Note')}</button>`
-    cell9.style.display = 'none'
+    // if (cell9) {cell9.style.display = 'none'}
     cell11.innerHTML = `<select id='checkboxSelect' class='sort'>
         <option value="select" id="select">${textItems.select[index].bold()}</option>
         <option value="all" id="selectAll">${textItems.selectAll[index]}</option>

@@ -186,7 +186,7 @@ footer {
 }
 
 #last-updated {
-    vertical-align: middle;
+    /* vertical-align: middle; */
     text-align: left;
 }
 

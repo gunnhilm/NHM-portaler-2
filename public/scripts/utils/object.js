@@ -1179,6 +1179,9 @@ function makeTable(specimenObject){
     else if (orgType === 'other'){ makeUTADTable(specimenObject) }
 }
 
+function showCitation(specimenObject) {
+    document.getElementById('cite-div').innerHTML = textItems.citeObject[index] + " " + window.location.href
+} 
 
 async function main () {
    
@@ -1255,6 +1258,7 @@ async function main () {
     showMedia(specimenObject)
     drawMapObject(specimenObject)
     renderItems()
+    showCitation(specimenObject)
 }
 
 main()

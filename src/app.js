@@ -134,6 +134,7 @@ app.get('/search', (req, res) => {
     } else {
         try {
             fileRead.search(req.query.museum, req.query.samling, req.query.search, req.query.linjeNumber,req.query.limit , (error, results) => {
+                // console.log(results)
                 res.send({
                     unparsed: results
                 })
@@ -336,7 +337,22 @@ app.get('*/showStat', (req, res) => {
         res.render('loans', {})
  })
 
- 
+app.get('*/bulkProjects', (req, res) => {
+    try {
+        fileRead.search(req.query.museum, req.query.samling, req.query.search, req.query.linjeNumber,req.query.limit , (error, results) => {
+        
+            // console.log(results)
+            res.send({
+                unparsed: results
+            })
+        })
+    }
+    catch(error) {
+        console.log('error in fileread.js ' + error)
+        throw new Error ('File not found ')
+    }
+    
+}) 
 
 
 const storage = multer.diskStorage({

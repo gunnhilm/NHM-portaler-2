@@ -107,6 +107,9 @@ function renderText (lang) {
         if (document.querySelector('#otherOpt')) {document.querySelector('#otherOpt').label = textItems.otherOpt[index]}
         if (document.querySelector('#utad')) {document.querySelector('#utad').label = textItems.utad[index]}
         if (document.querySelector('#bulk')) {document.querySelector('#bulk').label = textItems.bulk[index]}
+        if (document.querySelector('#bulkProjectHeader')) {document.querySelector('#bulkProjectHeader').innerHTML = textItems.bulkSelectHeader[index]}
+        if (document.querySelector('#vennligstBulk')) {document.querySelector('#vennligstBulk').innerHTML = textItems.searchProject[index]}
+        
         
     }
 
@@ -271,8 +274,16 @@ function renderText (lang) {
 
     // help page
     if (location.href.includes('help')) {
+        if (window.location.href.includes('/tmu') || window.location.href.includes('/nbh') || window.location.href.includes('/um')) {
+            document.querySelector('#citeHeader').style.display = "none"
+            document.querySelector('#citeText').style.display = "none"
+        }
         document.querySelector('#helpHeader').innerHTML = textItems.helpHeader[index]
         document.querySelector('#helpText').innerHTML = textItems.helpText[index]
+        document.querySelector('#citeHeader').innerHTML = textItems.citeHeader[index]
+        document.querySelector('#citeText').innerHTML = textItems.citeText[index]
+        document.querySelector('#contact').innerHTML = textItems.contact[index]
+        
     }
 
     // journals page
