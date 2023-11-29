@@ -180,6 +180,7 @@ function addTextInOrgButtons(a) {
 }
 
 function makeButtons() {
+    const fileList = JSON.parse(sessionStorage.getItem('fileList'))
     orgGroups = sessionStorage.getItem('organismGroups').split(',')
     orgGroups.forEach(el => {
         button = document.createElement("button")
@@ -196,7 +197,7 @@ function makeButtons() {
                 document.getElementById('search-cell').style.display = 'none'
                 document.getElementById('map-search').style = "border:none; padding:0px"
             }
-            addCollectionsToSelect(el.id)
+            addCollectionsToSelect(el.id, orgGroups, fileList)
             e.preventDefault()
         })
         orgGroup = sessionStorage.getItem('organismGroup')
@@ -239,9 +240,8 @@ function addTextInCollSelect(a) {
     else if (a == 'bulk') {return textItems.bulk[index]}
 }
     
-function addCollectionsToSelect(orgGroup) {
+function addCollectionsToSelect(orgGroup, orgGroups, fileList) {
     sessionStorage.setItem('organismGroup', orgGroup)
-    orgGroups = sessionStorage.getItem('organismGroups').split(',')
     document.querySelector('#select-cell').style.display = 'block'
     
     let length = collection.options.length
@@ -267,7 +267,8 @@ function addCollectionsToSelect(orgGroup) {
         })
         document.querySelector('#'+ orgGroup).style.marginRight = "10px"
         let coll = []
-        const fileList = JSON.parse(sessionStorage.getItem('fileList'))
+        // const fileList = JSON.parse(sessionStorage.getItem('fileList'))
+        // console.log(fileList)
         fileList.forEach(el => {
             if (el.orgGroup === orgGroup) {
                 coll.push(el.name)
@@ -813,7 +814,7 @@ window.onload = function () {
 
 async function main () {
     await getFileList()
-    const fileList = sessionStorage.getItem('fileList')
+    // const fileList = sessionStorage.getItem('fileList')
     await getOrganismGroups()
     // let tempOrgGroups = []
     // const JSONdata = JSON.parse(fileList)
