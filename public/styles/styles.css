@@ -792,3 +792,38 @@ table.item-page {
     max-height: 500px;
   }
  
+
+  /* Label page*/
+  #box-list th {
+    padding: 8px; 
+    width: auto; 
+  }
+  /*
+
+  #box-list {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  #box-list th,
+  #box-list td {
+    padding: 8px;
+    text-align: center;
+    border: 1px solid #ddd;
+  }
+  
+  #box-list th {
+    background-color: #f2f2f2;
+    color: #333;
+    font-weight: bold;
+    width: auto; 
+  }
+  
+  #box-list tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  #box-list tr:hover {
+    background-color: #e6e6e6;
+  } 
+  */

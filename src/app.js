@@ -134,7 +134,6 @@ app.get('/search', (req, res) => {
     } else {
         try {
             fileRead.search(req.query.museum, req.query.samling, req.query.search, req.query.linjeNumber,req.query.limit , (error, results) => {
-                // console.log(results)
                 res.send({
                     unparsed: results
                 })
@@ -243,7 +242,6 @@ app.get('/collections', (req, res) => {
     if (!req.query.museum) {
         throw new Error ('no museum...')
     } else if (!req.query.orgGroup) {
-        console.log('getting coll list');
         let coll = fileRead.getAllcollections(req.query.museum, req.query.orgGroup, (error, results) => {
         })
         res.send(coll)
@@ -340,8 +338,6 @@ app.get('*/showStat', (req, res) => {
 app.get('*/bulkProjects', (req, res) => {
     try {
         fileRead.search(req.query.museum, req.query.samling, req.query.search, req.query.linjeNumber,req.query.limit , (error, results) => {
-        
-            // console.log(results)
             res.send({
                 unparsed: results
             })
@@ -360,7 +356,6 @@ const storage = multer.diskStorage({
         callback(null, path.join(__dirname, './utils/loans/fileUploads'));
     },
     filename: function (req, file, callback) {
-        // console.log(file.originalname);
         callback(null, file.originalname);
     }
 });
@@ -377,10 +372,6 @@ app.post('*/post-loan', async (req, res) => {
             console.log(req.files[0].originalname);
             // const tempObj = Object.assign({},req.body)
             // req.body = tempObj;// solution this line
-            console.log(res.files);
-            // console.log('The filename is ' + req.files.filename[0]);
-            // console.log('fil navn');
-            // console.log(req.filename);
             loan.requestLoan(req.body, req.files)
             res.send('Success')
         }
@@ -489,7 +480,6 @@ app.get('*/bcSpecies', (req, res) => {
 
 app.get('*/getFungiOverview', (req, res) => {
     try { 
-        console.log(req.query)
         if (!fs.existsSync(`./src/utils/barcoding/sopp_oversikt.txt`)) {
             console.log('fungi-overview-file does not exist')
         } else {
@@ -636,7 +626,6 @@ app.get('*/labels', async (req, res) => {
     try {
         const { museum, collection } = req.query;
         if (museum && collection) {
-            console.log('returning collection list');
             const results = await labels.getValidNames(museum, collection);
             if (results) {
               res.send({ results });
@@ -656,9 +645,9 @@ app.get('*/labels', async (req, res) => {
 
 
 function validateRequest(req, res, next) {
-    const { museum, collection, search } = req.body;
+    const { museum, collection, search, labelType } = req.body;
 
-    if (!museum || !collection || !search) {
+    if (!museum || !collection || !search || !labelType) {
         return res.status(400).json({ error: 'Missing required fields' });
     }
 
@@ -667,8 +656,8 @@ function validateRequest(req, res, next) {
 
 app.post('*/labels', validateRequest, async (req, res) => {
     try {
-        const { museum, collection, search } = req.body;
-        const results = await labels.writeskilleArk(search, museum, collection);
+        const { museum, collection, search, labelType, extraInfo } = req.body;
+        const results = await labels.selectLabel(search, museum, collection, labelType, extraInfo);
         res.json({ success: true, downloadLink: results.outFilepath, fileName: results.FileName });
     } catch (error) {
         console.error('Error occurred:', error);
@@ -709,14 +698,12 @@ app.get('/nhm/journaler', (req, res) => {
         res.render('archive', {});
     }
 });
-// archive
+
+
 // item-page
 app.post('*/item-page/check-files', async (req, res) => {
     const { folderName, fileName } = req.body;
     const { filePath, matchingFiles } = await archive.checkFilesStartsWith(folderName, fileName);
-    console.log('app');
-    console.log(filePath);
-    console.log(matchingFiles);
     // res.send({ folderPath, matchingFiles });
     res.status(200).json({ filePath, matchingFiles });
   });
@@ -727,7 +714,6 @@ app.get('*/archive/:folder/:filename', (req, res) => {
 
     const { folder, filename } = req.params;
     const filePath = path.join(__dirname, '..', '..', 'archive', folder, filename);
-    console.log(filePath);
   
     fs.readFile(filePath, (err, data) => {
       if (err) {

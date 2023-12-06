@@ -22,7 +22,8 @@
     "archiveGroups": ["archive", "fieldNotes", "illustrations", "journals"],
     "archiveFiles":{
         "archive": "archive",
-        "illustrations": "illustrations" 
+        "illustrations": "illustrations",
+        "fieldNotes": "fieldNotes"
     }
 },
 {

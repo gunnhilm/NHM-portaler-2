@@ -32,19 +32,58 @@
             </tr>
             
         </table>
+<div id="labels">
+  <div style="display:none" id="dropdown-container">
+    <form id="label-names">
+      <p>Velg navn som skal på skillearkene inne i boksene:</p>
+      <select id="scientific-names">
+        <option value="value-1"></option>
+      </select>
+      <button id="label-name-submit" type="submit" class="blue-button">Lag skilleark</button>
+    </form>
+  </div>
+<br><br><br>
+  <img id="please-wait" src="/museum/images/ajax-loader.gif" alt="Please Wait" style="display:block; margin-top: 5em;" valign="top">
 
-        <div style="display:none" id="dropdown-container">
-            <form id="label-names">
-                <p>Please enter some text below:</p>
-                <select id="scientific-names">
-                    <option value="value-1"></option>
-                </select>
-                {{!-- <input type="text" id="scientific-names"> --}}
-                <button id="label-name-submit" type="submit">Submit</button>
-            </form>
-        </div>
-        <p></p> 
-        <div style="display:none" id="sorry"> </div>
+  <div style="display:none" id="sorry"></div>
+
+  <div style="display:none " id="dropdown-box-container">
+    <form id="box-names">
+      <p>Velg navn som skal på boksene:</p>
+      <select id="scientific-box-names">
+        <option value="value-1"></option>
+      </select>
+      <br>
+      <input type="checkbox" id="box-numbers" name="box-numbers" value="enable-numbers">
+      <label for="box-numbers">Inkluder boksnummerlabel>
+      <br>
+      <button id="box-name-list" type="submit" class="blue-button">Legg til liste</button>
+    </form>
+  </div>
+
+  <form>
+    <table id="box-list" style="display: none; width: auto;">
+      <tr>
+        <th>Name</th>
+        <th>Number</th>
+        <th>Slett</th>
+      </tr>
+      <tr>
+        <td><input type="text" id="box-label-number"></td>
+        <td><input type="text" id="box-name-input"></td>
+        <td><input type="number" id="box-number-input"></td>
+        <td><button type="button" class="blue-button">Slett</button></td>
+      </tr>
+    </table>
+
+    <button id="box-name-submit" type="submit" style="display: none;" class="blue-button">Lag kasse etiketter</button>
+  </form>
+</div>
+
+<p></p> 
+
+<div style="display:none" id="sorry"></div>
+
 
 
         <link rel="stylesheet" href="/museum/styles/styles.css">

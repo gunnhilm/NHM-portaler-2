@@ -59,6 +59,7 @@ function removeResults() {
     }
 
 }
+
 async function makeButtons() {
   const buttonArray = [];
   let archiveTypes = [];
@@ -94,7 +95,6 @@ async function makeButtons() {
       for (const [key, value] of Object.entries(archiveFiles)) {  
         if (el.id === 'journals') { 
           archiveCollection = value;
-          console.log(archiveCollection);
           el.className = "blue-button";
           errorMessage.innerText = ""; // remove error messages
           
@@ -106,7 +106,6 @@ async function makeButtons() {
           window.open(url, '_self');
         } else if (el.id === key) { 
           archiveCollection = value;
-          console.log(archiveCollection);
           el.className = "blue-button";
           errorMessage.innerText = ""; // remove error messages
           
@@ -132,6 +131,7 @@ async function makeButtons() {
 // is called in archiveResultTable(..)
 const archiveHeaderNamesToShow = ['Regnr', 'Tekst på beholder', 'Indeks', 'Årstall/periode', 'Hvilket museum?', 'Person', 'PersonID (wikidata)', 'FotoID', 'Kommentarer']; // Define the headers to show
 const illustrationHeaderNamesToShow = ['Regnr', 'Comment', 'Størrelse', 'Figurnavn', 'Artsnavn (Latin)', 'Artsnavn (norsk)', 'Illustratør', 'Kilde', 'Copyright', 'Lokasjon disk']
+const fieldNoteHeaderNamesToShow = ['Regnr', 'Tittel', 'Fagområde', 'Taxongruppe', 'Person', 'Q-nummer', 'Dokumenttype', 'År/Dato fra', 'År til', 'Kommentar'] // Define the headers to show
 
 
 const addHeaders = (table, headerNamesToShow) => {
@@ -152,8 +152,10 @@ const addHeaders = (table, headerNamesToShow) => {
 const createArchiveTableAndFillIt = (data, archiveCollection) => {
     if (archiveCollection === 'archive') {
         headerNamesToShow = archiveHeaderNamesToShow
-    } else {
+    } else if (archiveCollection === 'illustrations') {
         headerNamesToShow = illustrationHeaderNamesToShow
+    } else if (archiveCollection === 'fieldNotes') {
+      headerNamesToShow = fieldNoteHeaderNamesToShow
     }
     const table = document.createElement('table');
     table.setAttribute('id', 'archive-result-table');
@@ -210,6 +212,7 @@ const doarchiveSearch = async (limit = 2000) => {
     const searchTerm = archiveSearch.value;
     archiveCollection = archiveCollection || 'archive';
     const url = `${urlPath}/search/?search=${searchTerm}&museum=${museum}&samling=${archiveCollection}&linjeNumber=0&limit=${limit}`;
+    console.log(url);
   
     try {
       const response = await fetch(url);
@@ -238,9 +241,8 @@ const doarchiveSearch = async (limit = 2000) => {
         console.log('no results');
         errorMessage.innerText = textItems.noHits[index];
       }
-  
+
       updateFooter(museum, archiveCollection);
-      
 
     } catch (error) {
       console.error(error);
@@ -273,9 +275,6 @@ function sortTable() {
             .forEach(tr => table.appendChild(tr) );
     })));
 }
-
-
-
 
 
 
