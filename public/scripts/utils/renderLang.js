@@ -76,9 +76,9 @@ function renderText (lang) {
     renderHeaderContent(lang)
     
     //Dropdown med valg av samlinger, index page og stat page
-    const excludedKeywords = ['object', 'about', 'help', 'corema', 'map', 'journaler', 'getDOI', 'showStat', 'tools', 'checkCoord', 'dataError', 'advancedSearch'];
+    const excludedKeywordsDropdown = ['object', 'about', 'help', 'corema', 'map', 'journaler', 'getDOI', 'showStat', 'tools', 'checkCoord', 'dataError', 'advancedSearch'];
 
-    if (!excludedKeywords.some(keyword => location.href.includes(keyword))) {
+    if (!excludedKeywordsDropdown.some(keyword => location.href.includes(keyword))) {
     // if (!location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler') & !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools') & !location.href.includes('checkCoord') & !location.href.includes('dataError') & !location.href.includes('advancedSearch')) {
     //if (location.href.substring(location.href.split('/',3).join('/').length).lengt === 12) { 
     
@@ -114,8 +114,11 @@ function renderText (lang) {
     }
 
     // index page
-    if (!location.href.includes('archive') & !location.href.includes('labels') & !location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler')& !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools') & !location.href.includes('checkCoord') & !location.href.includes('dataError') & !location.href.includes('barcod')& !location.href.includes('loanInfo')) {
+    const excludedKeywordsIndex = ['about', 'archive', 'artsObs', 'barcod', 'checkCoord', 'corema', 'dataError', 'getDOI', 'help', 'journaler', 'labels', 'loanInfo', 'map', 'object', 'showStat', 'tools'];
 
+    if (!excludedKeywordsIndex.some(keyword => location.href.includes(keyword))) {
+        try {
+            
         //document.querySelector('#vennligst').innerHTML = textItems.vennligst[index] 
         if(document.querySelector('#header-advSearch-page')) { document.querySelector('#header-advSearch-page').innerHTML = textItems.headerAdvSearchPage[index]}
         if(document.querySelector('#adv-search-button')) {document.querySelector('#adv-search-button').innerHTML = textItems.searchButton[index]}
@@ -194,6 +197,9 @@ function renderText (lang) {
         if(document.getElementById("resultPageAlert1").innerHTML) {
             document.getElementById("resultPageAlert1").innerHTML = textItems.lastPageAlert[index]
         }
+    } catch (error) {
+        console.log(`RenderLang error: ${error}`);
+      }
     }
     
     
@@ -339,7 +345,6 @@ function renderText (lang) {
         document.querySelector('#search-button').innerHTML = textItems.searchButton[index]
 
     }
-    
 }
 
 let language

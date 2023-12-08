@@ -1,6 +1,5 @@
 const searchForm = document.querySelector('form') 
 
-
 collectionObject = {
     nhm: {
         entomologi: 'NHMO-ENT',
@@ -154,6 +153,13 @@ const addMuseum = () => {
     return museumstring
 }
 
+// Function to toggle the display of the "Please Wait" image based on the input variable, true or false
+function togglePleaseWait(showImage) {
+    const pleaseWaitImage = document.getElementById("please-wait");
+    pleaseWaitImage.style.display = showImage ? "inline" : "none";
+  }
+
+
 const getMUSITNumber = () => {
     let MUSITNo = document.getElementById('musit-Numbers').value
     MUSITNo = Number(MUSITNo)
@@ -226,107 +232,6 @@ function fixScientificName(scientificName) {
     }
 }
 
-
-// const getArtsObsData = async (artsObsNumber, MUSITNo)=> {
-//     const valgtSamling = document.getElementById('collection-select').value
-//     // 'https://api.gbif.org/v1/occurrence/search?dataset_Key=b124e1e0-4755-430f-9eab-894f25a9b59c&catalogNumber=21957795'
-//     let url = 'https://api.gbif.org/v1/occurrence/search?dataset_Key=b124e1e0-4755-430f-9eab-894f25a9b59c&catalogNumber=' + artsObsNumber; 
-//     let obj = null;
-//     let resultObj = null
-//     let resultString = ''
-//     let collArray = []
-//     let tempColl = ''
-//     let collString = null
-//     let museumCollection = ''
-//     let scientificName = ''
-//     const kommuneObj = await getKommuneData()
-//     try {
-//         obj = await (await fetch(url)).json();
-//         resultObj = obj.results[0]
-//         obj = null
-//     } catch (error) {
-//         console.log(error);
-//         alert('Fant ikke følgende nummer hos artsdatabanken: ' + artsObsNumber)
-//         console.log('feil med resultater fra artsobs');
-//         return
-//     }
-
-//     try{
-//         // fix ArtsObs entries
-//         let Koordinater = resultObj.decimalLatitude + 'N ' + resultObj.decimalLongitude + 'E'
-//         resultObj.latLongCoords = Koordinater
-
-//         // fix Museum & collection
-//         museumCollection = addMuseum()
-
-//         // fix scientificName
-//         if(valgtSamling === 'sopp') { // 
-//             scientificName = fixScientificName(resultObj.scientificName)
-//             resultObj.scientificName = scientificName
-//         }
-        
-
-//         // fix dato, fjern alt etter T
-//         let fixedDate = resultObj.eventDate
-//         fixedDate = fixedDate.substring(0,fixedDate.search('T'))
-//         resultObj.eventDate = fixedDate
-//         // fix coll date
-//         if(!resultObj.dateIdentified) {
-//             resultObj.dateIdentified = fixedDate
-//         }
-
-//         // fix collector
-//         let fixedColl = resultObj.recordedBy
-//         if (fixedColl.indexOf('|')) {
-//             collArray = fixedColl.split('|')
-//         } else {
-//             collArray = [resultObj.recordedBy]
-//         }
-//         collArray.forEach((element) => {
-
-//             tempColl = reverseCollectors(element)
-//             if (collString){
-//             collString = collString + '; ' + tempColl
-//             } else {
-//                 collString = tempColl
-//             }
-//         })
-
-//         collString = collString.trim()
-//         resultObj.recordedBy = collString
-//         // fix identifiedBy
-//         if(!resultObj.identifiedBy) {
-//             resultObj.identifiedBy = collString
-//         }
-//         const transelateKeyMap = headerMap()
-//         for (const [key] of transelateKeyMap) {
-//             if (key === 'museumCollection') {
-//                 resultString = resultString + museumCollection + '\t' 
-//             } else if (key === 'dbNumbers') {
-//                 resultString = resultString + MUSITNo + '\t'
-//             }  else if (key.includes('#D')) {
-//                 resultString = resultString + '' + '\t'
-//             }else if (key in resultObj) {
-//                 if (key === 'municipality') {
-//                     const admPlace = fixAdmPlace(kommuneObj, resultObj[key], resultObj['county'])
-//                     resultString = resultString + admPlace + '\t'
-//                 } else {
-//                 resultString = resultString + resultObj[key] + '\t'
-//                 }
-//             } else {
-//                 resultString = resultString + '' + '\t'
-//             }
-//         }
-//         return resultString
-//     } catch (error) {
-//         console.log('feil med dataene fra GBif');
-//         console.log(error);
-//         // alert('Feil med dataene')
-        
-//     }
-// }
-
-
 const getArtsObsData = async (artsObsNumber, MUSITNo) => {
     const valgtSamling = document.getElementById('collection-select').value;
     // 'https://api.gbif.org/v1/occurrence/search?dataset_Key=b124e1e0-4755-430f-9eab-894f25a9b59c&catalogNumber=21957795'
@@ -385,8 +290,6 @@ const getArtsObsData = async (artsObsNumber, MUSITNo) => {
         console.log('Feil med dataene fra GBif:');
         console.log(error);
         return false
-        // Handle the error as needed (e.g., show an alert)
-        // alert('Feil med dataene');
     }
 };
 
@@ -411,6 +314,7 @@ const downloadImage = async (url) => {
     url = 'museum/tools/artsObsImage/?url=' + url
     const response = await fetch(url);
     const blob = await response.blob();
+    togglePleaseWait(false)
     return blob
 };
   
@@ -418,43 +322,8 @@ const downloadMany = urls => {
     return Promise.all(urls.filter(Boolean).map(url => downloadImage(url)));
 }
 
-// download images
-// const downloadAndZip = async (mediaObj, allResults) => {
-//     document.getElementById("please-wait").style.display = "block"
-//     const valgtMuseum = document.getElementById('museum-select').value
-//     const valgtSamling = document.getElementById('collection-select').value
-//     let akronym = ''
-//     try {
-//         akronym = collectionObject[valgtMuseum][valgtSamling] + '-'
-//     } catch (error) {
-//         akronym = ''
-//     }
-
-//     const zip = JSZip();
-//     const myTxtBlob = new Blob([allResults], {
-//         type: 'text/plain'
-//     });
-//     zip.file('data.txt', allResults)
-//     let fileName = ''
-//     let no = 1
-//     for (const [key, value] of Object.entries(mediaObj)) {
-//         await downloadMany(value).then(blobs =>{ 
-//             blobs.forEach((blob, i) => {
-//             zip.file(`${akronym}${key}-0${[no]}.jpg`, blob);
-//             no = ++no
-//             });
-//         });
-//         no = 1
-//     }
-//     zip.generateAsync({type: 'blob'}).then(zipFile => {
-//     const currentDate = new Date().getTime();
-//     fileName = `combined-${currentDate}.zip`;
-//       document.getElementById("please-wait").style.display = "none"
-//       return saveAs(zipFile, fileName);
-//     })
-//   }
-
 const downloadAndZip = async (mediaObj, allResults) => {
+    console.log('downloadAndZip');
     try {
         document.getElementById("please-wait").style.display = "block";
         const valgtMuseum = document.getElementById('museum-select').value;
@@ -467,109 +336,91 @@ const downloadAndZip = async (mediaObj, allResults) => {
             akronym = '';
         }
 
-        const zip = JSZip();
-        const myTxtBlob = new Blob([allResults], {
-            type: 'text/plain'
-        });
-        zip.file('data.txt', allResults);
+        const zip = new JSZip();
+        const txtBlob = new Blob([allResults], { type: 'text/plain' });
+        zip.file('data.txt', txtBlob);
 
-        let fileName = '';
         let no = 1;
 
         for (const [key, value] of Object.entries(mediaObj)) {
             try {
-                       const blobs = await downloadMany(value);
-                    blobs.forEach((blob, i) => {
-                        zip.file(`${akronym}${key}-0${[no]}.jpg`, blob);
-                        no++;
-                    });
+                const blobs = await downloadMany(value);
+                blobs.forEach((blob) => {
+                    zip.file(`${akronym}${key}-0${no}.jpg`, blob);
+                    no++;
+                });
             } catch (error) {
                 console.log(`Error downloading ${key} media:`, error);
                 // Handle error (e.g., display error message, continue with other media)
-                continue
+                continue;
             }
             no = 1;
         }
 
-        zip.generateAsync({type: 'blob'})
-            .then(zipFile => {
-                const currentDate = new Date().getTime();
-                fileName = `combined-${currentDate}.zip`;
-                document.getElementById("please-wait").style.display = "none";
-                return saveAs(zipFile, fileName);
-            })
-            .catch(error => {
-                console.log('Error generating zip file:', error);
-                // Handle error (e.g., display error message)
-            });
+        const currentDate = new Date().getTime();
+        const zipFile = await zip.generateAsync({ type: 'blob' });
+        const fileName = `combined-${currentDate}.zip`;
+
+        document.getElementById("please-wait").style.display = "none";
+        togglePleaseWait(false);
+
+        saveAs(zipFile, fileName);
     } catch (error) {
         console.log('Unexpected error:', error);
         // Handle unexpected error (e.g., display generic error message)
     }
 };
 
+
 async function getImageUrls(keyObj) {
     try {
-        const imageUrls = []
-        let mediaObj = {}
-        let tempObj = {}
-        let imageUrl = ''
-        let obj = null;
-        let url = ''
-        let lisens = ''
-        let onlyCCBY = true
-        if(!document.querySelector('#lisens').checked) {
-            onlyCCBY = false
-        } 
-        for (const [key, value] of Object.entries(keyObj)) {
-            // 'https://api.gbif.org/v1/occurrence/search?dataset_Key=b124e1e0-4755-430f-9eab-894f25a9b59c&catalogNumber=27783344'
-            url = 'https://api.gbif.org/v1/occurrence/search?dataset_Key=b124e1e0-4755-430f-9eab-894f25a9b59c&catalogNumber=' + key
-            obj = await (await fetch(url)).json();
-            console.log(obj.results[0]);
-            if(obj.results[0]){
-                tempObj = obj.results[0].extensions["http://rs.gbif.org/terms/1.0/Multimedia"]
-                if(tempObj.length > 0){
-                    lisens = tempObj[0]["http://purl.org/dc/terms/license"]
-                }
-                
-                if((onlyCCBY &&  lisens === 'CC BY 4.0') || !onlyCCBY) {
-                    for (const key in tempObj) {
-                        const element = tempObj[key];
-                        imageUrl = element["http://purl.org/dc/terms/identifier"]
-                        imageUrls.push(imageUrl)
-                        imageUrl = ''
-                    }               
-                    mediaObj[value] = Array.from(imageUrls)
-                    imageUrls.length = 0
-                    obj = null
-                    }
-            } else {
-                continue
+      const mediaObj = {};
+      const onlyCCBY = !document.querySelector('#lisens').checked;
+  
+      for (const [key, value] of Object.entries(keyObj)) {
+        // 'https://api.gbif.org/v1/occurrence/search?dataset_Key=b124e1e0-4755-430f-9eab-894f25a9b59c&catalogNumber=27783344'
+        const url = `https://api.gbif.org/v1/occurrence/search?dataset_Key=b124e1e0-4755-430f-9eab-894f25a9b59c&catalogNumber=${key}`;
+        const obj = await (await fetch(url)).json();
+  
+        if (obj.results[0]) {
+          const tempObj = obj.results[0].extensions["http://rs.gbif.org/terms/1.0/Multimedia"];
+  
+          try {
+            if ((onlyCCBY && tempObj[0]?.["http://purl.org/dc/terms/license"] === 'CC BY 4.0') || !onlyCCBY) {
+              const imageUrls = tempObj.map(element => element["http://purl.org/dc/terms/identifier"]);
+              mediaObj[value] = [...imageUrls];
             }
+          } catch (error) {
+            continue;
+          }
         }
-        return mediaObj
+      }
+      return mediaObj;
     } catch (error) {
-        console.log('feil i getImageUrls: returnerer false ');
-        console.log(error);
-        return false
+      console.error('feil i getImageUrls:', error);
+      return false;
     }
-}
+  }
+  
 
 async function main() {
     try {
+        togglePleaseWait(true);
+
         let singelResult = '';
         let allResults = '';
         let MUSITNo = null;
+
         const keyObj = {};
-        let museum = document.getElementById('museum-select').value;
-        let samling = document.getElementById('collection-select').value;
-        let Numbers = document.getElementById('artsObs-Numbers').value;
-        
+        const museum = document.getElementById('museum-select').value;
+        const samling = document.getElementById('collection-select').value;
+        const Numbers = document.getElementById('artsObs-Numbers').value;
+
         if (!Numbers) {
             throw new Error('Du må skrive inn artsobsnumre'); // Throw an error if Numbers is empty
         }
 
-        let artsObsNumbers = fixUserInput(Numbers);
+        const artsObsNumbers = fixUserInput(Numbers);
 
         // Fix MUSIT number
         MUSITNo = getMUSITNumber();
@@ -578,23 +429,23 @@ async function main() {
             const transelateKeyMap = headerMap();
 
             for (const [key, value] of transelateKeyMap) {
-                allResults = allResults + value + '\t';
+                allResults += value + '\t';
             }
         }
 
         for (const element of artsObsNumbers) {
             singelResult = await getArtsObsData(element, MUSITNo);
             keyObj[element] = MUSITNo;
-            MUSITNo = ++MUSITNo;
+            MUSITNo++;
 
             if (singelResult) {
                 if (allResults) {
-                    allResults = allResults + '\n' + singelResult;
+                    allResults += '\n' + singelResult;
                 } else {
                     allResults = singelResult;
                 }
             } else {
-                allResults = allResults + '\n' + 'Fant ikke: ' + element;
+                allResults += '\n' + 'Fant ikke: ' + element;
             }
         }
 
@@ -609,8 +460,6 @@ async function main() {
         console.log('An error occurred:', error.message); // Output a more descriptive error message
     }
 }
-
-
 
 
 // when somebody clicks submit-button
