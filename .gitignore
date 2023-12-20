@@ -9,3 +9,4 @@ credentials.js
 *.doc
 src/utils/loans/fileUploads/
 public/archive
+src/utils/labels/templates

@@ -119,6 +119,8 @@ const setCollection = (museum, samling) => {
         musitFile = './src/data/' + museum +'/archive/archive.txt'  
     }  else if (samling === 'illustrations') {
         musitFile = './src/data/' + museum +'/archive/illustrations.txt'  
+    } else if (samling === 'fieldNotes') {
+        musitFile = './src/data/' + museum +'/archive/fieldNotes.txt'  
     } 
 
     

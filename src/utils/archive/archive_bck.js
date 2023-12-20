@@ -1,5 +1,4 @@
 const folderPath = 'src/utils/archive/'
-const { log } = require('console');
 const fs = require('fs');
 const path = require('path');
 
