@@ -1,3 +1,4 @@
+
 [
 {
     "filMetadata": {
@@ -33,7 +34,8 @@
     "zipFileName": "alge_o",
     "mediaFile": "_media",
     "occurrenceFileSuffix": "_occurrence.txt", 
-    "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/alge_o.zip"
+    "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/alge_o.zip",
+    "gbifCitation": "University of Oslo (2023). Algae collection, Oslo (O) UiO. Version 1.1000. Occurrence dataset https://doi.org/10.15468/51nw18 accessed via GBIF.org on 2023-12-20"
 },
 {
     "source": "musit",
@@ -44,7 +46,8 @@
     "occurrenceFileSuffix": "_stitched.txt",
     "associatedCollection": "dna_vascular",
     "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/vascular_o.zip",
-    "urn": "O:V"
+    "urn": "O:V",
+    "gbifCitation": "University of Oslo (2023). Vascular Plant Herbarium, Oslo (O) UiO. Version 1.2180. Occurrence dataset https://doi.org/10.15468/wtlymk accessed via GBIF.org on 2023-12-20"
 },
 {
     "source": "musit",
@@ -55,7 +58,8 @@
     "occurrenceFileSuffix": "_stitched.txt",
     "associatedCollection": "dna_fungi_lichens",
     "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/lichens_o.zip",
-    "urn": "O:L"
+    "urn": "O:L",
+    "gbifCitation": "University of Oslo (2023). Lichen herbarium, Oslo (O) UiO. Version 1.2193. Occurrence dataset https://doi.org/10.15468/ktu7bj accessed via GBIF.org on 2023-12-20"
 },
 {
     "source": "musit",
@@ -64,7 +68,8 @@
     "zipFileName": "moss_o",
     "mediaFile": "_media",
     "occurrenceFileSuffix": "_occurrence.txt", 
-    "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/moss_o.zip"
+    "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/moss_o.zip",
+    "gbifCitation": "University of Oslo (2023). Bryophyte Herbarium, Oslo (O) UiO. Version 1.2218. Occurrence dataset https://doi.org/10.15468/zctaps accessed via GBIF.org on 2023-12-20"
 },
 {
     "source": "musit",
@@ -75,7 +80,8 @@
     "occurrenceFileSuffix": "_stitched.txt",
     "associatedCollection": "dna_fungi_lichens",
     "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/fungus_o.zip",
-    "urn": "O:F"
+    "urn": "O:F",
+    "gbifCitation": "University of Oslo (2023). Fungarium, Oslo (O) UiO. Version 1.2134. Occurrence dataset https://doi.org/10.15468/6xjrdn accessed via GBIF.org on 2023-12-20"
 },
 {
     "source": "corema",
@@ -108,7 +114,8 @@
     "occurrenceFileSuffix": "_stitched.txt",
     "associatedCollection": "dna_entomology",
     "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/entomology_nhmo.zip",
-    "urn": "NHMO:ENT"
+    "urn": "NHMO:ENT",
+    "gbifCitation": "University of Oslo (2023). Entomology, Oslo (O) UiO. Version 1.2193. Occurrence dataset https://doi.org/10.15468/c3oka6 accessed via GBIF.org on 2023-12-20"
 },
 {
     "source": "access",
@@ -211,7 +218,8 @@
     "mediaFile": "",
     "occurrenceFileSuffix": "_occurrence.txt", 
     "url": "",
-    "akronym": "PMO"
+    "akronym": "PMO",
+    "gbifCitation": "Nakrem H A, Lindemann F J (2022). Palaeontological collection (PMO) at UiO NHM, Oslo. Version 1.4. University of Oslo. Occurrence dataset https://doi.org/10.15468/wmmvk3 accessed via GBIF.org on 2023-12-20"
 },
 {
     "source": "access",
@@ -221,7 +229,8 @@
     "mediaFile": "",
     "occurrenceFileSuffix": "_occurrence.txt", 
     "url": "",
-    "akronym": "PMO"
+    "akronym": "PMO",
+    "gbifCitation": "Nakrem H A, Lindemann F J (2022). Palaeontological collection (PMO) at UiO NHM, Oslo. Version 1.4. University of Oslo. Occurrence dataset https://doi.org/10.15468/wmmvk3 accessed via GBIF.org on 2023-12-20"
 },
 {
     "source": "excel",
@@ -241,6 +250,20 @@
     "mediaFile": "",
     "occurrenceFileSuffix": "_occurrence.txt", 
     "url": "",
-    "akronym": "NHMO-BULK"
+    "akronym": "NHMO-BULK",
+    "gbifCitation": "Marthinsen G (2023). Collection for bulk- and project material at the Natural History Museum in Oslo, Norway. Version 1.3. University of Oslo. Occurrence dataset https://doi.org/10.15468/q4y7ye accessed via GBIF.org on 2023-12-20"
+},
+{
+    "source": "access",
+    "orgGroup": "zoologi",
+    "name": "crustacea",
+    "zipFileName": "occurrence",
+    "mediaFile": "",
+    "occurrenceFileSuffix": "_occurrence.txt", 
+    "url": "",
+    "gbifCitation": "Wilhelmsen Å I, Bachmann L, Rindal E (2023). Crustacea collection (Cru) at UiO NHM, Oslo. Version 1.6. University of Oslo. Occurrence dataset https://doi.org/10.15468/efw98v accessed via GBIF.org on 2023-12-20"
 }
 ]
+
+   
+  

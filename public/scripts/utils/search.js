@@ -94,8 +94,6 @@ const getOrganismGroups = async () => {
 //      emptyResultElements() in resultElementsOnOff.js
 // is called by emptySearchButton.eventlistener, upateFooter() when error
 const emptySearch = (comesFrom) => {
-    console.log('emptySearch, comes from ' + comesFrom)
-
     if (comesFrom === "organism-button") {
         sessionStorage.removeItem('collection')
         collection.value = "vennligst"
@@ -155,6 +153,11 @@ const emptySearch = (comesFrom) => {
     numberPerPage = 20;
     numberOfPages = 0; // calculates the total number of pages
     document.getElementById('number-per-page').value = '20'
+
+    // empty footer-fields
+    updated.textcontent = ''
+    document.getElementById("gbif-citation").textContent = ''
+
 }
 
 
@@ -238,18 +241,16 @@ function addTextInCollSelect(a) {
     else if (a == 'palTyper') {return textItems.palTyper[index]}
     else if (a == 'utad') {return textItems.utad[index]}
     else if (a == 'bulk') {return textItems.bulk[index]}
+    else if (a == 'crustacea') {return textItems.crustacea[index]}
 }
     
 function addCollectionsToSelect(orgGroup, orgGroups, fileList) {
     sessionStorage.setItem('organismGroup', orgGroup)
     document.querySelector('#select-cell').style.display = 'block'
-    
     let length = collection.options.length
-    
     for (i = length-1; i >= 0; i--) {
       collection.options[i] = null
     }
-
     const vennligst = document.createElement("option")
     vennligst.text = textItems.vennligst[index]
     vennligst.value = 'vennligst'
@@ -509,7 +510,7 @@ const doSearch = (limit = 20) => {
                                             }
                                         })
                                     }
-
+console.log(parsedResults.data)
                                     sessionStorage.setItem('string', JSON.stringify(parsedResults.data))      
                                     
                                     load() 
@@ -599,10 +600,23 @@ const updateFooter = () => {
             data=JSON.parse(data)
             // let collectionDoi
             // if (collection.value)
-            lastUpdated = 'Dataene ble sist oppdatert: ' + data.date /*+ "   " + collectionDoi*/
+            lastUpdated = textItems.lastUpdated[index] + data.date /*+ "   " + collectionDoi*/
             updated.textContent = lastUpdated
-            // document.getElementById("collection-doi").innerHTML = "doi"
-            // document.getElementById("collection-doi").style.disply="inline"
+            if (chosenCollection === "alger" || chosenCollection === "vascular" || chosenCollection === "lav" || chosenCollection === "moser"
+            || chosenCollection === "sopp" || chosenCollection === "entomology" || chosenCollection === "oslofeltet" || chosenCollection === "palTyper"
+            || chosenCollection === "fossiler" || chosenCollection === "bulk" || chosenCollection === "crustacea") {
+                const fileList = sessionStorage.getItem('fileList')
+                const JSONdata = JSON.parse(fileList)
+                let gbifCitation
+                
+                JSONdata.forEach(el => {
+                    if (el.name ===  chosenCollection) {gbifCitation = el.gbifCitation}
+                })
+                document.getElementById("gbif-citation").textContent= textItems.gbifCitation[index] +gbifCitation
+                // document.getElementById("collection-doi").innerHTML = "doi"
+                // document.getElementById("collection-doi").style.disply="inline"
+            }
+            
         }) .catch((error) => {
             console.error('There is a problem, probably file for collection does not exist', error)
             emptySearch('error in updateFooter()')

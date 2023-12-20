@@ -95,7 +95,6 @@ async  function getspecimenData (allObject) {
         let specimenObject = {}
         // console.log(allObject[0])
         try {
-            console.log(allObject)
             if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
                 specimenObject = allObject.find(x => x.catalogNumber.replace(/[A-Z]/,'').trim() === id)
             }
@@ -202,6 +201,11 @@ const collectionName = (coll,source) => {
         } else {
             href = "https://www.nhm.uio.no/english/collections/zoological/bird/index.html"
         }
+        return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
+    } else if (coll == "crustacea") {
+        term = textItems.crustaceaCollection[index]
+        let href
+            href = "https://www.nhm.uio.no/samlinger/zoologi/krepsdyr/"
         return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
     } else if (coll == "DNA" || coll.includes("dna")) {
         term = textItems.DNAcollection[index]
@@ -871,29 +875,32 @@ async function showItemData (specimenObject,objectTable,order,overviewObject) {
                 if (Object.keys(overviewObject).length != 0) {
                     cell2.innerHTML = overviewObject.seqLength
                 }
-                addRow(objectTable)
-                cell1.innerHTML = textItems.validated[index]
-                if (Object.keys(overviewObject).length != 0) {
-                    if (overviewObject.validationStatus !== 'Validert') {
-                        cell2.innerHTML = textItems.no[index]
-                    } else {
-                        cell2.innerHTML = textItems.yes[index]
-                        addRow(objectTable)
-                        cell1.innerHTML = textItems.validationMethod[index]
-                        cell2.innerHTML = overviewObject.validationMethod
-                        if (overviewObject.validationMethod.includes('pert')) {
+                // Validated
+                console.log(specimenObject.musitCollectionCode)
+                if (specimenObject.musitCollectionCode === "F") {
+                    addRow(objectTable)
+                    cell1.innerHTML = textItems.validated[index]
+                    if (Object.keys(overviewObject).length != 0) {
+                        if (overviewObject.validationStatus !== 'Validert') {
+                            cell2.innerHTML = textItems.no[index]
+                        } else {
+                            cell2.innerHTML = textItems.yes[index]
                             addRow(objectTable)
-                            cell1.innerHTML = textItems.expert[index]
-                            cell2.innerHTML = overviewObject.expert
+                            cell1.innerHTML = textItems.validationMethod[index]
+                            cell2.innerHTML = overviewObject.validationMethod
+                            if (overviewObject.validationMethod.includes('pert')) {
+                                addRow(objectTable)
+                                cell1.innerHTML = textItems.expert[index]
+                                cell2.innerHTML = overviewObject.expert
+                            }
+                            
                         }
+                        // console.log(overviewObject)
                         
+                    } else {
+                        cell2.innerHTML = 'Unknown'
                     }
-                    // console.log(overviewObject)
-                    
-                } else {
-                    cell2.innerHTML = 'Unknown'
                 }
-                
             }
             addRow(objectTable)
             cell1.innerHTML = '<br>'
@@ -1258,7 +1265,7 @@ async function main () {
     showMedia(specimenObject)
     drawMapObject(specimenObject)
     renderItems()
-    showCitation(specimenObject)
+    // showCitation(specimenObject)
 }
 
 main()

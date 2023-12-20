@@ -95,6 +95,7 @@ function renderText (lang) {
         if (document.querySelector('#coremaopt')) {document.querySelector('#coremaopt').label = textItems.coremaopt[index]}
         if (document.querySelector('#birds')) {document.querySelector('#birds').innerHTML = textItems.fugler[index]}
         if (document.querySelector('#mammals')) {document.querySelector('#mammals').innerHTML = textItems.pattedyr[index]}
+        if (document.querySelector('#crustacea')) {document.querySelector('#crustacea').innerHTML = textItems.crustacea[index]}
         if (document.querySelector('#dna_vascular')) {document.querySelector('#dna_vascular').innerHTML = textItems.dna_vascular[index]}
         if (document.querySelector('#dna_entomology')) {document.querySelector('#dna_entomology').innerHTML = textItems.dna_insekter[index]}
         if (document.querySelector('#dna_fish_herptiles')) {document.querySelector('#dna_fish_herptiles').innerHTML = textItems.fishHerp[index]}

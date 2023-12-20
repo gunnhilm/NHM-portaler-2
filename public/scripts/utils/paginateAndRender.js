@@ -208,9 +208,12 @@ const resultTable = (subMusitData, musitData) => {
                     if (document.querySelector('#collection-select  option:checked').label.includes('DNA')) {
                         // corema-collections that are both in corema and musit (entomology, fungi, vascular, lichen)
                         if (sessionStorage.getItem('chosenCollection').includes('dna_')) {
-                            let musitBasisOfRecord
-                            if (subMusitData[i].musitBasisOfRecord) {musitBasisOfRecord = subMusitData[i].musitBasisOfRecord}
-                            cell10.innerHTML = subMusitData[i].materialSampleType + ' | ' + musitBasisOfRecord
+                            if (subMusitData[i].musitBasisOfRecord) {
+                                cell10.innerHTML = subMusitData[i].materialSampleType + ' | ' + subMusitData[i].musitBasisOfRecord
+                            } else {
+                                cell10.innerHTML = subMusitData[i].materialSampleType
+                            }
+                            
                         // collections only in corema
                         } else if (sessionStorage.getItem('chosenCollection') === 'mammals' || sessionStorage.getItem('chosenCollection') === 'birds') {
                             console.log(subMusitData[i])

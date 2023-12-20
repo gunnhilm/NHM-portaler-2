@@ -180,14 +180,19 @@ footer {
 } 
 
 .footer-content {
-    width: 90%;
-    display: inline-block;
+    width:90%;
     height: 48px;
 }
 
 #last-updated {
-    /* vertical-align: middle; */
-    text-align: left;
+    float:left;
+    width: 50%;
+}
+#gbif-citation {
+    display: inline-block;
+    width:40%;
+    font-size:9px;
+    line-height:1.5;
 }
 
 
