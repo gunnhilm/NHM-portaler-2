@@ -1,5 +1,3 @@
-console.log('archive front end');
-
 // Renders content in archive.hbs
 
 const archiveSearch = document.getElementById('archive-search-text')
@@ -21,7 +19,6 @@ const getCurrentMuseum = () => {
 
 // fetches fileList from backend. 
 const getFileList = async () => {
-    console.log('get list');
     const museum = getCurrentMuseum();
     const url_getFileList = `${urlPath}/getFileList/?museum=${museum}`;
     try {
@@ -30,7 +27,6 @@ const getFileList = async () => {
         throw new Error('Error: response not ok');
       }
       const data = await response.text();
-      const fileListData = JSON.parse(data);
       sessionStorage.setItem('fileList', data);
       return true;
     } catch (error) {
@@ -40,12 +36,19 @@ const getFileList = async () => {
   };
 
 
-
 function addTextInButtons(a) {
     if (a == 'archive') {return textItems.archive[index]}
     else if (a == 'fieldNotes') {return textItems.fieldNotes[index]}
     else if (a == 'illustrations') {return textItems.illustrations[index]}
+    else if (a == 'foto') {return textItems.foto[index]}
     else if (a == 'journals') {return textItems.journals[index]}
+}
+
+function removeSubButtons() {
+  const container = document.getElementById('sub-archive-type');
+
+  // Clear any existing buttons in the container
+  container.innerHTML = '';
 }
 
 function removeResults() {
@@ -60,65 +63,123 @@ function removeResults() {
 
 }
 
-async function makeButtons() {
-  const buttonArray = [];
-  let archiveTypes = [];
-  let archiveFiles = [];
-  await getFileList();
-  let fileList = JSON.parse(sessionStorage.getItem('fileList'));
+function getSearchVariables () {
+  const searchTerm = archiveSearch.value
+  const limit = 2000
+  const museum = getCurrentMuseum()
+
+   return {searchTerm, limit, museum}
+}
+
+function makeSubButtons(type, buttonArray) {
+  const container = document.getElementById('sub-archive-type');
+console.log('making sub buttons');
+  // Clear any existing buttons in the container
+  container.innerHTML = '';
   
-  for (let i = 0; i < fileList.length; i++) {
-    if (fileList[i].source === 'archive') {
-      archiveTypes = fileList[i].archiveGroups;
-      archiveFiles = fileList[i].archiveFiles;
-    }
-  }
+    buttonArray.forEach(name => {
+      const button = document.createElement("button");
+      button.textContent = name; // Use textContent instead of innerHTML
+      button.id = name;
+      button.className = "white-button";
+      container.appendChild(button);
+ 
+      // Create a closure to capture the value of 'name'
+      (function(name) {
+        button.addEventListener('click', (e) => {
+          removeResults();
+          archiveSearch.value = '';
+
+          // Clear class name for all buttons
+          container.querySelectorAll('button').forEach(btn => {
+            btn.className = "white-button";
+          });
+
+          // Set class name for clicked button
+          button.className = "blue-button";
+    
+          archiveCollection = name
+          // Set sessionStorage item with clicked button ID
+          sessionStorage.setItem('buttonID', name);
+          e.preventDefault();
+          const searchVariables = getSearchVariables()
+          doarchiveSearch(searchVariables.searchTerm,2000, searchVariables.museum, archiveCollection,'');
+        });
+      })(name);
+    });
+}
+
+
+async function makeButtons() {
+  await getFileList();
+  const fileList = JSON.parse(sessionStorage.getItem('fileList'));
   
   const archiveTypeContainer = document.getElementById("archive-type");
-  
-  archiveTypes.forEach(el => {
-    const button = document.createElement("button");
-    button.innerHTML = addTextInButtons(el);
-    button.id = el;
-    button.className = "white-button";
-    archiveTypeContainer.appendChild(button);
-    buttonArray.push(button);
-  });
-  
-  buttonArray.forEach(el => {
-    el.addEventListener('click', (e) => {
-      removeResults();
-      buttonArray.forEach(button => {
+  const buttonArray = [];
+  const searchVariables = getSearchVariables()
+  for (const file of fileList) {
+    if (file.source === 'archive') {
+      const archiveTypes = file.archiveGroups;
+      const archiveFiles = file.archiveFiles;
+      
+      archiveTypes.forEach(type => {
+        console.log('type: ' + type);
+        const button = document.createElement("button");
+        if (typeof type === "object") {
+          const keys = Object.keys(type);
+          button.innerHTML = addTextInButtons(keys[0]);
+          button.id = keys[0];
+          button.className = "white-button";
+          archiveTypeContainer.appendChild(button);
+          buttonArray.push(button);
+        } else {
+        button.innerHTML = addTextInButtons(type);
+        button.id = type;
         button.className = "white-button";
-      });
-      
-      for (const [key, value] of Object.entries(archiveFiles)) {  
-        if (el.id === 'journals') { 
-          archiveCollection = value;
-          el.className = "blue-button";
-          errorMessage.innerText = ""; // remove error messages
-          
-          // Save the button ID to sessionStorage
-          sessionStorage.setItem('buttonID', el.id);
-          
-          const museum = getCurrentMuseum();
-          const url = `${urlPath}/${museum}/journaler`;
-          window.open(url, '_self');
-        } else if (el.id === key) { 
-          archiveCollection = value;
-          el.className = "blue-button";
-          errorMessage.innerText = ""; // remove error messages
-          
-          // Save the button ID to sessionStorage
-          sessionStorage.setItem('buttonID', el.id);
-          
-          doarchiveSearch(2000);
-        }
+        archiveTypeContainer.appendChild(button);
+        buttonArray.push(button);
       }
-      
-      e.preventDefault();
-    });
-  });
+        button.addEventListener('click', (e) => {
+          removeResults();
+          archiveSearch.value = '';
+          buttonArray.forEach(btn => {
+            btn.className = "white-button";
+          });
+          if (type === 'journals' ) {
+            button.className = "blue-button";
+            errorMessage.innerText = ""; // remove error messages
+
+            // Save the button ID to sessionStorage
+            sessionStorage.setItem('buttonID', type);
+            archiveCollection = archiveFiles[type];
+            const museum = getCurrentMuseum();
+            const url = `${urlPath}/${museum}/journaler`;
+            window.open(url, '_self');
+  
+          } else if (archiveFiles.hasOwnProperty(type)) {
+            archiveCollection = archiveFiles[type];
+            button.className = "blue-button";
+            errorMessage.innerText = ""; // remove error messages
+
+            // Save the button ID to sessionStorage
+            sessionStorage.setItem('buttonID', type);
+            removeSubButtons();
+            
+            doarchiveSearch(searchVariables.searchTerm,2000, searchVariables.museum, archiveCollection,'');
+          } 
+          if (typeof type === "object") {
+            const keys = Object.keys(type);
+            button.className = "blue-button";
+            errorMessage.innerText = ""; // remove error messages
+            const subButtons =  type[keys[0]] // ['Dagny Tande Lid', 'Andre illustrasjoner'];
+            makeSubButtons(keys[0], subButtons);
+          }
+
+          e.preventDefault();
+        });
+      });
+    }
+  }
 }
 
 
@@ -130,9 +191,10 @@ async function makeButtons() {
 
 // is called in archiveResultTable(..)
 const archiveHeaderNamesToShow = ['Regnr', 'Tekst på beholder', 'Indeks', 'Årstall/periode', 'Hvilket museum?', 'Person', 'PersonID (wikidata)', 'FotoID', 'Kommentarer']; // Define the headers to show
-const illustrationHeaderNamesToShow = ['Regnr', 'Comment', 'Størrelse', 'Figurnavn', 'Artsnavn (Latin)', 'Artsnavn (norsk)', 'Illustratør', 'Kilde', 'Copyright', 'Lokasjon disk']
-const fieldNoteHeaderNamesToShow = ['Regnr', 'Tittel', 'Fagområde', 'Taxongruppe', 'Person', 'Q-nummer', 'Dokumenttype', 'År/Dato fra', 'År til', 'Kommentar'] // Define the headers to show
-
+const botanicalIllustrationsHeaderNamesToShow = ['Regnr', 'Comment', 'Størrelse', 'Figurnavn', 'Artsnavn (Latin)', 'Artsnavn (norsk)', 'Illustratør', 'Kilde', 'Copyright', 'Lokasjon disk']
+const DTLIllustrationsHeaderNamesToShow = ['Regnr', 'Latinsk Navn', 'Tegningype', 'Motiv', 'Orginal tekst', 'Norsk Navn']
+const fieldNoteHeaderNamesToShow = ['Fagområde', 'Taxongruppe',  'Dokumenttype', 'Person', 'Ekstra_info', 'Stedsinfo', 'År_fra', 'År_til', 'Filnavn'] // Define the headers to show
+const RYBFotoHeadersToShow = ['Regnr', 'Dato_foto_tidvis_anslagsvis', 'Motiv', 'Lokalitetsbeskrivelse', 'Stedsangivelse', 'Diastekst']
 
 const addHeaders = (table, headerNamesToShow) => {
     const headerRow = document.createElement('tr');
@@ -150,112 +212,156 @@ const addHeaders = (table, headerNamesToShow) => {
 // calls addHeaders(..)
 // is called in doarchiveSearch(..)
 const createArchiveTableAndFillIt = (data, archiveCollection) => {
-    if (archiveCollection === 'archive') {
-        headerNamesToShow = archiveHeaderNamesToShow
-    } else if (archiveCollection === 'illustrations') {
-        headerNamesToShow = illustrationHeaderNamesToShow
-    } else if (archiveCollection === 'fieldNotes') {
-      headerNamesToShow = fieldNoteHeaderNamesToShow
-    }
-    const table = document.createElement('table');
-    table.setAttribute('id', 'archive-result-table');
-    table.setAttribute('class', 'result-table');
-    data.forEach((child, i) => {
-      if (i === 0) {
-        addHeaders(table, headerNamesToShow);
-      }
-      const museum = getCurrentMuseum()
-      const url = `${urlPath}/${museum}/archive?pageID=`;
-      const documentType = sessionStorage.getItem("buttonID")
-      const row = table.insertRow();
-      Object.entries(child).forEach(([key, value], index) => {
-        if (headerNamesToShow.includes(key)) {
-          const tableCell = row.insertCell();
-          if (key.includes('FlipBook')) {
-            value = `<a href="https://samlingsportal.nhm.uio.no/archive/nhm/${value}">FlipBook</a>`;
-            tableCell.innerHTML = value;
-          } else if (key.startsWith('PDF')) {
-            value = `<a href="https://samlingsportal.nhm.uio.no/archive/nhm/${value}">PDF</a>`;
-            tableCell.innerHTML = value;
-          } else if (key.includes('NHM ID')) {
-            tableCell.appendChild(document.createTextNode(value));
-            tableCell.className = 'nowrap';
-          } else if (key.includes('Regnr')) {
-            value = `<a href="${url}${value}&documentType=${documentType}">${value}</a>`;
-            tableCell.innerHTML = value;
-        } else {
-            if (value.length > 500) {
-                value = value.substring(0, 500) + '[...]';
-              }
-            tableCell.appendChild(document.createTextNode(value));
-          }
-        }
-      });
-    });
+  let filePath = '';
+  let headerNamesToShow = [];
+
+  if (archiveCollection === 'archive') {
+    headerNamesToShow = archiveHeaderNamesToShow;
+  } else if (archiveCollection === 'Botaniske Illustrasjoner') {
+    headerNamesToShow = botanicalIllustrationsHeaderNamesToShow;
+  } else if (archiveCollection === 'Dagny Tande Lid') {
+    headerNamesToShow = DTLIllustrationsHeaderNamesToShow;
+  } else if (archiveCollection === 'fieldNotes') {
+    headerNamesToShow = fieldNoteHeaderNamesToShow;
+    filePath = '/museum/archive/fieldNotes_files/';
+  } else if (archiveCollection === 'Rolf Y. Berg') {
+    headerNamesToShow = RYBFotoHeadersToShow;
+    filePath = '/museum/archive/photo_files/RYB_files/';
+  }
   
-    document.getElementById('container').appendChild(table);
-  };
+  const table = document.createElement('table');
+  table.id = 'archive-result-table';
+  table.className = 'result-table';
 
-
-// performs search and fetches data
-// in: limit (integer; maximum number of records to display)
-// calls archiveResultTable(..)
-// is called in archiveSearchForm.eventlistener
-
-const doarchiveSearch = async (limit = 2000) => {
-    const resultTableElement = document.getElementById('archive-result-table');
-    if (resultTableElement) {
-      document.getElementById('container').removeChild(resultTableElement);
+  data.forEach((child, i) => {
+    if (i === 0) {
+      addHeaders(table, headerNamesToShow);
     }
-  
+
     const museum = getCurrentMuseum();
-    const searchTerm = archiveSearch.value;
+    const url = `${urlPath}/${museum}/archive?pageID=`;
+    const documentType = sessionStorage.getItem('buttonID');
+    const row = table.insertRow();
+
+    Object.entries(child).forEach(([key, value]) => {
+      if (headerNamesToShow.includes(key)) {
+        const tableCell = row.insertCell();
+
+        if (key.includes('FlipBook')) {
+          value = `<a href="https://samlingsportal.nhm.uio.no/archive/nhm/${value}">FlipBook</a>`;
+          tableCell.innerHTML = value;
+        } else if (key.startsWith('PDF')) {
+          value = `<a href="https://samlingsportal.nhm.uio.no/archive/nhm/${value}">PDF</a>`;
+          tableCell.innerHTML = value;
+        } else if (key.includes('NHM ID')) {
+          tableCell.textContent = value;
+          tableCell.className = 'nowrap';
+        } else if (key.includes('Regnr')) {
+          value = `<a href="${url}${value}&documentType=${documentType}">${value}</a>`;
+          tableCell.innerHTML = value;
+        } else if (key.toLowerCase().includes('filnavn')) {
+          const fullPathName = filePath + value;
+          value = `<a href="${fullPathName}">${value}</a>`;
+          tableCell.innerHTML = value;
+        }else {
+          if (value.length > 500) {
+            value = value.substring(0, 500) + '[...]';
+          }
+          tableCell.textContent = value;
+        }
+      }
+    });
+  });
+
+  document.getElementById('container').appendChild(table);
+};
+
+const doarchiveSearch = async (searchTerm, limit, museum, archiveCollection, linjeNumber) => {
+  const resultTableElement = document.getElementById('archive-result-table');
+  if (resultTableElement) {
+      document.getElementById('container').removeChild(resultTableElement);
+  }
+
+  if(!searchTerm) {
+    searchTerm = archiveSearch.value
+  }
+  if(!museum ) {
+    museum = getCurrentMuseum();
+  }
+  if(!archiveCollection) {
+    console.log('magler arkivsamling');
     archiveCollection = archiveCollection || 'archive';
-    const url = `${urlPath}/search/?search=${searchTerm}&museum=${museum}&samling=${archiveCollection}&linjeNumber=0&limit=${limit}`;
-    console.log(url);
-  
-    try {
+  }
+  if(!limit) {
+    limit = 2000
+  }
+
+  const url = `${urlPath}/search/?search=${searchTerm}&museum=${museum}&samling=${archiveCollection}&linjeNumber=${linjeNumber}&limit=${limit}`;
+  try {
       const response = await fetch(url);
       if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
+          throw new Error(`Error: ${response.status}`);
       }
-  
+
       const data = await response.json();
       if (data.error) {
-        throw new Error(data.error);
+          throw new Error(data.error);
       }
-  
+
       const parsedResults = Papa.parse(data.unparsed.results, {
-        delimiter: "\t",
-        newline: "\n",
-        quoteChar: '',
-        header: true,
+          delimiter: "\t",
+          newline: "\n",
+          quoteChar: '',
+          header: true,
       });
-  
+
       if (parsedResults.data.length > 0) {
-        createArchiveTableAndFillIt(parsedResults.data, archiveCollection);
-        errorMessage.innerText = textItems.nbHitsText[index];
-        nbHitsElement.innerText = parsedResults.data.length;
-        sortTable();
+          createArchiveTableAndFillIt(parsedResults.data, archiveCollection);
+          errorMessage.innerText = textItems.nbHitsText[index];
+          nbHitsElement.innerText = parsedResults.data.length;
+          sortTable();
       } else {
-        console.log('no results');
-        errorMessage.innerText = textItems.noHits[index];
+          console.log('no results');
+          errorMessage.innerText = textItems.noHits[index];
       }
 
       updateFooter(museum, archiveCollection);
+      const newUrl = new URLSearchParams({
+        search: searchTerm,
+        museum,
+        samling: archiveCollection,
+        linjeNumber: 0,
+        limit: limit
+      });
+      window.history.replaceState({}, '', `${window.location.pathname}?${newUrl}`);
 
-    } catch (error) {
+  } catch (error) {
       console.error(error);
       errorMessage.innerText = textItems.serverError[index];
-    }
-  };
-  
+  }
+};
+
+// for å kunne lenke til et søk
+const checkSearchParameterAndRunSearch = async () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const searchTerm = urlParams.get('search');
+  const museum = urlParams.get('museum');
+  const archiveCollection = urlParams.get('samling');
+  const linjeNumber = urlParams.get('linjeNumber');
+  const limit = urlParams.get('limit');
+
+  if (searchTerm) {
+      await doarchiveSearch(searchTerm, limit, museum, archiveCollection, linjeNumber);
+  }
+};
+
+window.onload = checkSearchParameterAndRunSearch;
 
 // when somebody clicks search-button
 archiveSearchForm.addEventListener('click', (e) => {
     e.preventDefault()
     errorMessage.innerText = "" // fjern feilmeldinger
-    doarchiveSearch(2000) //
+    doarchiveSearch() //
     
 })  
 
@@ -275,7 +381,6 @@ function sortTable() {
             .forEach(tr => table.appendChild(tr) );
     })));
 }
-
 
 
 // sends request to server for date of last change of the archive-datafile
@@ -307,6 +412,3 @@ async function main() {
 }
 
 main()
-
-
-

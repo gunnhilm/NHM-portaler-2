@@ -465,15 +465,18 @@ const doSearch = (limit = 20) => {
                             //check if there are any hits from the search
                             if ( parsedResults.data === undefined || parsedResults.data.length === 0 ) {
                                 nbHitsElement.innerHTML = textItems.noHits[index]
+                                nbHitsElement.style.display = 'inline'
                             } else {
                                 try {
                                     // hvis vi får flere enn 2000 treff må vi si i fra om det
                                     if(parsedResults.data.length > 999){
                                         nbHitsElement.textContent = textItems.tooManyHits[index]
                                         nbHitsElement.style.color = 'red'
+                                        nbHitsElement.style.display = 'inline'
                                     } else {
                                         nbHitsElement.textContent = parsedResults.data.length
                                         nbHitsElement.style.color = 'black'
+                                        nbHitsElement.style.display = 'inline'
                                     }
                                     
                                     nbHitsHeader.innerHTML = textItems.nbHitsText[index]
@@ -510,7 +513,7 @@ const doSearch = (limit = 20) => {
                                             }
                                         })
                                     }
-console.log(parsedResults.data)
+//console.log(parsedResults.data)
                                     sessionStorage.setItem('string', JSON.stringify(parsedResults.data))      
                                     
                                     load() 

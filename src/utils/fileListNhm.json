@@ -20,7 +20,7 @@
 },
 {
     "source": "archive",
-    "archiveGroups": ["archive", "fieldNotes", "illustrations", "journals"],
+    "archiveGroups": ["archive", "fieldNotes", {"illustrations": ["Dagny Tande Lid", "Botaniske Illustrasjoner"]},{"foto": ["Rolf Y. Berg", "noen andre"]}, "journals"],
     "archiveFiles":{
         "archive": "archive",
         "illustrations": "illustrations",

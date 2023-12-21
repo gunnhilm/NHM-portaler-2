@@ -43,7 +43,7 @@ function getMuseumPath() {
     return museumURLPath
 }
 
-// Function to toggle the display of the "Please Wait" image based on the input variable
+// Function to toggle the display of the "Please Wait" image based on the input variable, true or false
 function togglePleaseWait(showImage) {
     const pleaseWaitImage = document.getElementById("please-wait");
     pleaseWaitImage.style.display = showImage ? "inline" : "none";

@@ -75,171 +75,169 @@ function renderText (lang) {
     
     renderHeaderContent(lang)
     
-    //Dropdown med valg av samlinger, index page og stat page
-    const excludedKeywordsDropdown = ['object', 'about', 'help', 'corema', 'map', 'journaler', 'getDOI', 'showStat', 'tools', 'checkCoord', 'dataError', 'advancedSearch'];
-
+    // //Dropdown med valg av samlinger, index page og stat page
+    const excludedKeywordsDropdown = ['about', 'archive', 'advancedSearch', 'checkCoord', 'corema', 'dataError', 'getDOI', 'help', 'journaler', 'map', 'object', 'showStat', 'tools'];
     if (!excludedKeywordsDropdown.some(keyword => location.href.includes(keyword))) {
-    // if (!location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler') & !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools') & !location.href.includes('checkCoord') & !location.href.includes('dataError') & !location.href.includes('advancedSearch')) {
-    //if (location.href.substring(location.href.split('/',3).join('/').length).lengt === 12) { 
-    
-    // document.querySelector('#specimensOptgroup').innerHTML = textItems.specimensOptgroup[index]
-        if (document.querySelector('#vennligst')) {document.querySelector('#vennligst').innerHTML = textItems.vennligst[index]}
-        if (document.querySelector('#vascular')) {document.querySelector('#vascular').innerHTML = textItems.vascular[index]}
-        if (document.querySelector('#sopp')) {document.querySelector('#sopp').innerHTML = textItems.sopp[index]}
-        if (document.querySelector('#moser')) {document.querySelector('#moser').innerHTML = textItems.moser[index]}
-        if (document.querySelector('#lav')) {document.querySelector('#lav').innerHTML = textItems.lav[index]}
-        if (document.querySelector('#alger')) {document.querySelector('#alger').innerHTML = textItems.alger[index]}
-        if (document.querySelector('#entomology')) {document.querySelector('#entomology').innerHTML = textItems.insekter[index]}
-        if (document.querySelector('#evertebrater')) {document.querySelector('#evertebrater').innerHTML = textItems.evertebrater[index]}
-        if (document.querySelector('#fisk')) {document.querySelector('#fisk').innerHTML = textItems.fisk[index]}
-        if (document.querySelector('#coremaopt')) {document.querySelector('#coremaopt').label = textItems.coremaopt[index]}
-        if (document.querySelector('#birds')) {document.querySelector('#birds').innerHTML = textItems.fugler[index]}
-        if (document.querySelector('#mammals')) {document.querySelector('#mammals').innerHTML = textItems.pattedyr[index]}
-        if (document.querySelector('#crustacea')) {document.querySelector('#crustacea').innerHTML = textItems.crustacea[index]}
-        if (document.querySelector('#dna_vascular')) {document.querySelector('#dna_vascular').innerHTML = textItems.dna_vascular[index]}
-        if (document.querySelector('#dna_entomology')) {document.querySelector('#dna_entomology').innerHTML = textItems.dna_insekter[index]}
-        if (document.querySelector('#dna_fish_herptiles')) {document.querySelector('#dna_fish_herptiles').innerHTML = textItems.fishHerp[index]}
-        if (document.querySelector('#dna_fungi_lichens')) {document.querySelector('#dna_fungi_lichens').innerHTML = textItems.fungiLichens[index]}
-        if (document.querySelector('#dna_other')) {document.querySelector('#dna_other').innerHTML = textItems.other[index]}
-        if (document.querySelector('#malmer')) {document.querySelector('#malmer').innerHTML = textItems.malmer[index]}
-        if (document.querySelector('#oslofeltet')) {document.querySelector('#oslofeltet').innerHTML = textItems.oslofeltet[index]}
-        if (document.querySelector('#utenlandskeBergarter')) {document.querySelector('#utenlandskeBergarter').innerHTML = textItems.utenlandskeBA[index]}
-        if (document.querySelector('#GeoPalOpt')) {document.querySelector('#GeoPalOpt').label = textItems.GeoPal[index]}
-        if (document.querySelector('#otherOpt')) {document.querySelector('#otherOpt').label = textItems.otherOpt[index]}
-        if (document.querySelector('#utad')) {document.querySelector('#utad').label = textItems.utad[index]}
-        if (document.querySelector('#bulk')) {document.querySelector('#bulk').label = textItems.bulk[index]}
-        if (document.querySelector('#bulkProjectHeader')) {document.querySelector('#bulkProjectHeader').innerHTML = textItems.bulkSelectHeader[index]}
-        if (document.querySelector('#vennligstBulk')) {document.querySelector('#vennligstBulk').innerHTML = textItems.searchProject[index]}
-        
-        
+        const indexElementsToUpdate = [
+            { selector: '#vennligst', key: 'vennligst' },
+            { selector: '#vascular', key: 'vascular' },
+            { selector: '#sopp', key: 'sopp' },
+            { selector: '#moser', key: 'moser' },
+            { selector: '#lav', key: 'lav' },
+            { selector: '#alger', key: 'alger' },
+            { selector: '#entomology', key: 'insekter' },
+            { selector: '#evertebrater', key: 'evertebrater' },
+            { selector: '#crustacea', key: 'crustacea' },
+            { selector: '#fisk', key: 'fisk' },
+            { selector: '#coremaopt', key: 'coremaopt' },
+            { selector: '#birds', key: 'fugler' },
+            { selector: '#mammals', key: 'pattedyr' },
+            { selector: '#dna_vascular', key: 'dna_vascular' },
+            { selector: '#dna_entomology', key: 'dna_insekter' },
+            { selector: '#dna_fish_herptiles', key: 'fishHerp' },
+            { selector: '#dna_fungi_lichens', key: 'fungiLichens' },
+            { selector: '#dna_other', key: 'other' },
+            { selector: '#malmer', key: 'malmer' },
+            { selector: '#oslofeltet', key: 'oslofeltet' },
+            { selector: '#utenlandskeBergarter', key: 'utenlandskeBA' },
+            { selector: '#GeoPalOpt', key: 'GeoPal' },
+            { selector: '#otherOpt', key: 'otherOpt' },
+            { selector: '#utad', key: 'utad' },
+            { selector: '#bulk', key: 'bulk' },
+            { selector: '#bulkProjectHeader', key: 'bulkSelectHeader' },
+            { selector: '#vennligstBulk', key: 'searchProject' },
+        ];
+
+        indexElementsToUpdate.forEach(element => {
+            const { selector, key } = element;
+            const elementToUpdate = document.querySelector(selector);
+            if (elementToUpdate) {
+                elementToUpdate.innerHTML = textItems[key][index];
+            }
+        });
     }
 
-    // index page
+
+  // index page
     const excludedKeywordsIndex = ['about', 'archive', 'artsObs', 'barcod', 'checkCoord', 'corema', 'dataError', 'getDOI', 'help', 'journaler', 'labels', 'loanInfo', 'map', 'object', 'showStat', 'tools'];
-
     if (!excludedKeywordsIndex.some(keyword => location.href.includes(keyword))) {
+
+        const elementsToUpdate = [
+            { selector: '#header-advSearch-page', key: 'headerAdvSearchPage' },
+            { selector: '#adv-search-button', key: 'searchButton' },
+            { selector: '#list-objects-button', key: 'listObjects' },
+            { selector: '#search-obj-list-button', key: 'searchButton' },
+            { selector: '#search-button', key: 'searchButton' },
+            { selector: '#header-search-page', key: 'headerSearchPage' },
+            { selector: '#search-text', key: 'placeholder' },
+            { selector: '#advanced-title', key: 'headerAdvSearchPage' },
+            { selector: '#objectlist-title', key: 'listObjects' },
+            { selector: '#obj-list-input', key: 'placeholderList' },
+            { selector: '#botanikk', key: 'botanikk' },
+            { selector: '#mykologi', key: 'mykologi' },
+            { selector: '#zoologi', key: 'zoologi' },
+            { selector: '#geologi', key: 'geologi' },
+            { selector: '#paleontologi', key: 'paleontologi' },
+            { selector: '#other', key: 'otherCollections' },
+            { selector: '#empty-search-button', key: 'emptySearch' },
+            { selector: '#hits-per-page', key: 'hitsPerPage' },
+            { selector: '#head-nb-hits', key: 'nbHitsText' },
+            { selector: '#nb-hits', key: 'tooManyHits' },
+            { selector: '#download-button', key: 'downloadLink' },
+            { selector: '#download-photo-button', key: 'downloadPhoto' },
+            { selector: '#zoom-expl-popup', key: 'mapHelpContent' },
+            { selector: '#zoom-button', key: 'zoomButton' },
+            { selector: '#large-map-button', key: 'largeMapButton' },
+            { selector: '#export-png', key: 'downloadMapButton' },
+            { selector: '#checkedInMap', key: 'checkedInMap' },
+            { selector: '#first', valueAttr: 'value', key: 'firstButton' },
+            { selector: '#previous', valueAttr: 'value', key: 'previousButton' },
+            { selector: '#next', valueAttr: 'value', key: 'nextButton' },
+            { selector: '#last', valueAttr: 'value', key: 'lastButton' },
+            { selector: '#first1', valueAttr: 'value', key: 'firstButton' },
+            { selector: '#previous1', valueAttr: 'value', key: 'previousButton' },
+            { selector: '#next1', valueAttr: 'value', key: 'nextButton' },
+            { selector: '#last1', valueAttr: 'value', key: 'lastButton' },
+            { selector: '#resultPageText', innerHtml: true, key: 'page' },
+            { selector: '#resultPageAlert', innerHtml: true, key: 'lastPageAlert' },
+            { selector: '#resultPageText1', innerHtml: true, key: 'page' },
+            { selector: '#resultPageAlert1', innerHtml: true, key: 'lastPageAlert' },
+        ];
+        
         try {
-            
-        //document.querySelector('#vennligst').innerHTML = textItems.vennligst[index] 
-        if(document.querySelector('#header-advSearch-page')) { document.querySelector('#header-advSearch-page').innerHTML = textItems.headerAdvSearchPage[index]}
-        if(document.querySelector('#adv-search-button')) {document.querySelector('#adv-search-button').innerHTML = textItems.searchButton[index]}
-        if(document.querySelector('#list-objects-button')) { document.querySelector('#list-objects-button').innerHTML = textItems.listObjects[index]}
-        if(document.querySelector('#search-obj-list-button')) {document.querySelector('#search-obj-list-button').innerHTML = textItems.searchButton[index]}
-        
-        // const orgGroup = sessionStorage.getItem('organismGroup')
-        fillSearchFields()
-
-        document.querySelector('#search-button').innerHTML = textItems.searchButton[index]
-        document.querySelector('#header-search-page').innerHTML = textItems.headerSearchPage[index]
-        //document.querySelector('#adv-search-link').innerHTML = textItems.headerAdvSearchPage[index]
-        document.querySelector('#search-text').placeholder = textItems.placeholder[index]
-        //document.querySelector('#simple-accordion').innerHTML = textItems.simpleSearch[index]
-        //document.querySelector('#advanced-accordion').innerHTML = textItems.headerAdvSearchPage[index]
-        document.querySelector('#advanced-title').innerHTML = textItems.headerAdvSearchPage[index]
-
-        if (document.getElementById('adv-accordion-icon')) {
-            if (document.getElementsByClassName('panel')[0].style.display === 'block') {
-                document.getElementById('adv-accordion-icon').innerHTML = '-'
-            } else {
-                document.getElementById('adv-accordion-icon').innerHTML = '+'
+            for (const element of elementsToUpdate) {
+                const { selector, valueAttr, innerHtml, key } = element;
+                const elementToUpdate = document.querySelector(selector);
+                if (elementToUpdate) {
+                    if (innerHtml) {
+                        elementToUpdate.innerHTML = textItems[key][index];
+                    } else if (valueAttr) {
+                        elementToUpdate[valueAttr] = textItems[key][index];
+                    } else {
+                        elementToUpdate.innerHTML = textItems[key][index];
+                    }
+                }
             }
+        } catch (error) {
+            console.log(`RenderLang error: ${error}`);
         }
-        
-        if (document.getElementById('objectlist-accordion-icon')) {
-            if (document.getElementsByClassName('panel')[1].style.display === 'block') {
-                document.getElementById('objectlist-accordion-icon').innerHTML = '-'
-            } else {
-                document.getElementById('objectlist-accordion-icon').innerHTML = '+'
-            }
-        }
-        
-        //document.querySelector('#list-objects-accordion').innerHTML = textItems.listObjects[index]
-        document.querySelector('#objectlist-title').innerHTML = textItems.listObjects[index]
-        document.querySelector('#obj-list-input').innerHTML = textItems.placeholderList[index]
-            
-        if (document.querySelector('#botanikk')) {document.querySelector('#botanikk').innerHTML = textItems.botanikk[index]}
-        if (document.querySelector('#mykologi')) {document.querySelector('#mykologi').innerHTML = textItems.mykologi[index]}
-        if (document.querySelector('#zoologi')) {document.querySelector('#zoologi').innerHTML = textItems.zoologi[index]}
-        if (document.querySelector('#geologi')) {document.querySelector('#geologi').innerHTML = textItems.geologi[index]}
-        if (document.querySelector('#paleontologi')) {document.querySelector('#paleontologi').innerHTML = textItems.paleontologi[index]}
-        if (document.querySelector('#other')) {document.querySelector('#other').innerHTML = textItems.otherCollections[index]}
-        document.querySelector('#empty-search-button').innerHTML = textItems.emptySearch[index]
-        document.querySelector('#hits-per-page').innerHTML = textItems.hitsPerPage[index]
-        if (sessionStorage.getItem('string') && document.querySelector('#first').innerHTML.includes('F')) {
-            document.getElementById("head-nb-hits").innerHTML = textItems.nbHitsText[index]
-        }
-        if (document.getElementById("nb-hits").innerHTML.includes('1000')) {
-            document.getElementById("nb-hits").innerHTML = textItems.tooManyHits[index]
-        }
-        document.querySelector('#download-button').innerHTML = textItems.downloadLink[index]
-        document.querySelector('#download-photo-button').innerHTML = textItems.downloadPhoto[index]
-        document.getElementById('zoom-expl-popup').innerHTML = textItems.mapHelpContent[index]
-        document.querySelector('#zoom-button').innerHTML = textItems.zoomButton[index]
-        document.querySelector('#large-map-button').innerHTML = textItems.largeMapButton[index]
-        document.querySelector('#export-png').innerHTML = textItems.downloadMapButton[index]
-        document.querySelector('#checkedInMap').innerHTML = textItems.checkedInMap[index]
-        document.querySelector('#first').value = textItems.firstButton[index]
-        document.querySelector('#previous').value = textItems.previousButton[index]
-        document.querySelector('#next').value = textItems.nextButton[index]
-        document.querySelector('#last').value = textItems.lastButton[index]
-        document.querySelector('#first1').value = textItems.firstButton[index]
-        document.querySelector('#previous1').value = textItems.previousButton[index]
-        document.querySelector('#next1').value = textItems.nextButton[index]
-        document.querySelector('#last1').value = textItems.lastButton[index]
-        if(document.getElementById("resultPageText").innerHTML) {
-            document.getElementById("resultPageText").innerHTML = textItems.page[index]
-        }
-        if(document.getElementById("resultPageAlert").innerHTML) {
-            document.getElementById("resultPageAlert").innerHTML = textItems.lastPageAlert[index]
-        }
-        if(document.getElementById("resultPageText1").innerHTML) {
-            document.getElementById("resultPageText1").innerHTML = textItems.page[index]
-        }
-        if(document.getElementById("resultPageAlert1").innerHTML) {
-            document.getElementById("resultPageAlert1").innerHTML = textItems.lastPageAlert[index]
-        }
-    } catch (error) {
-        console.log(`RenderLang error: ${error}`);
-      }
     }
-    
-    
 
-    
-    // Tools page
+
+
+
+    // tools page
     if (location.href.includes('tools')) {
-        document.querySelector('#showToolsHeader').innerHTML = textItems.showToolsHeader[index]
-        document.querySelector('#showToolsText').innerHTML = textItems.showToolsText[index]
-        document.querySelector('#statistikk-link').innerHTML = textItems.statistikkLink[index]
-        document.querySelector('#statistics-text').innerHTML = textItems.statistikkTekst[index]
-        document.querySelector('#DOI-link').innerHTML = textItems.DOILink[index]
-        document.querySelector('#data-error-link').innerHTML = textItems.dataErrorLink[index]
-        document.querySelector('#data-error-text').innerHTML = textItems.dataErrorText[index]
-        document.querySelector('#arts-obs-link').innerHTML = textItems.artsObsLink[index]
-        document.querySelector('#arts-obs-text').innerHTML = textItems.artsObsText[index]
-        document.querySelector('#bc-header').innerHTML = textItems.bcText[index]
-        document.querySelector('#bc-fungi-link').innerHTML = textItems.sopp[index]
-        document.querySelector('#bc-lichen-link').innerHTML = textItems.lav[index]
-        document.querySelector('#bc-mammals-link').innerHTML = textItems.bcPattedyr[index]
-        document.querySelector('#bc-lep-link').innerHTML = textItems.bcLep[index]
-        document.querySelector('#bc-herptiles-link').innerHTML = textItems.bcHerptiles[index]
-        document.querySelector('#bc-birds-link').innerHTML = textItems.bcFugler[index]
-        document.querySelector('#loan-info-link').innerHTML = textItems.loanInfoLink[index]
-        document.querySelector('#loan-info-text').innerHTML = textItems.loanInfoText[index]
-        document.querySelector('#make-label-link').innerHTML = textItems.makeLabelLink[index]
-        document.querySelector('#make-label-text').innerHTML = textItems.makeLabeltext[index]
-        //document.querySelector('#coordinate-link').innerHTML = textItems.coordinateLink[index]
-        
+        const toolsElementsToUpdate = [
+            { selector: '#showToolsHeader', key: 'showToolsHeader' },
+            { selector: '#showToolsText', key: 'showToolsText' },
+            { selector: '#statistikk-link', key: 'statistikkLink' },
+            { selector: '#statistics-text', key: 'statistikkTekst' },
+            { selector: '#DOI-link', key: 'DOILink' },
+            { selector: '#data-error-link', key: 'dataErrorLink' },
+            { selector: '#data-error-text', key: 'dataErrorText' },
+            { selector: '#arts-obs-link', key: 'artsObsLink' },
+            { selector: '#arts-obs-text', key: 'artsObsText' },
+            { selector: '#bc-header', key: 'bcText' },
+            { selector: '#bc-fungi-link', key: 'sopp' },
+            { selector: '#bc-lichen-link', key: 'lav' },
+            { selector: '#bc-mammals-link', key: 'bcPattedyr' },
+            { selector: '#bc-lep-link', key: 'bcLep' },
+            { selector: '#bc-herptiles-link', key: 'bcHerptiles' },
+            { selector: '#bc-birds-link', key: 'bcFugler' },
+            { selector: '#loan-info-link', key: 'loanInfoLink' },
+            { selector: '#loan-info-text', key: 'loanInfoText' },
+            { selector: '#make-label-link', key: 'makeLabelLink' },
+            { selector: '#make-label-text', key: 'makeLabeltext' },
+        ];
+    
+        toolsElementsToUpdate.forEach(element => {
+            const { selector, key } = element;
+            const elementToUpdate = document.querySelector(selector);
+            if (elementToUpdate) {
+                elementToUpdate.innerHTML = textItems[key][index];
+            }
+        });
+    
         if (window.location.href.includes('/tmu') || window.location.href.includes('/nbh') || window.location.href.includes('/um')) {
-            document.querySelector('#bc-fungi-link').style.display = "none"
-            document.querySelector('#bc-mammals-link').style.display = "none"
-            document.querySelector('#bc-lep-link').style.display = "none"
-            document.querySelector('#bc-herptiles-link').style.display = "none"
-            document.querySelector('#bc-lichen-link').style.display = "none"
-            document.querySelector('#bc-header').style.display = "none"
-            document.querySelector('#bc-birds-link').style.display = "none"
-            document.querySelector('#loan-info-link').style.display = "none"
-            document.querySelector('#loan-info-text').style.display = "none"
+            const toolsElementsToHide = [
+                '#bc-fungi-link',
+                '#bc-mammals-link',
+                '#bc-lep-link',
+                '#bc-herptiles-link',
+                '#bc-lichen-link',
+                '#bc-header',
+                '#bc-birds-link',
+                '#loan-info-link',
+                '#loan-info-text',
+            ];
+    
+            toolsElementsToHide.forEach(selector => {
+                const elementToHide = document.querySelector(selector);
+                if (elementToHide) {
+                    elementToHide.style.display = "none";
+                }
+            });
         }
     }
 
@@ -252,25 +250,7 @@ function renderText (lang) {
         document.querySelector('#NbObj_header').innerHTML = textItems.nbObjHeader[index]
         document.querySelector('#NbPhoto_header').innerHTML = textItems.nbPhotoHeader[index]
         document.querySelector('#NbCoord_header').innerHTML = textItems.nbCoordHeader[index]
-//        document.querySelector('#Vascular_header').innerHTML = textItems.vascular[index]
- //       document.querySelector('#Mosses_header').innerHTML = textItems.moser[index]
-   //     document.querySelector('#Fungi_header').innerHTML = textItems.sopp[index]
-//        document.querySelector('#Lichen_header').innerHTML = textItems.lav[index]
-//        document.querySelector('#Insects_header').innerHTML = textItems.insekter[index]
-        if(window.location.href.includes('/nhm')) {
-            //document.querySelector('#Fish_header').innerHTML = textItems.fisk[index]
-            //document.querySelector('#Algae_header').innerHTML = textItems.alger[index]
-            //document.querySelector('#Birds_header').innerHTML = textItems.fugler[index]
-            //document.querySelector('#Mammals_header').innerHTML = textItems.pattedyr[index]
-            //document.querySelector('#malmer_header').innerHTML = textItems.malmer[index]
-            //document.querySelector('#oslofeltet_header').innerHTML = textItems.oslofeltet[index]
-            //document.querySelector('#utenlandskeBA_header').innerHTML = textItems.utenlandskeBA[index]
-        }
-        if(!window.location.href.includes('/nhm')) {
-  //          document.querySelector('#Evertebrates_header').innerHTML = textItems.evertebrater[index]
-        }
         document.querySelector('#graph_header').innerHTML = textItems.graphHeader[index]
-
     }
 
     // about page
@@ -304,8 +284,6 @@ function renderText (lang) {
     // getDOI page
     if (location.href.includes('getDOI')) {
         document.querySelector('#getDOIHeader').innerHTML = textItems.getDOIHeader[index]
-        //document.querySelector('#museum-select').innerHTML = textItems.selectMuseum[index] 
-        //document.querySelector('#collection-select').innerHTML = textItems.selectCollection[index] 
         document.querySelector('#selectMuseum').innerHTML = textItems.selectMuseum[index] 
         document.querySelector('#selectCollection').innerHTML = textItems.selectCollection[index] 
         document.querySelector('#onloggingData').innerHTML = textItems.onloggingData[index]
@@ -378,7 +356,9 @@ document.querySelector('#language').addEventListener('click', (e) => {
     renderText(language)
     sessionStorage.setItem('language', language)
    
-    if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler') & !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools') & !location.href.includes('checkCoord') & !location.href.includes('dataError')) {
+    const excludedUrls = ['about', 'archive' , 'checkCoord', 'corema', 'dataError', 'getDOI', 'help', 'journaler', 'map', 'object', 'showStat', 'tools'];
+    if (!excludedUrls.some(url => location.href.includes(url))) {
+    // if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler') & !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools') & !location.href.includes('checkCoord') & !location.href.includes('dataError')) {
         if (document.querySelector("#head-nb-hits").innerHTML) {
 
             if (language === "Norwegian") {
@@ -392,28 +372,17 @@ document.querySelector('#language').addEventListener('click', (e) => {
             const headerRow = document.querySelector("#myTable").rows[0]
             cell1 = headerRow.cells[0]
             cell2 = headerRow.cells[1]
-            // cell3 = document.getElementsByClassName("row-uncertainty")
             cell3 = headerRow.cells[2]
-            // cell4 = document.getElementsByClassName('row-innsamler')            
             cell4 = headerRow.cells[3]
             cell5 = document.getElementsByClassName('row-dato')
-            // cell5 = headerRow.cells[4]
             cell6 = document.getElementsByClassName('row-land')
-            // cell6 = headerRow.cells[5]
             cell7 = document.getElementsByClassName('row-kommune')
-            // cell7 = headerRow.cells[6]
             cell8 = document.getElementsByClassName('row-sted')
-            // cell8 = headerRow.cells[7]
             cell9 = document.getElementsByClassName('row-habitat')
-            // cell9 = headerRow.cells[8]
             cell10 = document.getElementsByClassName('row-sampleType')
-            // cell10 = headerRow.cells[9]
             cell11 = document.getElementsByClassName('row-photo')
-            // cell11 = headerRow.cells[10]
             cell12 = document.getElementsByClassName('row-coordinates')
-            // cell12 = headerRow.cells[11]
             cell13 = document.getElementsByClassName('row-checkbox')
-            // cell13 = headerRow.cells[12]
             
  
             stringData = sessionStorage.getItem('string')
@@ -428,7 +397,6 @@ document.querySelector('#language').addEventListener('click', (e) => {
                 if (sessionStorage.getItem('organismGroup').includes('geologi')) {
                     org = 'geologi'
                 } else { org = 'other'}
-                console.log('her')
                 fillResultHeaders(org,cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell10,cell11,cell12,cell13,musitData)
             }
         

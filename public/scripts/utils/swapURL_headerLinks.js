@@ -12,32 +12,32 @@ const getMuseumSpecificURLheaderLinks = () => {
         swapURL('/museum/um/help', 'help-link')
         swapURL('/museum/um/tools', 'tools-link')
         swapURL('/museum/um/', 'search-page-link')
-        document.getElementById('journal-link').style.display = 'none'
+        document.getElementById('arkiv-link').style.display = 'none'
         // mobile-screen-links
         swapURL('/museum/um/help', 'menu_help-link')
         swapURL('/museum/um/tools', 'menu_tools-link')
         swapURL('/museum/um/', 'menu_search-page-link')
-        document.getElementById('menu_journal-link').style.display = 'none'
+        document.getElementById('menu_arkiv-link').style.display = 'none'
     } else if (window.location.href.includes('tmu')){
         swapURL('/museum/tmu/help','help-link')
         swapURL('/museum/tmu/tools', 'tools-link')
         swapURL('/museum/tmu/', 'search-page-link')
-        document.getElementById('journal-link').style.display = 'none'
+        document.getElementById('arkiv-link').style.display = 'none'
         // mobile-screen-links
         swapURL('/museum/tmu/help', 'menu_help-link')
         swapURL('/museum/tmu/tools', 'menu_tools-link')
         swapURL('/museum/tmu/', 'menu_search-page-link')
-        document.getElementById('menu_journal-link').style.display = 'none'
+        document.getElementById('menu_arkiv-link').style.display = 'none'
     }  else if (window.location.href.includes('nbh')){
         swapURL('/museum/nbh/help','help-link')
         swapURL('/museum/nbh/tools', 'tools-link')
         swapURL('/museum/nbh/', 'search-page-link')
-        document.getElementById('journal-link').style.display = 'none'
+        document.getElementById('jarkiv-link').style.display = 'none'
         // mobile-screen-links
         swapURL('/museum/nbh/help', 'menu_help-link')
         swapURL('/museum/nbh/tools', 'menu_tools-link')
         swapURL('/museum/nbh/', 'menu_search-page-link')
-        document.getElementById('menu_journal-link').style.display = 'none'
+        document.getElementById('menu_arkiv-link').style.display = 'none'
     }else {
         swapURL('/museum/nhm/help', 'help-link')
         swapURL('/museum/nhm/', 'search-page-link')

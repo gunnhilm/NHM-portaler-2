@@ -21,11 +21,11 @@ function renderHeaderContent (lang) {
     document.querySelector('#help-link').innerHTML = textItems.helpButton[index]
     document.querySelector('#tools-link').innerHTML = textItems.toolsButton[index]
     document.querySelector('#search-page-link').innerHTML = textItems.searchPageLink[index]
-    document.querySelector('#journal-link').innerHTML = textItems.journalLink[index]
+    document.querySelector('#arkiv-link').innerHTML = textItems.arkivLink[index]
     document.querySelector('#menu_help-link').innerHTML = textItems.helpButton[index]
     document.querySelector('#menu_tools-link').innerHTML = textItems.toolsButton[index]
     document.querySelector('#menu_search-page-link').innerHTML = textItems.searchPageLink[index]
-    document.querySelector('#menu_journal-link').innerHTML = textItems.journalLink[index]
+    document.querySelector('#menu_arkiv-link').innerHTML = textItems.arkivLink[index]
     document.querySelector('#mobileMenuBtn').innerHTML = textItems.mobileMenuBtn[index]
 
     /* When the user clicks on the menu-button (mobile-screens),

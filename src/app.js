@@ -702,19 +702,22 @@ app.get('/nhm/journaler', (req, res) => {
 
 // item-page
 app.post('*/item-page/check-files', async (req, res) => {
-    const { folderName, fileName } = req.body;
-    const { filePath, matchingFiles } = await archive.checkFilesStartsWith(folderName, fileName);
-    // res.send({ folderPath, matchingFiles });
-    res.status(200).json({ filePath, matchingFiles });
+    try {
+        const { folderName, fileName } = req.body;
+        const { filePath, matchingFiles } = await archive.checkFilesStartsWith(folderName, fileName);
+        res.status(200).json({ filePath, matchingFiles });
+    } catch (error) {
+        return false
+    }
+   
+   
   });
 
 
 // show images or files
 app.get('*/archive/:folder/:filename', (req, res) => {
-
     const { folder, filename } = req.params;
     const filePath = path.join(__dirname, '..', '..', 'archive', folder, filename);
-  
     fs.readFile(filePath, (err, data) => {
       if (err) {
         console.log(`Error reading file: ${err}`);

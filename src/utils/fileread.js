@@ -117,10 +117,14 @@ const setCollection = (museum, samling) => {
         musitFile = './src/data/' + museum +'/archive/botJournaler.txt'  
     } else if (samling === 'archive') {
         musitFile = './src/data/' + museum +'/archive/archive.txt'  
-    }  else if (samling === 'illustrations') {
-        musitFile = './src/data/' + museum +'/archive/illustrations.txt'  
+    }  else if (samling === 'Botaniske Illustrasjoner') {
+        musitFile = './src/data/' + museum +'/archive/botaniskeIllustrasjoner.txt'  
+    }  else if (samling === 'Dagny Tande Lid') {
+        musitFile = './src/data/' + museum +'/archive/DTLIllustrations.txt'  
     } else if (samling === 'fieldNotes') {
         musitFile = './src/data/' + museum +'/archive/fieldNotes.txt'  
+    }  else if (samling === 'Rolf Y. Berg') {
+        musitFile = './src/data/' + museum +'/archive/Dias_RYB.txt'  
     } 
 
     

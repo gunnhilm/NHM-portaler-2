@@ -12,9 +12,9 @@ const textItems = {
     toolsButton: ["Verktøy", "Tools"],
     journalLink: ["Journalsøk", "Journal search"],
     mobileMenuBtn: ["Meny", "Menu"],
-    // footer
     lastUpdated: ["Dataene ble sist oppdatert: ", "The data were last updated: "],
     gbifCitation: ["Slik siterer du samlingen: ", "How to cite the collection: "],
+    arkivLink: ["Arkiv", "Archive"],
     //logoNHM: [urlPath + "/images/UiO NHM SH V2 RGB.png", urlPath + "/images/uio_nhm_a_eng_cmyk_2.png"],
     logoNHM: [urlPath + "/images/nhm_small.png", urlPath + "/images/nhm_eng.png"],
     logoTMU: [urlPath + "/images/Tromso_museum_Logo_Bokmal_2l_HVIT.png", urlPath + "/images/Universitetsmuseet_Logo_Engelsk_2l_HVIT.png"],
@@ -314,6 +314,7 @@ const textItems = {
     archive: ['Arkiv', 'Archive'],
     fieldNotes: ['Dagbøker', 'Field notes'],
     illustrations: ['Illustrasjoner', 'Illustrations'],
+    foto: ['Foto', 'Photo'],
     journals: ['Journaler', 'Journals'],
 
     // getDOI page

@@ -1,6 +1,3 @@
-console.log('item page');
-
-
 function getURLParameters() {
     const urlParams = new URLSearchParams(window.location.search);
     const pageID = urlParams.get('pageID');
@@ -13,9 +10,6 @@ function getURLParameters() {
   }
 
 const params = getURLParameters();
-
-console.log(params.pageID); // The value of the "pageID" parameter in the URL
-console.log(params.documentType); // The value of the "documentType" parameter in the URL
 
 const getCurrentMuseum = () => {
     let museum = window.location.pathname
@@ -109,7 +103,7 @@ const doarchiveSearch = async (limit = 2000) => {
 
       const result = results.find(result => result.Regnr === pageID);
       if (result) {
-        console.log('vi have result');
+
         displayResultsAsTable([result])
       }
   
@@ -119,23 +113,56 @@ const doarchiveSearch = async (limit = 2000) => {
     }
   };
 
+  // async function checkForImage(image) {
+  //   try {
+  //     let filePath = ''
+  //     let imageFiles= []
+  //     if (image) {
+  //       // get filePath
+  //       imageFiles.push(image)
+
+  //     }
+  //      { filePath, imageFiles } = await checkFiles(params.documentType, params.pageID);
+  //     console.log(filePath);
+  //     console.log(imageFiles);
+  
+  //     const imageContainer = document.getElementById('item-image');
+  
+  //     imageFiles.forEach(imageFile => {
+  //       const imageLink = document.createElement('a');
+  //       imageLink.href = urlPath + '/' + filePath + imageFile;
+  //       imageLink.target = '_blank';  // open the link in a new tab
+  //       console.log(imageLink.href);
+  
+  //       const image = document.createElement('img');
+  //       image.src = imageLink.href;
+  //       console.log(image.src);
+  
+  //       imageLink.appendChild(image);
+  //       imageContainer.appendChild(imageLink);
+  //     });
+  
+  //     // Do something with the image elements
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }
   async function checkForImage() {
     try {
-      const { filePath, imageFiles } = await checkFiles(params.documentType, params.pageID);
+      let imageFiles = [];
+      const { filePath, imageFiles: documentImageFiles } = await checkFiles(params.documentType, params.pageID);
       console.log(filePath);
-      console.log(imageFiles);
+      console.log(documentImageFiles);
   
       const imageContainer = document.getElementById('item-image');
   
-      imageFiles.forEach(imageFile => {
+      documentImageFiles.forEach(imageFile => {
         const imageLink = document.createElement('a');
         imageLink.href = urlPath + '/' + filePath + imageFile;
-        imageLink.target = '_blank';  // open the link in a new tab
-        console.log(imageLink.href);
+        imageLink.target = '_blank';
   
         const image = document.createElement('img');
         image.src = imageLink.href;
-        console.log(image.src);
   
         imageLink.appendChild(image);
         imageContainer.appendChild(imageLink);
@@ -147,7 +174,10 @@ const doarchiveSearch = async (limit = 2000) => {
     }
   }
   
-  
-  
-doarchiveSearch()
-checkForImage()
+
+  async function  main () {
+  doarchiveSearch()
+  checkForImage()
+}
+
+main()
