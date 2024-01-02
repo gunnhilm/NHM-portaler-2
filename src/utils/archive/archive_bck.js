@@ -2,6 +2,9 @@ const fs = require('fs');
 const path = require('path');
 
 async function checkFilesStartsWith(documentType, fileName) {
+    try {
+        
+
     // Select the folder based on the documentType
     let folder = '';
     switch (documentType) {
@@ -24,16 +27,21 @@ async function checkFilesStartsWith(documentType, fileName) {
           folder = 'photo_files/RYB/';
           break;
         default:
-            console.log(`Invalid documentType: ${documentType}`);
-            return;
+            throw new Error(`Invalid documentType: ${documentType}`);
     }
 
-    const folderPath = path.join(__dirname, '..', '..', '..', 'public', 'archive', folder);
-    const filePath = path.join('archive', folder);
+        const folderPath = path.join(__dirname, '..', '..', '..', 'public', 'archive', folder);
+        const filePath = path.join('archive', folder);
 
-    const matchingFiles = await searchMatchingFiles(folderPath, fileName);
+        const matchingFiles = await searchMatchingFiles(folderPath, fileName);
 
-    return { filePath, matchingFiles };
+        return { filePath, matchingFiles };
+    } catch (error) {
+        // Handle the error
+        console.log('error in line 40, archive_bck');
+        console.error(error);
+        throw error; // Re-throw the error to propagate it to the caller
+    }
 }
 
 async function searchMatchingFiles(folderPath, fileName, subfolder = '') {

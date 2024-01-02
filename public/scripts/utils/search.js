@@ -513,7 +513,7 @@ const doSearch = (limit = 20) => {
                                             }
                                         })
                                     }
-//console.log(parsedResults.data)
+console.log(parsedResults.data.length)
                                     sessionStorage.setItem('string', JSON.stringify(parsedResults.data))      
                                     
                                     load() 

@@ -72,8 +72,9 @@ function getSearchVariables () {
 }
 
 function makeSubButtons(type, buttonArray) {
+  let archiveCollection = ''
   const container = document.getElementById('sub-archive-type');
-console.log('making sub buttons');
+
   // Clear any existing buttons in the container
   container.innerHTML = '';
   
@@ -103,7 +104,7 @@ console.log('making sub buttons');
           sessionStorage.setItem('buttonID', name);
           e.preventDefault();
           const searchVariables = getSearchVariables()
-          doarchiveSearch(searchVariables.searchTerm,2000, searchVariables.museum, archiveCollection,'');
+          doarchiveSearch(searchVariables.searchTerm,2000, searchVariables.museum, name,'');
         });
       })(name);
     });
@@ -123,7 +124,6 @@ async function makeButtons() {
       const archiveFiles = file.archiveFiles;
       
       archiveTypes.forEach(type => {
-        console.log('type: ' + type);
         const button = document.createElement("button");
         if (typeof type === "object") {
           const keys = Object.keys(type);
@@ -190,9 +190,9 @@ async function makeButtons() {
 // in: keys (array?, source of header titles)
 
 // is called in archiveResultTable(..)
-const archiveHeaderNamesToShow = ['Regnr', 'Tekst på beholder', 'Indeks', 'Årstall/periode', 'Hvilket museum?', 'Person', 'PersonID (wikidata)', 'FotoID', 'Kommentarer']; // Define the headers to show
-const botanicalIllustrationsHeaderNamesToShow = ['Regnr', 'Comment', 'Størrelse', 'Figurnavn', 'Artsnavn (Latin)', 'Artsnavn (norsk)', 'Illustratør', 'Kilde', 'Copyright', 'Lokasjon disk']
-const DTLIllustrationsHeaderNamesToShow = ['Regnr', 'Latinsk Navn', 'Tegningype', 'Motiv', 'Orginal tekst', 'Norsk Navn']
+const archiveHeaderNamesToShow = ['Regnr', 'Tekst på arkivboks', 'Indeks', 'Periode', 'Arkivskaper', 'Person', 'Qnummer person ', 'FotoID (kommer etter fotografering)', 'Kommentarer']; // Define the headers to show
+const botanicalIllustrationsHeaderNamesToShow = ['Regnr', 'Illustratør', 'Artsnavn (norsk)', 'Artsnavn (Latin)', 'Figurnavn', 'Comment', 'Herbarieark/annen info', 'Kilde', 'Copyright']
+const DTLIllustrationsHeaderNamesToShow = ['Regnr', 'Kunstner', 'Norsk Navn','Latinsk Navn', 'Tegningype', 'Motiv', 'Orginal tekst', 'Copyright']
 const fieldNoteHeaderNamesToShow = ['Fagområde', 'Taxongruppe',  'Dokumenttype', 'Person', 'Ekstra_info', 'Stedsinfo', 'År_fra', 'År_til', 'Filnavn'] // Define the headers to show
 const RYBFotoHeadersToShow = ['Regnr', 'Dato_foto_tidvis_anslagsvis', 'Motiv', 'Lokalitetsbeskrivelse', 'Stedsangivelse', 'Diastekst']
 
@@ -207,13 +207,37 @@ const addHeaders = (table, headerNamesToShow) => {
       table.appendChild(headerRow);
     }
   };
+
+// Show a box nex to the searchfield with extra inforamtion about abotut the archiveCollection
+function showExtraInfo(archiveCollection) {
+  const extraInfo = document.getElementById("extra-info");
+  console.log(archiveCollection);
+  try {
+    if (archiveCollection === 'Dagny Tande Lid') {
+      extraInfo.innerHTML = "<h3>Dagny Tande Lids illustrasjoner</h3> <p> I 1979 donerte Dagny Tande Lid over 5000 tegninger til museet. Senere ble det gitt ytterligere tegninger. Disse oppbevares i museets historiske arkiv og presenteres her som i en online katalog.  </p> <p> I 1989 utarbeidet Odvar Pedersen en papirkatalog over 5012 botaniske tegninger med en oversikt over hvilke bøker de de hadde vært brukt i. <a href='/museum/archive/illustrations_files/DTL/HOVEDKAT.pdf'>Last ned Katalog her</a></p><p>Rettighetene til tegningene og akvarellene forvaltes av Bono, all bruk må først avklares med Bono. <br><a href='https://www.bono.no/bruk-kunstverk'>Søk om bildelisens</a></p>";
+      extraInfo.style.display = "block";
+    } else if (archiveCollection === 'Botaniske Illustrasjoner') {
+      extraInfo.innerHTML = "<h3>Botaniske Illustrasjoner</h3> <p> Museet har en rekke forskjellige botaniske illustrasjoner i sitt arkiv. Noen av disse kan vi dele med dere da de enten er 'falt i det fri' eller vi har rettigheter til å dele dem. Andre må man komme til arkivet for å se.</p>";
+      extraInfo.style.display = "block";
+    } else {
+      extraInfo.style.display = "none";
+    }
+  } catch (error) {
+    console.error("An error occurred:", error);
+  }
+}
+
+
+
 // creates table for the archives and fills it
 // in: children (array, containing content to table, i.e. data on archives) 
 // calls addHeaders(..)
 // is called in doarchiveSearch(..)
-const createArchiveTableAndFillIt = (data, archiveCollection) => {
+const createArchiveTableAndFillIt = (data, archiveCollection, showAll) => {
   let filePath = '';
   let headerNamesToShow = [];
+  const currentYear = new Date().getFullYear();
+
 
   if (archiveCollection === 'archive') {
     headerNamesToShow = archiveHeaderNamesToShow;
@@ -257,13 +281,23 @@ const createArchiveTableAndFillIt = (data, archiveCollection) => {
           tableCell.textContent = value;
           tableCell.className = 'nowrap';
         } else if (key.includes('Regnr')) {
-          value = `<a href="${url}${value}&documentType=${documentType}">${value}</a>`;
+          if(showAll){
+            value = `<a href="${url}${value}&documentType=${documentType}&force=true" target="_blank">${value}</a>`;
+          } else {
+            value = `<a href="${url}${value}&documentType=${documentType}" target="_blank">${value}</a>`;
+          }
+          
           tableCell.innerHTML = value;
         } else if (key.toLowerCase().includes('filnavn')) {
           const fullPathName = filePath + value;
           value = `<a href="${fullPathName}">${value}</a>`;
           tableCell.innerHTML = value;
-        }else {
+        } else if (key.toLowerCase() === 'copyright' && value.toLowerCase().includes('bono')) {
+          value = value + currentYear
+          tableCell.innerHTML = value;
+        } 
+        
+        else {
           if (value.length > 500) {
             value = value.substring(0, 500) + '[...]';
           }
@@ -276,70 +310,114 @@ const createArchiveTableAndFillIt = (data, archiveCollection) => {
   document.getElementById('container').appendChild(table);
 };
 
-const doarchiveSearch = async (searchTerm, limit, museum, archiveCollection, linjeNumber) => {
-  const resultTableElement = document.getElementById('archive-result-table');
-  if (resultTableElement) {
-      document.getElementById('container').removeChild(resultTableElement);
+
+
+const showHiddenImagesOrNot = (searchTerm) => {
+  const searchVariables = searchTerm.split(' ');
+  let showAll = false;
+
+  for (let i = 0; i < searchVariables.length; i++) {
+    if (searchVariables[i] === 'force=true') {
+      searchVariables.splice(i, 1);
+      showAll = true;
+      i--;
+    }
   }
 
-  if(!searchTerm) {
-    searchTerm = archiveSearch.value
+  searchTerm = searchVariables.join(' ');
+
+  return {
+    searchTerm,
+    showAll
+  };
+};
+
+const doarchiveSearch = async (searchTerm, limit, museum, archiveCollection, linjeNumber) => {
+  removeResults()
+  const resultTableElement = document.getElementById('archive-result-table');
+
+  if (resultTableElement) {
+    document.getElementById('container').removeChild(resultTableElement);
   }
-  if(!museum ) {
+
+  // Get the current URL from the browser window
+  const urlString = window.location.href;
+
+  // Parse the URL and extract the search parameters using URLSearchParams
+  const urlParams = new URLSearchParams(urlString);
+
+  // Get the values of individual parameters from the URLSearchParams object
+  let urlArchiveCollection = urlParams.get("samling");
+  let urlLimit = urlParams.get("limit");
+
+  // Handle missing parameters and override them with URL parameters if available
+  const archiveSearchValue = archiveSearch.value || urlParams.get("search") || '';
+  if (!searchTerm) {
+    searchTerm = archiveSearchValue ;
+  }
+  const { searchTerm: updatedSearchTerm, showAll } = showHiddenImagesOrNot(searchTerm);
+  searchTerm = updatedSearchTerm
+  if (!museum) {
     museum = getCurrentMuseum();
   }
-  if(!archiveCollection) {
-    console.log('magler arkivsamling');
-    archiveCollection = archiveCollection || 'archive';
+  
+  if (!archiveCollection) {
+    archiveCollection = urlArchiveCollection || 'archive';
   }
-  if(!limit) {
-    limit = 2000
+  
+  if (!limit) {
+    limit = urlLimit || 2000;
   }
 
   const url = `${urlPath}/search/?search=${searchTerm}&museum=${museum}&samling=${archiveCollection}&linjeNumber=${linjeNumber}&limit=${limit}`;
   try {
-      const response = await fetch(url);
-      if (!response.ok) {
-          throw new Error(`Error: ${response.status}`);
-      }
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status}`);
+    }
 
-      const data = await response.json();
-      if (data.error) {
-          throw new Error(data.error);
-      }
+    const data = await response.json();
+    if (data.error) {
+      throw new Error(data.error);
+    }
 
-      const parsedResults = Papa.parse(data.unparsed.results, {
-          delimiter: "\t",
-          newline: "\n",
-          quoteChar: '',
-          header: true,
-      });
+    const parsedResults = Papa.parse(data.unparsed.results, {
+      delimiter: "\t",
+      newline: "\n",
+      quoteChar: '',
+      header: true,
+    });
 
-      if (parsedResults.data.length > 0) {
-          createArchiveTableAndFillIt(parsedResults.data, archiveCollection);
-          errorMessage.innerText = textItems.nbHitsText[index];
-          nbHitsElement.innerText = parsedResults.data.length;
-          sortTable();
-      } else {
-          console.log('no results');
-          errorMessage.innerText = textItems.noHits[index];
-      }
+    if (parsedResults.data.length > 0) {
+      showExtraInfo(archiveCollection);
+      createArchiveTableAndFillIt(parsedResults.data, archiveCollection, showAll);
+      errorMessage.innerText = textItems.nbHitsText[index];
+      nbHitsElement.innerText = parsedResults.data.length;
+      sortTable();
+    } else {
+      console.log('no results');
+      errorMessage.innerText = textItems.noHits[index];
+    }
 
-      updateFooter(museum, archiveCollection);
-      const newUrl = new URLSearchParams({
-        search: searchTerm,
-        museum,
-        samling: archiveCollection,
-        linjeNumber: 0,
-        limit: limit
-      });
-      window.history.replaceState({}, '', `${window.location.pathname}?${newUrl}`);
+    updateFooter(museum, archiveCollection);
+
+    // Update the URL parameters using URLSearchParams
+    const newUrlParams = new URLSearchParams({
+      search: searchTerm,
+      museum,
+      samling: archiveCollection,
+      linjeNumber: 0,
+      limit: limit
+    });
+    window.history.replaceState({}, '', `${window.location.pathname}?${newUrlParams}`);
 
   } catch (error) {
-      console.error(error);
-      errorMessage.innerText = textItems.serverError[index];
+    console.error(error);
+    errorMessage.innerText = textItems.serverError[index];
   }
 };
+
+
 
 // for å kunne lenke til et søk
 const checkSearchParameterAndRunSearch = async () => {

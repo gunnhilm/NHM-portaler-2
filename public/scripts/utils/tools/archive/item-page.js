@@ -2,10 +2,11 @@ function getURLParameters() {
     const urlParams = new URLSearchParams(window.location.search);
     const pageID = urlParams.get('pageID');
     const documentType = urlParams.get('documentType');
-    
+    const force = urlParams.get('force') || false;
     return {
       pageID,
-      documentType
+      documentType,
+      force
     };
   }
 
@@ -18,39 +19,65 @@ const getCurrentMuseum = () => {
 }
 
 const displayResultsAsTable = results => {
-    const table = document.createElement("table");
-    table.classList.add("item-page");
-  
-    // Loop through each result object and add a row for each one
-    for (let i = 0; i < results.length; i++) {
-      const result = results[i];
-      const resultRow = document.createElement("tr");
-      table.appendChild(resultRow);
-  
-      // Loop through each key-value pair and add a new row for each pair
-      for (const key in result) {
-        if (Object.hasOwnProperty.call(result, key)) {
+  let show = 'no'
+  const currentYear = new Date().getFullYear();
+  const table = document.createElement("table");
+  table.setAttribute("id", "results-table");
+  table.classList.add("item-page");
+
+  // Loop through each result object and add a row for each one
+  for (let i = 0; i < results.length; i++) {
+    const result = results[i];
+    
+    const resultRow = document.createElement("tr");
+    table.appendChild(resultRow);
+
+    // Loop through each key-value pair and add a new row for each pair
+    for (const key in result) {
+      const value = result[key];
+      if (Object.hasOwnProperty.call(result, key)) {
+      
+      if(key === 'show') {
+        show = value
+      } else {
+        if (value !== undefined && value !== null && value !== "") {
           const newRow = document.createElement("tr");
-  
+
           const keyCell = document.createElement("td");
           keyCell.textContent = key;
           newRow.appendChild(keyCell);
-  
+
           const valueCell = document.createElement("td");
-          valueCell.textContent = result[key];
+          valueCell.textContent = value;
+          if (key.toLowerCase() === 'copyright' && value.toLowerCase().includes('bono')) {
+            valueCell.textContent = value + currentYear;
+          }
+          
           newRow.appendChild(valueCell);
-  
+
           table.appendChild(newRow);
         }
       }
-    }
-  
-    // Add table to web page
-    const resultsContainer = document.getElementById("results-container");
-    resultsContainer.innerHTML = "";
-    resultsContainer.appendChild(table);
-  };
-  
+      if (key.toLowerCase() === 'copyright' && value.toLowerCase().includes('bono')) {
+        const imageText = document.getElementById("image-text");
+        imageText.innerHTML = "Rettighetene til denne tegningen forvaltes av Bono, all bruk må først avklares med Bono. <br><a href='https://www.bono.no/bruk-kunstverk'>Søk om bildelisens</a>";
+        imageText.style.display = "block";
+      }
+      }
+
+    } 
+  }
+
+  // Add table to web page
+  const resultsContainer = document.getElementById("results-container");
+  resultsContainer.innerHTML = "";
+  resultsContainer.appendChild(table);
+  return show;
+};
+
+
+
+
   
 async function checkFiles(folderName, fileName) {
 
@@ -88,7 +115,7 @@ async function checkFiles(folderName, fileName) {
 // calls archiveResultTable(..)
 // is called in archiveSearchForm.eventlistener
 const doarchiveSearch = async (limit = 2000) => {
-    const { pageID, documentType } = getURLParameters();
+    const { pageID, documentType, force } = getURLParameters();
     const url = `${urlPath}/search/?search=${pageID}&museum=${getCurrentMuseum()}&samling=${documentType}&linjeNumber=0&limit=${limit}`;
   
     try {
@@ -104,7 +131,18 @@ const doarchiveSearch = async (limit = 2000) => {
       const result = results.find(result => result.Regnr === pageID);
       if (result) {
 
-        displayResultsAsTable([result])
+        
+        const show =  displayResultsAsTable([result])
+        if (force) {
+          return true
+        }
+        if (show.toLowerCase() === 'no') {
+          console.log('returnerer false');
+          return false
+        } else {
+          return true
+        }
+        
       }
   
     } catch (error) {
@@ -113,43 +151,8 @@ const doarchiveSearch = async (limit = 2000) => {
     }
   };
 
-  // async function checkForImage(image) {
-  //   try {
-  //     let filePath = ''
-  //     let imageFiles= []
-  //     if (image) {
-  //       // get filePath
-  //       imageFiles.push(image)
-
-  //     }
-  //      { filePath, imageFiles } = await checkFiles(params.documentType, params.pageID);
-  //     console.log(filePath);
-  //     console.log(imageFiles);
-  
-  //     const imageContainer = document.getElementById('item-image');
-  
-  //     imageFiles.forEach(imageFile => {
-  //       const imageLink = document.createElement('a');
-  //       imageLink.href = urlPath + '/' + filePath + imageFile;
-  //       imageLink.target = '_blank';  // open the link in a new tab
-  //       console.log(imageLink.href);
-  
-  //       const image = document.createElement('img');
-  //       image.src = imageLink.href;
-  //       console.log(image.src);
-  
-  //       imageLink.appendChild(image);
-  //       imageContainer.appendChild(imageLink);
-  //     });
-  
-  //     // Do something with the image elements
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }
   async function checkForImage() {
     try {
-      let imageFiles = [];
       const { filePath, imageFiles: documentImageFiles } = await checkFiles(params.documentType, params.pageID);
       console.log(filePath);
       console.log(documentImageFiles);
@@ -176,8 +179,10 @@ const doarchiveSearch = async (limit = 2000) => {
   
 
   async function  main () {
-  doarchiveSearch()
-  checkForImage()
+  const showImage =  await doarchiveSearch()
+  if(showImage) {
+    checkForImage()
+  }
 }
 
 main()
