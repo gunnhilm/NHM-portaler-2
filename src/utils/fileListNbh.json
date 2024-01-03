@@ -45,5 +45,15 @@
         "url": "",
         "occurrenceFileSuffix": "_occurrence.txt", 
         "akronym": "NBH-MIN"
+    },
+    {
+        "source": "",
+        "orgGroup": "zoologi",
+        "name": "mammals_no_dna",
+        "zipFileName": "",
+        "mediaFile": "",
+        "url": "",
+        "occurrenceFileSuffix": "_occurrence.txt", 
+        "akronym": "KMN-Z"
     }
 ]

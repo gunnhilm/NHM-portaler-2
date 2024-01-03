@@ -227,6 +227,7 @@ function addTextInCollSelect(a) {
     else if (a == 'fisk') {return textItems.fisk[index]}
     else if (a == 'birds') {return textItems.fugler[index]}
     else if (a == 'mammals') {return textItems.pattedyr[index]}
+    else if (a == 'mammals_no_dna') {return textItems.bcPattedyr[index]}
     else if (a == 'dna_vascular') {return textItems.dna_vascular[index]}
     else if (a == 'dna_fungi_lichens') {return textItems.fungiLichens[index]}
     else if (a == 'dna_entomology') {return textItems.dna_insekter[index]}
@@ -513,7 +514,6 @@ const doSearch = (limit = 20) => {
                                             }
                                         })
                                     }
-console.log(parsedResults.data.length)
                                     sessionStorage.setItem('string', JSON.stringify(parsedResults.data))      
                                     
                                     load() 

@@ -142,10 +142,7 @@ const populateCitTable = (data) => {
 
   const mainCit = async () => {
     const museum = getMuseum()
-    console.log('mainCit');
     const data = await getPublications(museum)
-    // console.log( data.Algae);
-    console.log(data);
     populateCitTable(data)
 
   }

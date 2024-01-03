@@ -32,7 +32,7 @@ const getMuseumSpecificURLheaderLinks = () => {
         swapURL('/museum/nbh/help','help-link')
         swapURL('/museum/nbh/tools', 'tools-link')
         swapURL('/museum/nbh/', 'search-page-link')
-        document.getElementById('jarkiv-link').style.display = 'none'
+        document.getElementById('arkiv-link').style.display = 'none'
         // mobile-screen-links
         swapURL('/museum/nbh/help', 'menu_help-link')
         swapURL('/museum/nbh/tools', 'menu_tools-link')

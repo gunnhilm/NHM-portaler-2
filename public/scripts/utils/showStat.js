@@ -60,26 +60,6 @@ const collSelect = (data) => {
     selectElement.add(new Option(collections[i]));
   }
 
-  // // show collections in select dependent on museum
-  // if(!window.location.href.includes('/nhm')) {
-  //   document.querySelector('#coremaopt').style.display = 'none'
-  //   document.querySelector('#DNAopt').style.display = 'none'
-  //   document.querySelector('#alger').style.display = 'none'
-  //   //document.querySelector('#GeoPalOpt').style.display = 'none'
-  //   document.querySelector('#algae_row').style.display = 'none'
-  //   document.querySelector('#mammal_row').style.display = 'none'
-  //   document.querySelector('#bird_row').style.display = 'none'
-    //document.querySelector('#malmer_row').style.display = 'none'
-    //document.querySelector('#oslofeltet_row').style.display = 'none'
-    //document.querySelector('#utenlandskeBA_row').style.display = 'none'
-    
-
-  // } else {
-  //   document.querySelector('#evertebrater').style.display = 'none'
-  //   document.querySelector('#evertebrat_row').style.display = 'none'
-  // }
-
-
   
 }
 
@@ -309,6 +289,7 @@ const makeGraphs = (data) => {
 // ------ Neste graf -----
   // Tilveksten per år
   aarligTilvekst = tilvekstData(data, currentCollection) //regn ut data til grafen
+  console.log(aarligTilvekst)
   ctx = tilvekst.getContext('2d'); // fra HTML sia
   config = {
     type: 'bar',
@@ -480,8 +461,7 @@ collection.addEventListener('change', () => {
 // calls makeGraphs(..) and	populateTable(..)
 // is called in this file (showStat.js)
 async function main() {
-  data = await getData() //Gjør en request til server omå få JSON datafila
-  // console.log(data);
+  data = await getData() //Gjør en request til server om å få JSON datafila
   collSelect(data)
   makeGraphs(data)  // Tegn opp grafene for første gang
   populateTable(data) // Lag hovedtabel med samlingstall

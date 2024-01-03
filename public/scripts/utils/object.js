@@ -33,7 +33,6 @@ const getOrganismGroup = () => {
 const loadStringObject = () => {
     let objectJSON = ''
     objectJSON = sessionStorage.getItem('string')
-    console.log(objectJSON)
     //} else if (sessionStorage.getItem('databaseSearch') === 'corema') {
     //    objectJSON = sessionStorage.getItem('coremaString')
     //}
@@ -989,16 +988,16 @@ async function showData (specimenObject, orgGroup, overviewObject) {
         if (specimenObject.kingdom || specimenObject.class || specimenObject.order || specimenObject.family) {
             taxonomy = taxonomyString(specimenObject)
         }
-
+        
         if (orgGroup === 'botanikk' || orgGroup === 'mykologi' || orgGroup === 'zoologi') {
             let nameArray = italicSpeciesname(specimenObject.scientificName.replace(/"/g, ''))
             document.querySelector("#species-name").innerHTML = `<span style=font-style:italic>${nameArray[0]}</span>` + ' ' + `<span>${nameArray[1]}</span>`
-            document.querySelector("#unc").innerHTML = `<span>${specimenObject.identificationQualifier}</span>`
-            document.querySelector("#coll-date").innerHTML = `<span>${specimenObject.eventDate}</span>`
-            document.querySelector("#coll").innerHTML = `<span>${specimenObject.recordedBy}</span>`
+            if (specimenObject.identificationQualifier) {document.querySelector("#unc").innerHTML = `<span>${specimenObject.identificationQualifier}</span>`}
+            if (specimenObject.eventDate) { document.querySelector("#coll-date").innerHTML = `<span>${specimenObject.eventDate}</span>` }
+            if (specimenObject.recordedBy) { document.querySelector("#coll").innerHTML = `<span>${specimenObject.recordedBy}</span>` }
             document.querySelector("#collNo").innerHTML = collNo
-            document.querySelector("#det").innerHTML =  `<span>${specimenObject.identifiedBy}</span>`
-            document.querySelector("#det-date").innerHTML = `<span>${specimenObject.dateIdentified}</span>`
+            if (specimenObject.identifiedBy) { document.querySelector("#det").innerHTML =  `<span>${specimenObject.identifiedBy}</span>`}
+            if (specimenObject.dateIdentified) { document.querySelector("#det-date").innerHTML = `<span>${specimenObject.dateIdentified}</span>` }
             document.querySelector("#artsobsID").innerHTML = artsobsID
             document.querySelector('#sex').innerHTML = sex
             document.querySelector('#lifeStage').innerHTML = lifeStage

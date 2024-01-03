@@ -167,6 +167,7 @@ const resultTable = (subMusitData, musitData) => {
                     
                     cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}&samling=${coll}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${subMusitData[i].catalogNumber} </a>`
                 }
+                //cell 2
                 if (sessionStorage.getItem('organismGroup').includes('geologi')) {
                     if (sessionStorage.getItem('chosenCollection') === 'oslofeltet') {
                         cell2.innerHTML = `<span>${subMusitData[i].kingdom}</span>`    
@@ -175,7 +176,7 @@ const resultTable = (subMusitData, musitData) => {
                     }
                     
                 } else if (sessionStorage.getItem('organismGroup').includes('zoologi')) {
-                    if (subMusitData[i].specificEpithet != "") {
+                    if (subMusitData[i].specificEpithet && subMusitData[i].specificEpithet != "") {
                         cell2.innerHTML = `<span style=font-style:italic>${subMusitData[i].genus} ${subMusitData[i].specificEpithet}</span>`
                     } else {
                         cell2.innerHTML = `<span style=font-style:italic>${subMusitData[i].scientificName}</span>`
@@ -188,16 +189,19 @@ const resultTable = (subMusitData, musitData) => {
                 cell3.innerHTML = subMusitData[i].identificationQualifier
                 // to avoid lots of text in collector-field: replace more than two names with et al. 
                 // when  collector is written "lastName, firstName", only first name is included, followed by et al. if more names
-                let recByArray = subMusitData[i].recordedBy.split(' ')
-                if ((subMusitData[i].recordedBy.match(/,/g) || []).length > 1) {
-                    if (!sessionStorage.getItem("organismGroup").includes('paleontologi')) {
-                        let x = subMusitData[i].recordedBy.indexOf(",")
-                        let y = subMusitData[i].recordedBy.substr(0,x)
-                        cell4.innerHTML = y + " et al."    
-                    }
-                } else {
-                    cell4.innerHTML = subMusitData[i].recordedBy
+                // let recByArray = subMusitData[i].recordedBy.split(' ')
+                if (subMusitData[i].recordedBy) {
+                    if ((subMusitData[i].recordedBy.match(/,/g) || []).length > 1) {
+                        if (!sessionStorage.getItem("organismGroup").includes('paleontologi')) {
+                            let x = subMusitData[i].recordedBy.indexOf(",")
+                            let y = subMusitData[i].recordedBy.substr(0,x)
+                            cell4.innerHTML = y + " et al."    
+                        }
+                    } else {
+                        cell4.innerHTML = subMusitData[i].recordedBy
+                    }    
                 }
+                
                 cell5.innerHTML = subMusitData[i].eventDate
                 cell6.innerHTML = subMusitData[i].country
                 if (subMusitData[i].county) {cell7.innerHTML = subMusitData[i].county}

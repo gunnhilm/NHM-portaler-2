@@ -220,58 +220,62 @@ sort_by = (prop, reverse, primer) => {
 function addSortingText(id, prop, musitData, fromFunction) { // her er musitData alle
     try {
         document.getElementById(id).addEventListener("click", function() {
-            // Show please wait
-        
-            document.getElementById("please-wait").style.display = "block"
-            let reverse = false
-            if (propsSorted.find(x => x.id === prop).sortedOnce) { reverse = true }
-            if (id === 'musitIDButton' && sessionStorage.getItem("chosenCollection") != "fossiler" &&  !musitData[0].catalogNumber.includes('/')) { 
-                musitData.sort(sort_by(prop,reverse, parseInt))
-                
-            }  else if (id === 'breddeButton' || id === 'hoydeButton' || id === 'lengdeButton'  ) {
-                musitData.sort(sort_by(prop,reverse))
-            } else {
-                if (id === 'photoButton' | id === 'coordinateButton') {
-                    reverse = !reverse
+            if (musitData[0].hasOwnProperty(prop)) {
+                // Show please wait
+                document.getElementById("please-wait").style.display = "block"
+                let reverse = false
+                if (propsSorted.find(x => x.id === prop).sortedOnce) { reverse = true }
+                if (id === 'musitIDButton' && sessionStorage.getItem("chosenCollection") != "fossiler" &&  !musitData[0].catalogNumber.includes('/')) { 
+                    musitData.sort(sort_by(prop,reverse, parseInt))
+                    
+                }  else if (id === 'breddeButton' || id === 'hoydeButton' || id === 'lengdeButton'  ) {
                     musitData.sort(sort_by(prop,reverse))
                 } else {
-                    musitData.sort(sort_by(prop,reverse, (a) => a.toLowerCase()))
-                    //a.trim().toLowerCase()
+                    if (id === 'photoButton' | id === 'coordinateButton') {
+                        reverse = !reverse
+                        musitData.sort(sort_by(prop,reverse))
+                    } else {
+                        musitData.sort(sort_by(prop,reverse, (a) => a.toLowerCase()))
+                        //a.trim().toLowerCase()
+                    }
+                    
+                    //musitData.sort(sort_by(prop,reverse))
+                } 
+                
+                if (propsSorted.find(x => x.id === prop).sortedOnce === propsSorted.find(x => x.id === prop).sortedTwice) {
+                    propsSorted.find(x => x.id === prop).sortedOnce = true
+                    propsSorted.find(x => x.id === prop).sortedTwice = false
+                } else {
+                    propsSorted.find(x => x.id === prop).sortedOnce = !propsSorted.find(x => x.id === prop).sortedOnce
+                    propsSorted.find(x => x.id === prop).sortedTwice = !propsSorted.find(x => x.id === prop).sortedTwice
                 }
                 
-                //musitData.sort(sort_by(prop,reverse))
-            } 
-            
-            if (propsSorted.find(x => x.id === prop).sortedOnce === propsSorted.find(x => x.id === prop).sortedTwice) {
-                propsSorted.find(x => x.id === prop).sortedOnce = true
-                propsSorted.find(x => x.id === prop).sortedTwice = false
-            } else {
-                propsSorted.find(x => x.id === prop).sortedOnce = !propsSorted.find(x => x.id === prop).sortedOnce
-                propsSorted.find(x => x.id === prop).sortedTwice = !propsSorted.find(x => x.id === prop).sortedTwice
+                currentPage = 1
+                
+                for(i = 0; i < propsSorted.length; i++) {
+                    if(propsSorted[i].id === prop) { continue; }
+                    propsSorted[i].sortedOnce = false
+                    propsSorted[i].sortedTwice = false
+                }
+                
+                subMusitData = musitData.slice(0,numberPerPage)
+                sessionStorage.setItem('pageList', JSON.stringify(subMusitData))
+                sessionStorage.setItem('string', JSON.stringify(musitData))
+                sessionStorage.setItem('propsSorted', JSON.stringify(propsSorted))
+                if(fromFunction === 'bulkResultTable') {
+                    bulkResultTable(subMusitData, musitData)
+                } else if (fromFunction === 'UTADRestultTable') {
+                    UTADRestultTable(subMusitData, musitData) 
+                } else /*if (fromFunction === 'resultTable')*/ {
+                    console.log('hit')
+                    resultTable(subMusitData, musitData) 
+                }
+                
+                document.getElementById("please-wait").style.display = "none"
             }
-            
-            currentPage = 1
-            
-            for(i = 0; i < propsSorted.length; i++) {
-                if(propsSorted[i].id === prop) { continue; }
-                propsSorted[i].sortedOnce = false
-                propsSorted[i].sortedTwice = false
-            }
-            
-            subMusitData = musitData.slice(0,numberPerPage)
-            sessionStorage.setItem('pageList', JSON.stringify(subMusitData))
-            sessionStorage.setItem('string', JSON.stringify(musitData))
-            sessionStorage.setItem('propsSorted', JSON.stringify(propsSorted))
-            if(fromFunction === 'bulkResultTable') {
-                bulkResultTable(subMusitData, musitData)
-            } else if (fromFunction === 'UTADRestultTable') {
-                UTADRestultTable(subMusitData, musitData) 
-            } else /*if (fromFunction === 'resultTable')*/ {
-                console.log('hit')
-                resultTable(subMusitData, musitData) 
-            }
-            
-            document.getElementById("please-wait").style.display = "none"
+            //  else {
+            //     errorMessage.innerHTML = "Kan ikke sortere"
+            // }
         })
     } catch (error) {
         console.log(error);    
