@@ -24,7 +24,7 @@ async function writeFile(dataArray, outFilepath, templatePath) {
     for (let i = 0; i < dataArray.length; i++) {
       const data = dataArray[i];
       const synsArray = [];
-  
+
       for (let j = 0; j < data.Synonymer.length; j++) {
         const synObj = {};
         const element = data.Synonymer[j];
@@ -70,29 +70,36 @@ const search = async (searchTerm, museum, samling) => {
                     console: false
                 });
                 readInterface.on('line', function(line) {
-                    
+                    const Newline = line.replace(/\|/g, ' ')
                     if (resultCount < 1) {
-                        const lowerLine = line.toLowerCase();
-
+                        const lowerLine = Newline.toLowerCase();
                         if (terms.length === 1 && lowerLine.includes(terms[0])) {
-                            results = line;
+                          
+                            results = Newline;
                             resultCount++;
                         } else if (terms.every(term => lowerLine.includes(term))) {
-                            results = line;
+                          
+                            results = Newline;
                             resultCount++;
                         }
                     }
                 }).on('close', function() {
+                  if (results.startsWith('[')) {
+                    results = results.slice(1);
+                  }
+                  if (results.endsWith(']')) {
+                    results = results.slice(0, -1);
+                  }
                     results = results.trim().replace(/,\s*$/, '');
                     try {
                         const resultObj = JSON.parse(results);
                         resolve(resultObj);
                     } catch (parseError) {
-                        reject('Parsing error');
+                        reject('Parsing error in the search function: ' + parseError);
                     }
                 });
             } catch (error) {
-                reject('Error reading file');
+                reject('Error reading file: ' + error);
             }
         });
     } else {
@@ -104,8 +111,6 @@ async function writeskilleArk(names, museum, collection) {
   const FileName = `${Date.now()}_skilleArk.doc`;
   const outFilepath = './public/forDownloads/labels/' + FileName;
   const skilleArkTemplatePath = path.join(__dirname, '../labels/templates/SKILLEARK.docx');
-
-
     try {
       const dataArray = [];
   
@@ -128,8 +133,6 @@ async function writeskilleArk(names, museum, collection) {
     }
 }
 
-// make the array with names and styling for the box labels
-async function makeBoxNameArray(dataArray) {
 
   dataArray = 
 [
@@ -144,114 +147,131 @@ async function makeBoxNameArray(dataArray) {
   {names: ['Gus sevenus', 'Gus dus', 'Gus us', 'Gus fus', 'Gus cus', 'Gus dus', 'Gus us'], no:false}
 ]
 
+
+// make the array with names and styling for the box labels
+async function makeBoxNameArray(dataArray) {
+
 const items = { validNames: [] };
 let validNameIndex = 1;
 let item = {};
 let threeItem = {};
-
 for (let i = 0; i < dataArray.length; i++) {
   const element = dataArray[i];
-
-  if (element.names.length === 1) { // If element has only one name
+  if (element.names.length === 1) {
     item.xml = `<w:r><w:rPr><w:i/></w:rPr><w:r><w:t xml:space="preserve">  ${element.names[0]} <w:rPr><w:i w:val="false"/></w:rPr><w:br/> <w:br/><w:t xml:space="preserve">  No.:</w:t></w:r>`;
-} else if (element.names.length === 2) { // If element has two names
+  } else if (element.names.length === 2) {
     item.xml = `<w:r><w:rPr><w:i/></w:rPr><w:r><w:t xml:space="preserve">  ${element.names[0]} <w:rPr><w:i w:val="false"/></w:rPr><w:br/><w:t xml:space="preserve">  No.: </w:t><w:br/><w:br/><w:br/><w:rPr><w:i/></w:rPr><w:r><w:t xml:space="preserve">  ${element.names[1]} <w:rPr><w:i w:val="false"/></w:rPr><w:br/><w:t xml:space="preserve">  No.: </w:t></w:r>`;
-} else if (element.names.length >= 3 && element.names.length <= 7) { // If element has three to seven names
-    item.xml = `<w:r><w:rPr><w:i/></w:rPr><w:r><w:t xml:space="preserve">  ${element.names[0]} <w:br/>  ${element.names[1]}<w:br/>  ${element.names[2]}<w:br/>  ${element.names[3]}<w:br/>  ${element.names[4]}<w:br/>  ${element.names[5]}<w:br/>  ${element.names[6]}<w:br/><w:rPr><w:i w:val="false"/></w:rPr></w:t></w:r>`;
-} else if (element.names.length > 8) { // If element has more than eight names
-    const elementLast = element.names[element.names.length - 1]; // Access the last name in the element
+  } else if (element.names.length >= 3 && element.names.length <= 7) {
+    var namesXml = '';
+  
+    for (var j = 0; j < element.names.length; j++) {
+      namesXml += `${element.names[j]}<w:br/> `;
+    }
+  
+    item.xml = `<w:r><w:rPr><w:i/></w:rPr><w:r><w:t xml:space="preserve">  ${namesXml}<w:rPr><w:i w:val="false"/></w:rPr></w:t></w:r>`;
+  } else if (element.names.length > 8) {
+    const elementLast = element.names[element.names.length - 1];
     item.xml = `<w:r><w:rPr><w:i/></w:rPr><w:t xml:space="preserve">  ${element.names[0]} <w:t xml:space="preserve"> <w:br/>                    --> <w:br/>  ${elementLast}</w:t><w:rPr><w:i w:val="false"/></w:rPr></w:r>`;
-}
+  }
+
   item._type = 'rawXml';
   item.replaceParagraph = false;
 
   if (validNameIndex === 1) {
-    const navn1 = Object.assign({}, item); // Create a copy of 'item' using Object.assign()
+    const navn1 = Object.assign({}, item);
     threeItem['navn1'] = navn1;
     validNameIndex += 1;
-
   } else if (validNameIndex === 2) {
     const navn2 = Object.assign({}, item);
     threeItem['navn2'] = navn2;
     validNameIndex += 1;
-
-  } else if (validNameIndex === 3) {
+  } else if (validNameIndex === 3 || i === dataArray.length - 1) {
     const navn3 = Object.assign({}, item);
     threeItem['navn3'] = navn3;
-    items.validNames.push(threeItem)
+    items.validNames.push(threeItem);
     validNameIndex = 1;
-    threeItem = {}
+    threeItem = {};
+  
+    // Check if it's the last element in the dataArray
+    if (i === dataArray.length - 1 && validNameIndex !== 1) {
+      items.validNames.push({ navn1: item });
+    }
   }
-
-
-
+  
+  
 }
-const rawxml4 = {
-  _type: 'rawXml',
-  xml: 'hei hei',
-  replaceParagraph: false,
+if(validNameIndex !== 1) {
+  const remainingValidNames = Object.fromEntries(
+    Object.entries(threeItem)
+      .filter(([key, value]) => value !== undefined)
+  );
+  items.validNames.push(remainingValidNames);
 }
-
-items.validNames.push(rawxml4);
-console.log('logging items');
+console.log('her kommer items');
 console.log(items);
-
-const elements = ['aus', 'bus', 'cus'] 
-const elementLast = 'sistus'
-  oneName = `<w:r><w:rPr><w:i/></w:rPr><w:r><w:t xml:space="preserve">  ${elements[1]} <w:rPr><w:i w:val="false"/></w:rPr><w:br/> <w:br/><w:t xml:space="preserve">  No.:</w:t></w:r>`
-  // '<w:rPr><w:i/></w:rPr> <w:t>hei hei hei</w:t><w:i w:val="false"/></w:rPr>'
-  twoNames = `<w:r><w:rPr><w:i/></w:rPr><w:r><w:t xml:space="preserve">  ${elements[1]} <w:rPr><w:i w:val="false"/></w:rPr><w:br/><w:t xml:space="preserve">  No.: </w:t><w:br/><w:br/><w:br/><w:rPr><w:i/></w:rPr><w:r><w:t xml:space="preserve">  ${elements[2]} <w:rPr><w:i w:val="false"/></w:rPr><w:br/><w:t xml:space="preserve">  No.: </w:t></w:r>`
-  // '<w:rPr><w:i/></w:rPr> <w:t>name2</w:t><w:rPr><w:i w:val="false"/></w:rPr>'
-  lessThanEightNames = `<w:r><w:rPr><w:i/></w:rPr><w:r><w:t xml:space="preserve">  ${elements[1]} <w:br/>  ${elements[2]}<w:br/>  ${elements[3]}<w:br/>  ${elements[4]}<w:br/>  ${elements[5]}<w:br/>  ${elements[6]}<w:br/>  ${elements[7]}<w:br/><w:rPr><w:i w:val="false"/></w:rPr></w:t></w:r>`
-  // '<w:rPr><w:i/></w:rPr> <w:t>name2</w:t><w:rPr><w:i w:val="false"/></w:rPr>'
-  moreThanEightNames = `<w:r><w:rPr><w:i/></w:rPr><w:t xml:space="preserve">  ${elements[1]} <w:t xml:space="preserve"> <w:br/>                    --> <w:br/>  ${elementLast}</w:t><w:rPr><w:i w:val="false"/></w:rPr></w:r>`
- 
-
-const things = {
-  validName: [
-    {
-      'navn1': 'bus', 'navn2': 'cus', 'navn3':'per petterson', 'navn4': 'kåre Anderson', 'AkseptertNavn3': 'gus', 'no1':'Nr.:', 'no2':'Nr.:', 'no3':'Nr.:'
-    },
-    {
-      'AkseptertNavn1': [{'navn1':'per petterson', 'navn2': 'kåre Anderson'}], 'AkseptertNavn2': 'hei på deg', 'AkseptertNavn3': 'nope', 'no1':'Nr.:', 'no2':'Nr.:', 'no3':'Nr.:'
-
-    },
-    {
-      'AkseptertNavn1': 'gus',
-    },
-  ]
-
-  ,
-  'rawxml': {
-    _type: 'rawXml',
-    xml: oneName,
-    replaceParagraph: false,
-  },
-  'rawxml2': {
-    _type: 'rawXml',
-    xml: twoNames,
-    replaceParagraph: false,
-  },
-  'rawxml3': {
-    _type: 'rawXml',
-    xml: lessThanEightNames,
-    replaceParagraph: false,
-  },
-  'rawxml4': {
-    _type: 'rawXml',
-    xml: moreThanEightNames,
-    replaceParagraph: false,
-  },
-};
-console.log('things');
-console.log(things);
-
 return items;
 }
+// const rawxml4 = {
+//   _type: 'rawXml',
+//   xml: 'hei hei',
+//   replaceParagraph: false,
+// }
+
+// items.validNames.push(rawxml4);
+
+
+// const elements = ['aus', 'bus', 'cus', 'dus', 'eus', 'fus', 'gus', 'hus',  'ius', 'jus'] 
+// const elementLast = 'sistus'
+//   oneName = `<w:r><w:rPr><w:i/></w:rPr><w:r><w:t xml:space="preserve">  ${elements[1]} <w:rPr><w:i w:val="false"/></w:rPr><w:br/> <w:br/><w:t xml:space="preserve">  No.:</w:t></w:r>`
+//   // '<w:rPr><w:i/></w:rPr> <w:t>hei hei hei</w:t><w:i w:val="false"/></w:rPr>'
+//   twoNames = `<w:r><w:rPr><w:i/></w:rPr><w:r><w:t xml:space="preserve">  ${elements[1]} <w:rPr><w:i w:val="false"/></w:rPr><w:br/><w:t xml:space="preserve">  No.: </w:t><w:br/><w:br/><w:br/><w:rPr><w:i/></w:rPr><w:r><w:t xml:space="preserve">  ${elements[2]} <w:rPr><w:i w:val="false"/></w:rPr><w:br/><w:t xml:space="preserve">  No.: </w:t></w:r>`
+//   // '<w:rPr><w:i/></w:rPr> <w:t>name2</w:t><w:rPr><w:i w:val="false"/></w:rPr>'
+//   lessThanEightNames = `<w:r><w:rPr><w:i/></w:rPr><w:r><w:t xml:space="preserve">  ${elements[1]} <w:br/>  ${elements[2]}<w:br/>  ${elements[3]}<w:br/>  ${elements[4]}<w:br/>  ${elements[5]}<w:br/>  ${elements[6]}<w:br/>  ${elements[7]}<w:br/><w:rPr><w:i w:val="false"/></w:rPr></w:t></w:r>`
+//   // '<w:rPr><w:i/></w:rPr> <w:t>name2</w:t><w:rPr><w:i w:val="false"/></w:rPr>'
+//   moreThanEightNames = `<w:r><w:rPr><w:i/></w:rPr><w:t xml:space="preserve">  ${elements[1]} <w:t xml:space="preserve"> <w:br/>                    --> <w:br/>  ${elementLast}</w:t><w:rPr><w:i w:val="false"/></w:rPr></w:r>`
+ 
+
+// const things = {
+//   validName: [
+//     {
+//       'navn1': 'bus', 'navn2': 'cus', 'navn3':'per petterson', 'navn4': 'kåre Anderson', 'AkseptertNavn3': 'gus', 'no1':'Nr.:', 'no2':'Nr.:', 'no3':'Nr.:'
+//     },
+//     {
+//       'AkseptertNavn1': [{'navn1':'per petterson', 'navn2': 'kåre Anderson'}], 'AkseptertNavn2': 'hei på deg', 'AkseptertNavn3': 'nope', 'no1':'Nr.:', 'no2':'Nr.:', 'no3':'Nr.:'
+
+//     },
+//     {
+//       'AkseptertNavn1': 'gus',
+//     },
+//   ]
+
+//   ,
+//   'rawxml': {
+//     _type: 'rawXml',
+//     xml: oneName,
+//     replaceParagraph: false,
+//   },
+//   'rawxml2': {
+//     _type: 'rawXml',
+//     xml: twoNames,
+//     replaceParagraph: false,
+//   },
+//   'rawxml3': {
+//     _type: 'rawXml',
+//     xml: lessThanEightNames,
+//     replaceParagraph: false,
+//   },
+//   'rawxml4': {
+//     _type: 'rawXml',
+//     xml: moreThanEightNames,
+//     replaceParagraph: false,
+//   },
+// };
+
+
+
 
 // { validNames: [{ key: 'value' }] }
-
-
 
 
  
@@ -268,9 +288,6 @@ async function writeBoxLabel(names, museum, collection, includeBoxNumbers) {
 
   try {
     const items = await makeBoxNameArray(names);
-
-    
-    
   
     const template = await fsPromises.readFile(skilleArkTemplatePath);
     const handler = new TemplateHandler();
@@ -285,7 +302,8 @@ async function writeBoxLabel(names, museum, collection, includeBoxNumbers) {
 }
 
 
-async function getValidNames(museum, collection) {
+async function getValidNames(museum, collection, labelType) {
+  console.log('labelType: ' + labelType);
     try {
         const nameFile = setCollection(museum, collection)
         if(nameFile) {
@@ -294,14 +312,17 @@ async function getValidNames(museum, collection) {
             flag: 'r'
         })
         data = JSON.parse(data)
+
         const validNames = []
 
         for (let i = 0; i < data.length; i++) {
-            const element = data[i]["Akseptert navn"];
+            const element = data[i]['Akseptert navn'];
+            
             validNames.push(element)
         }
-
+        validNames.sort()
         const nameString = JSON.stringify(validNames)
+        // console.log(validNames);
         return nameString;
       } else {
         return false

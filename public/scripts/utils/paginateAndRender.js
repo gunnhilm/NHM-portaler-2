@@ -220,11 +220,11 @@ const resultTable = (subMusitData, musitData) => {
                             
                         // collections only in corema
                         } else if (sessionStorage.getItem('chosenCollection') === 'mammals' || sessionStorage.getItem('chosenCollection') === 'birds') {
-                            console.log(subMusitData[i])
+                            // console.log(subMusitData[i])
                             if (subMusitData[i].preparationType) {cell10.innerHTML = subMusitData[i].preparationType}
                         
                         } else {
-                            console.log(subMusitData[i])
+                            // console.log(subMusitData[i])
                             // if there is no data in preparationType (subtype of sample): use basisOfRecord or coremaBasisOfRecord
                             if (!subMusitData[i].preparationType || subMusitData[i].preparationType === '' || !(/[a-zA-Z]/).test(subMusitData[i].preparationType)) {
                                 if (subMusitData[i].basisOfRecord) { cell10.innerHTML = subMusitData[i].basisOfRecord }

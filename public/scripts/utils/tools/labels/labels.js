@@ -22,9 +22,10 @@ const boxSelector =   new Selectr('#scientific-box-names', {
 function addBoxNames(validNames) {
     for (let i = 0; i < validNames.length; i++) {
         const element = validNames[i];
+        const newElement = element.split('|')[0];
         boxSelector.add({
-            value: element,
-            text: element
+            value: newElement,
+            text: newElement
         });
     }
 }
@@ -57,11 +58,13 @@ const getUserInput = async (labelType, extraInfo = 'false') => {
     let scientificNames  = ''
     // Get scientificNames using selector.getValue() or set it to an empty array if selector is undefined
         if(labelType === 'box') {
-            scientificNames = boxSelector?.getValue() || [];
+            // loop tabel and get the names
+            scientificNames = getInformationFromTable();
             // delete the choosen names
             clearTable('box-list');
         } else  if(labelType === 'unit') {
             scientificNames = selector?.getValue() || [];
+            selector.clear();
         }
 
     
@@ -109,9 +112,10 @@ const getCollections = async (museum) => {
 }
 
 
-const getValidNames = async (museum, collection) => {
+const getValidNames = async (museum, collection, labelType) => {
+    
     try {
-      const url = urlPath + '/labels?museum=' + museum + '&collection=' + collection
+      const url = urlPath + '/labels?museum=' + museum + '&collection=' + collection + '&labelType=' + labelType
       const response = await fetch(url);
       if (response.ok) {
         const validNames = await response.json();
@@ -131,24 +135,24 @@ document.getElementById('collection-select').addEventListener('change', async fu
     try {
         const valgtSamling = document.getElementById('collection-select').value;
         const valgtMuseum = document.getElementById('museum-select').value;
-
-        const validNames = await getValidNames(valgtMuseum, valgtSamling);
+        const labelType = true
+        const validNames = await getValidNames(valgtMuseum, valgtSamling, labelType);
 
 
         for (let i = 0; i < validNames.length; i++) {
             const element = validNames[i];
+            const newElement = element.replace(/\|/g, ' ')
             selector.add({
-                value: element,
-                text: element
+                value: newElement,
+                text: newElement
             });
         }
 
         addBoxNames(validNames) 
 
         document.getElementById('dropdown-container').style.display = "block";
-        const dropdownBoxContainer = document.getElementById('dropdown-box-container');
-        dropdownBoxContainer.style.display = "block ";
-        dropdownBoxContainer.style.backgroundColor = 'rgba(144, 238, 144, 0.1)';
+        document.getElementById('box-div').style.display = "block";
+        // document.getElementById('dropdown-box-container').style.display = "block";        
         document.getElementById('sorry').style.display = "none";
         
     } catch (error) {
@@ -158,7 +162,6 @@ document.getElementById('collection-select').addEventListener('change', async fu
   
     }
 });
-
 
 // Function for creating and populating collection dropdown
 async function createDropdown() {
@@ -200,8 +203,7 @@ async function createDropdown() {
       option.id = optionId.toLowerCase().replace(/\s/g, '-'); // Set the option id and transform to lowercase and replace spaces with hyphens
       option.value = optionId; // Set the option value to the same as the id
     }
-}
-  
+} 
 
 // Function for updating default value of dropdown
 function updateDefaultValue(selector, value) {
@@ -232,106 +234,111 @@ function clearTable(tableId) {
     }
 }
 
-
-// function populateBoxTable(names, includeBoxNumbers) {
-//     const nameInput = document.getElementById('box-name-input');
-//     const numberInput = document.getElementById('box-number-input');
-//     const table = document.getElementById('box-list');
-
-//     // for å unngå en tom rad på toppen av tabellen
-//     if (!tableExists) {
-//         tableExists = true;
-//         // Remove any existing rows from the table
-//         while (table.rows.length > 0) {
-//             table.deleteRow(0);
-//         }
-//     }
-
-//     // Remove the first value from the names array, selectr modulen leggger til en tom verdi
-//     names.shift();
-    
-//     // Add new rows to the table
-//     const rowId = "row-" + (table.rows.length + 1); // Generate a unique rowId
-//     const row = table.insertRow(-1);
-//     row.id = rowId; // Assign the rowId to the row element
-//     const nameCell = row.insertCell(0);
-//     const numberCell = row.insertCell(1);
-//     const deleteCell = row.insertCell(2);
-//     nameCell.colSpan = 2;
-//     nameCell.innerHTML = names.join(", ");
-//     numberCell.innerHTML = includeBoxNumbers ? 'ja' : 'nei';
-//     deleteCell.innerHTML = '<button type="button" class="descrete-button" data-row-id="' + rowId + '">Slett</button>';
-
-//     // Show makeLabels button and table
-//     const boxNameSubmitButton = document.getElementById("box-name-submit");
-//     const boxListTable = document.getElementById("box-list");
-//     boxNameSubmitButton.style.display = "block";
-//     boxListTable.style.display = "table";
-
-//     const deleteButtons = document.getElementsByClassName("descrete-button");
-//     for (let i = 0; i < deleteButtons.length; i++) {
-//         deleteButtons[i].addEventListener("click", deleteRow);
-//     }
-// }
-
-function populateBoxTable(names, includeBoxNumbers) {
+function populateBoxTable(names) {
     const nameInput = document.getElementById('box-name-input');
     const numberInput = document.getElementById('box-number-input');
     const table = document.getElementById('box-list');
-
+  
     // for å unngå en tom rad på toppen av tabellen
     if (!tableExists) {
-        tableExists = true;
-        // Remove any existing rows from the table
-        while (table.rows.length > 0) {
-            table.deleteRow(0);
-        }
+      tableExists = true;
+      // Remove any existing rows from the table
+      while (table.rows.length > 1) {
+        table.deleteRow(1);
+      }
     }
-
+  
     // Remove the first value from the names array, selectr modulen leggger til en tom verdi
     names.shift();
-    
+  
     // Add new rows to the table
-    const rowId = "row-" + (table.rows.length + 1); // Generate a unique rowId
+    const rowId = "row-" + table.rows.length; // Generate a unique rowId
     const row = table.insertRow(-1);
     row.id = rowId; // Assign the rowId to the row element
-
+  
     // Add label number column to the left
     const labelNumCell = row.insertCell(0);
     labelNumCell.id = "box-label-number";
-    labelNumCell.textContent = "Ektikett no.: " + table.rows.length;
-
+    labelNumCell.textContent = table.rows.length;
+  
     const nameCell = row.insertCell(1);
-    const numberCell = row.insertCell(2);
-    const deleteCell = row.insertCell(3);
-    nameCell.colSpan = 2;
-    nameCell.innerHTML = names.join(", ");
-    numberCell.innerHTML = includeBoxNumbers ? 'ja' : 'nei';
-    deleteCell.innerHTML = '<button type="button" class="descrete-button" data-row-id="' + rowId + '">Slett</button>';
-
+    nameCell.innerHTML = names.join(" | ");
+    const deleteCell = row.insertCell(2);
+    const deleteButton = document.createElement('button');
+    deleteButton.type = 'button';
+    deleteButton.classList.add('descrete-button');
+    deleteButton.textContent = 'x';
+    deleteButton.setAttribute("data-row-id", rowId); // Assign the rowId as the data-row-id attribute
+    deleteCell.appendChild(deleteButton);
+  
     // Show makeLabels button and table
+    const boxListForm = document.getElementById("box-list-form");
     const boxNameSubmitButton = document.getElementById("box-name-submit");
-    const boxListTable = document.getElementById("box-list");
     boxNameSubmitButton.style.display = "block";
-    boxListTable.style.display = "table";
-
+    boxListForm.style.display = "inline-block"
+  
     const deleteButtons = document.getElementsByClassName("descrete-button");
     for (let i = 0; i < deleteButtons.length; i++) {
-        deleteButtons[i].addEventListener("click", deleteRow);
+      deleteButtons[i].addEventListener("click", deleteRow);
     }
-}
-
-
-function deleteRow(event) {
-    const rowId = event.target.dataset.rowId;
+    deleteButton.addEventListener('click', () => deleteRow(rowId));
+  }
+  
+  function deleteRow(event) { 
+    const rowId = event.target.getAttribute('data-row-id');
     const row = document.getElementById(rowId);
+  
     if (row) {
-        const table = row.parentNode;
-        if (table.rows.length > 1) {
-            row.parentNode.removeChild(row);
-        }
+      const table = row.parentNode;
+      const rowIndex = row.rowIndex;
+  
+      // Delete the row
+      table.deleteRow(rowIndex);
+  
+      // Update the label numbers and data-row-id attributes
+      for (let i = rowIndex; i < table.rows.length; i++) {
+        const row = table.rows[i];
+        const labelNumCell = row.cells[0];
+        const deleteButton = row.cells[2].querySelector('.descrete-button');
+  
+        // Update label number
+        labelNumCell.textContent = i + 1;
+        // Update data-row-id attribute
+        row.id = 'row-' + (i + 1);
+        deleteButton.setAttribute('data-row-id', 'row-' + (i + 1));
+      }
     }
-}
+  }
+  
+
+function getInformationFromTable() {
+    const table = document.getElementById("box-list");
+    const rows = table.getElementsByTagName("tr");
+    
+    const rowData = [];
+    for (let i = 1; i < rows.length; i++) {
+      const cells = rows[i].getElementsByTagName("td");
+      const column2Value = cells[1].innerHTML;
+      const names = column2Value.includes('|') ? column2Value.split('|').map(value => value.trim()) : [column2Value.trim()];
+      const number = cells[2].innerHTML;
+      
+      rowData.push({ names, number });
+    }
+    
+    return rowData;
+  }
+  
+
+// function deleteRow(event) {
+//     const rowId = event.target.dataset.rowId;
+//     const row = document.getElementById(rowId);
+//     if (row) {
+//         const table = row.parentNode;
+//         if (table.rows.length > 1) { // check if there are any rows other than the header row
+//             row.parentNode.removeChild(row);
+//         }
+//     }
+// }
 
 // to make sure that the headers fit contence
 function updateTableStyling(tableId) {
@@ -341,6 +348,7 @@ function updateTableStyling(tableId) {
     // Update the width of table headers
     thElements.forEach((th) => {
       th.style.width = 'auto';
+      console.log('autostyling');
     });
   } 
 
@@ -348,39 +356,24 @@ function updateTableStyling(tableId) {
 // add names to box table
 forms.addEventListener('submit', (event) => {
     event.preventDefault();
-    
     const submitButtonId = event.submitter.getAttribute('id');
-    // alert('eventlistner sumbitt: ' + submitButtonId)
-    console.log(submitButtonId);
     let userInputType;
     
     if (submitButtonId === 'box-name-list') {
-        console.log('adding box labels...');
         userInputType = 'box';
     
         const boxNames = boxSelector?.getValue() || [];
-    
-        const includeBoxNumbers = document.getElementById('box-numbers').checked;
-    
-        if (boxNames.length > 3 && includeBoxNumbers) {
-          alert('Du kan maks ha 2 navne på en etikett hvis du vil ha nummer i tillegg.');
-          return;
-        }
-        populateBoxTable(boxNames, includeBoxNumbers)  
-       // boxSelector.clear(); // denne kan sikkert også brukes
-        boxSelector.reset()
+        populateBoxTable(boxNames)  
+        boxSelector.clear(); // denne kan sikkert også brukes
 
     } else if (submitButtonId === 'box-name-submit') {
         userInputType = 'box'; 
         getUserInput(userInputType);
     } else if (submitButtonId === 'label-name-submit') {
-      console.log('Creating unit labels...');
       userInputType = 'unit';
       getUserInput(userInputType);
     }
     // to make sure that the headers fit contence
     updateTableStyling('box-list');
-
-    
   });
   

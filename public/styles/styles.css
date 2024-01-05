@@ -838,36 +838,37 @@ table.item-page {
   }
 
   /* Label page*/
-  #box-list th {
-    padding: 8px; 
-    width: auto; 
+  #scientific-box-names {
+    width: 500px;
   }
-  /*
 
+  #box-div {
+    background-color: rgba(144, 238, 144, 0.1);
+  }
+  
   #box-list {
-    border-collapse: collapse;
+    border: 2px solid blue;
     width: 100%;
   }
-  
-  #box-list th,
+
   #box-list td {
-    padding: 8px;
-    text-align: center;
-    border: 1px solid #ddd;
-  }
-  
+    width: auto; /* Adjust this value as needed */
+  } 
+ 
   #box-list th {
     background-color: #f2f2f2;
     color: #333;
     font-weight: bold;
-    width: auto; 
+    width: auto;
+ 
+    text-align: center;
   }
   
-  #box-list tr:nth-child(even) {
+  #box-list td {
+    text-align: center;
+    padding: 5px 10px;
+  }
+
+  #box-list tr:nth-child(even):not(:first-child) {
     background-color: #f9f9f9;
   }
-  
-  #box-list tr:hover {
-    background-color: #e6e6e6;
-  } 
-  */

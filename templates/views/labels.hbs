@@ -1,99 +1,109 @@
 <!DOCTYPE html>
-
 <html lang="no">
-    <head>
-        <title>Labels</title> 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    </head>
-  
-    <body>
-        {{>header}}
-        
-        <table>
-            <tr>
-                <td>
-                    <label for="museum-select" id="select-museum-label"></label>
-                    <select id="museum-select" style="height:30px; border-radius:4px;">
-                        <option value="" id="selectMuseum"></option>
-                        <option value="nhm" id="nhm">NHM</option>
-                        <option value="um" id="um">UM</option>
-                        <option value="vm" id="vm">VM</option>
-                        <option value="tmu" id="tmu">TMU</option>
-                        <option value="nbh" id="nbh">NBH</option>
-                    </select>
-                    &nbsp;
-                    &nbsp;
+<head>
+    <title>Labels</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
 
-                    <label for="collection-select" id="select-collection-label"></label>
-                    <select id="collection-select" style="height:30px; border-radius:4px;">
-                        <option value="" id="selectCollection"></option>
-                    </select>
-                </td>
-            </tr>
-            
-        </table>
-<div id="labels">
-  <div style="display:none" id="dropdown-container">
-    <form id="label-names">
-      <p>Velg navn som skal på skillearkene inne i boksene:</p>
-      <select id="scientific-names">
-        <option value="value-1"></option>
-      </select>
-      <button id="label-name-submit" type="submit" class="blue-button">Lag skilleark</button>
-    </form>
-  </div>
-<br><br><br>
-  <img id="please-wait" src="/museum/images/ajax-loader.gif" alt="Please Wait" style="display:block; margin-top: 5em;" valign="top">
+<body>
+    {{>header}}
 
-  <div style="display:none" id="sorry"></div>
+    <table>
+        <tr>
+            <td>
+                <label for="museum-select" id="select-museum-label"></label>
+                <select id="museum-select" style="height:30px; border-radius:4px;">
+                    <option value="" id="selectMuseum"></option>
+                    <option value="nhm" id="nhm">NHM</option>
+                    <option value="um" id="um">UM</option>
+                    <option value="vm" id="vm">VM</option>
+                    <option value="tmu" id="tmu">TMU</option>
+                    <option value="nbh" id="nbh">NBH</option>
+                </select>
+                &nbsp;
+                &nbsp;
 
-  <div style="display:none " id="dropdown-box-container">
-    <form id="box-names">
-      <p>Velg navn som skal på boksene:</p>
-      <select id="scientific-box-names">
-        <option value="value-1"></option>
-      </select>
-      <br>
-      <input type="checkbox" id="box-numbers" name="box-numbers" value="enable-numbers">
-      <label for="box-numbers">Inkluder boksnummerlabel</label>
-      <br>
-      <button id="box-name-list" type="submit" class="blue-button">Legg til liste</button>
-    </form>
-  </div>
-
-  <form>
-    <table id="box-list" style="display: none; width: auto;">
-      <tr>
-        <th>Name</th>
-        <th>Number</th>
-        <th>Slett</th>
-      </tr>
-      <tr>
-        <td><input type="text" id="box-label-number"></td>
-        <td><input type="text" id="box-name-input"></td>
-        <td><input type="number" id="box-number-input"></td>
-        <td><button type="button" class="blue-button">Slett</button></td>
-      </tr>
+                <label for="collection-select" id="select-collection-label"></label>
+                <select id="collection-select" style="height:30px; border-radius:4px;">
+                    <option value="" id="selectCollection"></option>
+                </select>
+            </td>
+        </tr>
     </table>
+    
+<div id="labels">
+        <div style="display:none; width: 40%" id="dropdown-container">
+            <form id="label-names">
+                <h3>Skilleark</h3>
+                <p>Velg navn som skal på skillearkene inne i boksene,. Hvert navn får et eget skilleark.</p>
+                <select id="scientific-names">
+                    <option value="value-1"></option>
+                </select>
+                <button id="label-name-submit" type="submit" class="blue-button">Lag skilleark</button>
+            </form>
+        </div>
+        <br><br><br>
+        <img id="please-wait" src="/museum/images/ajax-loader.gif" alt="Please Wait" style="display:block; margin-top: 5em;" valign="top">
+        <div style="display:none" id="sorry"></div>   
+      
 
-    <button id="box-name-submit" type="submit" style="display: none;" class="blue-button">Lag kasse etiketter</button>
-  </form>
-</div>
+{{!-- her kommer boksene --}}
 
-<p></p> 
+      <div id="box-div" style="display: none">
+        <div  id="dropdown-box-container">
+          <form id="box-names">
+            <h3>Bokser</h3>
+            <p>1. Velg navn som skal på boksene. Du må trykke på legg til liste for hver etikett du skal lage.</p>
+            <div style="display: inline-block; vertical-align: top; width: 40%">
+              <select id="scientific-box-names">
+                <option value="value-1"></option>
+              </select>
+            </div>
+            <div style="display: inline-block;">
+              <button id="box-name-list" type="submit" class="blue-button">Legg til liste</button>
+            </div>
+          </form>
+        </div>
 
-<div style="display:none" id="sorry"></div>
+        <form id="box-list-form" style="display: none;">
+            <table id="box-list" class="box-list">
+                <thead>
+                    <tr>
+                        <th>Etikett nummer</th>
+                        <th>Name</th>
+                        <th>Slett</th>
+                        {{!-- <td>Etikett nummer</td>
+                        <td>Name</td>
+                        <td>Slett</td> --}}
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="text" id="box-label-number"></td>
+                        <td><input type="text" id="box-name-input"></td>
+                        <td><button type="button" class="blue-button">Slett</button></td>
+                    </tr>
+                </tbody>
+            </table>
+    
+            <p>2. Lag et Word dokument med ettiketter</p>
+            <button id="box-name-submit" type="submit" style="display: none;" class="blue-button">Lag kasse etiketter</button>
+        </form>
+      </div>
+    
+    
+    <p></p>
 
-
-
-        <link rel="stylesheet" href="/museum/styles/styles.css">
-        <link id="museumStyle" rel="stylesheet" type="text/css" href= "">
-        <link rel="stylesheet" type="text/css" href="/museum/scripts/utils/selectr/selectr.min.css">
-        <script type="text/javascript" src="/museum/scripts/utils/selectr/selectr.min.js"></script>
-        <script src="/museum/scripts/utils/showCorrectMuseum.js"></script>
-        <script src="/museum/scripts/utils/textItems.js"></script>
-        <script src="/museum/scripts/utils/renderLangHeader.js"></script>
-        <script src="/museum/scripts/utils/renderLang.js"></script>
-         <script src="/museum/scripts/utils/tools/labels/labels.js"></script>
-     </body>
+    <div style="display:none" id="sorry"></div>
+  </div>
+    <link rel="stylesheet" href="/museum/styles/styles.css">
+    <link id="museumStyle" rel="stylesheet" type="text/css" href="">
+    <link rel="stylesheet" type="text/css" href="/museum/scripts/utils/selectr/selectr.min.css">
+    <script type="text/javascript" src="/museum/scripts/utils/selectr/selectr.min.js"></script>
+    <script src="/museum/scripts/utils/showCorrectMuseum.js"></script>
+    <script src="/museum/scripts/utils/textItems.js"></script>
+    <script src="/museum/scripts/utils/renderLangHeader.js"></script>
+    <script src="/museum/scripts/utils/renderLang.js"></script>
+    <script src="/museum/scripts/utils/tools/labels/labels.js"></script>
+</body>
 </html>

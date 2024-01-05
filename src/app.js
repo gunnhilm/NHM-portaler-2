@@ -624,9 +624,9 @@ app.get('/checkRegion2', (req, res) => {
 
 app.get('*/labels', async (req, res) => {
     try {
-        const { museum, collection } = req.query;
-        if (museum && collection) {
-            const results = await labels.getValidNames(museum, collection);
+        const { museum, collection, labelType } = req.query;
+        if (museum && collection && labelType) {
+            const results = await labels.getValidNames(museum, collection, labelType);
             if (results) {
               res.send({ results });
             } else {
