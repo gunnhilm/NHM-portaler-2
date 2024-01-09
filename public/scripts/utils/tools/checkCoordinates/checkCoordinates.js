@@ -187,11 +187,11 @@ async function callAPI(element, table, museum, museumURLPath) {
                                 if (element.county !== data.unparsed) {
                                     const neighbors = await getNeighbors(element.county)
                                     let neighborsString = ""
-                                    let isNeighbors = 'Nei / No'
+                                    let isNeighbors = 'Nei'
                                     if(neighbors){
                                         for (let i = 0; i < neighbors.length; i++) {
                                             if(data.unparsed === neighbors[i]) {
-                                                isNeighbors = 'Ja / Yes'
+                                                isNeighbors = 'Ja'
                                             }
                                         }
                                     }
