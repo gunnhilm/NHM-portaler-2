@@ -263,6 +263,15 @@
     "occurrenceFileSuffix": "_occurrence.txt", 
     "url": "",
     "gbifCitation": "Wilhelmsen Å I, Bachmann L, Rindal E (2023). Crustacea collection (Cru) at UiO NHM, Oslo. Version 1.6. University of Oslo. Occurrence dataset https://doi.org/10.15468/efw98v accessed via GBIF.org on 2023-12-20"
+},
+{
+    "source": "access",
+    "orgGroup": "zoologi",
+    "name": "insectTypes",
+    "zipFileName": "occurrence",
+    "mediaFile": "",
+    "occurrenceFileSuffix": "_occurrence.txt", 
+    "url": ""
 }
 ]
 

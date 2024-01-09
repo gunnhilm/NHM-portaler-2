@@ -132,10 +132,11 @@ emptyTable = () => {
 //  emptySearch() in search.js
 emptyResultElements = () => {
     document.querySelector('#hits-row').style.display = 'none'
-    document.getElementById("loan-button").style.display = "none"
-    document.querySelector('#check-coordinates-button').style.display = "none"
-    document.getElementById("download-button").style.display = "none"
-    document.getElementById("download-photo-button").style.display = "none"
+    // document.getElementById("loan-button").style.display = "none"
+    // document.querySelector('#check-coordinates-button').style.display = "none"
+    // document.getElementById("download-button").style.display = "none"
+    // document.getElementById("download-photo-button").style.display = "none"
+    document.getElementById("action-select").style.display = "none"
     document.getElementById("head-nb-hits").innerHTML = ""
     document.getElementById("empty-search-button").style.display = "none"
     document.getElementById("zoom-button").style.display = "none"
@@ -164,11 +165,13 @@ showResultElements = (loan) => {
     document.querySelector('#hits-row').style.display = 'block'
     document.querySelector('#head-nb-hits').innerHTML = textItems.nbHitsText[index]
     if(loan){
-        document.querySelector('#loan-button').style.display = "block" 
+        // document.querySelector('#loan-button').style.display = "block" 
+        // document.getElementById('loan-records').
     }
     // document.querySelector('#check-coordinates-button').style.display = "block"
-    document.querySelector('#download-button').style.display = "block"
-    document.querySelector('#download-photo-button').style.display = "block"
+    // document.querySelector('#download-button').style.display = "block"
+    // document.querySelector('#download-photo-button').style.display = "block"
+    document.getElementById('action-select').style.display = "block"
     document.getElementById("empty-search-button").style.display = "inline-block"
     document.getElementById("first").style.display = "inline-block"
     document.getElementById("previous").style.display = "inline-block"
@@ -234,6 +237,8 @@ function addSortingText(id, prop, musitData, fromFunction) { // her er musitData
                     if (id === 'photoButton' | id === 'coordinateButton') {
                         reverse = !reverse
                         musitData.sort(sort_by(prop,reverse))
+                    } else if (sessionStorage.getItem("chosenCollection") == "insectTypes") {
+                        musitData.sort(sort_by(prop,reverse))
                     } else {
                         musitData.sort(sort_by(prop,reverse, (a) => a.toLowerCase()))
                         //a.trim().toLowerCase()
@@ -267,7 +272,7 @@ function addSortingText(id, prop, musitData, fromFunction) { // her er musitData
                 } else if (fromFunction === 'UTADRestultTable') {
                     UTADRestultTable(subMusitData, musitData) 
                 } else /*if (fromFunction === 'resultTable')*/ {
-                    console.log('hit')
+                   
                     resultTable(subMusitData, musitData) 
                 }
                 

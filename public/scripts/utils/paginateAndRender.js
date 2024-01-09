@@ -99,6 +99,7 @@ function hide_column(col_no) {
 //	addSortingText(…)
 const resultTable = (subMusitData, musitData) => {   
     try {
+        // console.log(subMusitData[0])
         table.innerHTML = ""
         for (let i = -1; i < pageList.length; i++) { // vis en tabell med resultater som er like lang som det vi ba om pageList.length; 
             const row = table.insertRow(-1)
@@ -148,24 +149,23 @@ const resultTable = (subMusitData, musitData) => {
                 let prefix
                 if (sessionStorage.getItem('organismGroup').includes('paleontologi')) {
                     prefix = 'PMO '
-
                 } else if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
                     prefix = 'NHMO-J-'
-                } else if (!(/[a-zA-Z]/).test(subMusitData[i].catalogNumber.charAt(0))) {
-                    prefix = subMusitData[i].institutionCode + '-' + subMusitData[i].collectionCode + '-'
+                } else if (subMusitData[i].institutionCode && !(/[a-zA-Z]/).test(subMusitData[i].catalogNumber.charAt(0))) {
+                    prefix = subMusitData[i].institutionCode + '-' + subMusitData[i].collectionCode + '-'    
                 } else {
                     prefix = ''
                 }
-                
-                if (subMusitData[i].catalogNumber.includes('J')) { subMusitData[i].catalogNumber = subMusitData[i].catalogNumber.substring(2)}
-                
-                if (subMusitData[i].catalogNumber.includes('/')) { // mose-data
-                    let strippedCatNo = subMusitData[i].catalogNumber.substring(0,subMusitData[i].catalogNumber.indexOf('/'))
-                    cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${strippedCatNo} </a>`
-                } else {
-                    let coll = collection.value
-                    
-                    cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}&samling=${coll}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${subMusitData[i].catalogNumber} </a>`
+                if (subMusitData[i].catalogNumber) {
+                    if (subMusitData[i].catalogNumber.includes('J')) { subMusitData[i].catalogNumber = subMusitData[i].catalogNumber.substring(2)}
+                    if (subMusitData[i].catalogNumber.includes('/')) { // mose-data
+                        let strippedCatNo = subMusitData[i].catalogNumber.substring(0,subMusitData[i].catalogNumber.indexOf('/'))
+                        cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${strippedCatNo} </a>`
+                    } else {
+                        let coll = collection.value
+                        
+                        cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}&samling=${coll}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${subMusitData[i].catalogNumber} </a>`
+                    }
                 }
                 //cell 2
                 if (sessionStorage.getItem('organismGroup').includes('geologi')) {
@@ -220,11 +220,9 @@ const resultTable = (subMusitData, musitData) => {
                             
                         // collections only in corema
                         } else if (sessionStorage.getItem('chosenCollection') === 'mammals' || sessionStorage.getItem('chosenCollection') === 'birds') {
-                            // console.log(subMusitData[i])
                             if (subMusitData[i].preparationType) {cell10.innerHTML = subMusitData[i].preparationType}
                         
                         } else {
-                            // console.log(subMusitData[i])
                             // if there is no data in preparationType (subtype of sample): use basisOfRecord or coremaBasisOfRecord
                             if (!subMusitData[i].preparationType || subMusitData[i].preparationType === '' || !(/[a-zA-Z]/).test(subMusitData[i].preparationType)) {
                                 if (subMusitData[i].basisOfRecord) { cell10.innerHTML = subMusitData[i].basisOfRecord }

@@ -457,6 +457,35 @@ collection.addEventListener('change', () => {
 })
 
 
+// figures out which museum we are in
+// out: string, abbreviation for museum
+// is called by doSearch() and updateFooter()
+const getCurrentMuseum = () => {
+  const pathArray = window.location.pathname.split('/')
+  const museum = pathArray[2]
+  return museum
+}
+
+// sends a request to the server about date of last change of the stat-file and puts data in last-updated-field in footer
+
+const updateStatFooter = () => {
+  let museum = getCurrentMuseum()  
+  const url =  urlPath + '/footer-date/?&samling=stats&museum=' + museum
+  fetch(url).then((response) => {
+      if (!response.ok) {
+          throw new Error('Network response was not ok');
+      } else {
+          return response.text()
+      }
+  }).then ((data) => {
+      data=JSON.parse(data)
+      lastUpdated = textItems.lastUpdated[index] + data.date 
+      document.querySelector('#last-updated').textContent = lastUpdated
+  }) .catch((error) => {
+      console.error('There is a problem, probably file for collection does not exist', error)
+  })
+}
+
 // async function; renders the page the first time
 // calls makeGraphs(..) and	populateTable(..)
 // is called in this file (showStat.js)
@@ -465,6 +494,7 @@ async function main() {
   collSelect(data)
   makeGraphs(data)  // Tegn opp grafene for første gang
   populateTable(data) // Lag hovedtabel med samlingstall
+  updateStatFooter()
 }
 
 main()

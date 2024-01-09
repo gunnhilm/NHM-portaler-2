@@ -10,16 +10,89 @@ let searchLineNumber = 0
 const nbHitsElement = document.getElementById('nb-hits') 
 const nbHitsHeader = document.getElementById("head-nb-hits")
 const errorMessage = document.getElementById("error-message")
+const actionSelect = document.getElementById("action-select")
 
 // for the download button 
-const downloadButton = document.getElementById('download-button')
-const downloadPhotoButton = document.getElementById('download-photo-button')
+// const downloadButton = document.getElementById('download-button')
+// const downloadPhotoButton = document.getElementById('download-photo-button')
 //empty-search button 
 const emptySearchButton = document.querySelector('#empty-search-button')
 
-const checkCoordinates = document.querySelector('#check-coordinates-button')
+// const checkCoordinates = document.querySelector('#check-coordinates-button')
+const checkCoordinates = document.querySelector('#check-coordinates')
 // rendered with result table, in footer
 const updated = document.querySelector('#last-updated')
+
+actionSelect.addEventListener('change', (e) => {
+    if (actionSelect.value == 'download-records') {
+        console.log('download 28')
+        e.preventDefault()
+            
+        // Start file download
+        const searchResult = JSON.parse(sessionStorage.getItem('string'))
+        // loop through - put those wich checked in new array
+        const newArray = []
+        let downloadResult
+        searchResult.forEach(el => {
+            if (el.checked) {newArray.push(el)}
+        })
+        if (newArray.length == 0) {
+            downloadResult = Papa.unparse(searchResult, {
+                delimiter: "\t",
+            })
+        } else {
+            downloadResult = Papa.unparse(newArray, {
+                delimiter: "\t",
+            })
+        }
+        download("download.txt", downloadResult)
+        actionSelect.value = "action-option"
+    } else if (actionSelect.value == "download-photos") {
+        console.log('foto 49')
+        e.preventDefault()
+            
+        const searchResult = JSON.parse(sessionStorage.getItem('string'))
+        // loop through - put those which checked in new array
+        const newArray = []
+        const urls = []
+        const catalogNo = []
+        searchResult.forEach(el => {
+            if (el.checked) {newArray.push(el)}
+        })
+        
+        if (newArray.length === 0) {
+            zoomModal.style.display = "block";
+            zoomModalContent.innerHTML = textItems.mapCheckedMessage[index]
+        } else {
+            if (newArray.some(el => el.associatedMedia)) {
+                newArray.forEach( el => {
+                    urls.push(el.associatedMedia)
+                    catalogNo.push(el.catalogNumber)
+                })
+                downloadAndZip(urls,catalogNo)
+            } else {
+                zoomModal.style.display = "block";
+                zoomModalContent.innerHTML = textItems.noPhotoMessage[index]
+            }
+        }
+        actionSelect.value = "action-option"
+    } else if (actionSelect.value == "loan-records") {
+        console.log('lån 76')
+        e.preventDefault()
+        console.log('loan from select');
+        startLoans()
+        openPage()
+        actionSelect.value = "action-option"
+    } else if (actionSelect.value == "check-coordinates") {
+        console.log('coord 82')
+        e.preventDefault()
+        let url = window.location.href
+        url = url + '/checkCoord'
+        window.location.href = url
+        actionSelect.value = "action-option"
+    }
+    
+})
 
 // to decide wether map is to be drawn
 let searchFailed = false
@@ -243,6 +316,7 @@ function addTextInCollSelect(a) {
     else if (a == 'utad') {return textItems.utad[index]}
     else if (a == 'bulk') {return textItems.bulk[index]}
     else if (a == 'crustacea') {return textItems.crustacea[index]}
+    else if (a == 'insectTypes') {return textItems.insectTypes[index]}
 }
     
 function addCollectionsToSelect(orgGroup, orgGroups, fileList) {
@@ -296,12 +370,12 @@ function addCollectionsToSelect(orgGroup, orgGroups, fileList) {
 }
 
 // when check coordinates- button is clicked
-checkCoordinates.addEventListener('click', (e) => {
-    e.preventDefault()
-    let url = window.location.href
-    url = url + '/checkCoord'
-    window.location.href = url
-})
+// checkCoordinates.addEventListener('click', (e) => {
+//     e.preventDefault()
+//     let url = window.location.href
+//     url = url + '/checkCoord'
+//     window.location.href = url
+// })
 
 // download search-result to file
 // in: filename(string, name of outputfile)
@@ -321,28 +395,29 @@ function download(filename, text) {
 }
 
 // when download-button is clicked
-downloadButton.addEventListener('click', (e) => {
-    e.preventDefault()
+// downloadButton.addEventListener('click', (e) => {
+// document.getElementById('download-records').addEventListener('click', (e) => {
+//     e.preventDefault()
         
-    // Start file download
-    const searchResult = JSON.parse(sessionStorage.getItem('string'))
-    // loop through - put those wich checked in new array
-    const newArray = []
-    let downloadResult
-    searchResult.forEach(el => {
-        if (el.checked) {newArray.push(el)}
-    })
-    if (newArray.length == 0) {
-        downloadResult = Papa.unparse(searchResult, {
-            delimiter: "\t",
-        })
-    } else {
-        downloadResult = Papa.unparse(newArray, {
-            delimiter: "\t",
-        })
-    }
-    download("download.txt", downloadResult)
-})
+//     // Start file download
+//     const searchResult = JSON.parse(sessionStorage.getItem('string'))
+//     // loop through - put those wich checked in new array
+//     const newArray = []
+//     let downloadResult
+//     searchResult.forEach(el => {
+//         if (el.checked) {newArray.push(el)}
+//     })
+//     if (newArray.length == 0) {
+//         downloadResult = Papa.unparse(searchResult, {
+//             delimiter: "\t",
+//         })
+//     } else {
+//         downloadResult = Papa.unparse(newArray, {
+//             delimiter: "\t",
+//         })
+//     }
+//     download("download.txt", downloadResult)
+// })
 
 // https://huynvk.dev/blog/download-files-and-zip-them-in-your-browsers-using-javascript
 const downloadImage = async (url) => {
@@ -371,34 +446,35 @@ const downloadAndZip = async (urls, catalogNo) => {
   }
 
 //   When someone clicks download images
-downloadPhotoButton.addEventListener('click', (e) => {
-    e.preventDefault()
+// downloadPhotoButton.addEventListener('click', (e) => {
+// document.getElementById('download-photos').addEventListener('click', (e) => {
+//     e.preventDefault()
         
-    const searchResult = JSON.parse(sessionStorage.getItem('string'))
-    // loop through - put those which checked in new array
-    const newArray = []
-    const urls = []
-    const catalogNo = []
-    searchResult.forEach(el => {
-        if (el.checked) {newArray.push(el)}
-    })
+//     const searchResult = JSON.parse(sessionStorage.getItem('string'))
+//     // loop through - put those which checked in new array
+//     const newArray = []
+//     const urls = []
+//     const catalogNo = []
+//     searchResult.forEach(el => {
+//         if (el.checked) {newArray.push(el)}
+//     })
     
-    if (newArray.length === 0) {
-        zoomModal.style.display = "block";
-        zoomModalContent.innerHTML = textItems.mapCheckedMessage[index]
-    } else {
-        if (newArray.some(el => el.associatedMedia)) {
-            newArray.forEach( el => {
-                urls.push(el.associatedMedia)
-                catalogNo.push(el.catalogNumber)
-            })
-            downloadAndZip(urls,catalogNo)
-        } else {
-            zoomModal.style.display = "block";
-            zoomModalContent.innerHTML = textItems.noPhotoMessage[index]
-        }
-    }
-})
+//     if (newArray.length === 0) {
+//         zoomModal.style.display = "block";
+//         zoomModalContent.innerHTML = textItems.mapCheckedMessage[index]
+//     } else {
+//         if (newArray.some(el => el.associatedMedia)) {
+//             newArray.forEach( el => {
+//                 urls.push(el.associatedMedia)
+//                 catalogNo.push(el.catalogNumber)
+//             })
+//             downloadAndZip(urls,catalogNo)
+//         } else {
+//             zoomModal.style.display = "block";
+//             zoomModalContent.innerHTML = textItems.noPhotoMessage[index]
+//         }
+//     }
+// })
 
 // deletes previous search results, resets value that says if search failed, resets Boolean sorting-values for result, hides buttons, performs search
 // in: limit (number, line number of search result where search stops)

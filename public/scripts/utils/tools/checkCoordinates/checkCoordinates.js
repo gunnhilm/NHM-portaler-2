@@ -200,7 +200,29 @@ async function callAPI(element, table, museum, museumURLPath) {
                                     const cell_2 = row1.insertCell(1)
                                     const cell_3 = row1.insertCell(2)
                                     const cell_4 = row1.insertCell(3)
-                                    cell_1.innerHTML =  `<a id="object-link" target="_blank" href="${museumURLPath}/object/?id=${element.catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${element.catalogNumber} </a>`
+                                    // to get prefix to catalognumber right
+                                    let prefix
+                                    if (sessionStorage.getItem('organismGroup').includes('paleontologi')) {
+                                        prefix = 'PMO '
+                                    } else if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
+                                        prefix = 'NHMO-J-'
+                                    } else if (element.institutionCode && !(/[a-zA-Z]/).test(element.catalogNumber.charAt(0))) {
+                                        prefix = element.institutionCode + '-' + element.collectionCode + '-'    
+                                    } else {
+                                        prefix = ''
+                                    }
+                               
+                                    if (element.catalogNumber) {
+                                        if (element.catalogNumber.includes('J')) { element.catalogNumber = element.catalogNumber.substring(2)}
+                                        if (element.catalogNumber.includes('/')) { // mose-data
+                                            let strippedCatNo = element.catalogNumber.substring(0,element.catalogNumber.indexOf('/'))
+                                            cell_1.innerHTML =  `<a id="object-link" target="_blank" href="${museumURLPath}/object/?id=${element.catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${strippedCatNo} </a>`
+                                        } else {
+                                            console.log(prefix)
+                                            cell_1.innerHTML =  `<a id="object-link" target="_blank" href="${museumURLPath}/object/?id=${element.catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${element.catalogNumber} </a>`
+                                        }
+                                    }
+                    
                                     cell_2.innerHTML = element.county
                                     cell_3.innerHTML = data.unparsed
                                     cell_4.innerHTML = isNeighbors
@@ -230,13 +252,12 @@ async function checkCoords() {
         cell4.innerHTML = "Nabokommuner".bold()
 
         const lastSearch = JSON.parse(sessionStorage.getItem('string'))
+        console.log(lastSearch)
         let museum = sessionStorage.getItem('museum')
         const museumURLPath = getMuseumPath()
         await Promise.all(lastSearch.map(async (element) => {
             await callAPI(element, table, museum, museumURLPath)
-            console.log('api call');
         }))
-        console.log('hit');
 }
 
 
@@ -255,5 +276,7 @@ const main = async () => {
     endTable()
 
 }
+
+
 
 main()

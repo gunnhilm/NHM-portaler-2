@@ -206,6 +206,9 @@ const collectionName = (coll,source) => {
         let href
             href = "https://www.nhm.uio.no/samlinger/zoologi/krepsdyr/"
         return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
+    } else if (coll == "insectTypes") {
+        term = textItems.insectTypes[index]
+        return `${term}`
     } else if (coll == "DNA" || coll.includes("dna")) {
         term = textItems.DNAcollection[index]
         let href
@@ -656,6 +659,7 @@ const makeGeoTable = (specimenObject) => {
 // "Second" means trad.coll.object comes from other collection that the one we are in (typically DNA-bank)
 // "second" means we want link to other collection
 async function showObjectData (specimenObject,objectTable,order) {
+    console.log('hit')
     objectTable.style.display='block'
     let coll = sessionStorage.getItem('chosenCollection')
     // let associatedCollection
@@ -700,13 +704,15 @@ async function showObjectData (specimenObject,objectTable,order) {
     } else if (specimenObject.institutionCode) {
         prefix = specimenObject.institutionCode + '-' + specimenObject.collectionCode
     }  // if mammal- or bird-preserved specimen: no prefix
-
+console.log(prefix)
     if (order === 'first') {
         //cell1.innerHTML = `<a id="object-link" href="${museumURLPath}/object/?id=${specimenObject.catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=nhm&lang=${sessionStorage.getItem('language')}"> ${prefix}-${specimenObject.catalogNumber} </a>`
         if (prefix) {
             cell1.innerHTML = prefix + '-' + specimenObject.catalogNumber
         } else { // mammal- or bird-preserved specimen
+            console.log(specimenObject)
             cell1.innerHTML = specimenObject.itemNumber
+
         }
     } else { // object is from assosicated collection, and should have link
         const fileList = JSON.parse(sessionStorage.getItem('fileList'))
@@ -934,7 +940,10 @@ async function showData (specimenObject, orgGroup, overviewObject) {
             prefix = specimenObject.institutionCode + '-' + specimenObject.collectionCode + '-'
             let strippedCatNo = specimenObject.catalogNumber.substring(0,specimenObject.catalogNumber.indexOf('/'))
             regnoEl =  `<span>${prefix}${strippedCatNo}</span>`
-        } else{
+        } else if (sessionStorage.getItem('chosenCollection') == "insectTypes") {
+            prefix = ""
+            regnoEl = `<span>${prefix}${specimenObject.catalogNumber}</span>`
+        } else {
             prefix = specimenObject.institutionCode + '-' + specimenObject.collectionCode + '-'
             regnoEl = `<span>${prefix}${specimenObject.catalogNumber}</span>` 
         }

@@ -1,9 +1,8 @@
 //loans button 
-const loansButton = document.querySelector('#loan-button')
+// const loansButton = document.querySelector('#loan-button')
 console.log('vi er her');
-document.getElementById("loan-button").style.display = "none";
-// document.querySelector('#loan-button').style.display = "none";
 
+// document.querySelector('#loan-button').style.display = "none";
 
 
 
@@ -36,12 +35,13 @@ const openPage = () => {
 }
 
 // When some pushes the loan button
-loansButton.addEventListener('click', (e) => {
-    e.preventDefault()
-    console.log('lån');
-    startLoans()
-    openPage()
+// loansButton.addEventListener('click', (e) => {
+// document.getElementById('loan-records').addEventListener('click', (e) => {
+//     e.preventDefault()
+//     console.log('lån');
+//     startLoans()
+//     openPage()
     
 
-})
+// })
 

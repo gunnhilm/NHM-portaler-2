@@ -45,6 +45,7 @@ const textItems = {
     lav: ["Lav", "Lichens"],
     alger: ["Alger", "Algae"],
     insekter: ["Insekter", "Insects"],
+    insectTypes: ["Insekt-typer", "Insect types"],
     fisk: ["Fisk", "Fish"],
     evertebrater: ["Invertebrater", "Invertebrates"],
     crustacea: ["Krepsdyr", "Crustaceans"],
@@ -70,8 +71,11 @@ const textItems = {
     utad: ["Utads samling", "Exhibition collection"],
     bulk: ["Bulk- og prosjektmateriale", "Bulk- and project material"],
     hitsPerPage: ["Treff per side", "Hits per page"],
+    actionRecords: ["Handling på poster", "Actions on records"],
     downloadLink: ["Last ned resultat", "Download results"],
     downloadPhoto: ["Last ned bilder", "Download photos"],
+    createLoan: ["Søk om lån", "Apply for loan"],
+    
     nbHitsText: ["Antall treff: ", "Number of hits: "],
     headerCatNb: ["Katalognr.", "Catalog nb."],
     headerTaxon: ["Takson", "Taxon"],
@@ -341,6 +345,7 @@ const textItems = {
     
     // checkCoord page
     checkCoordHeader: ['Sjekk koordinater', 'Check coordinates'],
+    checkCoordAll: ['Sjekk koordinater (alle poster)', 'Check coordinates (all records)'],
 
     // DNA barcodes page
     bcHeaderFungi: ['Strekkodete sopp i NorBOL','Barcoded fungi in NorBOL'],

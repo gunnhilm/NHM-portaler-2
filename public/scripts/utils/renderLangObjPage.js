@@ -50,7 +50,6 @@ function renderObjectText(lang){
     let museum = urlParams.get("museum")
     if (museum === "nhm") {
         let headCollection = collectionName(coll,"head")
-        console.log(headCollection)
         document.querySelector("#head-collection").innerHTML = headCollection
     } 
         

@@ -14,9 +14,19 @@
                 <p class="page-header" id="checkCoordHeader"></p>
                 
                 
+                <br>
+
+                    <br><br>
+                    <p>Basert på ditt siste søk listes her opp de poster der koordinatene og kommune ikke stemmer overens. Korreksjoner må gjøres i samlingsdatabasen. </p>
+                    <p class="neutral" id="coordResult"></p>
+                    <table id="coord-results" border="1"></table>
+            </div>
+            {{>footer}}
+        </div>
+
                 <div>
                     <table>
-                        <tr><td>Her kan du få en oversikt over en kommunnes nabokommuner. <br></td></tr>
+                        <tr><td>Her kan du få en oversikt over en kommunes nabokommuner. <br></td></tr>
                         <tr>
                             <td>
                                 <p>
@@ -35,15 +45,6 @@
                 </div>
 
 
-                <br>
-
-                    <br><br>
-                    <p>Basert på ditt søk, listes her opp de poster der koordinatene og kommune ikke stemmer overens. Korreksjoner må gjøres i samlingsdatabasen. </p>
-                    <p class="neutral" id="coordResult"></p>
-                    <table id="coord-results" border="1"></table>
-            </div>
-            {{>footer}}
-        </div>
         <link rel="stylesheet" href="/museum/styles/styles.css">
         <link id="museumStyle" rel="stylesheet" type="text/css" href= "">
         <script src="/museum/scripts/utils/showCorrectMuseum.js"></script>
