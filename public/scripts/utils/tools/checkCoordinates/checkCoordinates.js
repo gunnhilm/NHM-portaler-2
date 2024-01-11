@@ -1,4 +1,5 @@
 const lastSearch = JSON.parse(sessionStorage.getItem('string'))
+const rareKommuner = []
  
 let locArray = []
 
@@ -36,7 +37,7 @@ const addCollectionsToSelect = (errorList) => {
 
 const getMunicipalityList = async () => {
 return new Promise((resolve, reject) => {
-    const url = 'https://ws.geonorge.no/kommuneinfo/v1/kommuner'
+    const url = 'https://api.kartverket.no/kommuneinfo/v1/kommuner'
     const norskeKommuner = []
     let options = ''
     fetch(url, {
@@ -57,7 +58,7 @@ return new Promise((resolve, reject) => {
           resolve(data)
       })
       .catch((error) => {
-        console.error('Error:', error);
+        // console.error('Error:', error);
         reject(error)
       });
     })
@@ -72,7 +73,7 @@ const getNeighbors = async (valgtLKommune) => {
                 kommuneNummer = kommuneListe[i].kommunenummer
             }   
         }
-    const url = 'https://ws.geonorge.no/kommuneinfo/v1/kommuner/' + kommuneNummer + '/nabokommuner'
+    const url = 'https://api.kartverket.no/kommuneinfo/v1/kommuner/' + kommuneNummer + '/nabokommuner'
     const naboKommuner = []
     fetch(url, {
         headers: {
@@ -88,7 +89,6 @@ const getNeighbors = async (valgtLKommune) => {
         resolve(naboKommuner)
       })
       .catch((error) => {
-        console.error('Error:', error);
         reject(error)
       });
 })
@@ -117,65 +117,48 @@ function getMuseumPath(){
 }
 
 const endTable = async () =>   {
-    console.log('endTable');
     const table = document.querySelector('#coord-results')
     const row = table.insertRow(-1)
     const cell1 = row.insertCell(0)
     cell1.innerHTML = "No more errors".bold()
 }
+function createObjectLink(element, museumURLPath, museum, prefix) {
+      if (element.catalogNumber.includes('J')) {
+        element.catalogNumber = element.catalogNumber.substring(2);
+      }
+      if (element.catalogNumber.includes('/')) {
+        let strippedCatNo = element.catalogNumber.substring(0, element.catalogNumber.indexOf('/'));
+        return `<a id="object-link" target="_blank" href="${museumURLPath}/object/?id=${element.catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${strippedCatNo} </a>`;
+      } else {
+        return `<a id="object-link" target="_blank" href="${museumURLPath}/object/?id=${element.catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${element.catalogNumber} </a>`;
+      }
+  }
 
-// async function callAPI(element, table, museum, museumURLPath) {
-//     return new Promise((resolve,reject) => {
-//         const regionType = 'kommune'
-//         if (element.decimalLatitude && element.decimalLongitude) {
-//             lat = parseFloat(element.decimalLatitude)
-//             long = parseFloat(element.decimalLongitude)
-//             const url = urlPath + '/checkRegion/?regionType=' + regionType + '&lat=' + lat + '&long=' + long
-//             fetch(url).then((response) => {
-//                     try {
-//                         response.text().then(async (data) => {
-//                                 if (element.county === JSON.parse(data).unparsed) {
-//                                 } else {
-//                                     const neighbors = await getNeighbors(element.county)
-//                                     let neighborsString = ""
-//                                     let isNeighbors = 'Nei / No'
-//                                     if(neighbors){
-//                                         for (let i = 0; i < neighbors.length; i++) {
-//                                             if(JSON.parse(data).unparsed === neighbors[i]) {
-//                                                 isNeighbors = 'Ja / Yes'
-//                                             }
-//                                         }
-//                                     }
-//                                     const row1 = table.insertRow(1)
-//                                     const cell_1 = row1.insertCell(0)
-//                                     const cell_2 = row1.insertCell(1)
-//                                     const cell_3 = row1.insertCell(2)
-//                                     const cell_4 = row1.insertCell(3)
-//                                     cell_1.innerHTML =  `<a id="object-link" target="_blank" href="${museumURLPath}/object/?id=${element.catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${element.catalogNumber} </a>`
-//                                     cell_2.innerHTML = element.county
-//                                     cell_3.innerHTML = JSON.parse(data).unparsed
-//                                     cell_4.innerHTML = isNeighbors
-//                                 }
-//                         }).then(() => {
-//                             console.log('resolve');
-//                             resolve(true)
-//                         })
-//                     }
-//                     catch (error) {
-//                         console.error(error)
-//                         reject(error);
-//                     }
-//             })
-//             .catch((error) => {
-//                 console.log('her er koord-feil ' + error);
-//                 //errorMessage.innerHTML = textItems.serverError[index]
-//             })
-//         }
-//     })
-// }
+
+  function getPrefix(element) {
+    let organismGroup = sessionStorage.getItem('organismGroup');
+    let chosenCollection = sessionStorage.getItem('chosenCollection');
+    let prefix;
+  
+    if (organismGroup.includes('paleontologi')) {
+      prefix = 'PMO ';
+    } else if (chosenCollection.includes('fisk')) {
+      prefix = 'NHMO-J-';
+    } else if (element.institutionCode && !(/[a-zA-Z]/).test(element.catalogNumber.charAt(0))) {
+      prefix = element.institutionCode + '-' + element.collectionCode + '-';
+    } else {
+      prefix = '';
+    }
+  
+    return prefix;
+  }
 
 
 async function callAPI(element, table, museum, museumURLPath) {
+
+    if(element.stateProvince === 'Svalbard' || element.country !== 'Norway' || element.county === '' ) {
+        return
+    }
         const regionType = 'kommune'
         if (element.decimalLatitude && element.decimalLongitude) {
             lat = parseFloat(element.decimalLatitude)
@@ -201,26 +184,9 @@ async function callAPI(element, table, museum, museumURLPath) {
                                     const cell_3 = row1.insertCell(2)
                                     const cell_4 = row1.insertCell(3)
                                     // to get prefix to catalognumber right
-                                    let prefix
-                                    if (sessionStorage.getItem('organismGroup').includes('paleontologi')) {
-                                        prefix = 'PMO '
-                                    } else if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
-                                        prefix = 'NHMO-J-'
-                                    } else if (element.institutionCode && !(/[a-zA-Z]/).test(element.catalogNumber.charAt(0))) {
-                                        prefix = element.institutionCode + '-' + element.collectionCode + '-'    
-                                    } else {
-                                        prefix = ''
-                                    }
-                               
+                                    let prefix = getPrefix(element)
                                     if (element.catalogNumber) {
-                                        if (element.catalogNumber.includes('J')) { element.catalogNumber = element.catalogNumber.substring(2)}
-                                        if (element.catalogNumber.includes('/')) { // mose-data
-                                            let strippedCatNo = element.catalogNumber.substring(0,element.catalogNumber.indexOf('/'))
-                                            cell_1.innerHTML =  `<a id="object-link" target="_blank" href="${museumURLPath}/object/?id=${element.catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${strippedCatNo} </a>`
-                                        } else {
-                                            console.log(prefix)
-                                            cell_1.innerHTML =  `<a id="object-link" target="_blank" href="${museumURLPath}/object/?id=${element.catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${element.catalogNumber} </a>`
-                                        }
+                                        cell_1.innerHTML = createObjectLink(element, museumURLPath, museum, prefix);
                                     }
                     
                                     cell_2.innerHTML = element.county
@@ -229,7 +195,7 @@ async function callAPI(element, table, museum, museumURLPath) {
                                 }
                     }
                     catch (error) {
-                        console.error(error)
+                        rareKommuner.push(element);
                        return false;
                     }
         }
@@ -252,7 +218,6 @@ async function checkCoords() {
         cell4.innerHTML = "Nabokommuner".bold()
 
         const lastSearch = JSON.parse(sessionStorage.getItem('string'))
-        console.log(lastSearch)
         let museum = sessionStorage.getItem('museum')
         const museumURLPath = getMuseumPath()
         await Promise.all(lastSearch.map(async (element) => {
@@ -267,14 +232,64 @@ document.getElementById('norske-kommuner').addEventListener('change',function(){
     getNeighbors(valgtLKommune).then((data) => visNaboer(data))
 })
 
-
+function updateRareKommunerTable(rareKommuner, museumURLPath, museum) {
+    let divContainer = document.getElementById('avik');
+    let table = document.getElementById('rare-kommuner');
+  
+    if (!table) {
+      table = document.createElement('table');
+      table.id = 'rare-kommuner';
+      divContainer.appendChild(table);
+    }
+  
+    // Clear existing table content
+    table.innerHTML = '';
+  
+    // Create table header row if it doesn't exist
+    if (table.getElementsByTagName('thead').length === 0) {
+      let header = table.createTHead();
+      let hRow = header.insertRow();
+  
+      let katalognummerHeader = document.createElement('th');
+      katalognummerHeader.textContent = 'Katalognummer';
+      hRow.appendChild(katalognummerHeader);
+  
+      let kommuneHeader = document.createElement('th');
+      kommuneHeader.textContent = 'Kommune';
+      hRow.appendChild(kommuneHeader);
+    }
+  
+    // Sort the rareKommuner array based on the Kommune column (column 2)
+    rareKommuner.sort(function(a, b) {
+      return a.county.localeCompare(b.county);
+    });
+  
+    // Populate table with sorted data
+    for (let obj of rareKommuner) {
+      let row = table.insertRow();
+      const prefix = getPrefix(obj)
+  
+      let katalognummerCell = row.insertCell();
+      katalognummerCell.innerHTML = createObjectLink(obj, museumURLPath, museum, prefix);
+  
+      let kommuneCell = row.insertCell();
+      kommuneCell.textContent = obj.county;
+    }
+  }
+  
 
 let kommuneListe = ''
 const main = async () => {
     await getMunicipalityList().then((data) =>kommuneListe = data)
     await checkCoords()
     endTable()
-
+    if (rareKommuner.length > 0) {
+        let museum = sessionStorage.getItem('museum')
+        const museumURLPath = getMuseumPath()
+        
+        updateRareKommunerTable(rareKommuner, museumURLPath, museum);
+        document.getElementById("rare-kommuner-text").style.display = "block";
+    }
 }
 
 

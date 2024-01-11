@@ -557,17 +557,19 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
 
 
 const checkRegion = async (region, lat, long, callback) => {
-    const url = 'https://ws.geonorge.no/' + region + 'info/v1/punkt?ost=' + long + '&nord=' + lat + '&koordsys=4258'
+    // const url = 'https://ws.geonorge.no/' + region + 'info/v1/punkt?ost=' + long + '&nord=' + lat + '&koordsys=4258'
+    const url = 'https://api.kartverket.no/' + region + 'info/v1/punkt?ost=' + long + '&nord=' + lat + '&koordsys=4258'
     try {
         const response = await fetch(url);
         const data = await response.json();
         // for å få norskt og ikke samiskt kommunenavn tilbake
-        const url2 = 'https://ws.geonorge.no/kommuneinfo/v1/kommuner/' + data.kommunenummer
+        // const url2 = 'https://ws.geonorge.no/kommuneinfo/v1/kommuner/' + data.kommunenummer
+        const url2 = 'https://api.kartverket.no/kommuneinfo/v1/kommuner/' + data.kommunenummer
         const response2 = await fetch(url2)
         const data2 = await response2.json();
         callback(undefined, data2.kommunenavnNorsk)
     } catch (error) {
-        console.log(error);
+        console.log('checkRegion fuksjonen har feila: ' + error);
         callback(error, undefined)
     }
 }
