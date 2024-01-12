@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="no"> 
     <head>
         <title>Statistikk over samlingene</title>
     </head>
@@ -19,20 +19,21 @@
             {{!-- Tabellen med nøkkeltall --}}
             <table id = "statTable">
                 <tr style = "font-weight: bold">
-                    <td id="Collection_header" style = "text-align: left"></td>
-                    <td id="NbObj_header"></td>
-                    <td id="NbPhoto_header"></td>
-                    <td id= "NbCoord_header"></td>
+                    <th id="Collection_header" style = "text-align: left"></th>
+                    <th id="NbObj_header"></th>
+                    <th id="NbPhoto_header"></th>
+                    <th id= "NbCoord_header"></th>
                 </tr>
             </table>
             
             <br><br>
             <hr>
             <br>
-            <div id="graph_header" style="display: inline-block; font-size: 20px" >
-                Grafer: 
+            {{!-- <div id="graph_header" style="display: inline-block; font-size: 20px" >
+                 
             </div>
-            <label for="collection-select" id="select-collection-label"></label>
+            <label for="collection-select" id="select-collection-label">Grafer:</label> --}}
+            <label for="collection-select" id="graph_header">Grafer:</label>
                 <select id="collection-select" style=" height:30px; border-radius:4px;">
                              <option value="total" id="total"></option>
                 </select>
@@ -63,7 +64,7 @@
             {{!-- Tabellen med citeringer fra GBIF --}}
             <table id = "GBIF-citation-table">
                 <tr style = "font-weight: bold">
-                    <td>Please wait.....</td>
+                    <th>Please wait.....</th>
                 </tr>
             </table>
 

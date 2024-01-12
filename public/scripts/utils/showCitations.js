@@ -52,47 +52,6 @@ const getPublications = async (museum) => {
 }
 
 
- 
-// citationTabell
-// data = object with header, and citations per year per collection
-// const populateCitTable = (data) => {
-//     const table = document.querySelector('#GBIF-citation-table')
-//     headerArray = data.header
-//     headerArray.sort()
-//     //empty table if  there is already content
-//     table.innerHTML = ''
- 
-//     const row = table.insertRow(0)
-
-//     for (let i = 0; i < headerArray.length; i++) {
-//         row.insertCell(i).innerHTML = headerArray[i]
-//     }
-//     const header = ['Collection']
-//     row.style = "border: solid"
-//     const cell0 = row.insertCell(0)
-//     cell0.innerHTML = header[0]
-//     let index = 0
-//     let rowNumber = 1
-//     for (const [key, value] of Object.entries(data)) {
-
-//         if(key !== 'header'){
-//             let dataRow = table.insertRow(rowNumber)
-//             dataRow.insertCell(0).innerHTML = key
-//             for (const [key, year] of Object.entries(value)) {
-//                     dataRow.insertCell().innerHTML = year
-//                     // const row1 = table.insertRow(1)
-//                     // const cell_1 = row1.insertCell(0)
-//                     // cell_1.innerHTML = fileLink
-//             }
-        
-//             index++
-//             console.log(index);
-//             rowNumber++
-//         }
-//     }
-//     table.setAttribute("class", "summaryTable");
-// }
-
 // populateCitTable
 // data = object with header and citations per year per collection
 const populateCitTable = (data) => {
@@ -107,14 +66,10 @@ const populateCitTable = (data) => {
     const headerRow = table.insertRow(0);
     headerRow.style.fontWeight = 'bold'; // Make the header row bold
     for (let i = 0; i < headerArray.length; i++) {
-        const headerCell = headerRow.insertCell(i);
-
-            headerCell.innerHTML = headerArray[i];
-
+        const headerCell = document.createElement('th');
+        headerCell.innerHTML = headerArray[i];
+        headerRow.appendChild(headerCell);
     }
-
-
-
 
     // Create rows for each collection
     let rowNumber = 1;
