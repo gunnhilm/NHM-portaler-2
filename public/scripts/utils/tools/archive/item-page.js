@@ -60,7 +60,7 @@ const displayResultsAsTable = results => {
       }
       if (key.toLowerCase() === 'copyright' && value.toLowerCase().includes('bono')) {
         const imageText = document.getElementById("image-text");
-        imageText.innerHTML = "Rettighetene til denne tegningen forvaltes av Bono, all bruk må først avklares med Bono. <br><a href='https://www.bono.no/bruk-kunstverk'>Søk om bildelisens</a>";
+        imageText.innerHTML = "Tegninger og akvareller er vernet av Lov om opphavsrett til åndsverk. Rettighetene forvaltes av BONO.<br><a href='https://www.bono.no/bruk-kunstverk'>Søk om bildelisens</a>";
         imageText.style.display = "block";
       }
       }

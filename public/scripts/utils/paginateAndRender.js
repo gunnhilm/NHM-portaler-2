@@ -69,8 +69,8 @@ function itemType (catalogNumber) {
 }
 
 // functionality to switch arrows up and down accordint to sorting, in head-buttons in result-table
-const arrowUp = `<img id='uio-arrow-up' src='${urlPath}/images/icon-up.svg' width="10" height="10"></img>`
-const arrowDown =  `<img id='uio-arrow-down' src='${urlPath}/images/icon-down.svg' width="10" height="10"></img>`
+const arrowUp = `<img id='uio-arrow-up' alt='arrow up' src='${urlPath}/images/icon-up.svg' width="10" height="10"></img>`
+const arrowDown =  `<img id='uio-arrow-down' alt='arrow down' src='${urlPath}/images/icon-down.svg' width="10" height="10"></img>`
 const arrows = arrowUp + arrowDown
 
 // hides column with genetic data in result-table for bergen and tromsø (museums without genetic database (corema))
@@ -333,7 +333,17 @@ const resultTable = (subMusitData, musitData) => {
 const UTADRestultTable = (subUTADData, UTADData) => {
     try {
         table.innerHTML = ""
+        const row = table.insertRow(-1);
         for (let i = -1; i < pageList.length; i++) {
+            if (i === -1) {     // her kommer tittellinjen
+                const headerRow = row;
+                const headerCell = []
+                for (let j = 0; j < 10; j++) {
+                    headerCell.push(headerRow.appendChild(document.createElement("th")))
+                }
+                fillResultHeadersUTAD(headerCell,UTADData)
+
+            }  else {  //her kommer tabell innholdet
             const row = table.insertRow(-1)
             const cell1 = row.insertCell(0)
             const cell2 = row.insertCell(1)
@@ -344,12 +354,8 @@ const UTADRestultTable = (subUTADData, UTADData) => {
             const cell7 = row.insertCell(6)
             const cell8 = row.insertCell(7)
             const cell9 = row.insertCell(8)
-            //const cell10 = row.insertCell(9)
-            const cell11 = row.insertCell(9)
-            if (i === -1) { // her kommer tittellinjen
-                fillResultHeadersUTAD(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell11,UTADData)
-
-            } else { //her kommer tabell innholdet
+            const cell10 = row.insertCell(9)
+ 
                 let museumURLPath = ''
                 if (window.location.href.includes('/um')) { 
                     museumURLPath = urlPath + "/um"
@@ -381,7 +387,7 @@ const UTADRestultTable = (subUTADData, UTADData) => {
                 } else if( subUTADData[i].photoIdentifiers ) {   
                     cell9.innerHTML = `<span class="fas fa-camera"></span>`
                 }
-                cell11.innerHTML = `<input type="checkbox" id=checkbox${i} onclick="registerChecked(${i})" ></input>`
+                cell10.innerHTML = `<input type="checkbox" id=checkbox${i} onclick="registerChecked(${i})" ></input>`
                 if (investigateChecked(i)) {
                     document.getElementById(`checkbox${i}`).checked = true
                 } else {
@@ -396,8 +402,7 @@ const UTADRestultTable = (subUTADData, UTADData) => {
                 cell7.className = 'row-7 row-sted'
                 cell8.className = 'row-8 row-sted'
                 cell9.className = 'row-9 row-photo'
-                //cell10.className = 'row-10 row-sampleType'
-                cell11.className = 'row-11 row-checkbox'
+                cell10.className = 'row-11 row-checkbox'
             }
             let isLoan = activateLoanButton()
             showResultElements(isLoan)
@@ -405,6 +410,7 @@ const UTADRestultTable = (subUTADData, UTADData) => {
             numberOfPages = getNumberOfPages(numberPerPage)
         }
     } catch (error) {
+        console.log(error);
         errorMessage.innerHTML = textItems.errorRenderResult[index]
         searchFailed = true // is checked when map is drawn 
     }
@@ -413,7 +419,18 @@ const UTADRestultTable = (subUTADData, UTADData) => {
 const bulkResultTable = (subBulkData, bulkData) => {
     try {
         table.innerHTML = ""
+        const row = table.insertRow(-1);
         for (let i = -1; i < pageList.length; i++) { // vis en tabell med resultater som er like lang som det vi ba om pageList.length; 
+            if (i === -1) {     // her kommer tittellinjen
+                // continue
+                const headerRow = row;
+                const headerCell = []
+                for (let j = 0; j < 9; j++) {
+                    headerCell.push(headerRow.appendChild(document.createElement("th")))
+                }
+                fillResultHeadersBulk(headerCell,bulkData)
+
+            }  else {  
             const row = table.insertRow(-1)
             const cell1 = row.insertCell(0)
             const cell2 = row.insertCell(1)
@@ -423,14 +440,9 @@ const bulkResultTable = (subBulkData, bulkData) => {
             const cell6 = row.insertCell(5)
             const cell7 = row.insertCell(6)
             const cell8 = row.insertCell(7)
-            const cell9 = row.insertCell(8)
-            // const cell10 = row.insertCell(9)
-            const cell11 = row.insertCell(9)
-            if (i === -1) {     // her kommer tittellinjen
-                fillResultHeadersBulk(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell11,bulkData)
-                
-            
-            } else {        // Her kommer innmaten i tabellen, selve resultatene
+            // const cell9 = row.insertCell(8)
+            const cell11 = row.insertCell(8)
+      // Her kommer innmaten i tabellen, selve resultatene
                 let museumURLPath
                 if (window.location.href.includes('/um')) { 
                     museumURLPath = urlPath + "/um"
@@ -449,8 +461,6 @@ const bulkResultTable = (subBulkData, bulkData) => {
                 } else {
                     prefix = ''
                 }
-                // console.log(subBulkData[i])  
-                //cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subBulkData[i].catalogNumber&samling=${sessionStorage.getItem('chosenCollection')}}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${subBulkData[i].catalogNumber} </a>`
                 cell1.innerHTML =  prefix + subBulkData[i].catalogNumber
                 cell2.innerHTML = subBulkData[i].scientificName
                 cell3.innerHTML = subBulkData[i].recordedBy
@@ -463,7 +473,7 @@ const bulkResultTable = (subBulkData, bulkData) => {
                 if (subBulkData[i].locality) {comma2 = ', '} else { comma2 = ''}
                 let concatLocality = subBulkData[i].country + comma1 + subBulkData[i].stateProvince + comma2 + subBulkData[i].locality
                 cell6.innerHTML = concatLocality
-                // cell6.innerHTML = subBulkData[i].locality_concatenated
+
 
                 let commaP1
                 let commaP2
@@ -471,9 +481,8 @@ const bulkResultTable = (subBulkData, bulkData) => {
                 if (subBulkData[i].cupboard) {commaP2 = ', '} else {commaP2 = ''}
                 let placement = subBulkData[i].building + commaP1 + subBulkData[i].room + commaP2 + subBulkData[i].cupboard
                 cell7.innerHTML = subBulkData[i].individualCount
-                // cell7.style.display= 'none'
                 cell8.innerHTML = subBulkData[i].Note
-                cell9.style.display = 'none'
+                // cell9.style.display = 'none'
                 cell11.innerHTML = `<input type="checkbox" id=checkbox${i} onclick="registerChecked(${i})" ></input>`
                 if (investigateChecked(i)) {
                     document.getElementById(`checkbox${i}`).checked = true
@@ -493,10 +502,6 @@ const bulkResultTable = (subBulkData, bulkData) => {
             }
         }
         
-        // hide corema-link-column for UM and TMU
-        // if (!window.location.href.includes('/nhm') ) {
-        //     hide_column(9)
-        // }
         showResultElements(isLoan)
         document.getElementById("empty-search-button").style.display = "inline-block"
         numberOfPages = getNumberOfPages(numberPerPage)
