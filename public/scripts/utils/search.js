@@ -12,9 +12,6 @@ const nbHitsHeader = document.getElementById("head-nb-hits")
 const errorMessage = document.getElementById("error-message")
 const actionSelect = document.getElementById("action-select")
 
-// for the download button 
-// const downloadButton = document.getElementById('download-button')
-// const downloadPhotoButton = document.getElementById('download-photo-button')
 //empty-search button 
 const emptySearchButton = document.querySelector('#empty-search-button')
 
@@ -247,13 +244,18 @@ function capitalizeFirstLetter(string) {
 
 
 function addTextInOrgButtons(a) {
-    if (a == 'botanikk') {return textItems.botanikk[index]}
-    else if (a == 'mykologi') {return textItems.mykologi[index]}
-    else if (a == 'zoologi') {return textItems.zoologi[index]}
-    else if (a == 'geologi') {return textItems.geologi[index]}
-    else if (a == 'paleontologi') {return textItems.paleontologi[index]}
-    else if (a == 'other') {return textItems.otherCollections[index]}
-}
+    const collections = {
+      botanikk: textItems.botanikk,
+      mykologi: textItems.mykologi,
+      zoologi: textItems.zoologi,
+      geologi: textItems.geologi,
+      paleontologi: textItems.paleontologi,
+      other: textItems.otherCollections
+    };
+  
+    return collections[a][index];
+  }
+  
 
 function makeButtons() {
     const fileList = JSON.parse(sessionStorage.getItem('fileList'))
@@ -291,33 +293,38 @@ let buttonArray = []
 // addOrgGroups()
 
 function addTextInCollSelect(a) {
-    if (a == 'moser') {return textItems.moser[index]}
-    else if (a == 'vascular') {return textItems.vascular[index]}
-    else if (a == 'lav') {return textItems.lav[index]}
-    else if (a == 'alger') {return textItems.alger[index]}
-    else if (a == 'entomology') {return textItems.insekter[index]}
-    else if (a == 'evertebrater') {return textItems.evertebrater[index]}
-    else if (a == 'fisk') {return textItems.fisk[index]}
-    else if (a == 'birds') {return textItems.fugler[index]}
-    else if (a == 'mammals') {return textItems.pattedyr[index]}
-    else if (a == 'mammals_no_dna') {return textItems.bcPattedyr[index]}
-    else if (a == 'dna_vascular') {return textItems.dna_vascular[index]}
-    else if (a == 'dna_fungi_lichens') {return textItems.fungiLichens[index]}
-    else if (a == 'dna_entomology') {return textItems.dna_insekter[index]}
-    else if (a == 'dna_fish_herptiles') {return textItems.fishHerp[index]}
-    else if (a == 'sopp') {return textItems.sopp[index]}
-    else if (a == 'dna_other') {return textItems.other[index]}
-    else if (a == 'malmer') {return textItems.malmer[index]}
-    else if (a == 'oslofeltet') {return textItems.oslofeltet[index]}
-    else if (a == 'utenlandskeBergarter') {return textItems.utenlandskeBA[index]}
-    else if (a == 'mineraler') {return textItems.mineraler[index]}
-    else if (a == 'fossiler') {return textItems.fossiler[index]}
-    else if (a == 'palTyper') {return textItems.palTyper[index]}
-    else if (a == 'utad') {return textItems.utad[index]}
-    else if (a == 'bulk') {return textItems.bulk[index]}
-    else if (a == 'crustacea') {return textItems.crustacea[index]}
-    else if (a == 'insectTypes') {return textItems.insectTypes[index]}
-}
+    const collections = {
+      moser: textItems.moser,
+      vascular: textItems.vascular,
+      lav: textItems.lav,
+      alger: textItems.alger,
+      entomology: textItems.insekter,
+      evertebrater: textItems.evertebrater,
+      fisk: textItems.fisk,
+      birds: textItems.fugler,
+      mammals: textItems.pattedyr,
+      mammals_no_dna: textItems.bcPattedyr,
+      dna_vascular: textItems.dna_vascular,
+      dna_fungi_lichens: textItems.fungiLichens,
+      dna_entomology: textItems.dna_insekter,
+      dna_fish_herptiles: textItems.fishHerp,
+      sopp: textItems.sopp,
+      dna_other: textItems.other,
+      malmer: textItems.malmer,
+      oslofeltet: textItems.oslofeltet,
+      utenlandskeBergarter: textItems.utenlandskeBA,
+      mineraler: textItems.mineraler,
+      fossiler: textItems.fossiler,
+      palTyper: textItems.palTyper,
+      utad: textItems.utad,
+      bulk: textItems.bulk,
+      crustacea: textItems.crustacea,
+      insectTypes: textItems.insectTypes
+    };
+  
+    return collections[a][index];
+  }
+  
     
 function addCollectionsToSelect(orgGroup, orgGroups, fileList) {
     sessionStorage.setItem('organismGroup', orgGroup)
@@ -369,13 +376,7 @@ function addCollectionsToSelect(orgGroup, orgGroups, fileList) {
     }
 }
 
-// when check coordinates- button is clicked
-// checkCoordinates.addEventListener('click', (e) => {
-//     e.preventDefault()
-//     let url = window.location.href
-//     url = url + '/checkCoord'
-//     window.location.href = url
-// })
+
 
 // download search-result to file
 // in: filename(string, name of outputfile)
@@ -394,30 +395,6 @@ function download(filename, text) {
     document.body.removeChild(element)
 }
 
-// when download-button is clicked
-// downloadButton.addEventListener('click', (e) => {
-// document.getElementById('download-records').addEventListener('click', (e) => {
-//     e.preventDefault()
-        
-//     // Start file download
-//     const searchResult = JSON.parse(sessionStorage.getItem('string'))
-//     // loop through - put those wich checked in new array
-//     const newArray = []
-//     let downloadResult
-//     searchResult.forEach(el => {
-//         if (el.checked) {newArray.push(el)}
-//     })
-//     if (newArray.length == 0) {
-//         downloadResult = Papa.unparse(searchResult, {
-//             delimiter: "\t",
-//         })
-//     } else {
-//         downloadResult = Papa.unparse(newArray, {
-//             delimiter: "\t",
-//         })
-//     }
-//     download("download.txt", downloadResult)
-// })
 
 // https://huynvk.dev/blog/download-files-and-zip-them-in-your-browsers-using-javascript
 const downloadImage = async (url) => {
@@ -445,36 +422,6 @@ const downloadAndZip = async (urls, catalogNo) => {
     } );
   }
 
-//   When someone clicks download images
-// downloadPhotoButton.addEventListener('click', (e) => {
-// document.getElementById('download-photos').addEventListener('click', (e) => {
-//     e.preventDefault()
-        
-//     const searchResult = JSON.parse(sessionStorage.getItem('string'))
-//     // loop through - put those which checked in new array
-//     const newArray = []
-//     const urls = []
-//     const catalogNo = []
-//     searchResult.forEach(el => {
-//         if (el.checked) {newArray.push(el)}
-//     })
-    
-//     if (newArray.length === 0) {
-//         zoomModal.style.display = "block";
-//         zoomModalContent.innerHTML = textItems.mapCheckedMessage[index]
-//     } else {
-//         if (newArray.some(el => el.associatedMedia)) {
-//             newArray.forEach( el => {
-//                 urls.push(el.associatedMedia)
-//                 catalogNo.push(el.catalogNumber)
-//             })
-//             downloadAndZip(urls,catalogNo)
-//         } else {
-//             zoomModal.style.display = "block";
-//             zoomModalContent.innerHTML = textItems.noPhotoMessage[index]
-//         }
-//     }
-// })
 
 // deletes previous search results, resets value that says if search failed, resets Boolean sorting-values for result, hides buttons, performs search
 // in: limit (number, line number of search result where search stops)
@@ -626,86 +573,75 @@ searchForm.addEventListener('submit', (e) => {
     doSearch(1000) // vi skal få tilbake maks 1000 linjer med svar
 })  
 
-collection.addEventListener('change', (e) => {
-    e.preventDefault()
-    updateFooter()
-    emptySearch("collection_listener")
-    let orgGroup = sessionStorage.getItem('organismGroup')
-    if (orgGroup == "geologi" || orgGroup == "paleontologi" || orgGroup == "other" ) {
-        document.getElementById("advanced-accordion").style.display = "none"
-        document.getElementById("advanced-panel").style.display = "none"
-        if (collection.value === "bulk") { bulkMain()}
-    } else {
-        if (document.getElementById("advanced-accordion").style.display === "none") {
-            document.getElementById("advanced-accordion").style.display = "block"
-        }
-        // console.log(document.getElementById("advanced-accordion").style.display)
-        // if (document.getElementById("advanced-panel").style.display = "none") {
-        //     document.getElementById("advanced-panel").style.display = "block"
-        // }
-    }
- 
-    
-    document.getElementById('search-cell').style.display = 'table-cell'
 
-    errorMessage.innerHTML = ""
-    sessionStorage.setItem('chosenCollection', collection.value)
+collection.addEventListener("change", (e) => {
+    e.preventDefault();
+    updateFooter();
+    emptySearch("collection_listener");
     
+    const orgGroup = sessionStorage.getItem("organismGroup");
+    const advancedAccordion = document.getElementById("advanced-accordion");
+    const collectionValue = collection.value;
     
+    if (["geologi", "paleontologi", "other"].includes(orgGroup)) {
+      advancedAccordion.style.display = "none";
+      if (collectionValue === "bulk") {
+        bulkMain();
+      }
+    } else {
+      advancedAccordion.style.display = "block";
+    }
     
-    // legg til samling i URL
-    // if( collection.value !== 'vennligst') {
-    // const newUrl = location.origin + '/museum/' + museum + '/' + collection.value
-    // history.replaceState({}, '', newUrl);
-    // } 
-})
+    document.getElementById("search-cell").style.display = "table-cell";
+    errorMessage.innerHTML = "";
+    sessionStorage.setItem("chosenCollection", collectionValue);
+  });
+  
 
 // when a collection is chosen a request is sent to the server about date of last change of the MUSIT-dump file
 // string (date)
 // is called in oldSearch() and collection-select-eventlistener 
 const updateFooter = () => {
-    let museum = getCurrentMuseum()  
-    const chosenCollection = collection.value
+    const museum = getCurrentMuseum();
+    const chosenCollection = collection.value;
     if (chosenCollection) {
-        sessionStorage.setItem('chosenCollection', chosenCollection)
-        const url =  urlPath + '/footer-date/?&samling=' + chosenCollection + '&museum=' + museum
-        fetch(url).then((response) => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            } else {
-                return response.text()
-            }
-        }).then ((data) => {
-            data=JSON.parse(data)
-            // let collectionDoi
-            // if (collection.value)
-            lastUpdated = textItems.lastUpdated[index] + data.date /*+ "   " + collectionDoi*/
-            updated.textContent = lastUpdated
-            if (chosenCollection === "alger" || chosenCollection === "vascular" || chosenCollection === "lav" || chosenCollection === "moser"
-            || chosenCollection === "sopp" || chosenCollection === "entomology" || chosenCollection === "oslofeltet" || chosenCollection === "palTyper"
-            || chosenCollection === "fossiler" || chosenCollection === "bulk" || chosenCollection === "crustacea") {
-                const fileList = sessionStorage.getItem('fileList')
-                const JSONdata = JSON.parse(fileList)
-                let gbifCitation
-                
-                JSONdata.forEach(el => {
-                    if (el.name ===  chosenCollection) {gbifCitation = el.gbifCitation}
-                })
-                document.getElementById("gbif-citation").textContent= textItems.gbifCitation[index] +gbifCitation
-                // document.getElementById("collection-doi").innerHTML = "doi"
-                // document.getElementById("collection-doi").style.disply="inline"
-            }
-            
-        }) .catch((error) => {
-            console.error('There is a problem, probably file for collection does not exist', error)
-            emptySearch('error in updateFooter()')
-            emptyCollection()
-            errorMessage.innerHTML = textItems.errorFileNotExisting[index]
-            document.getElementById("search-text").style.display = "none"
-            document.getElementById("search-button").style.display = "none"
+      sessionStorage.setItem("chosenCollection", chosenCollection);
+      const url = `${urlPath}/footer-date/?&samling=${chosenCollection}&museum=${museum}`;
+      fetch(url)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.text();
         })
+        .then((data) => {
+          data = JSON.parse(data);
+          lastUpdated = textItems.lastUpdated[index] + data.date;
+          updated.textContent = lastUpdated;
+  
+          const collectionsWithGbifCitation = ["alger", "vascular", "lav", "moser", "sopp", "entomology", "oslofeltet", "palTyper", "fossiler", "bulk", "crustacea"];
+          if (collectionsWithGbifCitation.includes(chosenCollection)) {
+            const fileList = sessionStorage.getItem("fileList");
+            const JSONdata = JSON.parse(fileList);
+            let gbifCitation = "";
+            JSONdata.forEach((el) => {
+              if (el.name === chosenCollection) { gbifCitation = el.gbifCitation; }
+            });
+            document.getElementById("gbif-citation").textContent = textItems.gbifCitation[index] + gbifCitation;
+          }
+        })
+        .catch((error) => {
+          console.error("There is a problem, probably file for collection does not exist", error);
+          emptySearch("error in updateFooter()");
+          emptyCollection();
+          errorMessage.innerHTML = textItems.errorFileNotExisting[index];
+          document.getElementById("search-text").style.display = "none";
+          document.getElementById("search-button").style.display = "none";
+        });
     }
-}
+  };
+  
+
 
 const loopButtons = () => {
     orgGroups = sessionStorage.getItem('organismGroups').split(',')
@@ -907,18 +843,7 @@ window.onload = function () {
 
 async function main () {
     await getFileList()
-    // const fileList = sessionStorage.getItem('fileList')
     await getOrganismGroups()
-    // let tempOrgGroups = []
-    // const JSONdata = JSON.parse(fileList)
-    // JSONdata.forEach(el => {
-    //     if (el.orgGroup) {tempOrgGroups.push(el.orgGroup)}
-    // })
-    // //remove duplicates:
-    // let orgGroups = [...new Set(tempOrgGroups)]
-    // console.log(orgGroups)
-    // sessionStorage.setItem('organismGroups', orgGroups)
     makeButtons()
-
 }
 main()

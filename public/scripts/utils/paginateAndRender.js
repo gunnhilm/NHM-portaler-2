@@ -100,8 +100,26 @@ function hide_column(col_no) {
 const resultTable = (subMusitData, musitData) => {   
     try {
         // console.log(subMusitData[0])
+        
         table.innerHTML = ""
+        const row = table.insertRow(-1)
         for (let i = -1; i < pageList.length; i++) { // vis en tabell med resultater som er like lang som det vi ba om pageList.length; 
+            if (i === -1) {     // her kommer tittellinjen
+            const headerRow = row;
+            const headerCell = []
+            let org
+            if (sessionStorage.getItem('organismGroup').includes('geologi')) {
+                org = 'geologi'
+            } else { org = 'other'}
+            for (let j = 0; j < 13; j++) {
+                headerCell.push(headerRow.appendChild(document.createElement("th")))
+            }
+                console.log(headerCell);
+            fillResultHeaders(org,headerCell,musitData)
+                    
+
+
+            }  else { // Her kommer innmaten i tabellen, selve resultatene
             const row = table.insertRow(-1)
             const cell1 = row.insertCell(0) //cat no
             const cell2 = row.insertCell(1) //Takson
@@ -121,15 +139,7 @@ const resultTable = (subMusitData, musitData) => {
             const cell11 = row.insertCell(10) // foto
             const cell12 = row.insertCell(11) // koord
             const cell13 = row.insertCell(12) // velg
-            if (i === -1) {     // her kommer tittellinjen
-                let org
-                if (sessionStorage.getItem('organismGroup').includes('geologi')) {
-                    org = 'geologi'
-                } else { org = 'other'}
-                
-                fillResultHeaders(org,cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell10,cell11,cell12,cell13,musitData)
-                
-            } else {        // Her kommer innmaten i tabellen, selve resultatene
+            
                 let museumURLPath
                 let museum = ''
                 if (window.location.href.includes('/um')) { 
@@ -422,7 +432,6 @@ const bulkResultTable = (subBulkData, bulkData) => {
         const row = table.insertRow(-1);
         for (let i = -1; i < pageList.length; i++) { // vis en tabell med resultater som er like lang som det vi ba om pageList.length; 
             if (i === -1) {     // her kommer tittellinjen
-                // continue
                 const headerRow = row;
                 const headerCell = []
                 for (let j = 0; j < 9; j++) {
