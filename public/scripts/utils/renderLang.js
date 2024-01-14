@@ -365,7 +365,6 @@ document.querySelector('#language').addEventListener('click', (e) => {
    
     const excludedUrls = ['about', 'archive' , 'checkCoord', 'corema', 'dataError', 'getDOI', 'help', 'journaler', 'map', 'object', 'showStat', 'tools'];
     if (!excludedUrls.some(url => location.href.includes(url))) {
-    // if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler') & !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools') & !location.href.includes('checkCoord') & !location.href.includes('dataError')) {
         if (document.querySelector("#head-nb-hits").innerHTML) {
 
             if (language === "Norwegian") {
@@ -375,36 +374,25 @@ document.querySelector('#language').addEventListener('click', (e) => {
             }
 
             // tror det blir feil her, når tabellen er smalere, og celler skal hoppes over
-            // finn cellene basert på ... klasse
             const headerRow = document.querySelector("#myTable").rows[0]
-            cell1 = headerRow.cells[0]
-            cell2 = headerRow.cells[1]
-            cell3 = headerRow.cells[2]
-            cell4 = headerRow.cells[3]
-            cell5 = document.getElementsByClassName('row-dato')
-            cell6 = document.getElementsByClassName('row-land')
-            cell7 = document.getElementsByClassName('row-kommune')
-            cell8 = document.getElementsByClassName('row-sted')
-            cell9 = document.getElementsByClassName('row-habitat')
-            cell10 = document.getElementsByClassName('row-sampleType')
-            cell11 = document.getElementsByClassName('row-photo')
-            cell12 = document.getElementsByClassName('row-coordinates')
-            cell13 = document.getElementsByClassName('row-checkbox')
-            
+            const headerCell = Array.from(headerRow.cells);
  
             stringData = sessionStorage.getItem('string')
             musitData = JSON.parse(stringData)      
             const coll = sessionStorage.getItem('chosenCollection')
             if (coll === 'utad') { 
-                fillResultHeadersUTAD(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell11,musitData)
+
+                fillResultHeadersUTAD(headerCell,musitData)
             } else if (coll === 'bulk') {
-                fillResultHeadersBulk(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell11,musitData)
+
+                fillResultHeadersBulk(headerCell,musitData)
             } else {
                 let org
                 if (sessionStorage.getItem('organismGroup').includes('geologi')) {
                     org = 'geologi'
                 } else { org = 'other'}
-                fillResultHeaders(org,cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell10,cell11,cell12,cell13,musitData)
+
+                fillResultHeaders(org,headerCell,musitData)
             }
         
             
