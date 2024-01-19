@@ -114,7 +114,6 @@ const resultTable = (subMusitData, musitData) => {
             for (let j = 0; j < 13; j++) {
                 headerCell.push(headerRow.appendChild(document.createElement("th")))
             }
-                console.log(headerCell);
             fillResultHeaders(org,headerCell,musitData)
                     
 
@@ -170,11 +169,11 @@ const resultTable = (subMusitData, musitData) => {
                     if (subMusitData[i].catalogNumber.includes('J')) { subMusitData[i].catalogNumber = subMusitData[i].catalogNumber.substring(2)}
                     if (subMusitData[i].catalogNumber.includes('/')) { // mose-data
                         let strippedCatNo = subMusitData[i].catalogNumber.substring(0,subMusitData[i].catalogNumber.indexOf('/'))
-                        cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${strippedCatNo} </a>`
+                        cell1.innerHTML =  `<a id="object-link-for-${strippedCatNo}" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${strippedCatNo} </a>`
                     } else {
                         let coll = collection.value
                         
-                        cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}&samling=${coll}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${subMusitData[i].catalogNumber} </a>`
+                        cell1.innerHTML =  `<a id="object-link-for-${subMusitData[i].catalogNumber}" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}&samling=${coll}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${subMusitData[i].catalogNumber} </a>`
                     }
                 }
                 //cell 2
@@ -270,7 +269,7 @@ const resultTable = (subMusitData, musitData) => {
                     cell12.innerHTML = '<span class="fas fa-compass"></span>'
                 }
                 
-                cell13.innerHTML = `<input type="checkbox" id=checkbox${i} onclick="registerChecked(${i})" ></input>`
+                cell13.innerHTML = `<input type="checkbox" id=checkbox${i} aria-label="velg denne posten" onclick="registerChecked(${i})" ></input>`
                 if (investigateChecked(i)) {
                     document.getElementById(`checkbox${i}`).checked = true
                 } else {

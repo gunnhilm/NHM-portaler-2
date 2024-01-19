@@ -309,7 +309,7 @@ function getArrows(prop) {
 fillResultHeaders = (org,headerArray,musitData) => {
     
     headerArray[0].innerHTML = `<button id='musitIDButton' aria-label="sort by catalog Number" class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>` 
-    console.log(headerArray[0].innerHTML);
+
     headerArray[1].innerHTML = `<button id='scientificNameButton' aria-label="sort by scientific name" class='sort'>${textItems.headerTaxon[index].bold()} ${getArrows('scientificName')} </button>`
     headerArray[2].innerHTML = `<button id='uncertaintyButton' caria-label="sort by taxon uncertainty"lass='sort '>${textItems.headerUncertainty[index].bold()} ${getArrows('identificationQualifier')} </button>` 
     if (org === 'geologi') {

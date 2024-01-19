@@ -14,11 +14,11 @@ footer {
 
 #language {
     background-color: #ADB797;
-    color: white;
+    color: black;
 } 
 
 .headerLink {
-    color: white;
+    color: black;
 }
 
 .headerLink:hover {
@@ -28,7 +28,7 @@ footer {
 /* Dropdown Button */
   .dropbtn {
     background-color: #ADB797;
-    color: white;
+    color: black;
   }
 
 /* Dropdown Content (Hidden by Default) */
@@ -38,7 +38,7 @@ footer {
 
 /* Links inside the dropdown */
 .dropdown-content a {
-    color: white;
+    color: black;
   }
 
   /* Change color of dropdown links on hover */
