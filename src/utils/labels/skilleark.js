@@ -48,7 +48,6 @@ async function writeFile(dataArray, outFilepath, templatePath) {
       items.loop.push(item);
   
     }
-  console.log(items);
     const handler = new TemplateHandler();
     doc = await handler.process(template, items);
   
@@ -124,6 +123,7 @@ async function writeskilleArk(names, museum, collection) {
           dataArray.push(data);
         }
       }
+
   
       await writeFile(dataArray, outFilepath, skilleArkTemplatePath);
       return { FileName, outFilepath };
@@ -207,8 +207,7 @@ if(validNameIndex !== 1) {
   );
   items.validNames.push(remainingValidNames);
 }
-console.log('her kommer items');
-console.log(items);
+
 return items;
 }
 // const rawxml4 = {
@@ -322,7 +321,7 @@ async function getValidNames(museum, collection, labelType) {
         }
         validNames.sort()
         const nameString = JSON.stringify(validNames)
-        // console.log(validNames);
+
         return nameString;
       } else {
         return false
@@ -332,12 +331,86 @@ async function getValidNames(museum, collection, labelType) {
     }
 }
 
+// make the array with numbers for the numbers page
+function makeNumbersArray(dataArray) {
+
+  const items = {Numbers: [] };
+  let validNameIndex = 1;
+  let item = {};
+  let threeItem = {};
+  for (let i = 0; i < dataArray.length; i++) {
+    const item = dataArray[i];   
+    if (validNameIndex === 1) {
+      threeItem['number1'] = item;
+      validNameIndex += 1;
+    } else if (validNameIndex === 2) {
+  
+      threeItem['number2'] = item;
+      validNameIndex += 1;
+    } else if (validNameIndex === 3 || i === dataArray.length - 1) {
+      threeItem['number3'] = item;
+      items.Numbers.push(threeItem);
+      validNameIndex = 1;
+      threeItem = {};
+    
+      // Check if it's the last element in the dataArray
+      if (i === dataArray.length - 1 && validNameIndex !== 1) {
+        items.Numbers.push({ number1: item });
+      }
+    }
+    
+    
+  }
+  if(validNameIndex !== 1) {
+    const remainingValidNames = Object.fromEntries(
+      Object.entries(threeItem)
+        .filter(([key, value]) => value !== undefined)
+    );
+    items.Numbers.push(remainingValidNames);
+  }
+
+  return items;
+  }
+
+
+
+
+async function writeNumberPage(numbers, museum, collection, extraInfo){
+  let outFilepath = ''
+  let FileName = ''
+  if(museum === 'nhm' && collection === 'sopp') {
+    FileName = `${Date.now()}_numbersArk.doc`;
+    outFilepath = './public/forDownloads/labels/' + FileName;
+  } else {
+    throw error;
+  }
+  const NumbersArkTemplatePath = path.join(__dirname, '../labels/templates/NUMBERSARK.docx');
+
+  try {
+    const items = makeNumbersArray(numbers)
+
+ 
+    const template = await fsPromises.readFile(NumbersArkTemplatePath);
+    const handler = new TemplateHandler();
+    const doc = await handler.process(template, items );
+
+    await fsPromises.writeFile(outFilepath, doc);
+    return { FileName, outFilepath };
+
+  } catch (error) {
+    throw error;
+  }
+}
+
+
 async function selectLabel(names, museum, collection, labelType, extraInfo) {
   if (labelType === 'unit') {
     return await writeskilleArk(names, museum, collection);
   }
   else if (labelType === 'box') {
     return await writeBoxLabel(names, museum, collection, extraInfo);
+  } else if (labelType === 'numbers') {
+    return await writeNumberPage(names, museum, collection, extraInfo);
   } 
   else {
     throw new Error('Invalid label type');

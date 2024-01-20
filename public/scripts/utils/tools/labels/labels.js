@@ -10,6 +10,7 @@ const selector =   new Selectr('#scientific-names', {
     multiple: true,
     searchable: true,
     width: 300
+    
 })
 
 const boxSelector =   new Selectr('#scientific-box-names', {
@@ -65,8 +66,11 @@ const getUserInput = async (labelType, extraInfo = 'false') => {
         } else  if(labelType === 'unit') {
             scientificNames = selector?.getValue() || [];
             selector.clear();
-        }
+        } else  if(labelType === 'numbers') {
+          scientificNames = getNumberInput()
 
+      }
+        
     
     const urlPath = getMuseumPath();
     const url = `${urlPath}/labels`;
@@ -83,7 +87,7 @@ const getUserInput = async (labelType, extraInfo = 'false') => {
         if (response.ok) {
             const data = await response.json();
             if (data.success) {
-                console.log(data);
+
                 // // Generate a download link and trigger the download
                 const fileName = data.fileName
                 const origin = 'labels'
@@ -103,6 +107,28 @@ const getUserInput = async (labelType, extraInfo = 'false') => {
         alert(`Oops! Something went wrong.\nServer says: ${error.message}`);
     }
 };
+
+const getNumberInput = () => {
+  const museumsNumbers = document.getElementById('input-numbers').value
+  const numberArray = museumsNumbers.split("\n")
+  const expandedArray = [];
+
+  numberArray.forEach(element => {
+    if (element.includes("..")) {
+      const [start, end] = element.split("..").map(Number);
+      for (let i = start; i <= end; i++) {
+        expandedArray.push(i.toString());
+      }
+    } else {
+      expandedArray.push(element);
+    }
+  });
+ 
+return expandedArray
+}
+
+
+
 
 const getCollections = async (museum) => {
     const url = urlPath + '/collections?museum=' + museum 
@@ -152,6 +178,7 @@ document.getElementById('collection-select').addEventListener('change', async fu
 
         document.getElementById('dropdown-container').style.display = "block";
         document.getElementById('box-div').style.display = "block";
+        document.getElementById('number-page').style.display = "block";
         // document.getElementById('dropdown-box-container').style.display = "block";        
         document.getElementById('sorry').style.display = "none";
         
@@ -328,18 +355,6 @@ function getInformationFromTable() {
     return rowData;
   }
   
-
-// function deleteRow(event) {
-//     const rowId = event.target.dataset.rowId;
-//     const row = document.getElementById(rowId);
-//     if (row) {
-//         const table = row.parentNode;
-//         if (table.rows.length > 1) { // check if there are any rows other than the header row
-//             row.parentNode.removeChild(row);
-//         }
-//     }
-// }
-
 // to make sure that the headers fit contence
 function updateTableStyling(tableId) {
     const table = document.getElementById(tableId);
@@ -348,7 +363,6 @@ function updateTableStyling(tableId) {
     // Update the width of table headers
     thElements.forEach((th) => {
       th.style.width = 'auto';
-      console.log('autostyling');
     });
   } 
 
@@ -371,6 +385,9 @@ forms.addEventListener('submit', (event) => {
         getUserInput(userInputType);
     } else if (submitButtonId === 'label-name-submit') {
       userInputType = 'unit';
+      getUserInput(userInputType);
+    } else if (submitButtonId === 'numbers-submit') {
+      userInputType = 'numbers';
       getUserInput(userInputType);
     }
     // to make sure that the headers fit contence

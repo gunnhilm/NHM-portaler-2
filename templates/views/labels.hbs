@@ -12,7 +12,7 @@
     <table>
         <tr>
             <td>
-                <label for="museum-select" id="select-museum-label"></label>
+                <label for="museum-select" id="select-museum-label" aria-label="velg museum"></label>
                 <select id="museum-select" style="height:30px; border-radius:4px;">
                     <option value="" id="selectMuseum"></option>
                     <option value="nhm" id="nhm">NHM</option>
@@ -24,7 +24,7 @@
                 &nbsp;
                 &nbsp;
 
-                <label for="collection-select" id="select-collection-label"></label>
+                <label for="collection-select" id="select-collection-label" aria-label="velg samling"></label>
                 <select id="collection-select" style="height:30px; border-radius:4px;">
                     <option value="" id="selectCollection"></option>
                 </select>
@@ -73,9 +73,6 @@
                         <th>Etikett nummer</th>
                         <th>Name</th>
                         <th>Slett</th>
-                        {{!-- <td>Etikett nummer</td>
-                        <td>Name</td>
-                        <td>Slett</td> --}}
                     </tr>
                 </thead>
                 <tbody>
@@ -91,8 +88,25 @@
             <button id="box-name-submit" type="submit" style="display: none;" class="blue-button">Lag kasse etiketter</button>
         </form>
       </div>
-    
-    
+
+    <br><br><br>
+    {{!-- her kommer nummerark --}}
+    <div id="number-page" style="display: none">
+        <form id="numbers">
+                <h3>NummerArk</h3>
+                <p>Skriv inn nummerne som skal printes, en nummerserie skrives slik <br> 25114..25199</p>
+                <label for="input-numbers" id="label-input-numbers">Skriv inn nummre</label>
+                <br>
+                <textarea id="input-numbers" name="input-numbers" rows="10" cols="50"></textarea>
+                <br>
+                <button id="numbers-submit"-submit" type="submit" class="blue-button">Lag nummerArk</button>
+            </form>
+    </div>
+
+
+
+
+
     <p></p>
 
     <div style="display:none" id="sorry"></div>
