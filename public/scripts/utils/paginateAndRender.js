@@ -77,11 +77,17 @@ const arrows = arrowUp + arrowDown
 // in: col_no(number, index of column in result-table)
 // is called by resultTable(…)
 function hide_column(col_no) {
+    console.log('skjuler col no: ' + col_no);
     try {
         const rows = table.getElementsByTagName('tr')
         for (var row=0; row<rows.length;row++) {
+            if(row === 0) {
+                var cells = rows[row].getElementsByTagName('th')
+                cells[col_no].style.display = 'none'
+            } else {
             var cells = rows[row].getElementsByTagName('td')
             cells[col_no].style.display = 'none'
+        }
         }
     } catch (error) {
         console.log('colunm ' + col_no + ' does not exsist');
