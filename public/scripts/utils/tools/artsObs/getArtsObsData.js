@@ -453,11 +453,14 @@ async function main() {
             console.log('laster ned bilder');
             const mediaObj = await getImageUrls(keyObj);
             downloadAndZip(mediaObj, allResults);
+            togglePleaseWait(false);
         } else {
             download("artsObsData.txt", allResults);
+            togglePleaseWait(false);
         }
     } catch (error) {
         console.log('An error occurred:', error.message); // Output a more descriptive error message
+        togglePleaseWait(false);
     }
 }
 
