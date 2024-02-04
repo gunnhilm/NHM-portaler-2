@@ -1,6 +1,10 @@
 const lenderInfo = {
         nhm: {
             alger : {
+                senderName: 'Wenche Eikrem',
+                senderEmail: 'wenche.eikrem@ibv.uio.no',
+                emailToCollection : '',
+                ulrToCollection : 'https://www.nhm.uio.no/samlinger/botanikk/alge/'
 
             },
             birds : {

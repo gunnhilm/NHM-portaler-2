@@ -9,15 +9,19 @@ const hitsPerPage = document.querySelector('#number-per-page')
 // in resultsElementsOnOff -> showResultElements(isLoan)
 let isLoan = false
 function activateLoanButton () {
-    const collection = sessionStorage.getItem('chosenCollection')
-    let tempList = JSON.parse(sessionStorage.getItem('fileList'))
-    for (const el of tempList) {
-        if (el.name === collection && el.loan) {
-            console.log('her blir det lån');
-            return true
+    try {
+        const collection = sessionStorage.getItem('chosenCollection')
+        let tempList = JSON.parse(sessionStorage.getItem('fileList'))
+        for (const el of tempList) {
+            if (el.name === collection && el.loan) {
+                console.log('her blir det lån');
+                return true
+            }
         }
+        tempList = ""
+    } catch (error) {
+        console.log("Feil med lånekanpp: " + error);       
     }
-    tempList = ""
 }
 
 
@@ -666,6 +670,7 @@ function load() {
     numberOfPages = getNumberOfPages(numberPerPage)
     
     loadList()
+    mainLoan()
 }
 
 hitsPerPage.addEventListener('change', (e) => {

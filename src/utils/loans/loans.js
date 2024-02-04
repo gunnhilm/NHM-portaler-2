@@ -10,6 +10,9 @@ const shippingDocTemplatePath = path.join(__dirname, '../loans/templates/Shippin
 // Include Express Validator Functions
 const  validation = require('validator');
 
+
+
+
 // sanatizing the input
 const keysToBeValidated = ['country', 'email', 'Institution', 'responsible-person', 'contact-person', 'other-person','post-address', 'street-address','phone','purpose', 'Special-documents']
 const validateInput = (formData) => {
@@ -35,42 +38,102 @@ function parseLoanData(data) {
   parsedData = '<p>' + loanee + '</p><br><br>' + '<table>' + specimenData + '</table>'
   return parsedData
 }
+async function emailReceipt(data, loanee, lenderInfo) {
 
-// async..await is not allowed in global scope, must use a wrapper
-async function email(data, fileName) {
-// console.log(fileName);
-  // create reusable transporter object using the default SMTP transport
-  let transporter = nodemailer.createTransport({
-    host: "smtp.uio.no",
-    port: 465,
-    secure: true,
-    auth: {
-      user: credentials.credentials.username, 
-      pass: credentials.credentials.password, 
-    },
-  });
+  try {
+    data = '<p> You have sent the following request for loan (see below). If there are any errors, please respond to this email. </p>' + data;
+    
+    let transporter;
+    
+    // create reusable transporter object using the default SMTP transport
+    if (process.platform === 'win32') {
+      transporter = nodemailer.createTransport({
+        host: "smtp.uio.no",
+        port: 465,
+        secure: true,
+        auth: {
+          user: credentials.credentials.username,
+          pass: credentials.credentials.password,
+        },
+      });
+    } else if (process.platform === 'linux') {
+      transporter = nodemailer.createTransport({
+        sendmail: true,
+        newline: 'unix',
+        path: '/usr/sbin/sendmail'
+      });
+    } else {
+      console.log('No mail is sent');
+      return;
+    }
+    
+    // send mail with defined transport object
+    let info = await transporter.sendMail({
+      from: lenderInfo, // sender address
+      to: loanee.email, // list of receivers
+      subject: "Automated response: Receipt for Loan request", // Subject line
+      html: data, // html body
+    });
 
-  // send mail with defined transport object
-  let info = await transporter.sendMail({
-    from: '"Eirik Rindal" <eirik.rindal@nhm.uio.no>', // sender address
-    to: "eirik.rindal@nhm.uio.no", // list of receivers
-    subject: "Loan reguest", // Subject line
-    // text: data.cname, // plain text body
-    html: data, // html body
-    attachments: [
-      {   // file on disk as an attachment
-        filename: 'proforma_invoice.docx',
-        path: fileName // stream this file
-      }
-    ],
-  });
+    console.log("Receipt Message sent: %s", info.messageId);
+    // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+  } catch (error) {
+    console.log('Emailing Receipt failed: ' + error);
+  }
+}
 
-  console.log("Message sent: %s", info.messageId);
-  // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+
+async function email(data, fileName, shippingDocumentationFileName, loanee) {
+  try {
+    // create reusable transporter object using the default SMTP transport
+    let transporter;
+    
+    // create reusable transporter object using the default SMTP transport
+    if (process.platform === 'win32') {
+      transporter = nodemailer.createTransport({
+        host: "smtp.uio.no",
+        port: 465,
+        secure: true,
+        auth: {
+          user: credentials.credentials.username,
+          pass: credentials.credentials.password,
+        },
+      });
+    } else if (process.platform === 'linux') {
+      transporter = nodemailer.createTransport({
+        sendmail: true,
+        newline: 'unix',
+        path: '/usr/sbin/sendmail'
+      });
+    } else {
+      console.log('No mail is sent');
+      return;
+    }
+    // send mail with defined transport object
+    let info = await transporter.sendMail({
+      // from: '"Eirik Rindal" <eirik.rindal@nhm.uio.no>', // sender address
+      from: loanee.email, // sender address
+      
+      to: "eirik.rindal@nhm.uio.no", // list of receivers
+      subject: "Loan reguest", // Subject line
+      // text: data.cname, // plain text body
+      html: data, // html body
+      attachments: [
+        {   // file on disk as an attachment
+          filename: 'proforma_invoice.docx',
+          path: fileName // stream this file
+        }
+      ],
+    });
+
+    console.log("Message sent: %s", info.messageId);
+    // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+  } catch (error) {
+    console.log('emaling failed' + error);   
+  }
 }
 
 // write proforma invoice
-
 async function writeFile(data, lenderInfo, itemData, outFilepath, templatePath)  {
   const template = fs.readFileSync(templatePath);
   const toDay = new Date().toISOString().slice(0,10)
@@ -144,20 +207,20 @@ function getFormData (formData) {
 
 
 async function  requestLoan (formData, fileData) {
-  console.log('before');
-  // console.log(formData);
-  console.log(fileData);
+
   validateInput(formData)
-  console.log('after san');
-  console.log(formData);
-const data = getFormData(formData)
-// console.log(data);
+  const data = getFormData(formData)
   const lenderInfo = getCorrectInfo(data)
+  
   const itemData = getItemData(data.items)
+  console.log(data.loaneeInfo);
   const invoiceFileName = await writeFile(data, lenderInfo, itemData, outFilePath, invoiceTemplatePath)
   const shippingDocumentationFileName = await writeFile(data, lenderInfo, itemData, shippingDocumentationFilePath, shippingDocTemplatePath )
   const parsedData =  parseLoanData(data)
-  email(parsedData, invoiceFileName, shippingDocumentationFileName).catch(console.error);
+  // email the collection with the request
+  email(parsedData, invoiceFileName, shippingDocumentationFileName, data.loaneeInfo).catch(console.error);
+  // email recite to customer
+  emailReceipt(parsedData, data.loaneeInfo, lenderInfo.senderEmail).catch(console.error);
 }
 
 module.exports = {requestLoan}

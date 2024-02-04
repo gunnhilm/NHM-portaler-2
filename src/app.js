@@ -35,6 +35,7 @@ app.use(
 )
 const port = process.env.PORT || 3000
 
+
 // reciving json to server
 app.use(bodyParser.json());
 
@@ -369,7 +370,7 @@ app.post('*/post-loan', async (req, res) => {
         if (err) {
             console.log(err)
         } else {
-            console.log(req.files[0].originalname);
+            // console.log(req.files[0].originalname);
             // const tempObj = Object.assign({},req.body)
             // req.body = tempObj;// solution this line
             loan.requestLoan(req.body, req.files)
