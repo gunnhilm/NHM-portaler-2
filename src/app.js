@@ -637,7 +637,7 @@ app.get('*/labels', async (req, res) => {
             res.render('labels');
         }
     } catch (error) {
-        console.log('Error occurred: ' + error);
+        console.log('Error occurred (from labels): ' + error);
         res.status(500).send({
             unparsed: error.toString()
         });
@@ -661,7 +661,7 @@ app.post('*/labels', validateRequest, async (req, res) => {
         const results = await labels.selectLabel(search, museum, collection, labelType, extraInfo);
         res.json({ success: true, downloadLink: results.outFilepath, fileName: results.FileName });
     } catch (error) {
-        console.error('Error occurred:', error);
+        console.error('Error occurred (labels post):', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });

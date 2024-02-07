@@ -4,6 +4,7 @@ const fsPromises = require('fs').promises;
 const {TemplateHandler} = require('easy-template-x')
 const path = require('path');
 
+
  
 const setCollection = (museum, samling) => {
     if (samling === 'sopp') {
@@ -16,7 +17,8 @@ const setCollection = (museum, samling) => {
 }
 
 async function writeFile(dataArray, outFilepath, templatePath) {
- 
+  try {
+    
     const template = await fsPromises.readFile(templatePath);
     let doc = '';
     const items = { 'loop': [] };
@@ -28,10 +30,14 @@ async function writeFile(dataArray, outFilepath, templatePath) {
       for (let j = 0; j < data.Synonymer.length; j++) {
         const synObj = {};
         const element = data.Synonymer[j];
-        synObj.Synonymer = element;
+        console.log('element: ' + element);
+        console.log(element);
+        synObj.Synonymer = element.Taxonnavn;
         synsArray.push(synObj);
       }
-  
+  //     console.log(data.Synonymer.length);
+  //     console.log('synobj');
+  // console.log(synsArray);
  
       const item = {
         validName: [
@@ -52,59 +58,39 @@ async function writeFile(dataArray, outFilepath, templatePath) {
     doc = await handler.process(template, items);
   
     await fsPromises.writeFile(outFilepath, doc)
+    console.log(outFilepath);
     return outFilepath; 
+  } catch (error) {
+   console.log('writeFile: ' + error); 
+  }
 }
 
-const search = async (searchTerm, museum, samling) => {
-    const nameFile = setCollection(museum, samling); // Assuming you have a function setCollection() to determine the filename
-    if ( fs.existsSync(nameFile)) {
-        return new Promise((resolve, reject) => {
-            try {
-                searchTerm = searchTerm.trim().toLowerCase();
-                const terms = searchTerm.split(' ');
-                let results = '';
-                let resultCount = 0;
-                const readInterface = readline.createInterface({
-                    input: fs.createReadStream(nameFile),
-                    console: false
-                });
-                readInterface.on('line', function(line) {
-                    const Newline = line.replace(/\|/g, ' ')
-                    if (resultCount < 1) {
-                        const lowerLine = Newline.toLowerCase();
-                        if (terms.length === 1 && lowerLine.includes(terms[0])) {
-                          
-                            results = Newline;
-                            resultCount++;
-                        } else if (terms.every(term => lowerLine.includes(term))) {
-                          
-                            results = Newline;
-                            resultCount++;
-                        }
-                    }
-                }).on('close', function() {
-                  if (results.startsWith('[')) {
-                    results = results.slice(1);
-                  }
-                  if (results.endsWith(']')) {
-                    results = results.slice(0, -1);
-                  }
-                    results = results.trim().replace(/,\s*$/, '');
-                    try {
-                        const resultObj = JSON.parse(results);
-                        resolve(resultObj);
-                    } catch (parseError) {
-                        reject('Parsing error in the search function: ' + parseError);
-                    }
-                });
-            } catch (error) {
-                reject('Error reading file: ' + error);
-            }
-        });
-    } else {
-        throw new Error('File not found');
+const search = async (searchTerm, museum, collection) => {
+    const fileName = setCollection(museum, collection);
+    console.log(fileName);
+
+    try {
+        const data = fs.readFileSync(fileName, 'utf8');
+        const parsedData = JSON.parse(data);
+        return findTerm(parsedData, standardizeSearchTerm(searchTerm));
+    } catch (error) {
+        if (error.code === 'ENOENT') 
+            throw new Error('File not found');
+        throw error; // re-throw other exceptions
     }
 }
+
+const standardizeSearchTerm = (searchTerm) => 
+    searchTerm.toLowerCase().trim();
+
+const findTerm = (data, searchTerm) => {
+  const result = data.find(({ 'Akseptert navn': name }) => {
+      name = name.replace('|', ' ').trim()
+      return name.toLowerCase().includes(searchTerm);
+  });
+  return result || 'No match found';
+}
+  
 
 async function writeskilleArk(names, museum, collection) {
   const FileName = `${Date.now()}_skilleArk.doc`;
@@ -119,11 +105,14 @@ async function writeskilleArk(names, museum, collection) {
           if (element === 'value-1') {
             continue;
           }
+          console.log('search element: ' + element);
           const data = await search(element, museum, collection);
+          console.log('data: ' + data);
+          console.log(data);
           dataArray.push(data);
+          console.log(dataArray);
         }
       }
-
   
       await writeFile(dataArray, outFilepath, skilleArkTemplatePath);
       return { FileName, outFilepath };
