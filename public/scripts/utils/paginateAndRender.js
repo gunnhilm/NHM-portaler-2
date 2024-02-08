@@ -7,22 +7,22 @@ const hitsPerPage = document.querySelector('#number-per-page')
 
 // show or hide LoansButton; base on FileList if Loans = true 
 // in resultsElementsOnOff -> showResultElements(isLoan)
-let isLoan = false
-function activateLoanButton () {
-    try {
-        const collection = sessionStorage.getItem('chosenCollection')
-        let tempList = JSON.parse(sessionStorage.getItem('fileList'))
-        for (const el of tempList) {
-            if (el.name === collection && el.loan) {
-                console.log('her blir det lån');
-                return true
-            }
-        }
-        tempList = ""
-    } catch (error) {
-        console.log("Feil med lånekanpp: " + error);       
-    }
-}
+// let isLoan = false
+// function activateLoanButton () {
+//     try {
+//         const collection = sessionStorage.getItem('chosenCollection')
+//         let tempList = JSON.parse(sessionStorage.getItem('fileList'))
+//         for (const el of tempList) {
+//             if (el.name === collection && el.loan) {
+//                 console.log('her blir det lån');
+//                 return //true
+//             }
+//         }
+//         tempList = ""
+//     } catch (error) {
+//         console.log("Feil med lånekanpp: " + error);       
+//     }
+// }
 
 
 
@@ -322,8 +322,8 @@ const resultTable = (subMusitData, musitData) => {
         
 
         
-        let isLoan = activateLoanButton()
-        showResultElements(isLoan)
+        // let isLoan = activateLoanButton()
+        showResultElements()
         document.getElementById("empty-search-button").style.display = "inline-block"
         numberOfPages = getNumberOfPages(numberPerPage)
 
@@ -428,8 +428,8 @@ const UTADRestultTable = (subUTADData, UTADData) => {
                 cell9.className = 'row-9 row-photo'
                 cell10.className = 'row-11 row-checkbox'
             }
-            let isLoan = activateLoanButton()
-            showResultElements(isLoan)
+            // let isLoan = activateLoanButton()
+            showResultElements()
             document.getElementById("empty-search-button").style.display = "inline-block"
             numberOfPages = getNumberOfPages(numberPerPage)
         }
@@ -525,7 +525,7 @@ const bulkResultTable = (subBulkData, bulkData) => {
             }
         }
         
-        showResultElements(isLoan)
+        showResultElements()
         document.getElementById("empty-search-button").style.display = "inline-block"
         numberOfPages = getNumberOfPages(numberPerPage)
     }  

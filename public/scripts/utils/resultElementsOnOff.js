@@ -164,13 +164,7 @@ emptyResultElements = () => {
 showResultElements = (loan) => {
     document.querySelector('#hits-row').style.display = 'block'
     document.querySelector('#head-nb-hits').innerHTML = textItems.nbHitsText[index]
-    if(loan){
-        // document.querySelector('#loan-button').style.display = "block" 
-        // document.getElementById('loan-records').
-    }
-    // document.querySelector('#check-coordinates-button').style.display = "block"
-    // document.querySelector('#download-button').style.display = "block"
-    // document.querySelector('#download-photo-button').style.display = "block"
+
     document.getElementById('action-select').style.display = "block"
     document.getElementById("empty-search-button").style.display = "inline-block"
     document.getElementById("first").style.display = "inline-block"
