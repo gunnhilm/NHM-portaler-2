@@ -19,6 +19,9 @@ header {
 .header-left {
     float: left;
 }
+#logo {
+    height: 50px;
+}
 
 /*endre her; legg til denne*/
 .sub-header-right{

@@ -7,16 +7,23 @@ function renderHeaderContent (lang) {
     }
 
     //header
-    let logo = document.querySelector('#logo')
+    let logo = document.querySelector('#logo');
+    const homeLink = document.getElementById('home-link');
+    
     if (window.location.href.includes('tmu')) {
-        logo.src = textItems.logoTMU[index]
+        logo.src = textItems.logoTMU[index];
+        homeLink.setAttribute('href', '/museum/tmu');
     } else if (window.location.href.includes('/um')) {
-        logo.src = textItems.logoUM[index]
-    }  else if (window.location.href.includes('/nbh')) {
-        logo.src = textItems.logoNBH[index]
-    } else if (window.location.href.includes('/nhm')) {
-        logo.src = textItems.logoNHM[index]
+        logo.src = textItems.logoUM[index];
+        homeLink.setAttribute('href', '/museum/um');
+    } else if (window.location.href.includes('/museum/nbh')) {
+        logo.src = textItems.logoNBH[index];
+        homeLink.setAttribute('href', '/museum/nbh');
+    } else if (window.location.href.includes('/museum/nhm')) {
+        logo.src = textItems.logoNHM[index];
+        homeLink.setAttribute('href', '/museum/nhm');
     }
+
 
     document.querySelector('#help-link').innerHTML = textItems.helpButton[index]
     document.querySelector('#tools-link').innerHTML = textItems.toolsButton[index]

@@ -1,9 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
-async function checkFilesStartsWith(documentType, fileName) {
+async function checkFilesStartsWith(documentType, fileName, directImagePath) {
     try {
-        
 
     // Select the folder based on the documentType
     let folder = '';
@@ -33,7 +32,7 @@ async function checkFilesStartsWith(documentType, fileName) {
         const folderPath = path.join(__dirname, '..', '..', '..', 'public', 'archive', folder);
         const filePath = path.join('archive', folder);
 
-        const matchingFiles = await searchMatchingFiles(folderPath, fileName);
+        const matchingFiles = await searchMatchingFiles(folderPath, fileName, directImagePath);
 
         return { filePath, matchingFiles };
     } catch (error) {
@@ -44,7 +43,7 @@ async function checkFilesStartsWith(documentType, fileName) {
     }
 }
 
-async function searchMatchingFiles(folderPath, fileName, subfolder = '') {
+async function searchMatchingFiles(folderPath, fileName, directImagePath, subfolder = '') {
     let matchingFiles = [];
 
     try {
@@ -56,12 +55,17 @@ async function searchMatchingFiles(folderPath, fileName, subfolder = '') {
 
             if (fileStat.isDirectory()) {
                 const newSubfolder = path.join(subfolder, file);
-                const subfolderFiles = await searchMatchingFiles(filePath, fileName, newSubfolder);
+                const subfolderFiles = await searchMatchingFiles(filePath, fileName, directImagePath, newSubfolder);
                 matchingFiles = matchingFiles.concat(subfolderFiles);
             } else if (file.startsWith(fileName)) {
                 const filePathWithSubfolder = subfolder ? path.join(subfolder, file) : file;
                 matchingFiles.push(filePathWithSubfolder);
             }
+        }
+        // if we have a direct imagePath add it to the match files
+        if (typeof directImagePath !== 'boolean') {
+            console.log('directImagePath: ' + directImagePath);
+            matchingFiles.push(directImagePath);
         }
     } catch (err) {
         console.log(`Error reading folder '${folderPath}': ${err}`);

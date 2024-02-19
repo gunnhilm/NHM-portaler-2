@@ -486,7 +486,6 @@ async function main() {
         await getFileList()
     }
     makeButtons()
-
 }
 
 main()

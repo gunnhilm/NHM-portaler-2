@@ -19,7 +19,7 @@ const getCurrentMuseum = () => {
 }
 
 const displayResultsAsTable = results => {
-  let show = 'no'
+  let show = ''
   const currentYear = new Date().getFullYear();
   const table = document.createElement("table");
   table.setAttribute("id", "results-table");
@@ -76,10 +76,8 @@ const displayResultsAsTable = results => {
 };
 
 
-
-
   
-async function checkFiles(folderName, fileName) {
+async function checkFiles(folderName, fileName, directImagePath) {
 
     try {
         const url = `${urlPath}/item-page/check-files`
@@ -91,6 +89,7 @@ async function checkFiles(folderName, fileName) {
         body: JSON.stringify({
             folderName,
             fileName,
+            directImagePath,
         }),
         });
 
@@ -129,59 +128,81 @@ const doarchiveSearch = async (limit = 2000) => {
       const results = Papa.parse(data.unparsed.results, { delimiter: "\t", newline: "\n", quoteChar: "", header: true }).data;
 
       const result = results.find(result => result.Regnr === pageID);
+      let fotoID = Object.keys(result).find(k => k.toLowerCase().includes('mediafile'));
+      fotoID = result[fotoID]
       if (result) {
-
-        
         const show =  displayResultsAsTable([result])
+
         if (force) {
           return true
         }
-        if (show.toLowerCase() === 'no') {
-          console.log('returnerer false');
-          return false
+        if(fotoID) {
+          console.log('returnerer fotoID: ' + fotoID);
+          return fotoID
+        } else if (show.toLowerCase() === 'no') {
+          console.log('returnerer false fordi show er no');
+          return false 
         } else {
-          return true
-        }
-        
+            return true
+          }  
       }
-  
     } catch (error) {
       console.error(error);
       errorMessage.innerText = textItems.serverError[index];
     }
   };
 
-  async function checkForImage() {
-    try {
-      const { filePath, imageFiles: documentImageFiles } = await checkFiles(params.documentType, params.pageID);
-      console.log(filePath);
-      console.log(documentImageFiles);
-  
-      const imageContainer = document.getElementById('item-image');
-  
-      documentImageFiles.forEach(imageFile => {
-        const imageLink = document.createElement('a');
-        imageLink.href = urlPath + '/' + filePath + imageFile;
-        imageLink.target = '_blank';
-  
-        const image = document.createElement('img');
-        image.src = imageLink.href;
-  
-        imageLink.appendChild(image);
-        imageContainer.appendChild(imageLink);
+async function checkForImage(directImagePath) {
+  try {
+
+    const { filePath, imageFiles: documentImageFiles } = await checkFiles(params.documentType, params.pageID, directImagePath );
+
+    const imageContainer = document.getElementById('item-image');
+    const downloadContainer = document.getElementById('item-download-link');
+    
+    console.log(filePath);
+    console.log(documentImageFiles);
+
+    documentImageFiles.forEach(imageFile => {
+        if(imageFile.includes('tif')) {
+        // make a txt link to download the file
+        const downloadLink = document.createElement('a');
+        downloadLink.href = urlPath + '/' + filePath + imageFile;
+        downloadLink.target = '_blank';
+
+        const text = document.createElement('span');
+        text.textContent = 'Download as TIF';
+
+        downloadLink.appendChild(text);
+        downloadContainer.appendChild(downloadLink);
+        } else {
+
+          const imageLink = document.createElement('a');
+          imageLink.href = urlPath + '/' + filePath + imageFile;
+          imageLink.target = '_blank';
+    
+          const image = document.createElement('img');
+          image.src = imageLink.href;
+    
+          imageLink.appendChild(image);
+          imageContainer.appendChild(imageLink);
+        }
       });
-  
-      // Do something with the image elements
-    } catch (error) {
-      console.error(error);
-    }
+     
+
+
+    // Do something with the image elements
+  } catch (error) {
+    console.error(error);
   }
+}
   
 
-  async function  main () {
+async function  main () {
   const showImage =  await doarchiveSearch()
-  if(showImage) {
-    checkForImage()
+
+  if(showImage){
+    checkForImage(showImage);
   }
 }
 

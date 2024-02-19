@@ -332,9 +332,7 @@ app.get('*/showStat', (req, res) => {
     }
 })
  
- app.get('*/loans', (req, res) => {
-        res.render('loans', {})
- })
+
 
 app.get('*/bulkProjects', (req, res) => {
     try {
@@ -351,6 +349,9 @@ app.get('*/bulkProjects', (req, res) => {
     
 }) 
 
+app.get('*/loans', (req, res) => {
+    res.render('loans', {})
+})
 
 const storage = multer.diskStorage({
     destination: function (req, file, callback) {
@@ -365,16 +366,30 @@ const upload = multer({ storage: storage }).array('inFiles')
 
 
 app.post('*/post-loan', async (req, res) => {
-    upload(req, res, function (err) {
+    upload(req, res, async function (err) {
         
         if (err) {
             console.log(err)
+            res.status(400).send({
+                message: err
+             });
         } else {
-            // console.log(req.files[0].originalname);
-            // const tempObj = Object.assign({},req.body)
-            // req.body = tempObj;// solution this line
-            loan.requestLoan(req.body, req.files)
-            res.send('Success')
+            try {
+            const result = await loan.requestLoan(req.body, req.files)
+            if (result) {
+                res.send('Success')  
+            } else {
+                res.status(500).send({
+                    message: error
+                 });
+            }
+            
+            } catch (error) {
+               console.log(error); 
+               res.status(500).send({
+                message: error
+             });
+            } 
         }
     })
  },
@@ -704,8 +719,8 @@ app.get('/nhm/journaler', (req, res) => {
 // item-page
 app.post('*/item-page/check-files', async (req, res) => {
     try {
-        const { folderName, fileName } = req.body;
-        const { filePath, matchingFiles } = await archive.checkFilesStartsWith(folderName, fileName);
+        const { folderName, fileName, directImagePath } = req.body;
+        const { filePath, matchingFiles } = await archive.checkFilesStartsWith(folderName, fileName, directImagePath);
         res.status(200).json({ filePath, matchingFiles });
     } catch (error) {
         return false

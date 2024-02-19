@@ -47,12 +47,7 @@ const getDataAndSendIt = () => {
     const loanInfo = {}
     const formData = new FormData(form);
 
-    // loanInfo.loaneeInfo = {}
 
-    // for (const pair of formData.entries()) {
-    //     loanInfo.loaneeInfo[pair[0]] = pair[1]
-    //     console.log(pair[0] + ' = ' + pair[1]);
-    // }
 
     // get list of objects for loan
     let items = getLoanItems("loanItems")
@@ -81,10 +76,24 @@ const getDataAndSendIt = () => {
         body: formData,
       })
     .then(res => {
+        const tableContainer = document.querySelector('#table-container');
+        tableContainer.remove();
+        
+        const contentContainer = document.querySelector('.content');
+        contentContainer.remove();
+        const feedbackContainer = document.querySelector('.feedback');
         if (!res.ok) {                                   
+            const errorElement = document.createElement('p');
+            errorElement.innerHTML = `<br><br><br> <h3>Error!</h3><br> Something has gone wrong. <br> Please try again later. <br><br><br>`;
+            feedbackContainer.append(errorElement);
             throw new Error("HTTP error " + res.status); 
+
         }                                                
-        console.log('Success:', res);                              
+        console.log('Success:', res);
+        const textElement = document.createElement('p');
+        textElement.innerHTML = `<br><br><br> <h3>Confirmation</h3><br> Thank you for your request. You will receive a confirmation email shortly. <br> If you do not receive one please check your junk mail folder. <br><br><br>`;
+        feedbackContainer.append(textElement);
+
     })
     .catch((error) => {
         console.error('Error:', error);
