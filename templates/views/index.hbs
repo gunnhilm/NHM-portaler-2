@@ -177,22 +177,22 @@
                             <p style="display: none"  class="small-text"id = "resultPageNb1"></p>
                             <p style="display: none"  class="small-text" id = "resultPageAlert1"></p>
                         </div>
-                        <div style="width:100px; display: inline-block; "></div>
-                        <div id="head-nb-hits"style="display: none; "></div>
+                        <div style="width:100px; display: inline-block;  "></div>
+                        <div id="head-nb-hits"style="display: none;"></div>
                         <div id= "nb-hits"style="display: none; "></div>
                         <div style="display: inline-block; float:right; ">
                             <label for="action-select" id="action-collection-label" aria-label="Handling på poster"></label>
-                            <select id="action-select"  style=" height:30px; border-radius:4px; overflow-y:auto" >
+                            <select id="action-select"  style=" height:30px; border-radius:4px; overflow-y:auto; display:none" >
                                 <option value="action-option" id="action-option"></option>
                                 <option value="download-records" id="download-records"></option>
                                 <option value="download-photos" id="download-photos"></option>
                                 {{!-- <option value="loan-records" id="loan-records"></option> --}}
                                 <option value="check-coordinates" id="check-coordinates"></option>
                             </select>
-                            {{!-- <button class="blue-button" id="loan-button" style="display:none" title="Create Loan">Loans</button>
+                            <button class="blue-button" id="loan-button" style="display:none" title="Create Loan">Loans</button>
                             <button class="blue-button" id="check-coordinates-button" style="display:none" title="Create Loan">Check coordinates</button>
                             <button class="blue-button" id="download-button"  style="display:none" title="Last ned resultater">Last ned resultat<i class="fa fa-download"></i></button>
-                            <button class="blue-button" id="download-photo-button"  style="display:none" title="Last ned bilder"><i class="fa fa-download"></i>Last ned bilder</button> --}}
+                            <button class="blue-button" id="download-photo-button"  style="display:none" title="Last ned bilder"><i class="fa fa-download"></i>Last ned bilder</button>
                         </div>
                          
                     </div>
@@ -228,7 +228,7 @@
 
         <script src="/museum/scripts/utils/textItems.js"></script>
         <script src="/museum/scripts/utils/renderLangHeader.js"></script>
-        <script src="/museum/scripts/utils/renderLang.js"></script>
+        <script src="/museum/scripts/utils/renderLang.js"></script> {{!calls renderText(language)}}
         <script src="/museum/scripts/utils/showCorrectMuseum.js"></script>
 
         <script src="/museum/scripts/utils/font/409783eafe.js"></script>
@@ -241,7 +241,7 @@
         <script src="/museum/scripts/utils/resultElementsOnOff.js"></script>   
         <script src="/museum/scripts/utils/paginateAndRender.js"></script>
         <script src="/museum/scripts/utils/bulk.js"></script>   
-        <script src="/museum/scripts/utils/search.js"></script>   
+        <script src="/museum/scripts/utils/search.js"></script>   {{! main-functin is called}}
         <script src="/museum/scripts/utils/advancedAccordion.js"></script>
         <script src="/museum/scripts/utils/tools/loans/loans.js"></script>   
         

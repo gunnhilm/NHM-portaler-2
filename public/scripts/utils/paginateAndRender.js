@@ -99,7 +99,35 @@ function hide_column(col_no) {
 
 }
 
+/////////// sammenlign data fra musit og corema
+    // er ikke i bruk. januar 2024
+function compare(subMusitData) {
+    console.log(subMusitData[1])
+    let compArray = []
+    subMusitData.forEach(el => {
+        // if (el.coremaCountry && el.country) {if (el.coremaCountry != el.country) {console.log("country " + el.catalogNumber + " " + el.coremaCountry + " " + el.country); compArray.push("country " + el.catalogNumber + " " + el.coremaCountry + " " + el.country + "\r")}}
+        // if (el.coremaCounty && el.county) {if (el.coremaCounty != el.county) {console.log("county " + el.catalogNumber + " " + el.coremaCounty + " " + el.county); compArray.push("county " + el.catalogNumber + " " + el.coremaCounty + " " + el.county+ "\r")}}
+        if (el.coremaDateIdentified && el.dateIdentified) {if (el.coremaDateIdentified != el.dateIdentified) {compArray.push(el.institutionCode + "-" + el.collectionCode + "-" + el.catalogNumber + ": dateIdentified: "  + el.dateIdentified + " " + el.RelCatNo + " " + el.coremaDateIdentified + "\r")}}
+        // if (el.coremaElevation && el.elevation) {if (el.coremaElevation != el.elevation) {console.log("elevation " + el.catalogNumber + " " + el.coremaElevation + " " + el.elevation);compArray.push("elevation " + el.catalogNumber + " " + el.coremaElevation + " " + el.elevation + "\r")}}
+        // if (el.coremaEventDate && el.eventDate) {if (el.coremaEventDate != el.eventDate) {console.log("eventDate " + el.catalogNumber + " " + el.coremaEventDate + " " + el.eventDate);compArray.push("eventDate " + el.catalogNumber + " " + el.coremaEventDate + " " + el.eventDate + "\r")}}
+        if (el.coremaGenus && el.genus) {if (el.coremaGenus != el.genus) {compArray.push(el.institutionCode + "-" + el.collectionCode + "-" + el.catalogNumber + " genus: " + " " + el.genus + " " + el.RelCatNo + " " + el.coremaGenus  + "\r")}}
+        if (el.coremaIdentificationQualifier && el.identificationQualifier) {if (el.coremaIdentificationQualifier != el.identificationQualifier) {compArray.push(el.institutionCode + "-" + el.collectionCode + "-" + el.catalogNumber + " identificationQualifier: " + el.identificationQualifier + " " + el.RelCatNo + " " + el.coremaIdentificationQualifier  + "\r")}}
+        if (el.coremaIdentifiedBy && el.identifiedBy) {if (el.coremaIdentifiedBy != el.identifiedBy) {compArray.push(el.institutionCode + "-" + el.collectionCode + "-" + el.catalogNumber + " identifiedBy: " + " " + el.identifiedBy + " " + el.RelCatNo + " " + el.coremaIdentifiedBy  + "\r")}}
+        // if (el.coremaLat && el.decimalLatitude) {if (el.coremaLat != el.decimalLatitude) {compArray.push("Lat: " + el.catalogNumber + " " + el.coremaLat + " " + el.decimalLatitude + "\r")}}
+        // if (el.coremaLong && el.decimalLongitude) {if (el.coremaLong != el.decimalLongitude) {compArray.push("Long: " + el.catalogNumber + " " + el.coremaLong + " " + el.decimalLongitude + "\r")}}
+        // if (el.coremaLocality && el.locality) {if (el.coremaLocality != el.locality) {compArray.push("locality: " + el.catalogNumber + " " + el.coremaLocality + " " + el.locality + "\r")}}
+        // if (el.coremaProvince && el.stateProvince) {if (el.coremaProvince != el.stateProvince) {compArray.push("stateProvince: " + el.catalogNumber + " " + el.coremaProvince + " " + el.stateProvince + "\r")}}
+        // if (el.coremaRecordedBy && el.recordedBy) {if (el.coremaRecordedBy != el.recordedBy) {compArray.push("recordedBy: " + el.catalogNumber + " " + el.coremaRecordedBy + " " + el.recordedBy + "\r")}}
+        if (el.coremaScientificName && el.scientificName) {if (el.coremaScientificName != el.scientificName) {compArray.push(el.institutionCode + "-" + el.collectionCode + "-" + el.catalogNumber + " scientificName: " + el.scientificName + ", " + el.RelCatNo + " " + el.coremaScientificName + " " + el.scientificName + "\r")}}
+        if (el.coremaScientificEpithet && el.scientificEpithet) {if (el.coremaScientificEpithet != el.scientificEpithet) {compArray.push(el.institutionCode + "-" + el.collectionCode + "-" + el.catalogNumber + " scientificEpithet: " + el.scientificEpithet + ", " + el.RelCatNo + " " + el.coremaScientificEpithet + " " + el.scientificEpithet + "\r")}}
+        if (el.coremaTypeStatus && el.typeStatus) {if (el.coremaTypeStatus != el.typeStatus) {compArray.push(el.institutionCode + "-" + el.collectionCode + "-" + el.catalogNumber + " typeStatus: "  + el.typeStatus+ el.RelCatNo + " " + el.coremaTypeStatus  + "\r")}}
 
+          
+    })
+    download('compare.txt',compArray.toString())  
+    
+}
+    
 // renders result table
 // input: subMusitData (JSON; part of search result that is rendered on page)
 // input: musitData (JSON; searchResult, all of it)
@@ -113,6 +141,7 @@ function hide_column(col_no) {
 //	drawList()
 //	addSortingText(…)
 const resultTable = (subMusitData, musitData) => {   
+    // compare(subMusitData)
     try {
         // console.log(subMusitData[0])
         

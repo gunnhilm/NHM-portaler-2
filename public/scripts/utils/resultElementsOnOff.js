@@ -348,20 +348,20 @@ fillResultHeaders = (org,headerArray,musitData) => {
 // puts content in headerbuttons in bulk-result-table
 // calls getArrows(..) for table-header-buttons headerArray[]
 // addSortingText(..) for tabel-header-buttons
-    fillResultHeadersBulk = (headerArray,musitData) => {
-        headerArray[0].innerHTML = `<button id='musitIDButton' aria-label="sort by catalog Number" class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>`  
-        headerArray[1].innerHTML = `<button id='scientificNameButton' aria-label="sort by scientific name" class='sort'>${textItems.headerTaxon[index].bold()} ${getArrows('scientificName')} </button>`
-        headerArray[2].innerHTML = `<button id='collectorButton' aria-label="sort by collector name" class='sort'>${textItems.headerCollector[index].bold()} ${getArrows('recordedBy')}</button>`
-        headerArray[3].innerHTML = `<button id='dateButton' aria-label="sort by date" class='sort'>${textItems.headerDate[index].bold()} ${getArrows('eventDate')}</button>`
-        headerArray[4].innerHTML = `<button id='preparationsButton' aria-label="sort by type of preparation" class='sort'>${textItems.headerPreparations[index].bold()} ${getArrows('Preparations')} </button>`
-        headerArray[5].innerHTML = `<button id='localityButton' aria-label="sort by locality" class='sort'>${textItems.headerLocality[index].bold()} ${getArrows('locality')}</button>`
-        headerArray[6].innerHTML = `<button id='countButton' aria-label="sort by individual count"class='sort'>${textItems.headerCount[index].bold()} ${getArrows('individualCount')}</button>`
-        headerArray[7].innerHTML = `<button id='noteButton' aria-label="sort by contens of notes" class='sort'>${textItems.headerNotes[index].bold()} ${getArrows('Note')}</button>`
-        headerArray[8].innerHTML = `<select id='checkboxSelect' aria-label="select item" class='sort'>
-        <option value="select" id="select">${textItems.select[index].bold()}</option>
-        <option value="all" id="selectAll">${textItems.selectAll[index]}</option>
-        <option value="all_on_page" id="selectAllOnPage">${ textItems.selectAllOnPage[index]}</option>
-        <option value="none" id="selectNone">${ textItems.selectNone[index]}</option>
+fillResultHeadersBulk = (headerArray,musitData) => {
+    headerArray[0].innerHTML = `<button id='musitIDButton' aria-label="sort by catalog Number" class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>`  
+    headerArray[1].innerHTML = `<button id='scientificNameButton' aria-label="sort by scientific name" class='sort'>${textItems.headerTaxon[index].bold()} ${getArrows('scientificName')} </button>`
+    headerArray[2].innerHTML = `<button id='collectorButton' aria-label="sort by collector name" class='sort'>${textItems.headerCollector[index].bold()} ${getArrows('recordedBy')}</button>`
+    headerArray[3].innerHTML = `<button id='dateButton' aria-label="sort by date" class='sort'>${textItems.headerDate[index].bold()} ${getArrows('eventDate')}</button>`
+    headerArray[4].innerHTML = `<button id='preparationsButton' aria-label="sort by type of preparation" class='sort'>${textItems.headerPreparations[index].bold()} ${getArrows('Preparations')} </button>`
+    headerArray[5].innerHTML = `<button id='localityButton' aria-label="sort by locality" class='sort'>${textItems.headerLocality[index].bold()} ${getArrows('locality')}</button>`
+    headerArray[6].innerHTML = `<button id='countButton' aria-label="sort by individual count"class='sort'>${textItems.headerCount[index].bold()} ${getArrows('individualCount')}</button>`
+    headerArray[7].innerHTML = `<button id='noteButton' aria-label="sort by contens of notes" class='sort'>${textItems.headerNotes[index].bold()} ${getArrows('Note')}</button>`
+    headerArray[8].innerHTML = `<select id='checkboxSelect' aria-label="select item" class='sort'>
+    <option value="select" id="select">${textItems.select[index].bold()}</option>
+    <option value="all" id="selectAll">${textItems.selectAll[index]}</option>
+    <option value="all_on_page" id="selectAllOnPage">${ textItems.selectAllOnPage[index]}</option>
+    <option value="none" id="selectNone">${ textItems.selectNone[index]}</option>
     </select>`
     
 
@@ -379,21 +379,21 @@ fillResultHeaders = (org,headerArray,musitData) => {
 // calls getArrows(..) for table-header-buttons
 // addSortingText(..) for table-header-buttons
 // fillResultHeadersUTAD = (cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell11,UTADData) => {
-    fillResultHeadersUTAD = (headerArray, UTADData) => {
-        headerArray[0].innerHTML = `<button id='musitIDButton' aria-label="sort by catalog Number"  class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>`  
-        headerArray[1].innerHTML = `<button id='vernacularNameButton' aria-label="sort by venacular name" class='sort'>${textItems.vernacularName[index].bold()} ${getArrows('vernacularName')} </button>`
-        headerArray[2].innerHTML = `<button id='tilstandButton' aria-label="sort by condition"class='sort'>${textItems.Tilstand[index].bold()} ${getArrows('Tilstand')} </button>`
-        headerArray[3].innerHTML = `<button id='objektTypeButton' aria-label="sort by object type"class='sort'>${textItems.basisOfRecord[index].bold()} ${getArrows('basisOfRecord')} </button>`
-        headerArray[4].innerHTML = `<button id='noteButton'  aria-label="sort by contens of notes" class='sort'>${textItems.Kommentar[index].bold()} ${getArrows('Kommentar')}</button>`
-        headerArray[5].innerHTML = `<button id='breddeButton'  aria-label="sort by width" class='sort'>${textItems.bredde[index].bold()} ${getArrows('bredde')}</button>`
-        headerArray[6].innerHTML = `<button id='hoydeButton'  aria-label="sort by height" class='sort'>${textItems.hoyde[index].bold()} ${getArrows('høyde')}</button>`
-        headerArray[7].innerHTML = `<button id='lengdeButton'  aria-label="sort by length" class='sort'>${textItems.lengde[index].bold()} ${getArrows('lengde')}</button>`
-        headerArray[8].innerHTML = `<button id='photoButton'  aria-label="sort by photo present or absent" class='sort'><span class="fas fa-camera"></span>${getArrows('associatedMedia')}</button>`
-        headerArray[9].innerHTML = `<select id='checkboxSelect' aria-label="select item" class='sort'>
-        <option value="select" id="select">${textItems.select[index].bold()}</option>
-        <option value="all" id="selectAll">${textItems.selectAll[index]}</option>
-        <option value="all_on_page" id="selectAllOnPage">${ textItems.selectAllOnPage[index]}</option>
-        <option value="none" id="selectNone">${ textItems.selectNone[index]}</option>
+fillResultHeadersUTAD = (headerArray, UTADData) => {
+    headerArray[0].innerHTML = `<button id='musitIDButton' aria-label="sort by catalog Number"  class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>`  
+    headerArray[1].innerHTML = `<button id='vernacularNameButton' aria-label="sort by venacular name" class='sort'>${textItems.vernacularName[index].bold()} ${getArrows('vernacularName')} </button>`
+    headerArray[2].innerHTML = `<button id='tilstandButton' aria-label="sort by condition"class='sort'>${textItems.Tilstand[index].bold()} ${getArrows('Tilstand')} </button>`
+    headerArray[3].innerHTML = `<button id='objektTypeButton' aria-label="sort by object type"class='sort'>${textItems.basisOfRecord[index].bold()} ${getArrows('basisOfRecord')} </button>`
+    headerArray[4].innerHTML = `<button id='noteButton'  aria-label="sort by contens of notes" class='sort'>${textItems.Kommentar[index].bold()} ${getArrows('Kommentar')}</button>`
+    headerArray[5].innerHTML = `<button id='breddeButton'  aria-label="sort by width" class='sort'>${textItems.bredde[index].bold()} ${getArrows('bredde')}</button>`
+    headerArray[6].innerHTML = `<button id='hoydeButton'  aria-label="sort by height" class='sort'>${textItems.hoyde[index].bold()} ${getArrows('høyde')}</button>`
+    headerArray[7].innerHTML = `<button id='lengdeButton'  aria-label="sort by length" class='sort'>${textItems.lengde[index].bold()} ${getArrows('lengde')}</button>`
+    headerArray[8].innerHTML = `<button id='photoButton'  aria-label="sort by photo present or absent" class='sort'><span class="fas fa-camera"></span>${getArrows('associatedMedia')}</button>`
+    headerArray[9].innerHTML = `<select id='checkboxSelect' aria-label="select item" class='sort'>
+    <option value="select" id="select">${textItems.select[index].bold()}</option>
+    <option value="all" id="selectAll">${textItems.selectAll[index]}</option>
+    <option value="all_on_page" id="selectAllOnPage">${ textItems.selectAllOnPage[index]}</option>
+    <option value="none" id="selectNone">${ textItems.selectNone[index]}</option>
     </select>`
 
     addSortingText('musitIDButton', 'catalogNumber', UTADData, 'UTADRestultTable')  // Tabellen blir sortert på nummer

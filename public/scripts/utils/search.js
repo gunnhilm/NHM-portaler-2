@@ -22,7 +22,6 @@ const updated = document.querySelector('#last-updated')
 
 actionSelect.addEventListener('change', (e) => {
     if (actionSelect.value == 'download-records') {
-        console.log('download 28')
         e.preventDefault()
             
         // Start file download
@@ -45,7 +44,6 @@ actionSelect.addEventListener('change', (e) => {
         download("download.txt", downloadResult)
         actionSelect.value = "action-option"
     } else if (actionSelect.value == "download-photos") {
-        console.log('foto 49')
         e.preventDefault()
             
         const searchResult = JSON.parse(sessionStorage.getItem('string'))
@@ -74,14 +72,11 @@ actionSelect.addEventListener('change', (e) => {
         }
         actionSelect.value = "action-option"
     } else if (actionSelect.value == "loan-records") {
-        console.log('lån 76')
         e.preventDefault()
-        console.log('loan from select');
         startLoans()
         openPage()
         actionSelect.value = "action-option"
     } else if (actionSelect.value == "check-coordinates") {
-        console.log('coord 82')
         e.preventDefault()
         let url = window.location.href
         url = url + '/checkCoord'
@@ -350,8 +345,6 @@ function addCollectionsToSelect(orgGroup, orgGroups, fileList) {
         })
         document.querySelector('#'+ orgGroup).style.marginRight = "10px"
         let coll = []
-        // const fileList = JSON.parse(sessionStorage.getItem('fileList'))
-        // console.log(fileList)
         fileList.forEach(el => {
             if (el.orgGroup === orgGroup) {
                 coll.push(el.name)
@@ -647,7 +640,6 @@ const loopButtons = () => {
     orgGroups = sessionStorage.getItem('organismGroups').split(',')
     let orgGroup = sessionStorage.getItem('organismGroup')
     orgGroups.forEach(el => {
-        console.log('kk')
         if (el == orgGroup) { 
             document.getElementById(`${el}`).className = "blue-button" 
         } else {
