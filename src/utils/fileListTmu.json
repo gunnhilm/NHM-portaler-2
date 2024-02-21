@@ -14,7 +14,8 @@
     "zipFileName": "vascular_trom",
     "mediaFile": "_media",
     "occurrenceFileSuffix": "_occurrence.txt", 
-    "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/vascular_trom.zip"
+    "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/vascular_trom.zip",
+    "gbifCitation":"Rämä H E (2024). Vascular plant herbarium, The Arctic University Museum of Norway (TROM). Version 1.2190. UiT The Arctic University of Norway. Occurrence dataset https://doi.org/10.15468/14epds accessed via GBIF.org on 2024-02-21."
 },
 {
     "source": "musit",
@@ -23,7 +24,8 @@
     "zipFileName": "lichens_trom",
     "mediaFile": "_media",
     "occurrenceFileSuffix": "_occurrence.txt", 
-    "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/lichens_trom.zip"
+    "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/lichens_trom.zip",
+    "gbifCitation":"Rämä H E (2024). Lichen herbarium, The Arctic University Museum of Norway (TROM). Version 1.2221. UiT The Arctic University of Norway. Occurrence dataset https://doi.org/10.15468/t5gcyj accessed via GBIF.org on 2024-02-21."
 },
 {
     "source": "musit",
@@ -32,7 +34,8 @@
     "zipFileName": "moss_trom",
     "mediaFile": "_media",
     "occurrenceFileSuffix": "_occurrence.txt", 
-    "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/moss_trom.zip"
+    "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/moss_trom.zip",
+    "gbifCitation":"Rämä H (2024). Bryophyte herbarium, The Arctic University Museum of Norway (TROM). Version 1.2176. UiT The Arctic University of Norway. Occurrence dataset https://doi.org/10.15468/3yzuuc accessed via GBIF.org on 2024-02-21."
 },
 {
     "source": "musit",
@@ -41,7 +44,8 @@
     "zipFileName": "alge_trom",
     "mediaFile": "_media",
     "occurrenceFileSuffix": "_occurrence.txt", 
-    "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/gz/alge_trom.gz"
+    "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/gz/alge_trom.gz",
+    "gbifCitation": "Rämä H E (2024). Algae herbarium TROM, The Arctic University Museum of Norway. Version 1.21. UiT The Arctic University of Norway. Occurrence dataset https://doi.org/10.15468/hwa4zy accessed via GBIF.org on 2024-02-21."
 },
 {
     "source": "musit",
@@ -50,7 +54,8 @@
     "zipFileName": "fungus_trom",
     "mediaFile": "_media",
     "occurrenceFileSuffix": "_occurrence.txt", 
-    "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/fungus_trom.zip"
+    "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/fungus_trom.zip",
+    "gbifCitation":"Rämä H E (2024). Mycology herbarium, The Arctic University Museum of Norway (TROM). Version 1.1626. UiT The Arctic University of Norway. Occurrence dataset https://doi.org/10.15468/xvs3ag accessed via GBIF.org on 2024-02-21."
 },
 {
     "source": "musit",
@@ -59,7 +64,8 @@
     "zipFileName": "entomology_tsz",
     "mediaFile": "_media",
     "occurrenceFileSuffix": "_occurrence.txt", 
-    "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/entomology_tsz.zip"
+    "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/entomology_tsz.zip",
+    "gbifCitation": "UiT The Arctic University of Norway (2024). Entomology collection, UiT Tromsø Museum. Version 1.1683. Occurrence dataset https://doi.org/10.15468/sdixho accessed via GBIF.org on 2024-02-21."
 },
 {
     "source": "musit",

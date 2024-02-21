@@ -93,7 +93,8 @@
     "occurrenceFileSuffix": "_stitched.txt",
     "associatedCollection": ["sopp","lav"],
     "url": "https://ipt.gbif.no/archive.do?r=o_dna_fungi_lichens",
-    "akronym": "O-DFL"
+    "akronym": "O-DFL",
+    "gbifCitation":"Johannessen L E, Johnsen A (2024). NHMO DNA Bank Fungi and Lichens collection. Version 1.165. University of Oslo. Occurrence dataset https://doi.org/10.15468/tgo4ge accessed via GBIF.org on 2024-02-21."
 },
 {
     "source": "corema",
@@ -104,7 +105,8 @@
     "occurrenceFileSuffix": "_stitched.txt",
     "associatedCollection": "vascular",
     "url": "https://ipt.gbif.no/archive.do?r=o_dna_plants",
-    "akronym": "O-DP"
+    "akronym": "O-DP",
+    "gbifCitation":"Johannessen L E, Johnsen A (2024). NHMO DNA Bank Vascular plants collection. Version 1.166. University of Oslo. Occurrence dataset https://doi.org/10.15468/nzszik accessed via GBIF.org on 2024-02-21."
 },
 {
     "source": "musit",
@@ -136,7 +138,8 @@
     "mediaFile": "_multimedia",
     "occurrenceFileSuffix": "_stitched.txt",
     "url": "https://ipt.gbif.no/archive.do?r=o_mammals",
-    "akronym": "NHMO-DMA"
+    "akronym": "NHMO-DMA",
+    "gbifCitation":"Johannessen L E, Voje K L (2024). NHMO Mammal collection. Version 31.370. University of Oslo. Occurrence dataset https://doi.org/10.15468/knvqao accessed via GBIF.org on 2024-02-21."
 },
 {
     "source": "corema",
@@ -147,9 +150,22 @@
     "mediaFile": "_multimedia",
     "occurrenceFileSuffix": "_stitched.txt",
     "url": "https://ipt.gbif.no/archive.do?r=birds",
-    "akronym": "NHMO-BI"
+    "akronym": "NHMO-BI",
+    "gbifCitation" : "Lifjeld J T, Johnsen A, Johannessen L E, Bjerke B A (2024). NHMO Bird collection. Version 1.209. University of Oslo. Occurrence dataset https://doi.org/10.15468/skcono accessed via GBIF.org on 2024-02-21."
 },
 
+{
+    "source": "corema",
+    "orgGroup": "zoologi",
+    "name": "invertebrates_with_dna",
+    "loan": false,
+    "zipFileName": "occurrence",
+    "mediaFile": "_multimedia",
+    "occurrenceFileSuffix":"_stitched.txt",
+    "ulr": "",
+    "akronym": "NHMO-IN"
+    
+},
 {
     "source": "corema",
     "orgGroup": "zoologi",
@@ -159,7 +175,8 @@
     "occurrenceFileSuffix": "_stitched.txt",
     "associatedCollection": "entomology",
     "url": "https://ipt.gbif.no/archive.do?r=o_dna_arthropods",
-    "akronym": "NHMO-DAR"
+    "akronym": "NHMO-DAR",
+    "gbifCitation" : "Johannessen L E, Johnsen A (2024). NHMO DNA Bank Arthropod collection. Version 1.169. University of Oslo. Occurrence dataset https://doi.org/10.15468/vxhrbz accessed via GBIF.org on 2024-02-21."
 },
 {
     "source": "corema",
@@ -169,7 +186,8 @@
     "mediaFile": "_multimedia",
     "occurrenceFileSuffix": "_stitched.txt",
     "url": "https://ipt.gbif.no/archive.do?r=o_dna_fish_herptiles",
-    "akronym": "NHMO-DFH"
+    "akronym": "NHMO-DFH",
+    "gbifCitation":"Johannessen L E, Johnsen A (2024). NHMO DNA Bank Fish and Herptile collection. Version 1.174. University of Oslo. Occurrence dataset https://doi.org/10.15468/9c7q9i accessed via GBIF.org on 2024-02-21."
 },
 {
     "source": "corema",
@@ -179,7 +197,8 @@
     "mediaFile": "_multimedia",
     "occurrenceFileSuffix": "_stitched.txt",
     "url": "https://ipt.gbif.no/archive.do?r=o_dna_other",
-    "akronym": "NHMO-DOT"
+    "akronym": "NHMO-DOT",
+    "gbifCitation":"Johannessen L E, Johnsen A (2024). NHMO DNA Bank Other groups collection. Version 1.164. University of Oslo. Occurrence dataset https://doi.org/10.15468/ov1sj7 accessed via GBIF.org on 2024-02-21."
 },
 {
     "source": "access",

@@ -16,7 +16,8 @@
         "zipFileName": "vascular_kmn",
         "mediaFile": "_media",
         "occurrenceFileSuffix": "_occurrence.txt", 
-        "url":  "https://www.unimus.no/nedlasting/datasett/naturhistorie/vascular_kmn.zip"
+        "url":  "https://www.unimus.no/nedlasting/datasett/naturhistorie/vascular_kmn.zip",
+        "gbifCitation":"Åsen P (2019). Vascular Plants, Field notes, Agder naturmuseum (KMN). Version 1.160. University of Agder. Occurrence dataset https://doi.org/10.15468/gja4jo accessed via GBIF.org on 2024-02-21."
     },
     {
         "source": "musit",
@@ -25,7 +26,8 @@
         "zipFileName": "alge_kmn",
         "mediaFile": "_media",
         "occurrenceFileSuffix": "_occurrence.txt", 
-        "url": "https://www.unimus.no/nedlasting/datasett/naturhistorie/alge_kmn.zip"
+        "url": "https://www.unimus.no/nedlasting/datasett/naturhistorie/alge_kmn.zip",
+        "gbifCitation" : "University of Agder (2024). Algae Herbarium (KMN) UiA. Version 1.2217. Occurrence dataset https://doi.org/10.15468/jldjxh accessed via GBIF.org on 2024-02-21."
     },
     {
         "source": "musit",

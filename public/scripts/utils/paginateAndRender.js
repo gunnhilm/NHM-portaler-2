@@ -143,7 +143,7 @@ function compare(subMusitData) {
 const resultTable = (subMusitData, musitData) => {   
     // compare(subMusitData)
     try {
-        // console.log(subMusitData[0])
+        console.log(subMusitData[0])
         
         table.innerHTML = ""
         const row = table.insertRow(-1)
@@ -260,6 +260,7 @@ const resultTable = (subMusitData, musitData) => {
                 if (subMusitData[i].county) {cell7.innerHTML = subMusitData[i].county}
                 cell8.innerHTML = subMusitData[i].locality
                 cell9.innerHTML = subMusitData[i].habitat
+                // cell 10 items
                 if (museumURLPath = urlPath + "/nhm") {
                     // if we are in a corema-collection
                     if (document.querySelector('#collection-select  option:checked').label.includes('DNA')) {
@@ -272,7 +273,7 @@ const resultTable = (subMusitData, musitData) => {
                             }
                             
                         // collections only in corema
-                        } else if (sessionStorage.getItem('chosenCollection') === 'mammals' || sessionStorage.getItem('chosenCollection') === 'birds') {
+                    } else if (sessionStorage.getItem('chosenCollection') === 'mammals' || sessionStorage.getItem('chosenCollection') === 'birds' || sessionStorage.getItem('chosenCollection') === 'invertebrates_with_dna') {
                             if (subMusitData[i].preparationType) {cell10.innerHTML = subMusitData[i].preparationType}
                         
                         } else {

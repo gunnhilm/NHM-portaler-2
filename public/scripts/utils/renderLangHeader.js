@@ -8,6 +8,7 @@ function renderHeaderContent (lang) {
 
     //header
     let logo = document.querySelector('#logo');
+    let uniLogo = document.querySelector('#Uni-logo')
     const homeLink = document.getElementById('home-link');
     
     if (window.location.href.includes('tmu')) {
@@ -22,6 +23,7 @@ function renderHeaderContent (lang) {
     } else if (window.location.href.includes('/museum/nhm')) {
         logo.src = textItems.logoNHM[index];
         homeLink.setAttribute('href', '/museum/nhm');
+        uniLogo.src = textItems.logoUiO[index]
     }
 
 

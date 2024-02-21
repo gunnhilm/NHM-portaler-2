@@ -12,6 +12,14 @@ footer {
     background-color: #005173;
 } 
 
+#last-updated {
+    color: white;
+}
+
+#gbif-citation {
+    color:white;
+}
+
 #language {
     background-color: #005173;
     color: white;

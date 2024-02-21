@@ -184,18 +184,30 @@ footer {
 
 .footer-content {
     width:90%;
+    display: inline-block;
     height: 48px;
 }
+#Uni-logo {
+    height: 40px;
+    vertical-align: middle;
+    
+}
+#Uni-logo-div
+{
+    float:left;
+}
+
 
 #last-updated {
     float:left;
-    width: 50%;
+    width: 40%;
 }
 #gbif-citation {
     display: inline-block;
     width:40%;
-    font-size:9px;
+    font-size:11px;
     line-height:1.5;
+    vertical-align: middle;
 }
 
 

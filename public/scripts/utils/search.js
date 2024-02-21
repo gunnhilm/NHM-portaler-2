@@ -294,7 +294,8 @@ function addTextInCollSelect(a) {
       lav: textItems.lav,
       alger: textItems.alger,
       entomology: textItems.insekter,
-      evertebrater: textItems.evertebrater,
+      evertebrater: textItems.invertebrates,
+      invertebrates_with_dna: textItems.invertebrates_with_dna,
       fisk: textItems.fisk,
       birds: textItems.fugler,
       mammals: textItems.pattedyr,
@@ -608,20 +609,20 @@ const updateFooter = () => {
           return response.text();
         })
         .then((data) => {
-          data = JSON.parse(data);
-          lastUpdated = textItems.lastUpdated[index] + data.date;
-          updated.textContent = lastUpdated;
+            data = JSON.parse(data);
+            lastUpdated = textItems.lastUpdated[index] + data.date;
+            updated.textContent = lastUpdated;
   
-          const collectionsWithGbifCitation = ["alger", "vascular", "lav", "moser", "sopp", "entomology", "oslofeltet", "palTyper", "fossiler", "bulk", "crustacea"];
-          if (collectionsWithGbifCitation.includes(chosenCollection)) {
             const fileList = sessionStorage.getItem("fileList");
             const JSONdata = JSON.parse(fileList);
             let gbifCitation = "";
             JSONdata.forEach((el) => {
-              if (el.name === chosenCollection) { gbifCitation = el.gbifCitation; }
-            });
-            document.getElementById("gbif-citation").textContent = textItems.gbifCitation[index] + gbifCitation;
-          }
+              if (el.name === chosenCollection) { gbifCitation = el.gbifCitation }
+            })
+            if (gbifCitation && gbifCitation !== "") {
+                document.getElementById("gbif-citation").textContent = textItems.gbifCitation[index] + gbifCitation;
+            }
+            
         })
         .catch((error) => {
           console.error("There is a problem, probably file for collection does not exist", error);
