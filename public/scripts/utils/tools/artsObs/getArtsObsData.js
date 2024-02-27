@@ -250,7 +250,7 @@ const getArtsObsData = async (artsObsNumber, MUSITNo) => {
       
         // Fix ArtsObs entries
         resultObj.latLongCoords = `${resultObj.decimalLatitude}N ${resultObj.decimalLongitude}E`;
-        resultObj.eventDate = resultObj.eventDate.substring(0, resultObj.eventDate.indexOf('T'));
+        if (resultObj.eventDate.includes('T')) { resultObj.eventDate = resultObj.eventDate.substring(0, resultObj.eventDate.indexOf('T')); }
         resultObj.dateIdentified = resultObj.dateIdentified || resultObj.eventDate;
       
         // Fix collector
