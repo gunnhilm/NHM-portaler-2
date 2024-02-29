@@ -22,26 +22,25 @@ async function writeFile(dataArray, outFilepath, templatePath) {
     const template = await fsPromises.readFile(templatePath);
     let doc = '';
     const items = { 'loop': [] };
-  
     for (let i = 0; i < dataArray.length; i++) {
       const data = dataArray[i];
       const synsArray = [];
-
+    
       for (let j = 0; j < data.Synonymer.length; j++) {
         const synObj = {};
         const element = data.Synonymer[j];
-        console.log('element: ' + element);
-        console.log(element);
-        synObj.Synonymer = element.Taxonnavn;
-        synsArray.push(synObj);
+        const synonymName = element.Taxonnavn.replace(/\|/g, ' ');
+        if (element.Taxonnavn !== data['Akseptert navn']) {
+          synObj.Synonymer = synonymName
+          synsArray.push(synObj);
+        }
       }
-  //     console.log(data.Synonymer.length);
-  //     console.log('synobj');
-  // console.log(synsArray);
- 
+      
+      // Replace "|" with a space in the accepted name
+      const acceptedName = data['Akseptert navn'].replace(/\|/g, ' ');
       const item = {
         validName: [
-          { 'Akseptert navn': data['Akseptert navn'] }
+          { 'Akseptert navn': acceptedName }
         ],
         synonyms: synsArray,
         'pagebreak': {
@@ -50,10 +49,11 @@ async function writeFile(dataArray, outFilepath, templatePath) {
           replaceParagraph: false,
         },
       };
-  
+    
       items.loop.push(item);
-  
+    
     }
+  
     const handler = new TemplateHandler();
     doc = await handler.process(template, items);
   
@@ -360,9 +360,6 @@ function makeNumbersArray(dataArray) {
 
   return items;
   }
-
-
-
 
 async function writeNumberPage(numbers, museum, collection, extraInfo){
   let outFilepath = ''

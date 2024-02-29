@@ -5,6 +5,7 @@
     <title>Historical archive</title>  
     <link rel="stylesheet" href="/museum/styles/styles.css">
     <link rel="stylesheet" href="/museum/styles/styles_NHM.css">
+    <link rel="stylesheet" href="/museum/styles/gallery.css">
     </head>
   
     <body>
@@ -52,10 +53,28 @@
                         <br>
                         <td style="align:left" id="head-nb-hits"></td>
                         <td style="align:left" id="nb-hits" ></td>
+                        <td > <button class="blue-button" id="view-type-button" style="margin-left:10px; display: none">Tabell</button></td>
+
                         <br>
                     </tr>
                     
                 </table>
+                <div style="text-align:center;">
+                    <div class="pagination-container">
+                        <div class="pagination-div">
+                            <input type="button" id="first" onclick="firstPage()" class="descrete-button" style="display:none" value="Vis første side"/>
+                            <input type="button" id="previous" onclick="previousPage()" class="descrete-button" style="display:none" value="Vis forrige side"/>
+                            <input type="button" id="next" onclick="nextPage()" class="descrete-button" style="display:none" value="Vis neste side"/>
+                            <input type="button" id="last" onclick="lastPage()" class="descrete-button" style="display:none" value="Vis siste side"/>
+                            <p style="display: none" class="small-text" id = "resultPageText"></p> 
+                            <p style="display: none" class="small-text" id = "resultPageNb"></p>
+                            <p style="display: none" class="small-text" id = "resultPageAlert"></p>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+
+                <div id="thumb-gallery" style="display: none">hei</div>
                 <div id="container"><br></div>
             </div>
             {{>footer}}    

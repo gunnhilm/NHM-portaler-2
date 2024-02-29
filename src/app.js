@@ -705,16 +705,19 @@ app.get('/nhm/journaler', (req, res) => {
      })
  })
 
- // arkivsiden
- app.get('*/archive', (req, res) => {
-    const pageID = req.query.pageID;
+// Arkivsiden
+app.get('*/archive', async (req, res) => {
+    const { pageID, subFolder, documentType } = req.query;
     if (pageID) {
-        res.render('item-page', { pageID: pageID });
+      res.render('item-page', { pageID });
+    } else if (subFolder) {
+      const subFolderPath = await archive.findSubfolder(documentType, subFolder);
+      res.send(subFolderPath || 'not found');
     } else {
-        res.render('archive', {});
+      res.render('archive');
     }
-});
-
+  });
+  
 
 // item-page
 app.post('*/item-page/check-files', async (req, res) => {
@@ -774,7 +777,7 @@ app.get('*/archive/:folder/:filename', (req, res) => {
 app.get('*', (req, res) => {
     console.log('from 404: ');
     console.log(req.params);
-    res.render('404', {})
+    res.status(400).render('404', {})
 })
 
 

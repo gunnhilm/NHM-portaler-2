@@ -1,0 +1,42 @@
+/* for image gallery*/
+
+
+/* Styling gallery section where all images are */
+.gallery {
+	width: 90%;
+	margin:0 auto;
+	display:grid;
+	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+	grid-gap: 20px;
+	justify-content:center;
+	align-items: center; 
+}
+
+/* Styling Particular Image */
+.gallery-img {
+	/*width: 200px;*/
+	height: 300px;
+	cursor: pointer;
+	transition: transform 0.2s;
+}
+/* onHover image will expand little bit */
+.gallery-img:hover {
+	transform: scale(1.1);
+	cursor: zoom-in;
+}
+
+/* Making images more responsive for smaller size device */
+@media (max-width:670px) {
+	.gallery{
+		grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+		grid-gap: 10px;
+	}
+	.gallery-img{
+		width:150px;
+		height: 150px;
+	}
+
+	.heading{
+		font-size: 20px;
+	}
+}

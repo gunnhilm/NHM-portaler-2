@@ -227,6 +227,92 @@ function showExtraInfo(archiveCollection) {
   }
 }
 
+function getPage(Regnr, archiveCollection) {
+  const pageLink = 'http://localhost/museum/nhm/archive?documentType=Dagny%20Tande%20Lid&pageID=';
+  const url = pageLink + Regnr;
+  window.open(url, '_blank'); // Open the URL in a new tab
+  console.log(url);
+}
+
+async function showGallery(pageList, archiveCollection) {
+  try {
+    const galleryContainer = document.getElementById('thumb-gallery');
+    const resultTable = document.getElementById('container');
+    resultTable.style.display = 'none';
+    galleryContainer.style.display = 'block';
+
+    const imagePath = 'http://localhost/museum/archive/illustrations_files/DTL/thumb/';
+
+    let links = '';
+    for (let i = 0; i < pageList.length; i++) {
+      const element = pageList[i].Regnr;
+      const imageUrl = `${imagePath}${element}.jpg`;
+
+      // Check if the image exists
+      const response = await fetch(imageUrl, { method: 'HEAD' });
+      // console.log(response);
+      if (response.ok) {
+        links += `<img src="${imageUrl}" alt="Image ${i + 1}" class="gallery-img" data-regnr="${element}" data-archive="${archiveCollection}">`;
+      } else {
+        console.log(`Image ${element}.jpg does not exist.`);
+      }
+    }
+    galleryContainer.innerHTML = links;
+
+    // Add event listener to handle image click
+    galleryContainer.querySelectorAll('.gallery-img').forEach(image => {
+      image.addEventListener('click', function(event) {
+        const regnr = event.currentTarget.dataset.regnr;
+        const archive = event.currentTarget.dataset.archive;
+        getPage(regnr, archive);
+      });
+    });
+  } catch (error) {
+    console.log('Error in thumbnail view: ' + error);
+  }
+}
+
+
+async function getSubFolderPath(documentType, subFolder) {
+  const url_subFolder = `${urlPath}/nhm/archive?subFolder=${subFolder}&documentType=${documentType}`;
+  try {
+    const response = await fetch(url_subFolder);
+    const data = await response.text();
+    if (data === 'not found') {
+      return false;
+    } else {
+      return data;
+    }
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+}
+
+
+// show a button that allows you to switch between thumbnail ang table view
+let showingThumbs = false
+async function showThumbnailButton (archiveCollection) {
+  try {
+    console.log('making thumb button');
+    const subFolderName = 'thumb';
+    const isThumb = await getSubFolderPath(archiveCollection, subFolderName)
+    console.log(await getSubFolderPath(archiveCollection, subFolderName));
+    const thumbButton = document.getElementById("view-type-button");
+    if(isThumb) {
+      console.log('her');
+      thumbButton.style.display = "block";
+      thumbButton.addEventListener('click', (e) => {
+        showingThumbs = !showingThumbs;
+        loadList()
+      });
+    } else {
+      thumbButton.style.display = "none";
+    }
+  } catch (error) {
+  console.log('Feil i å finne thumb folder: ' + error);   
+  }
+}
 
 
 // creates table for the archives and fills it
@@ -234,6 +320,7 @@ function showExtraInfo(archiveCollection) {
 // calls addHeaders(..)
 // is called in doarchiveSearch(..)
 const createArchiveTableAndFillIt = (data, archiveCollection, showAll) => {
+  // console.log(data);
   let filePath = '';
   let headerNamesToShow = [];
   const currentYear = new Date().getFullYear();
@@ -253,9 +340,16 @@ const createArchiveTableAndFillIt = (data, archiveCollection, showAll) => {
     filePath = '/museum/archive/photo_files/RYB_files/';
   }
   
-  const table = document.createElement('table');
-  table.id = 'archive-result-table';
-  table.className = 'result-table';
+  let table = document.getElementById('archive-result-table');
+
+  // Check if the table exists
+  if (table) {
+    table.innerHTML = ''; // Empty the table
+  } else {
+    table = document.createElement('table'); // Create a new table
+    table.id = 'archive-result-table';
+    table.className = 'result-table';
+  }
 
   data.forEach((child, i) => {
     if (i === 0) {
@@ -308,9 +402,9 @@ const createArchiveTableAndFillIt = (data, archiveCollection, showAll) => {
   });
 
   document.getElementById('container').appendChild(table);
+  // renders paginate buttons
+  showResultElements()
 };
-
-
 
 const showHiddenImagesOrNot = (searchTerm) => {
   const searchVariables = searchTerm.split(' ');
@@ -380,6 +474,8 @@ const doarchiveSearch = async (searchTerm, limit, museum, archiveCollection, lin
     if (data.error) {
       throw new Error(data.error);
     }
+    
+
 
     const parsedResults = Papa.parse(data.unparsed.results, {
       delimiter: "\t",
@@ -389,8 +485,12 @@ const doarchiveSearch = async (searchTerm, limit, museum, archiveCollection, lin
     });
 
     if (parsedResults.data.length > 0) {
+      // Save the response data to session storage    
+      sessionStorage.setItem('string', JSON.stringify(parsedResults.data));
       showExtraInfo(archiveCollection);
-      createArchiveTableAndFillIt(parsedResults.data, archiveCollection, showAll);
+      showThumbnailButton(archiveCollection)
+      load()
+      // createArchiveTableAndFillIt(parsedResults.data, archiveCollection, showAll);
       errorMessage.innerText = textItems.nbHitsText[index];
       nbHitsElement.innerText = parsedResults.data.length;
       sortTable();
@@ -416,7 +516,6 @@ const doarchiveSearch = async (searchTerm, limit, museum, archiveCollection, lin
     errorMessage.innerText = textItems.serverError[index];
   }
 };
-
 
 
 // for å kunne lenke til et søk
@@ -459,6 +558,151 @@ function sortTable() {
             .forEach(tr => table.appendChild(tr) );
     })));
 }
+
+
+// paginate the results
+
+
+// pagination part
+// https://www.thatsoftwaredude.com/content/6125/how-to-paginate-through-a-collection-in-javascript
+
+let list = new Array();
+let pageList = new Array();
+
+if (sessionStorage.getItem('currentPage')) {
+    currentPage = sessionStorage.getItem('currentPage')
+} else {
+    currentPage = 1
+}
+let numberPerPage
+if (sessionStorage.getItem('numberPerPage')) {
+    numberPerPage = sessionStorage.getItem('numberPerPage')
+} else {
+    numberPerPage = 20
+}
+
+
+sessionStorage.setItem('numberPerPage',numberPerPage)
+var numberOfPages = 0; // calculates the total number of pages
+
+// fetches search result from session storage, parse it and calculates number of pages to render
+function makeList() {
+    list.length = 0; // tømme Array
+    stringData = sessionStorage.getItem('string')
+    // parsing search result
+    list = JSON.parse(stringData)   
+    numberOfPages = getNumberOfPages(numberPerPage);
+}
+
+// returns numberOfPages for rendering results
+// out: numberOfPages (number, numberOfPages for rendering results)
+// is called by makeList()
+//	hitsPerPage-select.eventlistener
+//	resultTable(..)
+function getNumberOfPages(numberPerPage) {
+    return Math.ceil(list.length / numberPerPage);
+}
+
+// increases counter for currentPage for rendering results, if necessary puts text in html-element lastPageAlert
+// calls load()
+// is called in index.hbs when nextPage-button is created
+function nextPage() {
+    if (currentPage < numberOfPages) {
+        currentPage += 1    
+        sessionStorage.setItem('currentPage', currentPage)
+        load()
+    } else {
+        document.getElementById("resultPageAlert").innerHTML = textItems.lastPageAlert[index]
+    }
+}
+
+// decreases counter for currentPage for for rendering results
+// calls load()
+// is called in index.hbs when previousPage-button is created
+function previousPage() {
+    currentPage -= 1;
+    sessionStorage.setItem('currentPage', currentPage)
+    load()
+}
+
+// sets currentPage for rendering results
+// calls load()
+// is called in index.hbs when firstPage-button is created
+function firstPage() {
+    currentPage = 1;
+    sessionStorage.setItem('currentPage', currentPage)
+    load()
+}
+
+// sets currentPage for rendering results
+// calls load()
+// is called in index.hbs when lastPage-button is created
+function lastPage() {
+    currentPage = numberOfPages;
+    sessionStorage.setItem('currentPage', currentPage)
+    load()
+}
+
+// sets sessionStorage’s pageList (part of result that is to be rendered on page) and calls function(s) that render resultTable
+// calls check()
+//  resultTable(pageList, list)
+// is called by
+//  hitsPerPage eventlistener
+//  load()
+function loadList() {
+    const begin = ((currentPage - 1) * numberPerPage)
+    const end = Number(begin) + Number(numberPerPage)
+    pageList = list.slice(begin, end)
+    sessionStorage.setItem('pageList', JSON.stringify(pageList)) // pageList is the same as subMusitData other places; the part of the search result that is listed on the current page
+    //resultTable(pageList, list)
+    const archiveCollection = sessionStorage.getItem('buttonID')
+    const showAll = ''
+    if (showingThumbs) {
+      showGallery(pageList, archiveCollection)
+    } else {
+      createArchiveTableAndFillIt(pageList, archiveCollection, showAll)
+    }   
+    check();
+    
+}
+
+// disables page-buttons if necesary
+// is called by loadList()
+function check() {
+    document.getElementById("next").disabled = currentPage == numberOfPages ? true : false;
+    document.getElementById("previous").disabled = currentPage == 1 ? true : false;
+    document.getElementById("first").disabled = currentPage == 1 ? true : false;
+    document.getElementById("last").disabled = currentPage == numberOfPages ? true : false;
+}
+
+// empties search-result, fetches search result from sessionStorage, sets numberOfPages for rendering of results, calls function that call resultTable and sets sessionStorage’s pagelist (what to rendered on page)
+// calls getNumberOfPages(..)
+//	loadList()
+//	is called by nextPage(), previousPage(), firstPage(), lastPage()
+function load() {
+    list.length = 0 // tømme Array
+    stringData = sessionStorage.getItem('string')
+    // parsing search result
+    list = JSON.parse(stringData)   
+    numberOfPages = getNumberOfPages(numberPerPage)
+    makeList()
+    loadList()
+}
+
+
+// renders paginate buttons
+showResultElements = () => {
+    document.getElementById("first").style.display = "inline-block"
+    document.getElementById("previous").style.display = "inline-block"
+    document.getElementById("next").style.display = "inline-block"
+    document.getElementById("last").style.display = "inline-block"
+    document.getElementById("resultPageText").style.display = "inline-block"
+    document.getElementById("resultPageText").innerHTML = textItems.page[index]
+    document.getElementById("resultPageNb").style.display = "inline-block"
+    document.getElementById("resultPageNb").innerHTML = " " + currentPage + '/' + numberOfPages
+}
+
+
 
 
 // sends request to server for date of last change of the archive-datafile
