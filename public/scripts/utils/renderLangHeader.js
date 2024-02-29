@@ -1,3 +1,4 @@
+console.log('renderlangheader')
 function renderHeaderContent (lang) {
 
     if (lang === "English") {
@@ -23,7 +24,9 @@ function renderHeaderContent (lang) {
     } else if (window.location.href.includes('/museum/nhm')) {
         logo.src = textItems.logoNHM[index];
         homeLink.setAttribute('href', '/museum/nhm');
+       if (uniLogo) {
         uniLogo.src = textItems.logoUiO[index]
+       }
     }
 
 

@@ -267,7 +267,9 @@ function makeButtons() {
             if (document.getElementById('search-cell').style.display == 'table-cell') {
                 emptySearch('organism-button')
                 emptyCollection()
-                document.getElementById('search-cell').style.display = 'none'
+                // hvis linja nedenfor er med forsvinner search-cell med søkefelt ved første visning av siden,
+                // uten at ny org-gruppe-knapp trykkes på
+                // document.getElementById('search-cell').style.display = 'none'
                 document.getElementById('map-search').style = "border:none; padding:0px"
             }
             addCollectionsToSelect(el.id, orgGroups, fileList)
@@ -319,7 +321,7 @@ function addTextInCollSelect(a) {
     };
   
     return collections[a][index];
-  }
+}
   
     
 function addCollectionsToSelect(orgGroup, orgGroups, fileList) {
@@ -393,11 +395,11 @@ function download(filename, text) {
 // https://huynvk.dev/blog/download-files-and-zip-them-in-your-browsers-using-javascript
 const downloadImage = async (url) => {
     return fetch(url).then(resp => resp.blob());
-  };
+}
   
-  const downloadMany = urls => {
-    return Promise.all(urls.map(url => downloadImage(url)))
-  }
+const downloadMany = urls => {
+   return Promise.all(urls.map(url => downloadImage(url)))
+}
 
 const downloadAndZip = async (urls, catalogNo) => {
     document.getElementById("please-wait").style.display = "block"
@@ -412,9 +414,9 @@ const downloadAndZip = async (urls, catalogNo) => {
           const fileName = `combined-${currentDate}.zip`;
           document.getElementById("please-wait").style.display = "none"
           return saveAs(zipFile, fileName);
-        });
-    } );
-  }
+        })
+   })
+}
 
 
 // deletes previous search results, resets value that says if search failed, resets Boolean sorting-values for result, hides buttons, performs search
@@ -569,10 +571,10 @@ searchForm.addEventListener('submit', (e) => {
 
 
 collection.addEventListener("change", (e) => {
+    console.log('collection add event listener, display table cell')
     e.preventDefault();
     updateFooter();
     emptySearch("collection_listener");
-    
     const orgGroup = sessionStorage.getItem("organismGroup");
     const advancedAccordion = document.getElementById("advanced-accordion");
     const collectionValue = collection.value;
@@ -589,7 +591,8 @@ collection.addEventListener("change", (e) => {
     document.getElementById("search-cell").style.display = "table-cell";
     errorMessage.innerHTML = "";
     sessionStorage.setItem("chosenCollection", collectionValue);
-  });
+  })
+ 
   
 
 // when a collection is chosen a request is sent to the server about date of last change of the MUSIT-dump file
@@ -819,6 +822,7 @@ if(select) {
 }
 
 window.onload = function () {
+    console.log('window onload')
     if (window.performance) {
         if (performance.navigation.type == 1) {
             emptySearch('window.onload')

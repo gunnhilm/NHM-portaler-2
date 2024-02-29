@@ -144,7 +144,6 @@ const resultTable = (subMusitData, musitData) => {
     // compare(subMusitData)
     try {
         console.log(subMusitData[0])
-        
         table.innerHTML = ""
         const row = table.insertRow(-1)
         for (let i = -1; i < pageList.length; i++) { // vis en tabell med resultater som er like lang som det vi ba om pageList.length; 
