@@ -145,22 +145,54 @@ let validNameIndex = 1;
 let item = {};
 let threeItem = {};
 for (let i = 0; i < dataArray.length; i++) {
+  //capitalize first word 
   const element = dataArray[i];
+ 
+  const modifiedNames = element.names.map(name => {
+    const words = name.split(' ');
+    const modifiedFirstWord = words[0].toUpperCase()
+    let remainingWords = words.slice(1);
+    remainingWords = remainingWords.join(' ')
+    return [modifiedFirstWord, remainingWords];
+  });
+  
+  element.names = modifiedNames;
+
   if (element.names.length === 1) {
-    item.xml = `<w:r><w:rPr><w:i/></w:rPr><w:r><w:t xml:space="preserve">  ${element.names[0]} <w:rPr><w:i w:val="false"/></w:rPr><w:br/> <w:br/><w:t xml:space="preserve">  No.:</w:t></w:r>`;
+    item.xml = `<w:r><w:rPr><w:b/></w:rPr><w:t xml:space="preserve">${element.names[0][0]} <w:rPr><w:b w:val="false"/></w:rPr>${element.names[0][1]}<w:br/> <w:br/><w:t xml:space="preserve">  No.:</w:t></w:r>`;
   } else if (element.names.length === 2) {
-    item.xml = `<w:r><w:rPr><w:i/></w:rPr><w:r><w:t xml:space="preserve">  ${element.names[0]} <w:rPr><w:i w:val="false"/></w:rPr><w:br/><w:t xml:space="preserve">  No.: </w:t><w:br/><w:br/><w:br/><w:rPr><w:i/></w:rPr><w:r><w:t xml:space="preserve">  ${element.names[1]} <w:rPr><w:i w:val="false"/></w:rPr><w:br/><w:t xml:space="preserve">  No.: </w:t></w:r>`;
+    item.xml = `<w:r><w:rPr><w:b/></w:rPr><w:r><w:t xml:space="preserve">${element.names[0][0]} <w:rPr><w:b w:val="false"/></w:rPr>${element.names[0][1]}<w:br/><w:t xml:space="preserve">  No.: </w:t><w:br/><w:br/><w:rPr><w:b/></w:rPr><w:r><w:t xml:space="preserve">${element.names[1][0]} <w:rPr><w:b w:val="false"/></w:rPr>${element.names[1][1]}<w:br/><w:t xml:space="preserve">  No.: </w:t></w:r>`;
   } else if (element.names.length >= 3 && element.names.length <= 7) {
-    var namesXml = '';
-  
-    for (var j = 0; j < element.names.length; j++) {
-      namesXml += `${element.names[j]}<w:br/> `;
+
+    let complexNamesXml = "";
+
+    for (let j = 0; j < element.names.length; j++) {
+      let lastNumber = j - 1
+      const firstNames = element.names[j][0];
+      const lastNames = element.names[j][1];
+      if( j === 0) {
+      complexNamesXml += `<w:r><w:rPr><w:b/><w:sz w:val="28"/></w:rPr><w:t xml:space="preserve">${firstNames} </w:t></w:r><w:r><w:rPr><w:b w:val="false"/><w:sz w:val="28"/></w:rPr><w:t xml:space="preserve">${lastNames}<w:br/></w:t></w:r>`;
+      } else  if (element.names[j][0] === element.names[lastNumber][0] ) {
+      complexNamesXml += `<w:r><w:rPr><w:b w:val="false"/><w:sz w:val="28"/></w:rPr><w:t xml:space="preserve">${lastNames}<w:br/></w:t></w:r>`;
+      } else {
+        complexNamesXml += `<w:r><w:rPr><w:b/><w:sz w:val="28"/></w:rPr><w:t xml:space="preserve">${firstNames} </w:t></w:r><w:r><w:rPr><w:b w:val="false"/><w:sz w:val="28"/></w:rPr><w:t xml:space="preserve">${lastNames}<w:br/></w:t></w:r>`;
+
+      }
+    
     }
-  
-    item.xml = `<w:r><w:rPr><w:i/></w:rPr><w:r><w:t xml:space="preserve">  ${namesXml}<w:rPr><w:i w:val="false"/></w:rPr></w:t></w:r>`;
+    
+    item.xml = `<w:r>${complexNamesXml}</w:r>`;
+    
   } else if (element.names.length > 8) {
     const elementLast = element.names[element.names.length - 1];
-    item.xml = `<w:r><w:rPr><w:i/></w:rPr><w:t xml:space="preserve">  ${element.names[0]} <w:t xml:space="preserve"> <w:br/>                    --> <w:br/>  ${elementLast}</w:t><w:rPr><w:i w:val="false"/></w:rPr></w:r>`;
+    item.xml = `
+    <w:r><w:rPr><w:b/><w:sz w:val="28"/><w:jc w:val="center"/></w:rPr><w:t xml:space="preserve">${element.names[0][0]} </w:t>
+    <w:rPr><w:b w:val="false"/><w:sz w:val="28"/><w:jc w:val="center"/></w:rPr><w:t>${element.names[0][1]}<w:br/></w:t>
+    <w:rPr><w:b w:val="false"/><w:sz w:val="28"/><w:jc w:val="center"/></w:rPr><w:t>--><w:br/><w:b/></w:t>
+    <w:rPr><w:b /><w:sz w:val="28"/><w:jc w:val="center"/></w:rPr><w:t xml:space="preserve">${elementLast[0]} </w:t>
+    <w:rPr><w:b w:val="false"/><w:sz w:val="28"/><w:jc w:val="center"/></w:rPr><w:t>${elementLast[1]}</w:t></w:r>
+    `;
+      
   }
 
   item._type = 'rawXml';

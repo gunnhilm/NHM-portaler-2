@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<html lang="no">
+    <head>
+         <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <meta name="description" content="information page of how to apply for a loan of museum specimens for the natural history museum of Oslo">
+
+        <link rel="stylesheet" href="/museum/styles/styles.css">
+        <link id="museumStyle" rel="stylesheet" type="text/css" href= "">
+
+
+
+
+        <title>How to ask for a loan</title>
+    </head>
+  
+    <body>
+        <div class="wrapper">
+            {{>header}}
+            <div class="content">
+                <h2> Help page for loans</h2>
+                <p>This is a help page that explains how to use this portal to apply for a specimen loan. This portal can only be use to apply for scientific loans.</p>
+                <p>Use the following steps to apply for a loan:  </p>
+                <ol>
+                    <li>Choose collection on the portal search page: </li> <br><br>
+                    <img src="/museum/images/loan/loan_1.png" alt="Search page" style="width:1000px">
+                    <li>Find the items you want to loan trough searching in the portal</li><br><br>
+                    <img src="/museum/images/loan/loan_2.png" alt="Search page" style="width:1000px">
+                    <li>Select the items</li><br><br>
+                    <img src="/museum/images/loan/loan_3.png" alt="Search page" style="width:1000px">
+                    <li>Choose loan under actions</li><br><br>
+                    <img src="/museum/images/loan/loan_4.png" alt="Search page" style="width:1000px">
+                    <li>Fill in the form</li><br><br>
+                    <img src="/museum/images/loan/loan_5.png" alt="Search page" style="width:1000px">
+
+                </ol>
+                <p>After pressing submit you should get an recite email immediately, and a response within three weeks.</p>
+
+                
+            </div>
+            {{>footer}}
+        </div>
+
+        <script src="/museum/scripts/utils/textItems.js"></script>
+        <script src="/museum/scripts/utils/renderLangHeader.js"></script>
+        <script src="/museum/scripts/utils/renderLang.js"></script> {{!calls renderText(language)}}
+        <script src="/museum/scripts/utils/showCorrectMuseum.js"></script>
+    </body>
+</html>

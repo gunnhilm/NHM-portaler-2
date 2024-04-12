@@ -42,9 +42,11 @@ const getMuseumSpecificURLheaderLinks = () => {
         swapURL('/museum/nhm/help', 'help-link')
         swapURL('/museum/nhm/', 'search-page-link')
         swapURL('/museum/nhm/tools', 'tools-link')
+        swapURL('/museum/nhm/tools/loans', 'loan-link')
         // mobile-screen-links
         swapURL('/museum/nhm/help', 'menu_help-link')
         swapURL('/museum/nhm/tools', 'menu_tools-link')
+        swapURL('/museum/nhm/tools/loans', 'menu_loan-link')
         swapURL('/museum/nhm/', 'menu_search-page-link')
     }
 }
