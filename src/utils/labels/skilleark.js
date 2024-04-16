@@ -164,7 +164,8 @@ console.log('----------------------------');
       if (element.names[j] === element.names[lastNumber]) {
       complexNamesXml += `<w:r><w:rPr><w:b/><w:sz w:val="28"/></w:rPr><w:t xml:space="preserve">${element.names[lastNumber]} <w:br/></w:t></w:r>`;
       } else {
-        complexNamesXml += `<w:r><w:rPr><w:b/><w:sz w:val="28"/></w:rPr><w:t xml:space="preserve">${element.names[j]} <w:br/></w:t></w:r>`;
+        complexNamesXml +=  `<w:r><w:rPr><w:rFonts w:ascii="Calibri" w:hAnsi="Calibri" w:cs="Calibri"/><w:b/><w:sz w:val="28"/></w:rPr><w:t xml:space="preserve">${element.names[j]} <w:br/></w:t></w:r>`;
+
       }
     }
     item.xml = `<w:r>${complexNamesXml}</w:r>`;
