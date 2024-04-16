@@ -139,61 +139,36 @@ async function writeskilleArk(names, museum, collection) {
 
 // make the array with names and styling for the box labels
 async function makeBoxNameArray(dataArray) {
-
+  console.log(dataArray);
+  console.log('*******************');
 const items = { validNames: [] };
 let validNameIndex = 1;
 let item = {};
 let threeItem = {};
 for (let i = 0; i < dataArray.length; i++) {
-  //capitalize first word 
   const element = dataArray[i];
  
-  const modifiedNames = element.names.map(name => {
-    const words = name.split(' ');
-    const modifiedFirstWord = words[0].toUpperCase()
-    let remainingWords = words.slice(1);
-    remainingWords = remainingWords.join(' ')
-    return [modifiedFirstWord, remainingWords];
-  });
-  
-  element.names = modifiedNames;
 
+  let modifiedNames = element.names.map(word => word.toUpperCase());
+
+  element.names = modifiedNames;
+console.log(element.names);
+console.log('----------------------------');
   if (element.names.length === 1) {
-    item.xml = `<w:r><w:rPr><w:b/></w:rPr><w:t xml:space="preserve">${element.names[0][0]} <w:rPr><w:b w:val="false"/></w:rPr>${element.names[0][1]}<w:br/> <w:br/><w:t xml:space="preserve">  No.:</w:t></w:r>`;
-  } else if (element.names.length === 2) {
-    item.xml = `<w:r><w:rPr><w:b/></w:rPr><w:r><w:t xml:space="preserve">${element.names[0][0]} <w:rPr><w:b w:val="false"/></w:rPr>${element.names[0][1]}<w:br/><w:t xml:space="preserve">  No.: </w:t><w:br/><w:br/><w:rPr><w:b/></w:rPr><w:r><w:t xml:space="preserve">${element.names[1][0]} <w:rPr><w:b w:val="false"/></w:rPr>${element.names[1][1]}<w:br/><w:t xml:space="preserve">  No.: </w:t></w:r>`;
-  } else if (element.names.length >= 3 && element.names.length <= 7) {
+    item.xml = `<w:r><w:rPr><w:b/></w:rPr><w:t xml:space="preserve">${element.names[0]} <w:rPr><w:b w:val="false"/></w:rPr></w:t></w:r>`;
+  }  else {
 
     let complexNamesXml = "";
-
     for (let j = 0; j < element.names.length; j++) {
       let lastNumber = j - 1
-      const firstNames = element.names[j][0];
-      const lastNames = element.names[j][1];
-      if( j === 0) {
-      complexNamesXml += `<w:r><w:rPr><w:b/><w:sz w:val="28"/></w:rPr><w:t xml:space="preserve">${firstNames} </w:t></w:r><w:r><w:rPr><w:b w:val="false"/><w:sz w:val="28"/></w:rPr><w:t xml:space="preserve">${lastNames}<w:br/></w:t></w:r>`;
-      } else  if (element.names[j][0] === element.names[lastNumber][0] ) {
-      complexNamesXml += `<w:r><w:rPr><w:b w:val="false"/><w:sz w:val="28"/></w:rPr><w:t xml:space="preserve">${lastNames}<w:br/></w:t></w:r>`;
+      if (element.names[j] === element.names[lastNumber]) {
+      complexNamesXml += `<w:r><w:rPr><w:b/><w:sz w:val="28"/></w:rPr><w:t xml:space="preserve">${element.names[lastNumber]} <w:br/></w:t></w:r>`;
       } else {
-        complexNamesXml += `<w:r><w:rPr><w:b/><w:sz w:val="28"/></w:rPr><w:t xml:space="preserve">${firstNames} </w:t></w:r><w:r><w:rPr><w:b w:val="false"/><w:sz w:val="28"/></w:rPr><w:t xml:space="preserve">${lastNames}<w:br/></w:t></w:r>`;
-
+        complexNamesXml += `<w:r><w:rPr><w:b/><w:sz w:val="28"/></w:rPr><w:t xml:space="preserve">${element.names[j]} <w:br/></w:t></w:r>`;
       }
-    
     }
-    
     item.xml = `<w:r>${complexNamesXml}</w:r>`;
-    
-  } else if (element.names.length > 8) {
-    const elementLast = element.names[element.names.length - 1];
-    item.xml = `
-    <w:r><w:rPr><w:b/><w:sz w:val="28"/><w:jc w:val="center"/></w:rPr><w:t xml:space="preserve">${element.names[0][0]} </w:t>
-    <w:rPr><w:b w:val="false"/><w:sz w:val="28"/><w:jc w:val="center"/></w:rPr><w:t>${element.names[0][1]}<w:br/></w:t>
-    <w:rPr><w:b w:val="false"/><w:sz w:val="28"/><w:jc w:val="center"/></w:rPr><w:t>--><w:br/><w:b/></w:t>
-    <w:rPr><w:b /><w:sz w:val="28"/><w:jc w:val="center"/></w:rPr><w:t xml:space="preserve">${elementLast[0]} </w:t>
-    <w:rPr><w:b w:val="false"/><w:sz w:val="28"/><w:jc w:val="center"/></w:rPr><w:t>${elementLast[1]}</w:t></w:r>
-    `;
-      
-  }
+  } 
 
   item._type = 'rawXml';
   item.replaceParagraph = false;
@@ -231,68 +206,6 @@ if(validNameIndex !== 1) {
 
 return items;
 }
-// const rawxml4 = {
-//   _type: 'rawXml',
-//   xml: 'hei hei',
-//   replaceParagraph: false,
-// }
-
-// items.validNames.push(rawxml4);
-
-
-// const elements = ['aus', 'bus', 'cus', 'dus', 'eus', 'fus', 'gus', 'hus',  'ius', 'jus'] 
-// const elementLast = 'sistus'
-//   oneName = `<w:r><w:rPr><w:i/></w:rPr><w:r><w:t xml:space="preserve">  ${elements[1]} <w:rPr><w:i w:val="false"/></w:rPr><w:br/> <w:br/><w:t xml:space="preserve">  No.:</w:t></w:r>`
-//   // '<w:rPr><w:i/></w:rPr> <w:t>hei hei hei</w:t><w:i w:val="false"/></w:rPr>'
-//   twoNames = `<w:r><w:rPr><w:i/></w:rPr><w:r><w:t xml:space="preserve">  ${elements[1]} <w:rPr><w:i w:val="false"/></w:rPr><w:br/><w:t xml:space="preserve">  No.: </w:t><w:br/><w:br/><w:br/><w:rPr><w:i/></w:rPr><w:r><w:t xml:space="preserve">  ${elements[2]} <w:rPr><w:i w:val="false"/></w:rPr><w:br/><w:t xml:space="preserve">  No.: </w:t></w:r>`
-//   // '<w:rPr><w:i/></w:rPr> <w:t>name2</w:t><w:rPr><w:i w:val="false"/></w:rPr>'
-//   lessThanEightNames = `<w:r><w:rPr><w:i/></w:rPr><w:r><w:t xml:space="preserve">  ${elements[1]} <w:br/>  ${elements[2]}<w:br/>  ${elements[3]}<w:br/>  ${elements[4]}<w:br/>  ${elements[5]}<w:br/>  ${elements[6]}<w:br/>  ${elements[7]}<w:br/><w:rPr><w:i w:val="false"/></w:rPr></w:t></w:r>`
-//   // '<w:rPr><w:i/></w:rPr> <w:t>name2</w:t><w:rPr><w:i w:val="false"/></w:rPr>'
-//   moreThanEightNames = `<w:r><w:rPr><w:i/></w:rPr><w:t xml:space="preserve">  ${elements[1]} <w:t xml:space="preserve"> <w:br/>                    --> <w:br/>  ${elementLast}</w:t><w:rPr><w:i w:val="false"/></w:rPr></w:r>`
- 
-
-// const things = {
-//   validName: [
-//     {
-//       'navn1': 'bus', 'navn2': 'cus', 'navn3':'per petterson', 'navn4': 'kåre Anderson', 'AkseptertNavn3': 'gus', 'no1':'Nr.:', 'no2':'Nr.:', 'no3':'Nr.:'
-//     },
-//     {
-//       'AkseptertNavn1': [{'navn1':'per petterson', 'navn2': 'kåre Anderson'}], 'AkseptertNavn2': 'hei på deg', 'AkseptertNavn3': 'nope', 'no1':'Nr.:', 'no2':'Nr.:', 'no3':'Nr.:'
-
-//     },
-//     {
-//       'AkseptertNavn1': 'gus',
-//     },
-//   ]
-
-//   ,
-//   'rawxml': {
-//     _type: 'rawXml',
-//     xml: oneName,
-//     replaceParagraph: false,
-//   },
-//   'rawxml2': {
-//     _type: 'rawXml',
-//     xml: twoNames,
-//     replaceParagraph: false,
-//   },
-//   'rawxml3': {
-//     _type: 'rawXml',
-//     xml: lessThanEightNames,
-//     replaceParagraph: false,
-//   },
-//   'rawxml4': {
-//     _type: 'rawXml',
-//     xml: moreThanEightNames,
-//     replaceParagraph: false,
-//   },
-// };
-
-
-
-
-// { validNames: [{ key: 'value' }] }
-
 
  
 async function writeBoxLabel(names, museum, collection, includeBoxNumbers) {

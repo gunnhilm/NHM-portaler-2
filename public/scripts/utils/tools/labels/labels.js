@@ -21,8 +21,10 @@ const boxSelector =   new Selectr('#scientific-box-names', {
 
 
 function addBoxNames(validNames) {
-    for (let i = 0; i < validNames.length; i++) {
-        const element = validNames[i];
+  let validGenera = validNames.map(name => name.split('|')[0]);
+  let uniqueValidGenera = [...new Set(validGenera.map(name => name.split(' ')[0]))];
+    for (let i = 0; i < uniqueValidGenera.length; i++) {
+        const element = uniqueValidGenera[i];
         const newElement = element.split('|')[0];
         boxSelector.add({
             value: newElement,
