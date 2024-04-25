@@ -8,6 +8,8 @@ const columnsToShow = 14
 let archiveCollection = ''
 
 
+
+
 // figures out which museum we are in
 // out: string, abbreviation for museum
 // is called by doSearch() and updateFooter()
@@ -211,7 +213,6 @@ const addHeaders = (table, headerNamesToShow) => {
 // Show a box nex to the searchfield with extra inforamtion about abotut the archiveCollection
 function showExtraInfo(archiveCollection) {
   const extraInfo = document.getElementById("extra-info");
-  console.log(archiveCollection);
   try {
     if (archiveCollection === 'Dagny Tande Lid') {
       extraInfo.innerHTML = "<h3>Dagny Tande Lids illustrasjoner</h3> <p> I 1979 donerte Dagny Tande Lid over 5000 tegninger til museet. Senere ble det gitt ytterligere tegninger. Disse oppbevares i museets historiske arkiv og presenteres her som i en online katalog.  </p> <p> I 1989 utarbeidet Odvar Pedersen en papirkatalog over 5012 botaniske tegninger med en oversikt over hvilke bøker de de hadde vært brukt i. <a href='/museum/archive/illustrations_files/DTL/HOVEDKAT.pdf'>Last ned Katalog her</a></p><p>Tegninger og akvareller er vernet av Lov om opphavsrett til åndsverk. Rettighetene forvaltes av BONO.<br><a href='https://www.bono.no/bruk-kunstverk'>Søk om bildelisens</a></p>";
@@ -240,17 +241,17 @@ async function showGallery(pageList, archiveCollection) {
     const resultTable = document.getElementById('container');
     resultTable.style.display = 'none';
     galleryContainer.style.display = 'block';
-
-    const imagePath = 'http://localhost/museum/archive/illustrations_files/DTL/thumb/';
-
+    const subFolderName = 'thumb';
+    const thumbPath = await getSubFolderPath(archiveCollection, subFolderName)
     let links = '';
+    let trimmedUrl = window.location.origin + "/museum";
     for (let i = 0; i < pageList.length; i++) {
       const element = pageList[i].Regnr;
-      const imageUrl = `${imagePath}${element}.jpg`;
+      const imageUrl = `${trimmedUrl}\\${thumbPath}\\${element}.jpg`;
 
       // Check if the image exists
       const response = await fetch(imageUrl, { method: 'HEAD' });
-      // console.log(response);
+      console.log(response);
       if (response.ok) {
         links += `<img src="${imageUrl}" alt="Image ${i + 1}" class="gallery-img" data-regnr="${element}" data-archive="${archiveCollection}">`;
       } else {
@@ -274,6 +275,7 @@ async function showGallery(pageList, archiveCollection) {
 
 
 async function getSubFolderPath(documentType, subFolder) {
+
   const url_subFolder = `${urlPath}/nhm/archive?subFolder=${subFolder}&documentType=${documentType}`;
   try {
     const response = await fetch(url_subFolder);
@@ -292,19 +294,32 @@ async function getSubFolderPath(documentType, subFolder) {
 
 // show a button that allows you to switch between thumbnail ang table view
 let showingThumbs = false
+
+function showGalleryOrTable() {
+  const thumbButton = document.getElementById("view-type-button");
+  if (showingThumbs) {
+    thumbButton.textContent = 'Gallery';
+    showingThumbs = false; // Update the value of showingThumbs
+  } else {
+    thumbButton.textContent = 'Table';
+    showingThumbs = true; // Update the value of showingThumbs
+  }
+  loadList(showingThumbs)
+}
+
+
 async function showThumbnailButton (archiveCollection) {
   try {
-    console.log('making thumb button');
+    
     const subFolderName = 'thumb';
-    const isThumb = await getSubFolderPath(archiveCollection, subFolderName)
-    console.log(await getSubFolderPath(archiveCollection, subFolderName));
+    const thumbPath = await getSubFolderPath(archiveCollection, subFolderName)
+    console.log('thumbPath: ' + thumbPath);
     const thumbButton = document.getElementById("view-type-button");
-    if(isThumb) {
-      console.log('her');
+    if(thumbPath) {
       thumbButton.style.display = "block";
+      thumbButton.textContent = 'Gallery';
       thumbButton.addEventListener('click', (e) => {
-        showingThumbs = !showingThumbs;
-        loadList()
+        showGalleryOrTable()
       });
     } else {
       thumbButton.style.display = "none";
@@ -321,6 +336,10 @@ async function showThumbnailButton (archiveCollection) {
 // is called in doarchiveSearch(..)
 const createArchiveTableAndFillIt = (data, archiveCollection, showAll) => {
   // console.log(data);
+  const galleryContainer = document.getElementById('thumb-gallery');
+  const resultTable = document.getElementById('container');
+  resultTable.style.display = 'block';
+  galleryContainer.style.display = 'none';
   let filePath = '';
   let headerNamesToShow = [];
   const currentYear = new Date().getFullYear();
@@ -649,12 +668,12 @@ function lastPage() {
 // is called by
 //  hitsPerPage eventlistener
 //  load()
-function loadList() {
+function loadList(showingThumbs = false) {
+  console.log('loadList: ' + showingThumbs);
     const begin = ((currentPage - 1) * numberPerPage)
     const end = Number(begin) + Number(numberPerPage)
     pageList = list.slice(begin, end)
     sessionStorage.setItem('pageList', JSON.stringify(pageList)) // pageList is the same as subMusitData other places; the part of the search result that is listed on the current page
-    //resultTable(pageList, list)
     const archiveCollection = sessionStorage.getItem('buttonID')
     const showAll = ''
     if (showingThumbs) {
@@ -663,7 +682,6 @@ function loadList() {
       createArchiveTableAndFillIt(pageList, archiveCollection, showAll)
     }   
     check();
-    
 }
 
 // disables page-buttons if necesary

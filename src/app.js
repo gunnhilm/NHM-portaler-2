@@ -349,6 +349,11 @@ app.get('*/bulkProjects', (req, res) => {
     
 }) 
 
+app.get('*/tools/loans', (req, res) => {
+    res.render('howtoLoan', {
+    })
+})
+
 app.get('*/loans', (req, res) => {
     res.render('loans', {})
 })
@@ -707,6 +712,7 @@ app.get('/nhm/journaler', (req, res) => {
 
 // Arkivsiden
 app.get('*/archive', async (req, res) => {
+    console.log('archive without files');
     const { pageID, subFolder, documentType } = req.query;
     if (pageID) {
       res.render('item-page', { pageID });
@@ -717,26 +723,35 @@ app.get('*/archive', async (req, res) => {
       res.render('archive');
     }
   });
-  
+
+
 
 // item-page
 app.post('*/item-page/check-files', async (req, res) => {
     try {
-        const { folderName, fileName, directImagePath } = req.body;
-        const { filePath, matchingFiles } = await archive.checkFilesStartsWith(folderName, fileName, directImagePath);
-        res.status(200).json({ filePath, matchingFiles });
+      const { folderName, fileName, directImagePath } = req.body;
+      const result = await archive.checkFilesStartsWith(folderName, fileName, directImagePath);
+      res.status(200).json({
+        filePath: result.mediaObject.filePath,
+        matchingFiles: result.mediaObject.matchingFiles, 
+        folderPath: result.mediaObject.folderPath 
+      });
     } catch (error) {
-        return false
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
-   
-   
   });
+
+
 
 
 // show images or files
 app.get('*/archive/:folder/:filename', (req, res) => {
+    console.log('archive with files');
     const { folder, filename } = req.params;
     const filePath = path.join(__dirname, '..', '..', 'archive', folder, filename);
+    console.log('logging filepath on server');
+    console.log(filePath);
     fs.readFile(filePath, (err, data) => {
       if (err) {
         console.log(`Error reading file: ${err}`);

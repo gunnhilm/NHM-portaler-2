@@ -139,29 +139,37 @@ async function writeskilleArk(names, museum, collection) {
 
 // make the array with names and styling for the box labels
 async function makeBoxNameArray(dataArray) {
-
+  console.log(dataArray);
+  console.log('*******************');
 const items = { validNames: [] };
 let validNameIndex = 1;
 let item = {};
 let threeItem = {};
 for (let i = 0; i < dataArray.length; i++) {
   const element = dataArray[i];
+ 
+
+  let modifiedNames = element.names.map(word => word.toUpperCase());
+
+  element.names = modifiedNames;
+console.log(element.names);
+console.log('----------------------------');
   if (element.names.length === 1) {
-    item.xml = `<w:r><w:rPr><w:i/></w:rPr><w:r><w:t xml:space="preserve">  ${element.names[0]} <w:rPr><w:i w:val="false"/></w:rPr><w:br/> <w:br/><w:t xml:space="preserve">  No.:</w:t></w:r>`;
-  } else if (element.names.length === 2) {
-    item.xml = `<w:r><w:rPr><w:i/></w:rPr><w:r><w:t xml:space="preserve">  ${element.names[0]} <w:rPr><w:i w:val="false"/></w:rPr><w:br/><w:t xml:space="preserve">  No.: </w:t><w:br/><w:br/><w:br/><w:rPr><w:i/></w:rPr><w:r><w:t xml:space="preserve">  ${element.names[1]} <w:rPr><w:i w:val="false"/></w:rPr><w:br/><w:t xml:space="preserve">  No.: </w:t></w:r>`;
-  } else if (element.names.length >= 3 && element.names.length <= 7) {
-    var namesXml = '';
-  
-    for (var j = 0; j < element.names.length; j++) {
-      namesXml += `${element.names[j]}<w:br/> `;
+    item.xml = `<w:r><w:rPr><w:b/></w:rPr><w:t xml:space="preserve">${element.names[0]} <w:rPr><w:b w:val="false"/></w:rPr></w:t></w:r>`;
+  }  else {
+
+    let complexNamesXml = "";
+    for (let j = 0; j < element.names.length; j++) {
+      let lastNumber = j - 1
+      if (element.names[j] === element.names[lastNumber]) {
+      complexNamesXml += `<w:r><w:rPr><w:b/><w:sz w:val="28"/></w:rPr><w:t xml:space="preserve">${element.names[lastNumber]} <w:br/></w:t></w:r>`;
+      } else {
+        complexNamesXml +=  `<w:r><w:rPr><w:rFonts w:ascii="Calibri" w:hAnsi="Calibri" w:cs="Calibri"/><w:b/><w:sz w:val="28"/></w:rPr><w:t xml:space="preserve">${element.names[j]} <w:br/></w:t></w:r>`;
+
+      }
     }
-  
-    item.xml = `<w:r><w:rPr><w:i/></w:rPr><w:r><w:t xml:space="preserve">  ${namesXml}<w:rPr><w:i w:val="false"/></w:rPr></w:t></w:r>`;
-  } else if (element.names.length > 8) {
-    const elementLast = element.names[element.names.length - 1];
-    item.xml = `<w:r><w:rPr><w:i/></w:rPr><w:t xml:space="preserve">  ${element.names[0]} <w:t xml:space="preserve"> <w:br/>                    --> <w:br/>  ${elementLast}</w:t><w:rPr><w:i w:val="false"/></w:rPr></w:r>`;
-  }
+    item.xml = `<w:r>${complexNamesXml}</w:r>`;
+  } 
 
   item._type = 'rawXml';
   item.replaceParagraph = false;
@@ -199,68 +207,6 @@ if(validNameIndex !== 1) {
 
 return items;
 }
-// const rawxml4 = {
-//   _type: 'rawXml',
-//   xml: 'hei hei',
-//   replaceParagraph: false,
-// }
-
-// items.validNames.push(rawxml4);
-
-
-// const elements = ['aus', 'bus', 'cus', 'dus', 'eus', 'fus', 'gus', 'hus',  'ius', 'jus'] 
-// const elementLast = 'sistus'
-//   oneName = `<w:r><w:rPr><w:i/></w:rPr><w:r><w:t xml:space="preserve">  ${elements[1]} <w:rPr><w:i w:val="false"/></w:rPr><w:br/> <w:br/><w:t xml:space="preserve">  No.:</w:t></w:r>`
-//   // '<w:rPr><w:i/></w:rPr> <w:t>hei hei hei</w:t><w:i w:val="false"/></w:rPr>'
-//   twoNames = `<w:r><w:rPr><w:i/></w:rPr><w:r><w:t xml:space="preserve">  ${elements[1]} <w:rPr><w:i w:val="false"/></w:rPr><w:br/><w:t xml:space="preserve">  No.: </w:t><w:br/><w:br/><w:br/><w:rPr><w:i/></w:rPr><w:r><w:t xml:space="preserve">  ${elements[2]} <w:rPr><w:i w:val="false"/></w:rPr><w:br/><w:t xml:space="preserve">  No.: </w:t></w:r>`
-//   // '<w:rPr><w:i/></w:rPr> <w:t>name2</w:t><w:rPr><w:i w:val="false"/></w:rPr>'
-//   lessThanEightNames = `<w:r><w:rPr><w:i/></w:rPr><w:r><w:t xml:space="preserve">  ${elements[1]} <w:br/>  ${elements[2]}<w:br/>  ${elements[3]}<w:br/>  ${elements[4]}<w:br/>  ${elements[5]}<w:br/>  ${elements[6]}<w:br/>  ${elements[7]}<w:br/><w:rPr><w:i w:val="false"/></w:rPr></w:t></w:r>`
-//   // '<w:rPr><w:i/></w:rPr> <w:t>name2</w:t><w:rPr><w:i w:val="false"/></w:rPr>'
-//   moreThanEightNames = `<w:r><w:rPr><w:i/></w:rPr><w:t xml:space="preserve">  ${elements[1]} <w:t xml:space="preserve"> <w:br/>                    --> <w:br/>  ${elementLast}</w:t><w:rPr><w:i w:val="false"/></w:rPr></w:r>`
- 
-
-// const things = {
-//   validName: [
-//     {
-//       'navn1': 'bus', 'navn2': 'cus', 'navn3':'per petterson', 'navn4': 'kåre Anderson', 'AkseptertNavn3': 'gus', 'no1':'Nr.:', 'no2':'Nr.:', 'no3':'Nr.:'
-//     },
-//     {
-//       'AkseptertNavn1': [{'navn1':'per petterson', 'navn2': 'kåre Anderson'}], 'AkseptertNavn2': 'hei på deg', 'AkseptertNavn3': 'nope', 'no1':'Nr.:', 'no2':'Nr.:', 'no3':'Nr.:'
-
-//     },
-//     {
-//       'AkseptertNavn1': 'gus',
-//     },
-//   ]
-
-//   ,
-//   'rawxml': {
-//     _type: 'rawXml',
-//     xml: oneName,
-//     replaceParagraph: false,
-//   },
-//   'rawxml2': {
-//     _type: 'rawXml',
-//     xml: twoNames,
-//     replaceParagraph: false,
-//   },
-//   'rawxml3': {
-//     _type: 'rawXml',
-//     xml: lessThanEightNames,
-//     replaceParagraph: false,
-//   },
-//   'rawxml4': {
-//     _type: 'rawXml',
-//     xml: moreThanEightNames,
-//     replaceParagraph: false,
-//   },
-// };
-
-
-
-
-// { validNames: [{ key: 'value' }] }
-
 
  
 async function writeBoxLabel(names, museum, collection, includeBoxNumbers) {

@@ -8,6 +8,7 @@ function getURLParameters() {
       documentType,
       force
     };
+
   }
 
 const params = getURLParameters();
@@ -96,10 +97,12 @@ async function checkFiles(folderName, fileName, directImagePath) {
         if (response.ok) {
             const json = await response.json();
             return {
-                filePath: json.filePath,
-              imageFiles: json.matchingFiles
+              filePath: json.filePath,
+              matchingFiles: json.matchingFiles,
+              folderPath: json.folderPath
             };
         } else {
+          console.log(`Response from server was not ok: ${response.status} ${response.statusText}`); 
         throw new Error(`Failed to fetch files: ${response.status} ${response.statusText}`);
         }
     } catch (error) {
@@ -122,11 +125,11 @@ const doarchiveSearch = async (limit = 2000) => {
       if (!response.ok) throw new Error(`Error: ${response.status}`);
       
       const data = await response.json();
+      
 
       if (data.error) throw new Error(data.error);
   
       const results = Papa.parse(data.unparsed.results, { delimiter: "\t", newline: "\n", quoteChar: "", header: true }).data;
-
       const result = results.find(result => result.Regnr === pageID);
       let fotoID = Object.keys(result).find(k => k.toLowerCase().includes('mediafile'));
       fotoID = result[fotoID]
@@ -137,7 +140,6 @@ const doarchiveSearch = async (limit = 2000) => {
           return true
         }
         if(fotoID) {
-          console.log('returnerer fotoID: ' + fotoID);
           return fotoID
         } else if (show.toLowerCase() === 'no') {
           console.log('returnerer false fordi show er no');
@@ -154,20 +156,15 @@ const doarchiveSearch = async (limit = 2000) => {
 
 async function checkForImage(directImagePath) {
   try {
-
-    const { filePath, imageFiles: documentImageFiles } = await checkFiles(params.documentType, params.pageID, directImagePath );
-
+    const mediaObject = await checkFiles(params.documentType, params.pageID, directImagePath );
     const imageContainer = document.getElementById('item-image');
     const downloadContainer = document.getElementById('item-download-link');
-    
-    console.log(filePath);
-    console.log(documentImageFiles);
-
-    documentImageFiles.forEach(imageFile => {
+    mediaObject.matchingFiles.forEach(imageFile => {
         if(imageFile.includes('tif')) {
         // make a txt link to download the file
         const downloadLink = document.createElement('a');
-        downloadLink.href = urlPath + '/' + filePath + imageFile;
+        downloadLink.href = urlPath + '/' + mediaObject.folderPath + imageFile;
+        
         downloadLink.target = '_blank';
 
         const text = document.createElement('span');
@@ -176,9 +173,8 @@ async function checkForImage(directImagePath) {
         downloadLink.appendChild(text);
         downloadContainer.appendChild(downloadLink);
         } else {
-
           const imageLink = document.createElement('a');
-          imageLink.href = urlPath + '/' + filePath + imageFile;
+          imageLink.href = urlPath + '/'  + mediaObject.folderPath + imageFile;
           imageLink.target = '_blank';
     
           const image = document.createElement('img');
@@ -200,7 +196,6 @@ async function checkForImage(directImagePath) {
 
 async function  main () {
   const showImage =  await doarchiveSearch()
-
   if(showImage){
     checkForImage(showImage);
   }
