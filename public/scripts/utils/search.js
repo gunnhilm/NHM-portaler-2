@@ -569,36 +569,41 @@ searchForm.addEventListener('submit', (e) => {
     doSearch(1000) // vi skal få tilbake maks 1000 linjer med svar
 })  
 
-
-collection.addEventListener("change", (e) => {
-    console.log('collection add event listener, display table cell')
-    e.preventDefault();
-    updateFooter();
-    emptySearch("collection_listener");
-    const orgGroup = sessionStorage.getItem("organismGroup");
-    const advancedAccordion = document.getElementById("advanced-accordion");
-    const collectionValue = collection.value;
-    
-    if (["geologi", "paleontologi", "other"].includes(orgGroup)) {
-      advancedAccordion.style.display = "none";
-      if (collectionValue === "bulk") {
-        bulkMain();
-      }
-    } else {
-      advancedAccordion.style.display = "block";
-    }
-    
-    document.getElementById("search-cell").style.display = "table-cell";
-    errorMessage.innerHTML = "";
-    sessionStorage.setItem("chosenCollection", collectionValue);
-  })
+const collAddEventListener = async () => {
+    // return new Promise((resolve,reject) => {
+        await updateFooter();
+        collection.addEventListener("change", (e) => {
+            e.preventDefault();
+            
+            emptySearch("collection_listener");
+            const orgGroup = sessionStorage.getItem("organismGroup");
+            const advancedAccordion = document.getElementById("advanced-accordion");
+            const collectionValue = collection.value;
+            
+            if (["geologi", "paleontologi", "other"].includes(orgGroup)) {
+            advancedAccordion.style.display = "none";
+            if (collectionValue === "bulk") {
+                bulkMain();
+            }
+            } else {
+            advancedAccordion.style.display = "block";
+            }
+            
+            document.getElementById("search-cell").style.display = "table-cell";
+            errorMessage.innerHTML = "";
+            sessionStorage.setItem("chosenCollection", collectionValue)
+            
+        })
+    // })
+}
  
   
 
 // when a collection is chosen a request is sent to the server about date of last change of the MUSIT-dump file
 // string (date)
 // is called in oldSearch() and collection-select-eventlistener 
-const updateFooter = () => {
+
+const updateFooter = async () => {
     const museum = getCurrentMuseum();
     const chosenCollection = collection.value;
     if (chosenCollection) {
@@ -617,6 +622,7 @@ const updateFooter = () => {
             updated.textContent = lastUpdated;
   
             const fileList = sessionStorage.getItem("fileList");
+            // console.log(fileList)
             const JSONdata = JSON.parse(fileList);
             let gbifCitation = "";
             JSONdata.forEach((el) => {
@@ -842,5 +848,6 @@ async function main () {
     await getFileList()
     await getOrganismGroups()
     makeButtons()
+    collAddEventListener()
 }
 main()

@@ -10,6 +10,11 @@ if (language === "Norwegian") {
     index = 1
 }
 
+async function getLanguage() {
+    let lang = sessionStorage.getItem('language')
+    return lang
+}
+
 renderHeaderContent(language)
 document.getElementById('language').style.display = 'none'
 
@@ -40,7 +45,7 @@ function addRow(table) {
 
 // data kommer fra fastafil fra bold (og har ikke med de uten sekvens)
 // validationObject kommer fra excel-oversiktsfil
-const fillTableSpecies = (data, validationObject) => {
+const fillTableSpecies = (data, validationObject, language) => {
     addRow(countyTable)
     cell1.innerHTML = ''
 
@@ -112,7 +117,9 @@ const fillTableSpecies = (data, validationObject) => {
             objButton.style = "background-color:white; border:none; color:blue; text-decoration:underline"
             objButton.onclick = function() {
                 museumURLPath = urlPath + "/" + museum
-                window.open(href=`${museumURLPath}/object/?id=${regno}&samling=${bcColl}&museum=${museum}&lang=${sessionStorage.getItem('language')}&isNew=yes`)
+                
+                window.open(href=`${museumURLPath}/object/?id=${regno}&samling=${bcColl}&museum=${museum}&lang=${language}&isNew=yes`)
+                // window.open(href=`${museumURLPath}/object/?id=${regno}&samling=${bcColl}&museum=${museum}&lang=${sessionStorage.getItem('language')}&isNew=yes`)
             }
             // if (bcColl === "dna_fungi_lichens") {bcColl = "sopp"}
         }
@@ -232,6 +239,7 @@ document.getElementById('bcClose').onclick = function () {
 
 async function main() {
     data = await getFastaData() //Gjør en request til server om å få innholdet i fasta.fas
+    lang = await getLanguage()
     fungiOverview = await getOverview()
     // speciesObject kommer fra fastafil fra bold (og har ikke med de uten sekvens)
     let speciesObject = data.unparsed.find((el) => {
@@ -241,7 +249,7 @@ async function main() {
     let overviewObject = fungiOverview.find((el => {
         return el.species === relSpecies.replace("_"," ")
     }))
-    fillTableSpecies(speciesObject, overviewObject)
+    fillTableSpecies(speciesObject, overviewObject, lang)
     let candidates
     const urlParams = new URLSearchParams(window.location.search)
     

@@ -39,7 +39,7 @@ const getFastaFileUpdatedDate = (file, callback) => {
 }
 
 // reads fasta-file with all sequences from NorBOL downloaded from BOLD.
-// Gunnhild updates fasta-file irregularly, its static
+// Gunnhild updates fasta-file irregularly, it's static
 // returns array with objects; one object for each species, with musit-regnos, processIDs and counties
 const getFasta = async (query, callback) => {
     try { 

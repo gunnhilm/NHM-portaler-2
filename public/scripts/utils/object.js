@@ -686,7 +686,9 @@ async function showObjectData (specimenObject,objectTable,order) {
             else if (specimenObject.musitCollectionCode === "ENT") {cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.objectHeaderColl[index]}${collectionName("entomology","table")}</span>`}
             
         }
-        else {cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.objectHeaderColl[index]}${collectionName(coll,"table")}</span>`}
+        else {
+            console.log(index) 
+            cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.objectHeaderColl[index]}${collectionName(coll,"table")}</span>`}
     }
     
     cell1.colSpan = '2'
@@ -1047,6 +1049,7 @@ async function showData (specimenObject, orgGroup, overviewObject) {
                         table2.style = 'border-top:solid grey'
                     }
                 } else if (sessionStorage.getItem('source') === 'musit') {
+                    console.log('her')
                     await showObjectData(specimenObject,table1,"first")
                     
                     if (specimenObject.RelCatNo) {
@@ -1203,7 +1206,10 @@ async function main () {
 
     // add isNew to url if opened in new tab
     if (!sessionStorage.getItem('chosenCollection')) {
-        location.replace(`${window.location.href}&isNew=yes`)
+        if (!window.location.href.includes("isNew")) {
+            location.replace(`${window.location.href}&isNew=yes`)
+        }
+        
     }
     
     // from file newObjectPage.js
