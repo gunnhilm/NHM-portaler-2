@@ -848,6 +848,6 @@ async function main () {
     await getFileList()
     await getOrganismGroups()
     makeButtons()
-    collAddEventListener()
+    await collAddEventListener()
 }
 main()
