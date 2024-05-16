@@ -287,7 +287,49 @@ function renderText (lang) {
         document.querySelector('#search-button').innerHTML = textItems.searchButton[index]
         document.getElementById("head-nb-hits").innerHTML = textItems.nbHitsText[index]
     }
-
+    // archive page
+    if (location.href.includes('archive')) {
+        const elementsToUpdate = [
+            { selector: '#search-button', key: 'searchButton' },
+            { selector: '#search-text', key: 'placeholder' },
+            { selector: '#hits-per-page', key: 'hitsPerPage' },
+            { selector: '#head-nb-hits', key: 'nbHitsText' },
+            { selector: '#nb-hits', key: 'tooManyHits' },
+            { selector: '#first', valueAttr: 'value', key: 'firstButton' },
+            { selector: '#previous', valueAttr: 'value', key: 'previousButton' },
+            { selector: '#next', valueAttr: 'value', key: 'nextButton' },
+            { selector: '#last', valueAttr: 'value', key: 'lastButton' },
+            { selector: '#first1', valueAttr: 'value', key: 'firstButton' },
+            { selector: '#previous1', valueAttr: 'value', key: 'previousButton' },
+            { selector: '#next1', valueAttr: 'value', key: 'nextButton' },
+            { selector: '#last1', valueAttr: 'value', key: 'lastButton' },
+            { selector: '#resultPageText', innerHtml: true, key: 'page' },
+            { selector: '#resultPageAlert', innerHtml: true, key: 'lastPageAlert' },
+            { selector: '#resultPageText1', innerHtml: true, key: 'page' },
+            { selector: '#resultPageAlert1', innerHtml: true, key: 'lastPageAlert' },
+            { selector: '#last-updated', innerHtml: true, key: 'lastUpdated' }
+            
+        ];
+        
+        try {
+            for (const element of elementsToUpdate) {
+                const { selector, valueAttr, innerHtml, key } = element;
+                const elementToUpdate = document.querySelector(selector);
+                if (elementToUpdate) {
+                    if (innerHtml) {
+                        elementToUpdate.innerHTML = textItems[key][index];
+                    } else if (valueAttr) {
+                        elementToUpdate[valueAttr] = textItems[key][index];
+                    } else {
+                        elementToUpdate.innerHTML = textItems[key][index];
+                    }
+                }
+            }
+        } catch (error) {
+            console.log(`RenderLang error: ${error}`);
+        }
+        
+    }
     // getDOI page
     if (location.href.includes('getDOI')) {
         document.querySelector('#getDOIHeader').innerHTML = textItems.getDOIHeader[index]

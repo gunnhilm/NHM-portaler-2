@@ -7,7 +7,7 @@ const nbHitsElement = document.getElementById('nb-hits')
 const columnsToShow = 14
 let archiveCollection = ''
 
-
+const hitsPerPage = document.querySelector('#number-per-page')
 
 
 // figures out which museum we are in
@@ -192,7 +192,7 @@ async function makeButtons() {
 // in: keys (array?, source of header titles)
 
 // is called in archiveResultTable(..)
-const archiveHeaderNamesToShow = ['Regnr', 'Tekst på arkivboks', 'Indeks', 'Periode', 'Arkivskaper', 'Person', 'Qnummer person ', 'FotoID (kommer etter fotografering)', 'Kommentarer']; // Define the headers to show
+const archiveHeaderNamesToShow = ['Regnr', 'Tekst på arkivboks', 'Indeks', 'Periode', 'Arkivskaper', 'Person', 'Qnummer person ']; // Define the headers to show
 const botanicalIllustrationsHeaderNamesToShow = ['Regnr', 'Illustratør', 'Artsnavn (norsk)', 'Artsnavn (Latin)', 'Figurnavn', 'Comment', 'Herbarieark/annen info', 'Kilde', 'Copyright']
 const DTLIllustrationsHeaderNamesToShow = ['Regnr', 'Kunstner', 'Norsk Navn','Latinsk Navn', 'Tegningype', 'Motiv', 'Orginal tekst', 'Copyright']
 const fieldNoteHeaderNamesToShow = ['Fagområde', 'Taxongruppe',  'Dokumenttype', 'Person', 'Ekstra_info', 'Stedsinfo', 'År_fra', 'År_til', 'Filnavn'] // Define the headers to show
@@ -228,13 +228,17 @@ function showExtraInfo(archiveCollection) {
   }
 }
 
+//opens item page in new tab
 function getPage(Regnr, archiveCollection) {
   const pageLink = 'http://localhost/museum/nhm/archive?documentType=Dagny%20Tande%20Lid&pageID=';
   const url = pageLink + Regnr;
   window.open(url, '_blank'); // Open the URL in a new tab
-  console.log(url);
+  // console.log(url);
 }
 
+
+
+// thumb nails
 async function showGallery(pageList, archiveCollection) {
   try {
     const galleryContainer = document.getElementById('thumb-gallery');
@@ -251,7 +255,7 @@ async function showGallery(pageList, archiveCollection) {
 
       // Check if the image exists
       const response = await fetch(imageUrl, { method: 'HEAD' });
-      console.log(response);
+      // console.log(response);
       if (response.ok) {
         links += `<img src="${imageUrl}" alt="Image ${i + 1}" class="gallery-img" data-regnr="${element}" data-archive="${archiveCollection}">`;
       } else {
@@ -313,7 +317,7 @@ async function showThumbnailButton (archiveCollection) {
     
     const subFolderName = 'thumb';
     const thumbPath = await getSubFolderPath(archiveCollection, subFolderName)
-    console.log('thumbPath: ' + thumbPath);
+    // console.log('thumbPath: ' + thumbPath);
     const thumbButton = document.getElementById("view-type-button");
     if(thumbPath) {
       thumbButton.style.display = "block";
@@ -338,6 +342,7 @@ const createArchiveTableAndFillIt = (data, archiveCollection, showAll) => {
   // console.log(data);
   const galleryContainer = document.getElementById('thumb-gallery');
   const resultTable = document.getElementById('container');
+  document.querySelector('#hits-row').style.display = 'inline'
   resultTable.style.display = 'block';
   galleryContainer.style.display = 'none';
   let filePath = '';
@@ -585,6 +590,7 @@ function sortTable() {
 // pagination part
 // https://www.thatsoftwaredude.com/content/6125/how-to-paginate-through-a-collection-in-javascript
 
+
 let list = new Array();
 let pageList = new Array();
 
@@ -596,10 +602,11 @@ if (sessionStorage.getItem('currentPage')) {
 let numberPerPage
 if (sessionStorage.getItem('numberPerPage')) {
     numberPerPage = sessionStorage.getItem('numberPerPage')
+    
 } else {
     numberPerPage = 20
 }
-
+document.getElementById('number-per-page').value = numberPerPage
 
 sessionStorage.setItem('numberPerPage',numberPerPage)
 var numberOfPages = 0; // calculates the total number of pages
@@ -669,7 +676,7 @@ function lastPage() {
 //  hitsPerPage eventlistener
 //  load()
 function loadList(showingThumbs = false) {
-  console.log('loadList: ' + showingThumbs);
+  // console.log('loadList: ' + showingThumbs);
     const begin = ((currentPage - 1) * numberPerPage)
     const end = Number(begin) + Number(numberPerPage)
     pageList = list.slice(begin, end)
@@ -704,9 +711,25 @@ function load() {
     list = JSON.parse(stringData)   
     numberOfPages = getNumberOfPages(numberPerPage)
     makeList()
-    loadList()
+    loadList(showingThumbs)
 }
 
+
+hitsPerPage.addEventListener('change', (e) => {
+  e.preventDefault()
+  if (hitsPerPage.value < 2000){
+      numberPerPage = hitsPerPage.value
+      numberPerPage = numberPerPage - 0 // to make it a number
+      numberOfPages = getNumberOfPages(numberPerPage)
+  } else {
+      numberPerPage = 2000
+      numberOfPages = 1
+  }
+  currentPage = 1
+  sessionStorage.setItem('numberPerPage', numberPerPage)
+  
+  loadList()
+}) 
 
 // renders paginate buttons
 showResultElements = () => {

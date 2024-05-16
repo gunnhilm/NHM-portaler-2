@@ -276,14 +276,14 @@ function makeNumbersArray(dataArray) {
   for (let i = 0; i < dataArray.length; i++) {
     const item = dataArray[i];   
     if (validNameIndex === 1) {
-      threeItem['number1'] = item;
+      threeItem['number1'] = 'O-F-' + item;
       validNameIndex += 1;
     } else if (validNameIndex === 2) {
   
-      threeItem['number2'] = item;
+      threeItem['number2'] = 'O-F-' + item;
       validNameIndex += 1;
     } else if (validNameIndex === 3 || i === dataArray.length - 1) {
-      threeItem['number3'] = item;
+      threeItem['number3'] = 'O-F-' + item;
       items.Numbers.push(threeItem);
       validNameIndex = 1;
       threeItem = {};
