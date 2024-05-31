@@ -570,8 +570,7 @@ searchForm.addEventListener('submit', (e) => {
 })  
 
 const collAddEventListener = async () => {
-    // return new Promise((resolve,reject) => {
-        await updateFooter();
+        
         collection.addEventListener("change", (e) => {
             e.preventDefault();
             
@@ -592,9 +591,8 @@ const collAddEventListener = async () => {
             document.getElementById("search-cell").style.display = "table-cell";
             errorMessage.innerHTML = "";
             sessionStorage.setItem("chosenCollection", collectionValue)
-            
+            updateFooter();
         })
-    // })
 }
  
   
@@ -604,8 +602,10 @@ const collAddEventListener = async () => {
 // is called in oldSearch() and collection-select-eventlistener 
 
 const updateFooter = async () => {
+    console.log('updating footer');
     const museum = getCurrentMuseum();
     const chosenCollection = collection.value;
+    console.log(' samlings som skal få footupdeted er: ' + chosenCollection );
     if (chosenCollection) {
       sessionStorage.setItem("chosenCollection", chosenCollection);
       const url = `${urlPath}/footer-date/?&samling=${chosenCollection}&museum=${museum}`;
