@@ -1,4 +1,3 @@
-console.log('renderlangheader')
 function renderHeaderContent (lang) {
 
     if (lang === "English") {

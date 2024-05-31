@@ -115,7 +115,6 @@ function renderObjectText(lang){
             }
         }
         if (specimenObject.coordinateUncertaintyInMeters) {
-            console.log("er vi ikke her")
             if (document.querySelector("#head-coordinatesUncertainty")) {
                 document.querySelector("#head-coordinatesUncertainty").innerHTML = textItems.headCoordinatesUncertainty[index].bold()
             }

@@ -574,7 +574,6 @@ const collAddEventListener = async () => {
         
         collection.addEventListener("change", (e) => {
             e.preventDefault();
-            console.log(collection.value)
             emptySearch("collection_listener");
             const orgGroup = sessionStorage.getItem("organismGroup");
             const advancedAccordion = document.getElementById("advanced-accordion");
@@ -606,7 +605,7 @@ const updateFooter = async (collectionValue) => {
         const museum = getCurrentMuseum();
         const fileList = getFileList()
         // const chosenCollection = collection.value;
-        console.log(collectionValue)
+
         // if (chosenCollection) {
         sessionStorage.setItem("chosenCollection", collectionValue);
         const url = `${urlPath}/footer-date/?&samling=${collectionValue}&museum=${museum}`;
@@ -619,7 +618,6 @@ const updateFooter = async (collectionValue) => {
         })
         .then((data) => {
             data = JSON.parse(data)
-            console.log(data)
             lastUpdated = textItems.lastUpdated[index] + data.date;
             updated.textContent = lastUpdated;
 
@@ -831,7 +829,6 @@ if(select) {
 }
 
 window.onload = function () {
-    console.log('window onload')
     if (window.performance) {
         if (performance.navigation.type == 1) {
             emptySearch('window.onload')
@@ -841,7 +838,6 @@ window.onload = function () {
             //run the function
             if (sessionStorage.getItem('organismGroup')) {
                 oldSearch() 
-                console.log('oldSearch run from window.onload')
             }
         }
     }

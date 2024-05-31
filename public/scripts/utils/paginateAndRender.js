@@ -81,7 +81,7 @@ const arrows = arrowUp + arrowDown
 // in: col_no(number, index of column in result-table)
 // is called by resultTable(…)
 function hide_column(col_no) {
-    console.log('skjuler col no: ' + col_no);
+
     try {
         const rows = table.getElementsByTagName('tr')
         for (var row=0; row<rows.length;row++) {
@@ -102,7 +102,6 @@ function hide_column(col_no) {
 /////////// sammenlign data fra musit og corema
     // er ikke i bruk. januar 2024
 function compare(subMusitData) {
-    console.log(subMusitData[1])
     let compArray = []
     subMusitData.forEach(el => {
         // if (el.coremaCountry && el.country) {if (el.coremaCountry != el.country) {console.log("country " + el.catalogNumber + " " + el.coremaCountry + " " + el.country); compArray.push("country " + el.catalogNumber + " " + el.coremaCountry + " " + el.country + "\r")}}
@@ -143,7 +142,6 @@ function compare(subMusitData) {
 const resultTable = (subMusitData, musitData) => {   
     // compare(subMusitData)
     try {
-        console.log(subMusitData[0])
         table.innerHTML = ""
         const row = table.insertRow(-1)
         for (let i = -1; i < pageList.length; i++) { // vis en tabell med resultater som er like lang som det vi ba om pageList.length; 
@@ -197,17 +195,15 @@ const resultTable = (subMusitData, musitData) => {
                     museumURLPath = urlPath + "/nhm"
                     museum = 'nhm'
                 }
-                console.log(subMusitData[i])
+
                 let prefix
                 if (sessionStorage.getItem('organismGroup').includes('paleontologi')) {
                     prefix = 'PMO '
                 } else if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
                     prefix = 'NHMO-J-'
                 } else if (subMusitData[i].institutionCode && !(/[a-zA-Z]/).test(subMusitData[i].catalogNumber.charAt(0))) {
-                    console.log('her')
                     prefix = subMusitData[i].institutionCode + '-' + subMusitData[i].collectionCode + '-'    
                 } else {
-                    console.log('her da')
                     prefix = ''
                 }
                 if (subMusitData[i].catalogNumber) {
@@ -217,7 +213,7 @@ const resultTable = (subMusitData, musitData) => {
                         cell1.innerHTML =  `<a id="object-link-for-${strippedCatNo}" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${strippedCatNo} </a>`
                     } else {
                         let coll = collection.value
-                        console.log('sopp?')
+
                         cell1.innerHTML =  `<a id="object-link-for-${subMusitData[i].catalogNumber}" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}&samling=${coll}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${subMusitData[i].catalogNumber} </a>`
                     }
                 }

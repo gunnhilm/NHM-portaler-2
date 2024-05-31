@@ -155,7 +155,6 @@ const getFileListObjPage = async () => {
 
 // runs in file object.js
 async function newObjectPageMain() {
-    console.log(testIfNewPage(urlParams.get("isNew")))
     if (testIfNewPage(urlParams.get("isNew"))) {
         await getFileListObjPage()
         await setItems()

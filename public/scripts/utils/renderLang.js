@@ -392,7 +392,6 @@ if (language === "Norwegian") {
 }
 
 renderText(language)
-console.log('renderText(language) i renderLang.js')
 
 
 document.querySelector('#language').addEventListener('click', (e) => {

@@ -92,20 +92,18 @@ async  function getspecimenData (allObject) {
         const urlParams = new URLSearchParams(window.location.search)
         const id = urlParams.get('id')
         let specimenObject = {}
-        // console.log(allObject[0])
+
         try {
             if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
                 specimenObject = allObject.find(x => x.catalogNumber.replace(/[A-Z]/,'').trim() === id)
             }
            
              else if (allObject[0].catalogNumber.includes('/')) {
-                console.log(id)
                 specimenObject = allObject.find(x => x.catalogNumber.substring(0,x.catalogNumber.indexOf('/')) === id.substring(0,id.indexOf('/')))
             }
              else {
                 specimenObject = allObject.find(x => x.catalogNumber === id)
             }
-            // console.log(specimenObject)
             resolve(specimenObject)
         } catch (error) {
             document.getElementById('musit-regno').innerHTML = textItems.objError[index]
@@ -462,10 +460,7 @@ const makeTableHeader = (table, specimenObject) => {
     const speciesNameRow = table.insertRow(0)
     const speciesNameHeader = speciesNameRow.insertCell(0); speciesNameHeader.id = 'head-species-name'; speciesNameHeader.class = 'bold'; speciesNameHeader.style = 'white-space:pre';
     const speciesNameCont = speciesNameRow.insertCell(1); speciesNameCont.id = 'species-name'; speciesNameCont.style = 'border-spacing: 10px 0'; //font-style:italic';
-    // mener her å ta vekk italic fra geologisk artsnavn på obj-sida, men den er ikke italic nå, vet ikke hvorfor
-    if (sessionStorage.getItem('organismGroup').includes('geologi') ) {
-        console.log('geologi')
-    }
+
     let nameArray = italicSpeciesname(specimenObject.scientificName)
     document.querySelector('#head-species-name').innerHTML = `<span>${textItems.scientificName[index]}</span>`
     document.querySelector("#species-name").innerHTML = `<span style=font-style:italic>${nameArray[0]}</span>` + ' ' + `<span>${nameArray[1]}</span>`
@@ -659,7 +654,7 @@ const makeGeoTable = (specimenObject) => {
 // "Second" means trad.coll.object comes from other collection that the one we are in (typically DNA-bank)
 // "second" means we want link to other collection
 async function showObjectData (specimenObject,objectTable,order) {
-    console.log('hit')
+
     objectTable.style.display='block'
     let coll = sessionStorage.getItem('chosenCollection')
     // let associatedCollection
@@ -679,7 +674,7 @@ async function showObjectData (specimenObject,objectTable,order) {
         
     } else if (objectTable.rows.length < 3) { // no item added yet
         if (order === "second") {
-            console.log(specimenObject)
+
             if (specimenObject.musitCollectionCode === "F") {cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.objectHeaderColl[index]}${collectionName("sopp","table")}</span>`}
             else if (specimenObject.musitCollectionCode === "L") {cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.objectHeaderColl[index]}${collectionName("lav","table")}</span>`}
             else if (specimenObject.musitCollectionCode === "V") {cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.objectHeaderColl[index]}${collectionName("vascular","table")}</span>`}
@@ -687,7 +682,7 @@ async function showObjectData (specimenObject,objectTable,order) {
             
         }
         else {
-            console.log(index) 
+
             cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.objectHeaderColl[index]}${collectionName(coll,"table")}</span>`}
     }
     
@@ -706,13 +701,12 @@ async function showObjectData (specimenObject,objectTable,order) {
     } else if (specimenObject.institutionCode) {
         prefix = specimenObject.institutionCode + '-' + specimenObject.collectionCode
     }  // if mammal- or bird-preserved specimen: no prefix
-console.log(prefix)
+
     if (order === 'first') {
         //cell1.innerHTML = `<a id="object-link" href="${museumURLPath}/object/?id=${specimenObject.catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=nhm&lang=${sessionStorage.getItem('language')}"> ${prefix}-${specimenObject.catalogNumber} </a>`
         if (prefix) {
             cell1.innerHTML = prefix + '-' + specimenObject.catalogNumber
         } else { // mammal- or bird-preserved specimen
-            console.log(specimenObject)
             cell1.innerHTML = specimenObject.itemNumber
 
         }
@@ -801,7 +795,6 @@ async function showItemData (specimenObject,objectTable,order,overviewObject) {
     // loop over array
     itemArray.forEach( item => {
         if (item.itemType === "Specimen") { 
-            console.log(item)
             showObjectData(item, document.getElementById("object-table"), "first")
         } else if (item.preparationType.includes("Sperm") || item.preparationType.includes("sperm")) {
             showObjectData(item, document.getElementById('sperm-table'), "first")
@@ -883,7 +876,6 @@ async function showItemData (specimenObject,objectTable,order,overviewObject) {
                     cell2.innerHTML = overviewObject.seqLength
                 }
                 // Validated
-                console.log(specimenObject.musitCollectionCode)
                 if (specimenObject.musitCollectionCode === "F") {
                     addRow(objectTable)
                     cell1.innerHTML = textItems.validated[index]
@@ -901,9 +893,7 @@ async function showItemData (specimenObject,objectTable,order,overviewObject) {
                                 cell2.innerHTML = overviewObject.expert
                             }
                             
-                        }
-                        // console.log(overviewObject)
-                        
+                        }                        
                     } else {
                         cell2.innerHTML = 'Unknown'
                     }
@@ -1035,11 +1025,9 @@ async function showData (specimenObject, orgGroup, overviewObject) {
                                 table3.style.display = 'none'
                             }
                             await showItemData(specimenObject,table2,"first",overviewObject)
-                            console.log('linje 1005')
                             table2.style = 'border-top:solid grey'
                         } else {
-                            await showItemData(specimenObject,table1,"first",overviewObject)
-                            console.log('her')    
+                            await showItemData(specimenObject,table1,"first",overviewObject)   
                             table2.style.display = 'none'
                         }
                     } else { // associated collection exist in musit
@@ -1049,7 +1037,6 @@ async function showData (specimenObject, orgGroup, overviewObject) {
                         table2.style = 'border-top:solid grey'
                     }
                 } else if (sessionStorage.getItem('source') === 'musit') {
-                    console.log('her')
                     await showObjectData(specimenObject,table1,"first")
                     
                     if (specimenObject.RelCatNo) {
@@ -1233,9 +1220,7 @@ async function main () {
    
    
    // get the correct object
-//    console.log(allObject)
     let specimenObject = await getspecimenData(allObject)
-    console.log(specimenObject)
     if(Array.isArray(allObject) && (allObject.length > 2) && urlParams.get("isNew") != "yes") {
         makeNavButtons(allObject, specimenObject)
         makeBackButton()
@@ -1250,11 +1235,9 @@ async function main () {
        
    }
    let overviewObject = {}
-//    console.log(specimenObject.collectionCode)
    if (specimenObject.collectionCode === "F") {
         fungiOverview = await getOverview() // Makes a request to server to get an array of all species in the fungal-barcoding-overview-file, and number of validated and failed sequences
-        // console.log(fungiOverview)
-        // console.log(specimenObject)
+
         overviewObject = fungiOverview.find((el => {
             objIndex = el.musitRegno.findIndex(el2 => el2.includes(specimenObject.catalogNumber))
             if (objIndex != -1) {
