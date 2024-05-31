@@ -201,6 +201,7 @@ function renderText (lang) {
             { selector: '#statistikk-link', key: 'statistikkLink' },
             { selector: '#statistics-text', key: 'statistikkTekst' },
             { selector: '#DOI-link', key: 'DOILink' },
+            { selector: '#DOI-text', key: 'DOIText' },
             { selector: '#data-error-link', key: 'dataErrorLink' },
             { selector: '#data-error-text', key: 'dataErrorText' },
             { selector: '#arts-obs-link', key: 'artsObsLink' },
@@ -369,7 +370,7 @@ function renderText (lang) {
     // loanInfo page
     if (location.href.includes('loanInfo')) {
         document.querySelector('#header-loan-info-page').innerHTML = textItems.loanInfoHeader[index]
-        document.querySelector('#text-loan-info-page').innerHTML = textItems.loanInfoText[index] 
+        document.querySelector('#text-loan-info-page').innerHTML = textItems.loanExplanation[index] 
         document.querySelector('#search-button').innerHTML = textItems.searchButton[index]
 
     }

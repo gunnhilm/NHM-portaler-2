@@ -267,6 +267,9 @@ const textItems = {
     statistikkLink: ["Statistikk", "Statistics"],
     statistikkTekst: ["Se statistikk over samlingene; antall objekter, utvikling over tid osv.", "See statistics of the collections; number of objects, development over time etc."],
     DOILink: ["Lag DOI fra GBIF", "Get DOI from GBIF"],
+    DOIText: ["Lag en lenke til dataene fra samlingsobjektene. Ved utlån av materiale eller bruk av objekter til forskning kan man få en DOI som kan siteres i en vitenskapelig artikkel slik at man kan refere til samlingene på en entydig måte. Dette er en forutsettning for å kunne utnytte de muligheter som ligger i bionomia.",
+        "Make a link to the collection objects' data. When lending out material or using objects for research you can get a DOI that can be used in a scientific paper so that one can refer to the collection in a unified way. This is a prerequisite for enabling the potential in bionomia."],
+    
     coordinateLink: ["Sjekk koordinater", "Check coordinates"],
     dataErrorLink: ["Finn feil i dataene", "Find errors in the data"],
     dataErrorText: ["Utnytt de verktøyene som tilbys fra GBIF og Bionomia til å oppdage feil i dataene.","Utilize the tools available from GBIF and Bionomia to discover errors in the data."],
@@ -369,5 +372,8 @@ const textItems = {
 
     // LoanIfo page
     loanInfoHeader: ["Søk etter lån","Search for loan"],
-    loanInfoText: ["Skriv inn objektnummer (eller annen informasjon) for å få opp informasjon om lånet", "Type in object number (or other information) to search for information about the loan."]
+    loanExplanation: ["Skriv inn objektnummer (eller annen tekst) for å få opp informasjon om et lån. <span style='color: red'>Stor/liten bokstav må være rett!</span>", "Type in object number (or other text) to search for information about a loan. <span style='color: red'>Case sensitive!</span>"],
+    nbHitsTextLoans: ["Antall lån:", "Number of loans:"],
+    nbHitsTextRecords: ["Antall poster:", "Number of records:"] ,
+    noHitsLoan: ["Ingen treff, prøv nytt søk. Husk stor/liten bokstav!", "No hits, try new search. Remember: case sensitive!"]
 }

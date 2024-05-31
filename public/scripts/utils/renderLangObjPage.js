@@ -93,7 +93,7 @@ function renderObjectText(lang){
     } else { // biologi objekter
 
         if (document.querySelector("#head-species-name")) {
-            document.querySelector("#head-species-name").innerHTML = textItems.headSpeciesName[index].bold() + ' test'
+            document.querySelector("#head-species-name").innerHTML = textItems.headSpeciesName[index].bold()
             document.querySelector("#head-unc").innerHTML = textItems.headerUncertainty[index].bold()
             document.querySelector("#head-det").innerHTML = textItems.headDet[index].bold()
             document.querySelector("#head-det-date").innerHTML = textItems.headDetDate[index].bold()

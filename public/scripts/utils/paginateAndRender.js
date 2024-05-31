@@ -197,15 +197,17 @@ const resultTable = (subMusitData, musitData) => {
                     museumURLPath = urlPath + "/nhm"
                     museum = 'nhm'
                 }
-
+                console.log(subMusitData[i])
                 let prefix
                 if (sessionStorage.getItem('organismGroup').includes('paleontologi')) {
                     prefix = 'PMO '
                 } else if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
                     prefix = 'NHMO-J-'
                 } else if (subMusitData[i].institutionCode && !(/[a-zA-Z]/).test(subMusitData[i].catalogNumber.charAt(0))) {
+                    console.log('her')
                     prefix = subMusitData[i].institutionCode + '-' + subMusitData[i].collectionCode + '-'    
                 } else {
+                    console.log('her da')
                     prefix = ''
                 }
                 if (subMusitData[i].catalogNumber) {
@@ -215,7 +217,7 @@ const resultTable = (subMusitData, musitData) => {
                         cell1.innerHTML =  `<a id="object-link-for-${strippedCatNo}" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${strippedCatNo} </a>`
                     } else {
                         let coll = collection.value
-                        
+                        console.log('sopp?')
                         cell1.innerHTML =  `<a id="object-link-for-${subMusitData[i].catalogNumber}" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}&samling=${coll}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${subMusitData[i].catalogNumber} </a>`
                     }
                 }

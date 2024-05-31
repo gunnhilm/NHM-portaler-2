@@ -120,8 +120,9 @@ const getFileList = async () => {
                 try {
                     response.text().then((data) => {
                         JSONdata = JSON.parse(data)
-                        sessionStorage.setItem('fileList',data)
+                         sessionStorage.setItem('fileList',data)
                         resolve(true)
+                        // return(data)
                     })
                 }
                 catch (error) {
@@ -573,12 +574,12 @@ const collAddEventListener = async () => {
         
         collection.addEventListener("change", (e) => {
             e.preventDefault();
-            
+            console.log(collection.value)
             emptySearch("collection_listener");
             const orgGroup = sessionStorage.getItem("organismGroup");
             const advancedAccordion = document.getElementById("advanced-accordion");
             const collectionValue = collection.value;
-            
+            updateFooter(collectionValue)
             if (["geologi", "paleontologi", "other"].includes(orgGroup)) {
             advancedAccordion.style.display = "none";
             if (collectionValue === "bulk") {
@@ -595,53 +596,56 @@ const collAddEventListener = async () => {
         })
 }
  
-  
 
 // when a collection is chosen a request is sent to the server about date of last change of the MUSIT-dump file
 // string (date)
 // is called in oldSearch() and collection-select-eventlistener 
 
-const updateFooter = async () => {
-
-    const museum = getCurrentMuseum();
-    const chosenCollection = collection.value;
-    if (chosenCollection) {
-      sessionStorage.setItem("chosenCollection", chosenCollection);
-      const url = `${urlPath}/footer-date/?&samling=${chosenCollection}&museum=${museum}`;
-      fetch(url)
+const updateFooter = async (collectionValue) => {
+    return new Promise((resolve,reject) => {
+        const museum = getCurrentMuseum();
+        const fileList = getFileList()
+        // const chosenCollection = collection.value;
+        console.log(collectionValue)
+        // if (chosenCollection) {
+        sessionStorage.setItem("chosenCollection", collectionValue);
+        const url = `${urlPath}/footer-date/?&samling=${collectionValue}&museum=${museum}`;
+        fetch(url)
         .then((response) => {
-          if (!response.ok) {
+        if (!response.ok) {
             throw new Error("Network response was not ok");
-          }
-          return response.text();
+        }
+        return response.text();
         })
         .then((data) => {
-            data = JSON.parse(data);
+            data = JSON.parse(data)
+            console.log(data)
             lastUpdated = textItems.lastUpdated[index] + data.date;
             updated.textContent = lastUpdated;
-  
-            const fileList = sessionStorage.getItem("fileList");
-            // console.log(fileList)
+
+            let fileList = sessionStorage.getItem('fileList')
             const JSONdata = JSON.parse(fileList);
             let gbifCitation = "";
             JSONdata.forEach((el) => {
-              if (el.name === chosenCollection) { gbifCitation = el.gbifCitation }
+            if (el.name === collectionValue) { gbifCitation = el.gbifCitation }
             })
             if (gbifCitation && gbifCitation !== "") {
                 document.getElementById("gbif-citation").textContent = textItems.gbifCitation[index] + gbifCitation;
             }
             
+            
         })
         .catch((error) => {
-          console.error("There is a problem, probably file for collection does not exist", error);
-          emptySearch("error in updateFooter()");
-          emptyCollection();
-          errorMessage.innerHTML = textItems.errorFileNotExisting[index];
-          document.getElementById("search-text").style.display = "none";
-          document.getElementById("search-button").style.display = "none";
-        });
-    }
-  };
+            console.error("There is a problem, probably file for collection does not exist", error);
+            emptySearch("error in updateFooter()");
+            emptyCollection();
+            errorMessage.innerHTML = textItems.errorFileNotExisting[index];
+            document.getElementById("search-text").style.display = "none";
+            document.getElementById("search-button").style.display = "none";
+            reject(error)
+        })
+    })
+}
   
 
 
@@ -847,6 +851,7 @@ async function main () {
     await getFileList()
     await getOrganismGroups()
     makeButtons()
-    await collAddEventListener()
+    await collAddEventListener() //578
+    
 }
 main()

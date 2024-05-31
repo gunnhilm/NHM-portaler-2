@@ -28,6 +28,10 @@
     }
 },
 {
+    "source": "loans",
+    "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/exportNHM/musit-loans.json.zip"
+},
+{
     "source": "musit",
     "orgGroup": "botanikk",
     "name": "alger",

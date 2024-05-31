@@ -1,3 +1,7 @@
+//to do
+// rydd i kode
+
+
 const searchForm = document.querySelector('form') 
 const loanInfoSearch = document.getElementById('loan-search-text')
 const hitsElement = document.getElementById('head-nb-hits')
@@ -51,46 +55,47 @@ function removeResults() {
 // in: keys (array?, source of header titles)
 // is called in loanResultTable(..)
 function addHeaders(table, keys, columnsToShow) {
-      const tr = document.createElement('tr'); // Header row
-        for( let i = 0; i < columnsToShow; i++ ) {
-            const th = document.createElement('th'); //column
-            th.classList.add("order")
-            const text = document.createTextNode(keys[i]); //cell
-            th.appendChild(text);
-            tr.appendChild(th);
-            table.appendChild(tr);
-        }
+    const tr = document.createElement('tr'); // Header row
+    for( let i = 0; i < columnsToShow; i++ ) {
+        const th = document.createElement('th'); //column
+        th.classList.add("order")
+        const text = document.createTextNode(keys[i]); //cell
+        th.appendChild(text);
+        tr.appendChild(th);
+        table.appendChild(tr);
     }
+}
     
-    
-    // creates table for the loans and fills it
-    // in: children (array, containing content to table, i.e. data on loans) 
-    // calls addHeaders(..)
-    // is called in doLoanInfoSearch(..)
-    const loanResultTable = (children, columnsToShow) => {
-        const table = document.createElement('table');
-        table.setAttribute('id', 'loan-result-table')
-        table.setAttribute('class', 'result-table')
-        for( let i = 0; i < children.length; ++i ) {
-            let child = children[i];
-            if(i === 0 ) {
-                addHeaders(table, Object.keys(child), columnsToShow);
-            }
-            const row = table.insertRow();
+
+// creates table for the loans and fills it
+// in: children (array, containing content to table, i.e. data on loans) 
+// calls addHeaders(..)
+// is called in doLoanInfoSearch(..)
+const loanResultTable2 = (children, columnsToShow) => {
+    const table = document.createElement('table');
+    table.setAttribute('id', 'loan-result-table')
+    table.setAttribute('class', 'result-table')
+    for( let i = 0; i < children.length; ++i ) {
+        let child = children[i];
+        if(i === 0 ) {
+            addHeaders(table, Object.keys(child), columnsToShow);
+        }
+        const row = table.insertRow();
+        
+        Object.keys(child).forEach(function(k ,index) {
             
-            Object.keys(child).forEach(function(k ,index) {
-                
-                if (index < columnsToShow) {
-                    const cell = row.insertCell() 
-                    cell.appendChild(document.createTextNode(child[k]));
-                }
-            })
-        }
-        // send tabellen til frontend
-        document.getElementById('container').appendChild(table);
+            if (index < columnsToShow) {
+                const cell = row.insertCell() 
+                cell.appendChild(document.createTextNode(child[k]));
+            }
+        })
     }
-    
+    // send tabellen til frontend
+    document.getElementById('container').appendChild(table);
+}
+
 // sort table
+// ikke i bruk mai 2024
 function sortTable() {
     const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
 
@@ -107,13 +112,15 @@ function sortTable() {
     })));
 }
 
+//   var results = [];
+
+
 
 const doLoanInfoSearch = () => {
     hideElements()
     removeResults()
     const elem = document.getElementById('loan-result-table');
-    if (elem)
-    {
+    if (elem) {
         document.getElementById('container').removeChild(elem);
     }
     pleaseWaitOn()
@@ -121,7 +128,8 @@ const doLoanInfoSearch = () => {
     if (!searchTerm) {
         alert ('Skriv inn søkeord / Search field empty')  
     } else {
-        const url = urlPath + '/loanInfo/?search=' + searchTerm  // normal search
+        museum = getCurrentMuseum()
+        const url = urlPath + '/getLoanInfoJSON/?museum=' + museum + '&search=' + searchTerm
         fetch(url).then((response) => {
             if (!response.ok) {
                 pleaseWaitOff()
@@ -134,27 +142,25 @@ const doLoanInfoSearch = () => {
                             errorMessage.innerHTML = textItems.serverError[index]
                             console.log(error);
                             return console.log(data.error)
+                        } else if (data === "[]") {
+                            hitsElement.innerText = textItems.noHitsLoan[index]
                         } else {
-                            const JSONdata = JSON.parse(data)  
-                            const parsedResults = Papa.parse(JSONdata.unparsed.results, {
-                                delimiter: "\t",
-                                newline: "\n",
-                                quoteChar: '',
-                                header: true,
-                            })  
-                            console.log(parsedResults);
-                            if (parsedResults.data.length > 0) {
-                                loanResultTable(parsedResults.data, Object.keys(parsedResults.data[0]).length)
-                            }
-
-                            hitsElement.innerText = textItems.nbHitsText[index] 
-                            nbHitsElement.innerText = JSONdata.unparsed.resultCount
-                            if(JSONdata.unparsed.resultCount === 1000) {
+                            console.log(data)
+                            JSONresultArray = JSON.parse(data)
+                            JSONobjArray = []
+                            JSONresultArray.forEach((el) => {
+                                newEl = JSON.parse(el)
+                                JSONobjArray.push(newEl)
+                            })
+                            console.log(JSONobjArray[0])
+                            loanResultTable2(JSONobjArray, Object.keys(JSONobjArray[0]).length)
+                            
+                            hitsElement.innerText = textItems.nbHitsTextRecords[index] + JSONobjArray.length
+                            if(JSONobjArray.length === 1000) {
                                 maxHitsElement.innerText = textItems.tooManyHits[index] 
                             }
                         }
                     })
-                        
                 } catch (error) {
                     console.log('Feil med søk');
                 }

@@ -418,6 +418,27 @@ app.get('*/loanInfo', (req, res) => {
 
 })
 
+// mulighet 1: send hele arrayen fra lånefila tilbake og søk etter ord i den. problem: får ikke til kode frontend; value; funksjon
+// mulighet 2: gjør arrayen fra lånefila om til flat tekstfil. problem: det som leses fra fila er ikke tekst, det oppfattes som JSON, og lar seg ikke konvertere til tekst. 
+app.get('*/getLoanInfoJSON', (req, res) => {
+    if (!req.query.museum) {
+        throw new Error ('no museum')
+    } else {
+        try {
+            
+            result = LoanInfo.LoanInfoSearch2(req.query.museum, req.query.search)
+            // loanStringLines = loanString.replace(/loanId/g,"\nloanId")
+            
+            res.send(result)
+        }
+        catch(error) {
+            console.log(error)
+            throw new Error ('feil i app.js')
+        }
+    }
+})
+
+
 
 
 app.get('/about', (req, res) => {
