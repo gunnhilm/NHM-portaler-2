@@ -215,7 +215,7 @@ function showExtraInfo(archiveCollection) {
   const extraInfo = document.getElementById("extra-info");
   try {
     if (archiveCollection === 'Dagny Tande Lid') {
-      extraInfo.innerHTML = "<h3>Dagny Tande Lids illustrasjoner</h3> <p> I 1979 donerte Dagny Tande Lid over 5000 tegninger til museet. Senere ble det gitt ytterligere tegninger. Disse oppbevares i museets historiske arkiv og presenteres her som i en online katalog.  </p> <p> I 1989 utarbeidet Odvar Pedersen en papirkatalog over 5012 botaniske tegninger med en oversikt over hvilke bøker de de hadde vært brukt i. <a href='/museum/archive/illustrations_files/DTL/HOVEDKAT.pdf'>Last ned Katalog her</a></p><p>Tegninger og akvareller er vernet av Lov om opphavsrett til åndsverk. Rettighetene forvaltes av BONO.<br><a href='https://www.bono.no/bruk-kunstverk'>Søk om bildelisens</a></p>";
+      extraInfo.innerHTML = "<h3>Dagny Tande Lids illustrasjoner</h3> <p> I 1979 donerte Dagny Tande Lid over 5000 tegninger til museet. Senere ble det gitt ytterligere tegninger. Disse oppbevares i museets historiske arkiv og presenteres her som i en online katalog.  </p> <p> I 1989 utarbeidet Odvar Pedersen en papirkatalog over 5012 botaniske tegninger med en oversikt over hvilke bøker de de hadde vært brukt i. <a href='/museum/archive/illustrations_files/DTL/HOVEDKAT.pdf'>Last ned Katalog her</a></p><p>Tegninger og akvareller er vernet av Lov om opphavsrett til åndsverk. Rettighetene forvaltes av BONO.<br><a href='https://bono.no/sok-om-bildelisens/'>Søk om bildelisens</a></p>";
       extraInfo.style.display = "block";
     } else if (archiveCollection === 'Botaniske Illustrasjoner') {
       extraInfo.innerHTML = "<h3>Botaniske Illustrasjoner</h3> <p> Museet har en rekke forskjellige botaniske illustrasjoner i sitt arkiv. Noen av disse kan vi dele med dere da de enten er 'falt i det fri' eller vi har rettigheter til å dele dem. Andre må man komme til arkivet for å se.</p>";
@@ -358,10 +358,10 @@ const createArchiveTableAndFillIt = (data, archiveCollection, showAll) => {
     headerNamesToShow = DTLIllustrationsHeaderNamesToShow;
   } else if (archiveCollection === 'fieldNotes') {
     headerNamesToShow = fieldNoteHeaderNamesToShow;
-    filePath = '/museum/archive/fieldNotes_files/';
+    filePath = '/museum/archive/nhm/fieldNotes_files/';
   } else if (archiveCollection === 'Rolf Y. Berg') {
     headerNamesToShow = RYBFotoHeadersToShow;
-    filePath = '/museum/archive/photo_files/RYB_files/';
+    filePath = '/museum/archive/nhm/photo_files/RYB_files/';
   }
   
   let table = document.getElementById('archive-result-table');
