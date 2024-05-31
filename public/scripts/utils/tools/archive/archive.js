@@ -30,7 +30,7 @@ const getFileList = async () => {
       }
       const data = await response.text();
       sessionStorage.setItem('fileList', data);
-      return true;
+      return;
     } catch (error) {
       console.error(error);
       throw error;
