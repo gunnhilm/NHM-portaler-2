@@ -570,31 +570,68 @@ searchForm.addEventListener('submit', (e) => {
     doSearch(1000) // vi skal få tilbake maks 1000 linjer med svar
 })  
 
-const collAddEventListener = async () => {
+
+// const collAddEventListener = async () => {
         
-        collection.addEventListener("change", (e) => {
-            e.preventDefault();
-            emptySearch("collection_listener");
-            const orgGroup = sessionStorage.getItem("organismGroup");
-            const advancedAccordion = document.getElementById("advanced-accordion");
-            const collectionValue = collection.value;
-            updateFooter(collectionValue)
-            if (["geologi", "paleontologi", "other"].includes(orgGroup)) {
+//         collection.addEventListener("change", (e) => {
+//             e.preventDefault();
+//             emptySearch("collection_listener");
+//             const orgGroup = sessionStorage.getItem("organismGroup");
+//             const advancedAccordion = document.getElementById("advanced-accordion");
+//             const collectionValue = collection.value;
+//             updateFooter(collectionValue)
+//             if (["geologi", "paleontologi", "other"].includes(orgGroup)) {
+//             advancedAccordion.style.display = "none";
+//             if (collectionValue === "bulk") {
+//                 bulkMain();
+//             }
+//             } else {
+//             advancedAccordion.style.display = "block";
+//             }
+            
+//             document.getElementById("search-cell").style.display = "table-cell";
+//             errorMessage.innerHTML = "";
+//             sessionStorage.setItem("chosenCollection", collectionValue)
+//             updateFooter(collectionValue);
+//         })
+// }
+
+
+const collAddEventListener = () => {
+    
+    const advancedAccordion = document.getElementById("advanced-accordion");
+    const searchCell = document.getElementById("search-cell");
+
+    const toggleAdvancedAccordion = (orgGroup, collectionValue) => {
+        if (["geologi", "paleontologi", "other"].includes(orgGroup)) {
             advancedAccordion.style.display = "none";
             if (collectionValue === "bulk") {
                 bulkMain();
             }
-            } else {
+        } else {
             advancedAccordion.style.display = "block";
-            }
-            
-            document.getElementById("search-cell").style.display = "table-cell";
-            errorMessage.innerHTML = "";
-            sessionStorage.setItem("chosenCollection", collectionValue)
-            updateFooter();
-        })
-}
- 
+        }
+    };
+
+    collection.addEventListener("change", (e) => {
+        e.preventDefault();
+        emptySearch("collection_listener");
+
+        const orgGroup = sessionStorage.getItem("organismGroup");
+        const collectionValue = collection.value;
+
+        toggleAdvancedAccordion(orgGroup, collectionValue);
+
+        searchCell.style.display = "table-cell";
+        errorMessage.innerHTML = "";
+        sessionStorage.setItem("chosenCollection", collectionValue);
+
+        updateFooter(collectionValue);
+    });
+};
+
+collAddEventListener(); 
+
 
 // when a collection is chosen a request is sent to the server about date of last change of the MUSIT-dump file
 // string (date)
@@ -612,7 +649,7 @@ const updateFooter = async (collectionValue) => {
         fetch(url)
         .then((response) => {
         if (!response.ok) {
-            throw new Error("Network response was not ok");
+            throw new Error("Network response was not ok, footedate problem");
         }
         return response.text();
         })
@@ -718,7 +755,7 @@ const oldSearch = () => {
                 document.getElementById('number-per-page').value = '20'
             }
             
-            updateFooter()                
+            updateFooter(collection.value)                
             // sends the data to the functions that show the results
             load()
         }

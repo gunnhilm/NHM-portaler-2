@@ -697,7 +697,7 @@ function load() {
     numberOfPages = getNumberOfPages(numberPerPage)
     
     loadList()
-    mainLoan()
+    // mainLoan()
 }
 
 hitsPerPage.addEventListener('change', (e) => {
