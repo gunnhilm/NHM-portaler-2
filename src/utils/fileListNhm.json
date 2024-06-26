@@ -252,7 +252,7 @@
     "zipFileName": "occurrence",
     "mediaFile": "",
     "occurrenceFileSuffix": "_occurrence.txt", 
-    "url": "",
+    "url": "https://ipt.gbif.no/archive.do?r=o_fossils",
     "akronym": "PMO",
     "gbifCitation": "Nakrem H A, Lindemann F J (2022). Palaeontological collection (PMO) at UiO NHM, Oslo. Version 1.4. University of Oslo. Occurrence dataset https://doi.org/10.15468/wmmvk3 accessed via GBIF.org on 2023-12-20"
 },
@@ -284,7 +284,7 @@
     "zipFileName": "occurrence",
     "mediaFile": "",
     "occurrenceFileSuffix": "_occurrence.txt", 
-    "url": "",
+    "url": "https://ipt.gbif.no/archive.do?r=crustacea_nhm",
     "gbifCitation": "Wilhelmsen Å I, Bachmann L, Rindal E (2023). Crustacea collection (Cru) at UiO NHM, Oslo. Version 1.6. University of Oslo. Occurrence dataset https://doi.org/10.15468/efw98v accessed via GBIF.org on 2023-12-20"
 },
 {

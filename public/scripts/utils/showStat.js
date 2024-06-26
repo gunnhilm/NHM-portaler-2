@@ -27,12 +27,15 @@ let config5 = ""
 let chart5 = ""
 
 // for rendering language - not yet implemented (Aug 2020) - texts in graphs are in norwegian
-let langIndex = ''
-if (language === "Norwegian") {
-  langIndex = 0
-} else if (language === "English") {
-  langIndex = 1
+let langIndex = 0
+const getLanguage = () => {
+  if (language === "Norwegian") {
+    langIndex = 0
+  } else if (language === "English") {
+    langIndex = 1
+  }
 }
+
 
 
 
@@ -54,49 +57,99 @@ Number.prototype.format = function(n, x, s, c) {
 // populate dropdown with list of collections
 const collSelect = (data) => {
   const selectElement = document.getElementById('collection-select');
-  // console.log(data.total)
   const collections = data.total[3].collections.collectionsIncluded
   for (let i = 0; i < collections.length; i++) {
     selectElement.add(new Option(collections[i]));
   }
-
-  
 }
 
+function addTextInCollSelect(a) {
+  const collections = {
+    moser: textItems.moser,
+    vascular: textItems.vascular,
+    Vascular_plants: textItems.vascular,
+    lav: textItems.lav,
+    alger: textItems.alger,
+    alge: textItems.alger,
+    entomology: textItems.insekter,
+    evertebrater: textItems.invertebrates,
+    invertebrates_with_dna: textItems.invertebrates_with_dna,
+    fisk: textItems.fisk,
+    birds: textItems.fugler,
+    mammals: textItems.pattedyr,
+    mammals_no_dna: textItems.bcPattedyr,
+    dna_vascular: textItems.dna_vascular,
+    dna_fungi_lichens: textItems.fungiLichens,
+    dna_entomology: textItems.dna_insekter,
+    dna_fish_herptiles: textItems.fishHerp,
+    sopp: textItems.sopp,
+    dna_other: textItems.other,
+    malmer: textItems.malmer,
+    oslofeltet: textItems.oslofeltet,
+    utenlandskeBergarter: textItems.utenlandskeBA,
+    mineraler: textItems.mineraler,
+    fossiler: textItems.paleontologi,
+    palTyper: textItems.palTyper,
+    utad: textItems.utad,
+    bulk: textItems.bulk,
+    crustacea: textItems.crustacea,
+    insectTypes: textItems.insectTypes
+  };
+  return collections[a][langIndex];
+}
 
-
-//puts data into the statistics-table with key value from each collection
-// in: data (JSON object with data from the collections)
 const populateTable = (data) => {
-  try {
-    const collections = data.total[3].collections.collectionsIncluded
-    const table = document.querySelector('#statTable')
-    for (let i = 0; i < collections.length; i++) {
-      const element = collections[i]
-      const row1 = table.insertRow(i+1)
-      const cell_1 = row1.insertCell(0)
-      const cell_2 = row1.insertCell(1)
-      const cell_3 = row1.insertCell(2)
-      const cell_4 = row1.insertCell(3)
+try {
+    const allCollections = data.total[3].collections.collectionsIncluded
+    const  collections = [...new Set(allCollections)]; // remove duplicates
+    const table = document.querySelector('#statTable');
+    const dnaArray = collections.filter(item => item.includes("dna"));
+    const botanyArray = collections.filter(item =>  ["vascular", "alger", "moser", "alge",  "lav", "sopp"].includes(item));
+    const zoologyArray = collections.filter(item => ["entomology", "mammals", "Fisk", "birds", "crustacea", "invertebrater", "evertebrater"].includes(item));
+    const earthSciencesArray = collections.filter(item => ["mineraler", "malmer", "utenlandskeBergarter", "oslofeltet", "palTyper", "fossiler", "utad", "bulk"].includes(item));
+    // getLanguage()
+    const addRows = (array, color) => {
+      for (let i = 0; i < array.length; i++) {
+        const element = array[i];
+        const row = table.insertRow();
 
-      cell_1.textContent = collections[i].replace(/\b\S/g, t => t.toUpperCase())
-      cell_1.style = 'text-align:left'  
-      if(data[element][3].collectionSize){
-        cell_2.textContent = data[element][3].collectionSize.format(0,3,' ')
-      }
-      if(data[element][5].media.stillImage){
-        cell_3.textContent = data[element][5].media.stillImage.format(0,3,' ')
-      }
-        if(data[element][1].geography.coordinates[0].yes){
-          cell_4.textContent = data[element][1].geography.coordinates[0].yes.format(0,3,' ')
+        const cell1 = row.insertCell(0);
+        const cell2 = row.insertCell(1);
+        const cell3 = row.insertCell(2);
+        const cell4 = row.insertCell(3);
+// console.log(element);
+        cell1.textContent = addTextInCollSelect(element)
+        cell1.style = 'text-align: left';
+        cell1.style.backgroundColor = color; // Set row color
+        cell2.style.backgroundColor = color; // Set row color
+        cell3.style.backgroundColor = color; // Set row color
+        cell4.style.backgroundColor = color; // Set row color
+        if (data[element][3].collectionSize) {
+          cell2.textContent = data[element][3].collectionSize.format(0, 3, ' ');
         }
-      
-    }    
+        if (data[element][5].media.stillImage) {
+          cell3.textContent = data[element][5].media.stillImage.format(0, 3, ' ');
+        }
+        if (data[element][1].geography.coordinates[0].yes) {
+          cell4.textContent = data[element][1].geography.coordinates[0].yes.format(0, 3, ' ');
+        }
+      }
+      // row.style.backgroundColor = color; // Set row background color
+    };
+
+    
+    addRows(botanyArray, "#D8F5CB");
+    addRows(zoologyArray, "#CBDBF5");
+    addRows(dnaArray, "#F3F5CB");
+    addRows(earthSciencesArray, "#F8CAA3");
+
     table.setAttribute("class", "summaryTable");
   } catch (error) {
     console.log(error);
   }
 }
+
+
 
 // sorts array with data
 // in: arrayData (array [{label:value, data:value}, {label:value, data:value}]
@@ -289,7 +342,6 @@ const makeGraphs = (data) => {
 // ------ Neste graf -----
   // Tilveksten per år
   aarligTilvekst = tilvekstData(data, currentCollection) //regn ut data til grafen
-  console.log(aarligTilvekst)
   ctx = tilvekst.getContext('2d'); // fra HTML sia
   config = {
     type: 'bar',
@@ -490,6 +542,7 @@ const updateStatFooter = () => {
 // calls makeGraphs(..) and	populateTable(..)
 // is called in this file (showStat.js)
 async function main() {
+  getLanguage()
   data = await getData() //Gjør en request til server om å få JSON datafila
   collSelect(data)
   makeGraphs(data)  // Tegn opp grafene for første gang

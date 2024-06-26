@@ -768,11 +768,8 @@ app.post('*/item-page/check-files', async (req, res) => {
 
 // show images or files
 app.get('*/archive/:folder/:filename', (req, res) => {
-    console.log('archive with files');
     const { folder, filename } = req.params;
     const filePath = path.join(__dirname, '..', '..', 'archive', folder, filename);
-    console.log('logging filepath on server');
-    console.log(filePath);
     fs.readFile(filePath, (err, data) => {
       if (err) {
         console.log(`Error reading file: ${err}`);

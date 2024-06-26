@@ -51,49 +51,175 @@ const getPublications = async (museum) => {
     return collectionObj
 }
 
+function addTextInCitTable(a) {
+    const collections = {
+        Algae: textItems.alger,
+        Fungi: textItems.sopp,
+        Lichens: textItems.lav,
+        Mosses: textItems.moser,
+        Vascular_plants: textItems.vascular,
+        Birds: textItems.fugler,
+        crustacea: textItems.crustacea,
+        insectTypes: textItems.insectTypes,
+        Entomolgy: textItems.insekter,
+        Entomology: textItems.insekter,
+        evertebrater: textItems.invertebrates,
+        Invertebrates: textItems.invertebrates,
+        Fish: textItems.fisk,
+        Herpetiles: textItems.fishHerp,
+        Mammals: textItems.bcPattedyr,
+        mammals: textItems.pattedyr,
+        DNA: textItems.dna_vascular,
+        DNA_other: textItems.dna_fungi_lichens,
+        DNA_entomology: textItems.dna_entomology,
+        other: textItems.dna_other,
+        malmer: textItems.malmer,
+        mineraler: textItems.mineraler,
+        oslofeltet: textItems.oslofeltet,
+        utenlandskeBergarter: textItems.utenlandskeBA,
+        Palaeontology: textItems.paleontologi,
+        palTyper: textItems.palTyper,
+        utad: textItems.utad,
+        bulk: textItems.bulk,
+      };
+      if(collections[a])  {
+        return collections[a][langIndex];
+      } else {
+        return a
+      }
+    
+  }
 
-// populateCitTable
-// data = object with header and citations per year per collection
-const populateCitTable = (data) => {
+
+  function extractKeysIntoArray(data) {
+    return Object.keys(data).filter(key => key !== "header");
+  }
+  
+  const populateCitTable = (data) => {
+    collections = extractKeysIntoArray(data)
+    console.log('data');
+    console.log(data);
+    console.log('colletionsArray');
+    console.log(collections);
+    
     const table = document.querySelector('#GBIF-citation-table');
-    const headerArray = data.header.slice(); // Create a copy and sort it
-    headerArray.sort();
-    headerArray.splice(0, 0, 'Collection');
-    // Empty the table if there is already content
+    const headerArray = data.header.slice().sort();
+    headerArray.unshift('Collection');
     table.innerHTML = '';
 
-    // Create the header row
+    const dnaArray = collections.filter(item => item.includes("dna"));
+    const zoologyArray = collections.filter(item => ['Mammals', 'Herpetiles', 'Fish', 'Birds', 'Entomolgy', 'Entomology', 'Arthropoda', 'Invertebrates', 'Gastropods', 'Marine_invertebrates'].includes(item));
+    const botanyArray = collections.filter(item => ['Algae', 'Mosses', 'Lichens', 'Vascular_plants', 'Fungi'].includes(item));
+    const earthSciencesArray = collections.filter(item => ['Palaeontology'].includes(item));
+    const theRestArray = collections.filter(item => !dnaArray.includes(item) && !zoologyArray.includes(item) && !botanyArray.includes(item) && !botanyArray.includes(earthSciencesArray));
+    console.log('the rest Array:');
+    console.log(theRestArray);
+  
     const headerRow = table.insertRow(0);
-    headerRow.style.fontWeight = 'bold'; // Make the header row bold
+    headerRow.style.fontWeight = 'bold';
     for (let i = 0; i < headerArray.length; i++) {
-        const headerCell = document.createElement('th');
-        headerCell.innerHTML = headerArray[i];
-        headerRow.appendChild(headerCell);
+      const headerCell = document.createElement('th');
+      headerCell.innerHTML = headerArray[i];
+      headerRow.appendChild(headerCell);
+  
+      if (i === 0) {
+        headerCell.style.textAlign = 'left'; // Apply left alignment to the first header cell
+      }
     }
-
-    // Create rows for each collection
-    let rowNumber = 1;
-    for (const [collection, years] of Object.entries(data)) {
-        if (collection !== 'header') {
-            const dataRow = table.insertRow(rowNumber);
-            dataRow.insertCell(0).innerHTML = collection;
-
-            // Populate the cells with citation data for each year
-            let columnIndex = 1; // Start from the second column
-            for (const year of Object.values(years)) {
-                dataRow.insertCell(columnIndex).innerHTML = year;
-                columnIndex++;
-            }
-
-            rowNumber++;
+  
+    const addRows = (array, color) => {
+        try {
+            
+        
+      let rowNumber = 1;
+      for (const collection of array) {
+        const dataRow = table.insertRow(rowNumber);
+        const collectionCell = dataRow.insertCell(0);
+        collectionCell.style.textAlign = 'left';
+        collectionCell.style.backgroundColor = color; 
+        collectionCell.innerHTML = addTextInCitTable(collection)
+        // collectionCell.innerHTML = collection;
+  
+        let columnIndex = 1;
+        for (const year of headerArray.slice(1)) {
+          const yearData = data[collection][year] || '';
+          const dataCell = dataRow.insertCell(columnIndex);
+          collectionCell.style.textAlign = 'middle';
+          collectionCell.style.backgroundColor = color; 
+          dataCell.innerHTML = yearData;
+          columnIndex++;
         }
+        rowNumber++;
+      }
+    } catch (error) {
+            console.log('feil i GBIF citation table for collection: ' + collection );
     }
+    };
+  
 
-    // Apply a class to the table for styling
-    table.setAttribute('class', 'summaryTable');
-};
+    addRows(theRestArray,  "#dbd7d7");
+    addRows(earthSciencesArray,  "#F8CAA3");
+    addRows(zoologyArray,  "#CBDBF5");
+    addRows(botanyArray,  "#D8F5CB");
+  
+    table.classList.add('summaryTable');
+  };
+  
 
 
+
+  // // populateCitTable
+// // // data = object with header and citations per year per collection
+//   const populateCitTable = (data) => {
+//     console.log(data);
+//     const table = document.querySelector('#GBIF-citation-table');
+//     const headerArray = data.header.slice().sort();
+//     headerArray.unshift('Collection');
+//     table.innerHTML = '';
+  
+//     const zoologyArray = data.filter(item => ['Mammals', 'Herpetiles', 'Fish', 'Birds', 'Entomology'].includes(item));
+//     const botanyArray = data.filter(item => ['Algae', 'Mosses', 'Lichens', 'Vascular_plants', 'Fungi'].includes(item));
+//     const earthScienceArray = data.filter(item => ['Palaeontology'].includes(item));
+
+//     const headerRow = table.insertRow(0);
+//     headerRow.style.fontWeight = 'bold';
+//     for (let i = 0; i < headerArray.length; i++) {
+//       const headerCell = document.createElement('th');
+//       headerCell.innerHTML = headerArray[i];
+//       headerRow.appendChild(headerCell);
+  
+//       if (i === 0) {
+//         headerCell.style.textAlign = 'left'; // Apply left alignment to the first header cell
+//       }
+//     }
+//     const addRows = (array, category, color) => {
+  
+//     let rowNumber = 1;
+//     for (const [collection, years] of Object.entries(data)) {
+//       if (collection !== 'header') {
+//         const dataRow = table.insertRow(rowNumber);
+//         const collectionCell = dataRow.insertCell(0);
+//         collectionCell.style.textAlign = 'left';
+//         collectionCell.innerHTML = addTextInCitTable(collection);
+  
+//         let columnIndex = 1;
+//         for (const year of Object.values(years)) {
+//           dataRow.insertCell(columnIndex).innerHTML = year;
+//           columnIndex++;
+//         }
+//         rowNumber++;
+//       }
+//     }
+//     }
+
+//     addRows(botanyArray,  "#D8F5CB");
+//     addRows(zoologyArray,  "#CBDBF5");
+//     addRows(earthScienceArray,  "#F8CAA3");
+
+
+
+//     table.classList.add('summaryTable');
+//   };
 
   const mainCit = async () => {
     const museum = getMuseum()

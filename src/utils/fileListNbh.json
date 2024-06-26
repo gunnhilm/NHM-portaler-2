@@ -49,12 +49,12 @@
         "akronym": "NBH-MIN"
     },
     {
-        "source": "",
+        "source": "ipt",
         "orgGroup": "zoologi",
         "name": "mammals_no_dna",
-        "zipFileName": "",
+        "zipFileName": "occurrence",
         "mediaFile": "",
-        "url": "",
+        "url": "https://ipt.gbif.no/archive.do?r=zoological_coll",
         "occurrenceFileSuffix": "_occurrence.txt", 
         "akronym": "KMN-Z"
     }
