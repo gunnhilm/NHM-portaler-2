@@ -86,7 +86,7 @@ function renderText (lang) {
             { selector: '#lav', key: 'lav' },
             { selector: '#alger', key: 'alger' },
             { selector: '#entomology', key: 'insekter' },
-            { selector: '#insectTypes', key: 'insectTypes' },
+            { selector: '#entomology_types', key: 'entomology_types' },
             { selector: '#invertebrates', key: 'invertebrates' },
             { selector: '#crustacea', key: 'crustacea' },
             { selector: '#fisk', key: 'fisk' },

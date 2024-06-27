@@ -1,59 +1,51 @@
-//to do
-// rydd i kode
-
-
 const searchForm = document.querySelector('form') 
 const loanInfoSearch = document.getElementById('loan-search-text')
 const hitsElement = document.getElementById('head-nb-hits')
 const nbHitsElement = document.getElementById('nb-hits') 
 const maxHitsElement = document.getElementById('max-hits')
 
+// display please-wait-icon
+// is called in doLoanInfoSearch
 const pleaseWaitOn = () => {
     document.getElementById("please-wait").style.display = "block"
 }
 
-
-
+// removes please-wait-icon
+// is called in doLoanInfoSearch()
 const pleaseWaitOff = () => {
     document.getElementById("please-wait").style.display = "none"
 }
 
-const hideElements = () => {
-    hitsElement.innerText = ""
-    nbHitsElement.innerText = ""
-    maxHitsElement.innerText = ""
-}
-
 // figures out which museum we are in
 // out: string, abbreviation for museum
-// is called by doSearch() and updateFooter()
+// is called in doLoanInfoSearch()
 const getCurrentMuseum = () => {
     let museum = window.location.pathname
     museum = museum.split('/')
     return museum[2]
 }
 
-
+// removes table and search-result-elements from page
+// is called in doLoanInfoSearch()
 function removeResults() {
     try {
+        hitsElement.innerText = ""
+        nbHitsElement.innerText = ""
+        maxHitsElement.innerText = ""
         const Table = document.getElementById("loan-result-table");
-        const hits = document.getElementById("nb-hits");
         if(Table) {
             console.log('fjerner tabell');
             Table.innerHTML = "";
-            hits.innerHTML = "";
         }
     } catch (error) {
         console.log(error);
     }
 }
 
-// resultattabell
-
 // creates the headers in the table
 // in: table (html-table, to show on the page)
 // in: keys (array?, source of header titles)
-// is called in loanResultTable(..)
+// is called in loanResultTable()
 function addHeaders(table, keys, columnsToShow) {
     const tr = document.createElement('tr'); // Header row
     for( let i = 0; i < columnsToShow; i++ ) {
@@ -69,8 +61,8 @@ function addHeaders(table, keys, columnsToShow) {
 
 // creates table for the loans and fills it
 // in: children (array, containing content to table, i.e. data on loans) 
-// calls addHeaders(..)
-// is called in doLoanInfoSearch(..)
+// calls addHeaders()
+// is called in doLoanInfoSearch()
 const loanResultTable2 = (children, columnsToShow) => {
     const table = document.createElement('table');
     table.setAttribute('id', 'loan-result-table')
@@ -112,12 +104,10 @@ function sortTable() {
     })));
 }
 
-//   var results = [];
-
-
-
+// sends request to server to search in the loan-dump
+// is called in search-form eventlistener
+// out: rendering of search-result
 const doLoanInfoSearch = () => {
-    hideElements()
     removeResults()
     const elem = document.getElementById('loan-result-table');
     if (elem) {
@@ -131,13 +121,12 @@ const doLoanInfoSearch = () => {
         museum = getCurrentMuseum()
         const url = urlPath + '/getLoanInfoJSON/?museum=' + museum + '&search=' + searchTerm
         fetch(url).then((response) => {
+            pleaseWaitOff()
             if (!response.ok) {
-                pleaseWaitOff()
                 throw 'noe går galt med søk, respons ikke ok'
             } else {
                 try {
                     response.text().then((data) => {
-                        pleaseWaitOff()
                         if(data.error) {
                             errorMessage.innerHTML = textItems.serverError[index]
                             console.log(error);
@@ -145,14 +134,12 @@ const doLoanInfoSearch = () => {
                         } else if (data === "[]") {
                             hitsElement.innerText = textItems.noHitsLoan[index]
                         } else {
-                            console.log(data)
                             JSONresultArray = JSON.parse(data)
                             JSONobjArray = []
                             JSONresultArray.forEach((el) => {
                                 newEl = JSON.parse(el)
                                 JSONobjArray.push(newEl)
                             })
-                            console.log(JSONobjArray[0])
                             loanResultTable2(JSONobjArray, Object.keys(JSONobjArray[0]).length)
                             
                             hitsElement.innerText = textItems.nbHitsTextRecords[index] + JSONobjArray.length

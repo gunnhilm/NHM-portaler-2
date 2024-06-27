@@ -270,7 +270,7 @@ const resultTable = (subMusitData, musitData) => {
                             }
                             
                         // collections only in corema
-                    } else if (sessionStorage.getItem('chosenCollection') === 'mammals' || sessionStorage.getItem('chosenCollection') === 'birds' || sessionStorage.getItem('chosenCollection') === 'invertebrates_with_dna') {
+                    } else if (sessionStorage.getItem('chosenCollection') === 'mammals' || sessionStorage.getItem('chosenCollection') === 'birds' || sessionStorage.getItem('chosenCollection') === 'invertebrates') {
                             if (subMusitData[i].preparationType) {cell10.innerHTML = subMusitData[i].preparationType}
                         
                         } else {

@@ -204,7 +204,7 @@ const collectionName = (coll,source) => {
         let href
             href = "https://www.nhm.uio.no/samlinger/zoologi/krepsdyr/"
         return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
-    } else if (coll == "insectTypes") {
+    } else if (coll == "entomology_types") {
         term = textItems.insectTypes[index]
         return `${term}`
     } else if (coll == "DNA" || coll.includes("dna")) {
@@ -932,7 +932,7 @@ async function showData (specimenObject, orgGroup, overviewObject) {
             prefix = specimenObject.institutionCode + '-' + specimenObject.collectionCode + '-'
             let strippedCatNo = specimenObject.catalogNumber.substring(0,specimenObject.catalogNumber.indexOf('/'))
             regnoEl =  `<span>${prefix}${strippedCatNo}</span>`
-        } else if (sessionStorage.getItem('chosenCollection') == "insectTypes") {
+        } else if (sessionStorage.getItem('chosenCollection') == "entomology_types") {
             prefix = ""
             regnoEl = `<span>${prefix}${specimenObject.catalogNumber}</span>`
         } else {

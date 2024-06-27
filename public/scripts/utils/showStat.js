@@ -544,6 +544,7 @@ const updateStatFooter = () => {
 async function main() {
   getLanguage()
   data = await getData() //Gjør en request til server om å få JSON datafila
+  console.log(data)
   collSelect(data)
   makeGraphs(data)  // Tegn opp grafene for første gang
   populateTable(data) // Lag hovedtabel med samlingstall

@@ -298,7 +298,7 @@ function addTextInCollSelect(a) {
       alger: textItems.alger,
       entomology: textItems.insekter,
       evertebrater: textItems.invertebrates,
-      invertebrates_with_dna: textItems.invertebrates_with_dna,
+      invertebrates: textItems.invertebrates_with_dna,
       fisk: textItems.fisk,
       birds: textItems.fugler,
       mammals: textItems.pattedyr,
@@ -318,7 +318,7 @@ function addTextInCollSelect(a) {
       utad: textItems.utad,
       bulk: textItems.bulk,
       crustacea: textItems.crustacea,
-      insectTypes: textItems.insectTypes
+      entomology_types: textItems.insectTypes
     };
   
     return collections[a][index];

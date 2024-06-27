@@ -231,7 +231,7 @@ function addSortingText(id, prop, musitData, fromFunction) { // her er musitData
                     if (id === 'photoButton' | id === 'coordinateButton') {
                         reverse = !reverse
                         musitData.sort(sort_by(prop,reverse))
-                    } else if (sessionStorage.getItem("chosenCollection") == "insectTypes") {
+                    } else if (sessionStorage.getItem("chosenCollection") == "entomology_types") {
                         musitData.sort(sort_by(prop,reverse))
                     } else {
                         musitData.sort(sort_by(prop,reverse, (a) => a.toLowerCase()))

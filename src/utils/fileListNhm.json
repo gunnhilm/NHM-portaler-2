@@ -161,7 +161,7 @@
 {
     "source": "corema",
     "orgGroup": "zoologi",
-    "name": "invertebrates_with_dna",
+    "name": "invertebrates",
     "loan": false,
     "zipFileName": "occurrence",
     "mediaFile": "_multimedia",
@@ -290,7 +290,7 @@
 {
     "source": "access",
     "orgGroup": "zoologi",
-    "name": "insectTypes",
+    "name": "entomology_types",
     "zipFileName": "occurrence",
     "mediaFile": "",
     "occurrenceFileSuffix": "_occurrence.txt", 

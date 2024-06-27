@@ -2,8 +2,8 @@ const readline = require('readline');
 const fs = require('fs');
 const { first } = require('easy-template-x');
 
+// not in use May 2024: will come in handy if more museums are to use it
 const setLoanfile = (museum = 'nhm', samling) => {
-    // const loanInfoFile = './src/data/' + museum +'/loanInfo.txt'  
     const loanInfoFile = './src/data/' + museum +'/musit-loans.json'  
     return loanInfoFile 
 }
