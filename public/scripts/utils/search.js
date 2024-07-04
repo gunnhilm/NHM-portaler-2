@@ -630,7 +630,7 @@ const collAddEventListener = () => {
     });
 };
 
-collAddEventListener(); 
+// collAddEventListener(); 
 
 
 // when a collection is chosen a request is sent to the server about date of last change of the MUSIT-dump file

@@ -95,4 +95,3 @@ async function bulkMain () {
     displayBulkProjects(projectArray)
     
 }
-// main()

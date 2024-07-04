@@ -381,9 +381,11 @@ if (sessionStorage.language) {
     language = sessionStorage.getItem('language')
 } else if (document.querySelector('#language').value) {
     language = document.querySelector('#language').value
+    sessionStorage.setItem('language',language)
 } else {
     document.querySelector('#language').value = "Norwegian"
     language = "Norwegian"
+    sessionStorage.setItem('language',language)
 }
 if (language === "Norwegian") {
     document.querySelector('#language').innerHTML = "English website"

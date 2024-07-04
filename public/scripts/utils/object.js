@@ -171,7 +171,7 @@ const collectionName = (coll,source) => {
         return `<a target="_blank" class="head-collection" href= "https://www.nhm.uio.no/samlinger/botanikk/mose/">${term}${colon}</a>`
     } else if (coll == "entomology") {
         term = textItems.insectCollection[index]
-        let href
+        let href 
         if (index == 0) {
             href ="https://www.nhm.uio.no/samlinger/zoologi/insekt/"
         } else {
@@ -674,7 +674,7 @@ async function showObjectData (specimenObject,objectTable,order) {
         
     } else if (objectTable.rows.length < 3) { // no item added yet
         if (order === "second") {
-
+console.log("kommer vi hit?")
             if (specimenObject.musitCollectionCode === "F") {cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.objectHeaderColl[index]}${collectionName("sopp","table")}</span>`}
             else if (specimenObject.musitCollectionCode === "L") {cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.objectHeaderColl[index]}${collectionName("lav","table")}</span>`}
             else if (specimenObject.musitCollectionCode === "V") {cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.objectHeaderColl[index]}${collectionName("vascular","table")}</span>`}
@@ -682,7 +682,7 @@ async function showObjectData (specimenObject,objectTable,order) {
             
         }
         else {
-
+console.log("hit?")
             cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.objectHeaderColl[index]}${collectionName(coll,"table")}</span>`}
     }
     
