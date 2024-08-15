@@ -104,24 +104,23 @@ header {
         width: 60px;
         
     }
-    .row-uncertainty {
+    /* remove header-cells and columns in result-table when screen shrinks */
+    .uncertainty {
         display: none;
     }
-    .row-sampleType {
+    .sampleType {
         display: none;
     }
-    .row-land {
+    .land {
         display: none;
     }
-    .cell3 {
+    .tilstand {
         display: none;
     }
-    .cell10  {
+    .kommentar {
         display: none;
     }
-    .cell6 {
-        display: none;
-    }
+    
     #language {
         font-size: 16px; 
     }

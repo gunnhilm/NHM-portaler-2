@@ -814,6 +814,7 @@ document.getElementById('checkedInMap').addEventListener('click', function() {
 // in:data (JSON; part of search result that is rendered on page)
 // is called by dropdown-menu with checkbox-options in searchresult-table
 const checkSeveralBoxes = (subMusitData) => {
+    console.log('her da')
     const nbHitsOnPage = document.getElementById('number-per-page').value
     const select = document.getElementById('checkboxSelect')
     let max
@@ -861,6 +862,7 @@ if (JSON.parse(sessionStorage.getItem('pageList'))) {
 
 if(select) {
     select.onchange =() => {
+        console.log('her')
         checkSeveralBoxes(pageList)
     }
 }

@@ -155,6 +155,11 @@ const resultTable = (subMusitData, musitData) => {
             for (let j = 0; j < 13; j++) {
                 headerCell.push(headerRow.appendChild(document.createElement("th")))
             }
+            headerCell[2].className += "uncertainty"
+            headerCell[3].className += "innsamler"
+            headerCell[4].className += "dato"
+            headerCell[5].className += "land"
+            headerCell[9].className += "sampleType"
             fillResultHeaders(org,headerCell,musitData)
                     
 
@@ -320,14 +325,14 @@ const resultTable = (subMusitData, musitData) => {
                 
                 cell1.className = 'row-1 row-ID'
                 cell2.className = 'row-2 row-name'
-                cell3.className = 'row-3 row-uncertainty'
-                cell4.className = 'row-4 row-innsamler'
-                cell5.className = 'row-5 row-dato'
-                cell6.className = 'row-6 row-land'
+                cell3.className = 'uncertainty'
+                cell4.className = 'innsamler'
+                cell5.className = 'dato'
+                cell6.className = 'land'
                 cell7.className = 'row-7 row-kommune'
                 cell8.className = 'row-8 row-sted'
                 cell9.className = 'row-9 row-habitat'
-                cell10.className = 'row-10 row-sampleType'
+                cell10.className = 'sampleType'
                 cell11.className = 'row-11 row-photo'
                 cell12.className = 'row-12 row-coordinates'
                 cell13.className = 'row-13 row-checkbox'
@@ -392,6 +397,11 @@ const UTADRestultTable = (subUTADData, UTADData) => {
                 for (let j = 0; j < 10; j++) {
                     headerCell.push(headerRow.appendChild(document.createElement("th")))
                 }
+                headerCell[2].className += "tilstand"
+                headerCell[3].className += "sampleType"
+                headerCell[4].className += "kommentar"
+                headerCell[5].className += "cell6"
+                headerCell[9].className += "cell10"
                 fillResultHeadersUTAD(headerCell,UTADData)
 
             }  else {  //her kommer tabell innholdet
@@ -446,12 +456,11 @@ const UTADRestultTable = (subUTADData, UTADData) => {
                 }
                 cell1.className = 'row-1 row-ID'
                 cell2.className = 'row-2 row-name'
-                cell3.className = 'row-3 row-innsamler'
-                cell4.className = 'row-4 row-dato'
-                cell5.className = 'row-5 row-land'
-                cell6.className = 'row-6 row-kommune'
-                cell7.className = 'row-7 row-sted'
-                cell8.className = 'row-8 row-sted'
+                cell3.className = 'tilstand'
+                cell4.className = 'sampleType'
+                cell5.className = 'kommentar'
+                // cell7.className = 'row-7 row-sted'
+                // cell8.className = 'row-8 row-sted'
                 cell9.className = 'row-9 row-photo'
                 cell10.className = 'row-11 row-checkbox'
             }
@@ -464,6 +473,12 @@ const UTADRestultTable = (subUTADData, UTADData) => {
         console.log(error);
         errorMessage.innerHTML = textItems.errorRenderResult[index]
         searchFailed = true // is checked when map is drawn 
+    }
+    const select = document.getElementById('checkboxSelect')
+    if(select) {
+        select.onchange =() => {
+            checkSeveralBoxes(subUTADData)
+        }
     }
 }
 
@@ -478,6 +493,10 @@ const bulkResultTable = (subBulkData, bulkData) => {
                 for (let j = 0; j < 9; j++) {
                     headerCell.push(headerRow.appendChild(document.createElement("th")))
                 }
+                headerCell[2].className += "innsamler"
+                headerCell[3].className += "dato"
+                headerCell[4].className += "sampleType"
+                
                 fillResultHeadersBulk(headerCell,bulkData)
 
             }  else {  
@@ -542,9 +561,9 @@ const bulkResultTable = (subBulkData, bulkData) => {
                 
                 cell1.className = 'row-1 row-ID'
                 cell2.className = 'row-2 row-bulk-name'
-                cell3.className = 'row-3 row-bulk-innsamler'
-                cell4.className = 'row-4 row-bulk-dato'
-                cell5.className = 'row-5 row-prep'
+                cell3.className = 'innsamler'
+                cell4.className = 'dato'
+                cell5.className = 'sampleType'
                 cell6.className = 'row-6 row-bulk-sted'
                 cell7.className = 'row-7 row-placement'
                 cell8.className = 'row-8 row-note'
