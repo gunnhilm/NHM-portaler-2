@@ -269,6 +269,16 @@
 {
     "source": "excel",
     "orgGroup": "other",
+    "name": "eco_bot",
+    "zipFileName": "occurrence",
+    "mediaFile": "",
+    "occurrenceFileSuffix": "_occurrence.txt", 
+    "url": "",
+    "akronym": "O-v-OE"
+},
+{
+    "source": "excel",
+    "orgGroup": "other",
     "name": "bulk",
     "zipFileName": "occurrence",
     "mediaFile": "",

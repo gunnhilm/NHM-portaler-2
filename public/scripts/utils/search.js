@@ -316,6 +316,7 @@ function addTextInCollSelect(a) {
       fossiler: textItems.fossiler,
       palTyper: textItems.palTyper,
       utad: textItems.utad,
+      eco_bot: textItems.eco_bot,
       bulk: textItems.bulk,
       crustacea: textItems.crustacea,
       entomology_types: textItems.insectTypes

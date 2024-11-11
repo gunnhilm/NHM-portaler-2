@@ -104,6 +104,7 @@ function renderText (lang) {
             { selector: '#GeoPalOpt', key: 'GeoPal' },
             { selector: '#otherOpt', key: 'otherOpt' },
             { selector: '#utad', key: 'utad' },
+            { selector: '#eco_bot', key: 'eco_bot' },
             { selector: '#bulk', key: 'bulk' },
             { selector: '#bulkProjectHeader', key: 'bulkSelectHeader' },
             { selector: '#vennligstBulk', key: 'searchProject' },
@@ -144,13 +145,10 @@ function renderText (lang) {
             { selector: '#hits-per-page', key: 'hitsPerPage' },
             { selector: '#head-nb-hits', key: 'nbHitsText' },
             { selector: '#nb-hits', key: 'tooManyHits' },
-            // { selector: '#download-button', key: 'downloadLink' },
-            // { selector: '#download-photo-button', key: 'downloadPhoto' },
             { selector: '#action-option', key: 'actionRecords' },
             { selector: '#download-records', key: 'downloadLink' },
             { selector: '#download-photos', key: 'downloadPhoto' },
             { selector: '#loan-records', key: 'createLoan' },
-            // { selector: '#check-coordinates', key: 'checkCoordHeader' },
             { selector: '#check-coordinates', key: 'checkCoordAll' },
             { selector: '#zoom-expl-popup', key: 'mapHelpContent' },
             { selector: '#zoom-button', key: 'zoomButton' },
@@ -425,11 +423,11 @@ document.querySelector('#language').addEventListener('click', (e) => {
             musitData = JSON.parse(stringData)      
             const coll = sessionStorage.getItem('chosenCollection')
             if (coll === 'utad') { 
-
                 fillResultHeadersUTAD(headerCell,musitData)
             } else if (coll === 'bulk') {
-
                 fillResultHeadersBulk(headerCell,musitData)
+            } else if (coll === 'eco_bot'){
+                fillResultHeadersEco_bot(headerCell,musitData)
             } else {
                 let org
                 if (sessionStorage.getItem('organismGroup').includes('geologi')) {

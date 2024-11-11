@@ -482,6 +482,113 @@ const UTADRestultTable = (subUTADData, UTADData) => {
     }
 }
 
+
+
+
+const eco_BotRestultTable = (subEco_BotData, eco_BotData) => {
+    console.log('eco_BotRestultTable i paginateandRender');
+    
+    try {
+        table.innerHTML = ""
+        const row = table.insertRow(-1);
+        for (let i = -1; i < pageList.length; i++) {
+            if (i === -1) {     // her kommer tittellinjen
+                const headerRow = row;
+                const headerCell = []
+                for (let j = 0; j < 11; j++) {
+                    headerCell.push(headerRow.appendChild(document.createElement("th")))
+                }
+
+                
+                headerCell[8].className += "tilstand"
+                headerCell[5].className += "sampleType"
+                headerCell[9].className += "kommentar"
+                headerCell[5].className += "cell6"
+                headerCell[10].className += "cell10"
+                
+                fillResultHeadersEco_bot(headerCell,eco_BotData)
+
+            }  else {  //her kommer tabell innholdet
+            const row = table.insertRow(-1)
+            const cell1 = row.insertCell(0)
+            const cell2 = row.insertCell(1)
+            const cell3 = row.insertCell(2)
+            const cell4 = row.insertCell(3)
+            const cell5 = row.insertCell(4)
+            const cell6 = row.insertCell(5)
+            const cell7 = row.insertCell(6)
+            const cell8 = row.insertCell(7)
+            const cell9 = row.insertCell(8)
+            const cell10 = row.insertCell(9)
+            const cell11 = row.insertCell(10)
+ 
+                let museumURLPath = ''
+                if (window.location.href.includes('/um')) { 
+                    museumURLPath = urlPath + "/um"
+                } else if (window.location.href.includes('tmu')) {
+                    museumURLPath = urlPath + "/tmu"
+                } else if (window.location.href.includes('nbh')) {
+                    museumURLPath = urlPath + "/nbh"
+                } else {
+                    museumURLPath = urlPath + "/nhm"
+                }
+
+                let prefix = ''
+                if (!(/[a-zA-Z]/).test(subEco_BotData[i].catalogNumber.charAt(0))) {  
+                    prefix = subEco_BotData[i].institutionCode + '-' + subEco_BotData[i].collectionCode + '-'
+                    
+                } else {
+                    prefix = ''
+                }
+                cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subEco_BotData[i].catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${subEco_BotData[i].catalogNumber} </a>`
+                cell2.innerHTML = subEco_BotData[i].scientificName
+                cell3.innerHTML = subEco_BotData[i].higherClassification
+                cell4.innerHTML = subEco_BotData[i].locality
+                cell5.innerHTML = subEco_BotData[i].basisOfRecord
+                cell6.innerHTML = subEco_BotData[i].recordedBy
+                cell7.innerHTML = subEco_BotData[i].eventDate
+                cell8.innerHTML = subEco_BotData[i].Tilstand
+                cell9.innerHTML = subEco_BotData[i].Kommentar
+                if( subEco_BotData[i].associatedMedia ) {   
+                    cell10.innerHTML = `<span class="fas fa-camera"></span>`
+                } else if( subEco_BotData[i].photoIdentifiers ) {   
+                    cell10.innerHTML = `<span class="fas fa-camera"></span>`
+                }
+                cell11.innerHTML = `<input type="checkbox" id=checkbox${i} onclick="registerChecked(${i})" ></input>`
+                if (investigateChecked(i)) {
+                    document.getElementById(`checkbox${i}`).checked = true
+                } else {
+                    document.getElementById(`checkbox${i}`).checked = false
+                }
+                cell1.className = 'row-1 row-ID'
+                cell2.className = 'row-2 row-name'
+                cell8.className = 'tilstand'
+                cell5.className = 'sampleType'
+                cell9.className = 'kommentar'
+                // cell7.className = 'row-7 row-sted'
+                // cell8.className = 'row-8 row-sted'
+                cell10.className = 'row-9 row-photo'
+                cell11.className = 'row-11 row-checkbox'
+            }
+            // let isLoan = activateLoanButton()
+            showResultElements()
+            document.getElementById("empty-search-button").style.display = "inline-block"
+            numberOfPages = getNumberOfPages(numberPerPage)
+        }
+    } catch (error) {
+        console.log(error);
+        errorMessage.innerHTML = textItems.errorRenderResult[index]
+        searchFailed = true // is checked when map is drawn 
+    }
+    const select = document.getElementById('checkboxSelect')
+    if(select) {
+        select.onchange =() => {
+            checkSeveralBoxes(subEco_BotData)
+        }
+    }
+}
+
+
 const bulkResultTable = (subBulkData, bulkData) => {
     try {
         table.innerHTML = ""
@@ -683,6 +790,8 @@ function loadList() {
         bulkResultTable(pageList, list)
     } else if (document.querySelector('#collection-select').value === 'utad') {
         UTADRestultTable(pageList, list)
+    } else if (document.querySelector('#collection-select').value === 'eco_bot') {
+        eco_BotRestultTable(pageList, list)
     } else {
         resultTable(pageList, list)
     }

@@ -71,6 +71,7 @@ const textItems = {
     palTyper: ['Typesamlingen', 'Type Collection'],
     otherOpt: ["Andre samlinger", "Other collections"],
     utad: ["Utads samling", "Exhibition collection"],
+    eco_bot: ["Økonomisk botansik samling" , "Botanic Economical collection"],
     bulk: ["Bulk- og prosjektmateriale", "Bulk- and project material"],
     hitsPerPage: ["Treff per side", "Hits per page"],
     actionRecords: ["Handling på poster", "Actions on records"],
