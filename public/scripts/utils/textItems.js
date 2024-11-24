@@ -65,13 +65,13 @@ const textItems = {
     GeoPal: ["Geologi og Paleontologi", "Geology and Paleontology"],
     malmer: ["Malmer", "Ores"],
     oslofeltet: ["Oslofeltet", "The Oslo field"],
-    utenlandskeBA: ["Utenlandske bergarter", "Minerals from outside Norway"],
+    utenlandskeBA: ["Utenlandske bergarter", "Rocks from outside Norway"],
     mineraler: ["Mineraler", "Minerals"],
     fossiler: ['Generell samling', 'General Collection'],
     palTyper: ['Typesamlingen', 'Type Collection'],
     otherOpt: ["Andre samlinger", "Other collections"],
     utad: ["Utads samling", "Exhibition collection"],
-    eco_bot: ["Økonomisk botansik samling" , "Botanic Economical collection"],
+    eco_bot: ["Økonomisk botanisk samling" , "Botanic Economical collection"],
     bulk: ["Bulk- og prosjektmateriale", "Bulk- and project material"],
     hitsPerPage: ["Treff per side", "Hits per page"],
     actionRecords: ["Handling på poster", "Actions on records"],
@@ -258,7 +258,10 @@ const textItems = {
         mass: ['Vekt:', 'Mass:'],
         Dimensjon: ['Dimensjon:', 'Dimensjon:'],
 
-
+    // Objectpage Økonomsik botanisk samling items
+    Kommentar: ['Kommentar:', 'Comments:'],
+    Tilstand: ['Tilstand:', 'Condition:'],
+    Utlån: ['Utlån:', 'On loan:'],
 
 
 
