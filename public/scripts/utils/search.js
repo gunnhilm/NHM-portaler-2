@@ -572,32 +572,6 @@ searchForm.addEventListener('submit', (e) => {
 })  
 
 
-// const collAddEventListener = async () => {
-        
-//         collection.addEventListener("change", (e) => {
-//             e.preventDefault();
-//             emptySearch("collection_listener");
-//             const orgGroup = sessionStorage.getItem("organismGroup");
-//             const advancedAccordion = document.getElementById("advanced-accordion");
-//             const collectionValue = collection.value;
-//             updateFooter(collectionValue)
-//             if (["geologi", "paleontologi", "other"].includes(orgGroup)) {
-//             advancedAccordion.style.display = "none";
-//             if (collectionValue === "bulk") {
-//                 bulkMain();
-//             }
-//             } else {
-//             advancedAccordion.style.display = "block";
-//             }
-            
-//             document.getElementById("search-cell").style.display = "table-cell";
-//             errorMessage.innerHTML = "";
-//             sessionStorage.setItem("chosenCollection", collectionValue)
-//             updateFooter(collectionValue);
-//         })
-// }
-
-
 const collAddEventListener = () => {
     
     const advancedAccordion = document.getElementById("advanced-accordion");

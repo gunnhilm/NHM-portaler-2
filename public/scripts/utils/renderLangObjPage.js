@@ -73,7 +73,14 @@ function renderObjectText(lang){
         if (document.querySelector("#head-Utlån")) {document.querySelector("#head-Utlån").innerHTML=textItems.Utlån[index]}
         if (document.querySelector("#head-Kommentar")) {document.querySelector("#head-Kommentar").innerHTML=textItems.Kommentar[index]}
         
-    } else if (orgGroup === 'paleontologi') {
+    }    if (coll === 'eco_bot') {
+        for (let i = 0; i < objectHeaders.length; i++) {
+            const element = objectHeaders[i];
+            if (document.querySelector(`#head-${element}`)) {document.querySelector(`#head-${element}`).innerHTML = textItems[element][index].bold()}
+        }
+    }
+    
+     else if (orgGroup === 'paleontologi') {
         if (document.querySelector("#head-species-name")) {document.querySelector("#head-species-name").innerHTML = textItems.headSpeciesName[index].bold()}
         if (document.querySelector("#head-concatLocality")) {document.querySelector("#head-concatLocality").innerHTML = textItems.concatLocality[index].bold()}
         for (let i = 0; i < objectHeaders.length; i++) {

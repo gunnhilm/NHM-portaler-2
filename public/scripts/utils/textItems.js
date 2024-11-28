@@ -235,7 +235,7 @@ const textItems = {
     
     
     
-    // Objectpage UTAD items
+        // Objectpage UTAD items
         Kommentar: ['Kommentar:', 'Comments:'],
         Tilstand: ['Tilstand:', 'Condition:'],
         Utlån: ['Utlån:', 'On loan:'],
@@ -245,6 +245,7 @@ const textItems = {
         hoyde: ['Høyde:', 'Height:'],
         lengde: ['Lengde:', 'Length:'],
         vernacularName: ['Norsk navn:', 'Vernacular name:'],
+        
         // Objekctpage Paleo items
         higherClassification: ['Taxa:', 'Taxa:'],
         geologicalContext: ['Stratigrafi:', 'Stratigraphy:'],
@@ -254,14 +255,15 @@ const textItems = {
         scientificName: ['Vitenskapelig navn: ', 'Scientific name: '],
         concatLocality: ["Sted:", "Locality:"],
         coordinates:  ['Koordinater: ', 'Coordinates: '],
+
         // Objectpage Geo items
         mass: ['Vekt:', 'Mass:'],
         Dimensjon: ['Dimensjon:', 'Dimensjon:'],
-
-    // Objectpage Økonomsik botanisk samling items
-    Kommentar: ['Kommentar:', 'Comments:'],
-    Tilstand: ['Tilstand:', 'Condition:'],
-    Utlån: ['Utlån:', 'On loan:'],
+        
+        // Objectpage Økonomsik botanisk samling items
+        family: ['Familie:', 'Family:'],
+        locality: ['Lokalitet:', 'Locality: '],
+        verbatimLabel: ['Etikett tekst: ', 'Verbatim Label: '],
 
 
 

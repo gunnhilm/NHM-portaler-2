@@ -258,6 +258,9 @@ const collectionName = (coll,source) => {
     } else if (coll === "utad") {
         term = textItems.utad[index]
         return term
+    } else if (coll === "eco_bot") {
+        term = textItems.eco_bot[index]
+        return term
     }
     
 }
@@ -541,6 +544,46 @@ const makeBioTable = () => {
         // } 
 
 }
+
+
+// builds table for object-data for UTAD's collections
+// - inserts row for each property the object has, and that we decided to show
+// - add cells, with id, class and style
+// fills cells with data (not header-cells)
+// in: specimenObject; collection-object
+// calls makeTableHeader(table)
+
+const makeEcoBotTable = (specimenObject) => {
+    // add special fields to specimenobject
+    specimenObject.coordinates = coordinates(specimenObject)
+    const concatLocality = country(specimenObject) + stateProvince(specimenObject) + county(specimenObject) + locality(specimenObject)
+    specimenObject.concatLocality = concatLocality
+    const table = document.getElementById("data-table");
+    const fieldsToShow = ['higherClassification', 'family', 'locality', 'recordedBy', 'basisOfRecord', 'Hyllenr.',  'Tilstand', 'Utlån', 'Kommentar']
+    makeTableHeader(table, specimenObject)
+
+    const keyObj = []
+    const objectHeaders = []
+    // construct table
+    for (const [key, value] of Object.entries(specimenObject)) {
+        if (Object.hasOwnProperty.call(specimenObject, key) && fieldsToShow.includes(key)) {
+            const row = table.insertRow(-1)
+            const headKey = row.insertCell(0); headKey.id =  `head-${key}` ; headKey.class = 'bold';
+            const Content =   row.insertCell(1); Content.id = key; Content.style = 'border-spacing: 10px 0';
+            keyObj[key] = value
+            objectHeaders.push(key)
+        }
+    }
+    sessionStorage.setItem('objectHeaders', JSON.stringify(objectHeaders));
+    // add data to table
+    for (const [key, value] of Object.entries(keyObj)) {
+        document.querySelector(`#${key}`).innerHTML = value
+    }
+
+}
+
+
+
 
 // builds table for object-data for UTAD's collections
 // - inserts row for each property the object has, and that we decided to show
@@ -912,9 +955,14 @@ async function showItemData (specimenObject,objectTable,order,overviewObject) {
 // is called below
 async function showData (specimenObject, orgGroup, overviewObject) {
     try {
+        const coll = sessionStorage.getItem('chosenCollection')
         if (orgGroup === 'other') {
-            makeUTADTable(specimenObject)
-        } else if (orgGroup === 'geologi') {
+            if(coll === 'eco_bot') {
+                makeEcoBotTable(specimenObject)
+            }else {
+                makeUTADTable(specimenObject)
+            }
+        }  else if (orgGroup === 'geologi') {
             makeGeoTable(specimenObject)
         } else if (orgGroup === 'paleontologi') {
             makePalTable(specimenObject)
