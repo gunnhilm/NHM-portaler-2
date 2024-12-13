@@ -165,11 +165,7 @@ const emptySearch = (comesFrom) => {
         collection.value = "vennligst"
     }
 
-    // close accordions
-    document.getElementsByClassName('panel')[0].style.display = 'none'
-    document.getElementsByClassName('panel')[1].style.display = 'none'
-    document.getElementById("objectlist-accordion-icon").innerHTML = "+"
-    document.getElementById("adv-accordion-icon").innerHTML = "+"
+
 
     // uncheck radiobuttons
     let  radioButtons = document.getElementsByName('radio-photo')
@@ -565,28 +561,13 @@ const doSearch = (limit = 20) => {
 // when somebody clicks search-button
 searchForm.addEventListener('submit', (e) => {
     e.preventDefault()
-    // let museum = getCurrentMuseum() 
-    // const p_collection = collection.value
-    //whichFileAndDb_main(museum, p_collection)
     doSearch(1000) // vi skal få tilbake maks 1000 linjer med svar
 })  
 
 
 const collAddEventListener = () => {
     
-    const advancedAccordion = document.getElementById("advanced-accordion");
     const searchCell = document.getElementById("search-cell");
-
-    const toggleAdvancedAccordion = (orgGroup, collectionValue) => {
-        if (["geologi", "paleontologi", "other"].includes(orgGroup)) {
-            advancedAccordion.style.display = "none";
-            if (collectionValue === "bulk") {
-                bulkMain();
-            }
-        } else {
-            advancedAccordion.style.display = "block";
-        }
-    };
 
     collection.addEventListener("change", (e) => {
         e.preventDefault();
@@ -595,15 +576,19 @@ const collAddEventListener = () => {
         const orgGroup = sessionStorage.getItem("organismGroup");
         const collectionValue = collection.value;
 
-        toggleAdvancedAccordion(orgGroup, collectionValue);
-
         searchCell.style.display = "table-cell";
         errorMessage.innerHTML = "";
         sessionStorage.setItem("chosenCollection", collectionValue);
-
+        // Open simple-search by default, see searchTabs.js
+        document.getElementById("simple-title").click(); 
         updateFooter(collectionValue);
     });
+  
 };
+
+
+
+
 
 // collAddEventListener(); 
 
@@ -742,10 +727,6 @@ emptySearchButton.addEventListener('click', (e) => {
     e.preventDefault()
     // erase the last search result
     emptySearch('button')
-    // close accordions
-    document.getElementsByClassName('panel')[0].style.display = 'none'
-    document.getElementsByClassName('panel')[1].style.display = 'none'
-
 })
 
 document.getElementById('large-map-button').onclick = () => {
@@ -861,7 +842,7 @@ async function main () {
     await getFileList()
     await getOrganismGroups()
     makeButtons()
-    await collAddEventListener() //578
-    
+    collAddEventListener()   
 }
+
 main()

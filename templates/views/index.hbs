@@ -54,55 +54,71 @@
                                             <label for="collection-select" id="select-collection-label" aria-label="velg samling"></label>
                                             <select id="collection-select"  style=" height:30px; border-radius:4px; overflow-y:auto" ></select>
                                         </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td id="search-cell" style="display:none; border-color:tomato" colspan="3">
+
+                                            {{!-- Tabs for search --}}
+                                            <div class="tab">
+                                                <button class="tablinks" id="simple-title" onclick="searchTab(event, 'simple-search')">Enkelt søk</button>
+                                                <button class="tablinks" id="advanced-title" onclick="searchTab(event, 'advanced-search')">Avansert søk</button>
+                                                <button class="tablinks" id="objectlist-title" onclick="searchTab(event, 'object-number-search')">Objekt nummer søk</button>
+                                            </div>
+
+                                            <!-- Tab content -->
+                                            <div id="simple-search" class="tabcontent">
+                                                <div style="; border-color:burlywood">
+                                                    <br>
+                                                    <form id="search-form">
+                                                        <div  style="float: left; width:80%">
+                                                            <input id="search-text" type="text" class="input" title="Skriv inn søkeord">
+                                                            
+                                                        </div>
+                                                        
+                                                        <div style="float: right; width:60px; display: inline">
+                                                            <button class="blue-button" id="search-button" title="Søk" >Søk</button>
+                                                        </div>
+                                                        <br><br><br>
+                                                    </form>
+                                                </div>
+                                            </div>
+
+                                            <div id="advanced-search" class="tabcontent">
+                                                <div class="panel" id="advanced-panel" style="">
+                                                    <br>
+                                                    <form id="adv-search-form">
+                                                        <div  style="float: left; width:100%; ">
+                                                            <table id="adv_table">
+                                                            </table>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+
+                                            <div id="object-number-search" class="tabcontent">
+                                                <div class="panel" id="obj-panel">
+                                                    <br>
+                                                    <form id="obj-list-form">
+                                                        <div  style="float: left; width:85%">
+                                                            <input id="obj-list-input" type="text" class="input" title="Skriv inn søkeord"><br><br>
+                                                            
+                                                        </div>
+                                                        
+                                                        <div style="float: right; display:inline">
+                                                            <button class="blue-button" id="search-obj-list-button"></button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+
+                                            <img id="please-wait" src="/museum/images/ajax-loader.gif" alt="Please Wait"  style="display:none" valign="top">
+                                        </td>
+                                    <tr>
                                         <td  colspan="1" style="; border-color:blue">
                                             <button class="blue-button" id="empty-search-button" style="display:none; " title="Slett søke resultater">Tøm søk</button>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td id="search-cell" style="display:none; border-color:tomato" colspan="3">
-                                            
-                                            
-                                            <div style="; border-color:burlywood">
-                                                <br>
-                                                <form id="search-form">
-                                                    <div  style="float: left; width:85%">
-                                                        <input id="search-text" type="text" class="input" title="Skriv inn søkeord">
-                                                        
-                                                    </div>
-                                                    {{!-- <br><br><br> --}}
-                                                    <div style="float: right; width:60px; display: inline">
-                                                        <button class="blue-button" id="search-button" title="Søk" >Søk</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                            <br><br><br>
-                                            <button class="accordion" id="advanced-accordion" ><span id="advanced-title">Avansert søk </span><span class="accordion-icon" id="adv-accordion-icon"></span></button>
-                                            <div class="panel" id="advanced-panel" style="">
-                                                <br>
-                                                <form id="adv-search-form">
-                                                    <div  style="float: left; width:100%; ">
-                                                        <table id="adv_table">
-                                                        </table>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                            <br><br>
-                                            <button class="accordion" id="list-objects-accordion" ><span id="objectlist-title">Søk med objektnummere</span><span class = "accordion-icon" id="objectlist-accordion-icon"></span></button>
-                                            <div class="panel" id="obj-panel">
-                                                <br>
-                                                <form id="obj-list-form">
-                                                    <div  style="float: left; width:85%">
-                                                        <input id="obj-list-input" type="text" class="input" title="Skriv inn søkeord"><br><br>
-                                                        
-                                                    </div>
-                                                    
-                                                    <div style="float: right; display:inline">
-                                                        <button class="blue-button" id="search-obj-list-button"></button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                            <img id="please-wait" src="/museum/images/ajax-loader.gif" alt="Please Wait"  style="display:none" valign="top">
-                                        </td>
                                     </tr>
                                     <tr id="hits-row" style="display:none">    
                                         <td id="hits-per-page" style="vertical-align:middle; white-space: nowrap; width: 110px; ; border-color:yellow" title="Antall treff per side" colspan="1"></td>
@@ -233,16 +249,17 @@
 
         <script src="/museum/scripts/utils/font/409783eafe.js"></script>
         <script src="/museum/scripts/utils/papaparse/papaparse.min.js"></script>
-        
         <script src="/museum/scripts/utils/ol/ol.js"></script>
         <script src="/museum/scripts/utils/jszip/jszip.js"></script>
         <script src="/museum/scripts/utils/file-saver/FileSaver.min.js"></script>
         <script src="/museum/scripts/utils/map.js"></script>
+
         <script src="/museum/scripts/utils/resultElementsOnOff.js"></script>   
         <script src="/museum/scripts/utils/paginateAndRender.js"></script>
         <script src="/museum/scripts/utils/bulk.js"></script>   
+        <script src="/museum/scripts/utils/searchTabs.js"></script>
         <script src="/museum/scripts/utils/search.js"></script>   {{! main-functin is called}}
-        <script src="/museum/scripts/utils/advancedAccordion.js"></script>
+
         <script src="/museum/scripts/utils/tools/loans/loans.js"></script>   
         
     </body>

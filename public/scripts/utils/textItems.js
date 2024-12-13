@@ -155,6 +155,7 @@ const textItems = {
     placeholderGeoSpecies: ["Taxon (navn på bergart, mineral)", "Taxon (name of mineral)"],
     placeholderPalSpecies: ["Latinsk artsnavn eller type prøve, f.eks. \'Rock\'", "Scientific species name or type of sample, e.g. \'Rock\'"],
     placeholderCollector: ["Innsamler", "Collector"],
+    placeholderfieldNumber: ["Innsammler nummer", "Field number"],
     placeholderDate: ["Innsamlingsdato", "Collecting date"],
     placeholderCountry: ["Land (på engelsk)", "Country (in English)"],
     placeholderCounty: ["Fylke", "County"],
