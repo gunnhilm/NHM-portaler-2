@@ -125,6 +125,7 @@ function renderText (lang) {
     if (!excludedKeywordsIndex.some(keyword => location.href.includes(keyword))) {
 
         const elementsToUpdate = [
+            { selector: '#simple-title', key: 'simpleSearch' },
             { selector: '#header-advSearch-page', key: 'headerAdvSearchPage' },
             { selector: '#adv-search-button', key: 'searchButton' },
             { selector: '#list-objects-button', key: 'listObjects' },
