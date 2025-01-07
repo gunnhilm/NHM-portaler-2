@@ -1,7 +1,8 @@
 // Renders content in archive.hbs
 
 const archiveSearch = document.getElementById('archive-search-text')
-const archiveSearchForm = document.getElementById('search-button') 
+const archiveSearchForm = document.getElementById('search-form') 
+const archiveSearchFormButton = document.getElementById('search-button') 
 const errorMessage = document.getElementById('head-nb-hits')
 const nbHitsElement = document.getElementById('nb-hits') 
 const columnsToShow = 14
@@ -57,8 +58,9 @@ function removeResults() {
     try {
         const Table = document.getElementById("archive-result-table");
         Table.innerHTML = "";
-        const hits = document.getElementById("nb-hits");
-        hits.innerHTML = "";
+        // const hits = document.getElementById("nb-hits");
+        // hits.innerHTML = "";
+        nbHitsElement.innerHTML = "";
     } catch (error) {
         // do nothing
     }
@@ -144,11 +146,13 @@ async function makeButtons() {
         button.addEventListener('click', (e) => {
           removeResults();
           archiveSearch.value = '';
+          archiveSearchForm.style.display = "none"
           buttonArray.forEach(btn => {
             btn.className = "white-button";
           });
           if (type === 'journals' ) {
             button.className = "blue-button";
+
             errorMessage.innerText = ""; // remove error messages
 
             // Save the button ID to sessionStorage
@@ -175,6 +179,13 @@ async function makeButtons() {
             errorMessage.innerText = ""; // remove error messages
             const subButtons =  type[keys[0]] // ['Dagny Tande Lid', 'Andre illustrasjoner'];
             makeSubButtons(keys[0], subButtons);
+          } else {
+            // show searchfield
+            console.log('form display');
+            console.log(archiveSearchForm);
+            
+            
+            archiveSearchForm.style.display = "block"
           }
 
           e.preventDefault();
@@ -515,6 +526,7 @@ const doarchiveSearch = async (searchTerm, limit, museum, archiveCollection, lin
       showThumbnailButton(archiveCollection)
       load()
       // createArchiveTableAndFillIt(parsedResults.data, archiveCollection, showAll);
+
       errorMessage.innerText = textItems.nbHitsText[index];
       nbHitsElement.innerText = parsedResults.data.length;
       sortTable();
@@ -536,6 +548,8 @@ const doarchiveSearch = async (searchTerm, limit, museum, archiveCollection, lin
     window.history.replaceState({}, '', `${window.location.pathname}?${newUrlParams}`);
 
   } catch (error) {
+
+    
     console.error(error);
     errorMessage.innerText = textItems.serverError[index];
   }
@@ -559,7 +573,7 @@ const checkSearchParameterAndRunSearch = async () => {
 window.onload = checkSearchParameterAndRunSearch;
 
 // when somebody clicks search-button
-archiveSearchForm.addEventListener('click', (e) => {
+archiveSearchFormButton.addEventListener('click', (e) => {
     e.preventDefault()
     errorMessage.innerText = "" // fjern feilmeldinger
     doarchiveSearch() //

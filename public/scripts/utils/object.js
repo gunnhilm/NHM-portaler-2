@@ -1237,7 +1237,8 @@ function showCitation(specimenObject) {
 } 
 
 async function main () {
-   
+    // Show please wait
+    document.getElementById("please-wait").style.display = "block"
 
     // add isNew to url if opened in new tab
     if (!sessionStorage.getItem('chosenCollection')) {
@@ -1311,6 +1312,8 @@ async function main () {
     drawMapObject(specimenObject)
     renderItems()
     // showCitation(specimenObject)
+        // Show please wait
+    document.getElementById("please-wait").style.display = "none"
 }
 
 main()

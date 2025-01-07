@@ -294,7 +294,6 @@ function renderText (lang) {
             { selector: '#search-text', key: 'placeholder' },
             { selector: '#hits-per-page', key: 'hitsPerPage' },
             { selector: '#head-nb-hits', key: 'nbHitsText' },
-            { selector: '#nb-hits', key: 'tooManyHits' },
             { selector: '#first', valueAttr: 'value', key: 'firstButton' },
             { selector: '#previous', valueAttr: 'value', key: 'previousButton' },
             { selector: '#next', valueAttr: 'value', key: 'nextButton' },
