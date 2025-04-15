@@ -7,6 +7,10 @@
         <meta name="description" content="View a single object from the collection">
         <link rel="stylesheet" href="/museum/styles/styles.css">
         <link id="museumStyle" rel="stylesheet" type="text/css" href= "">
+        <link rel="stylesheet" href="/museum/scripts/leaflet/leaflet.css">
+        <link rel="stylesheet" href="/museum/scripts/leaflet/markerCluster/MarkerCluster.css">
+        <link rel="stylesheet" href="/museum/scripts/leaflet/markerCluster/MarkerCluster.Default.css">
+        <link rel="stylesheet" href="/museum/scripts/leaflet/Control.FullScreen.css">        
         <script src="/museum/scripts/utils/showCorrectMuseum.js"></script>
 
     </head>
@@ -54,23 +58,7 @@
                             <div style ="width:100%; float:left; min-widht:300px">
                                 <div id="map-style" >
                                     <div class="map-object" id="map-object"></div>
-                                    <table id="table-object" >
-                                        <tr>
-                                            <td>
-                                                <button id="zoom-button" style="display:none">Zoom</button>
-                                                <div id="zoom-modal" class="modal">
-                                                    <div class="modal-content">
-                                                        <span class="close">&times;</span>
-                                                        <span class="popuptext" id="zoom-expl-popup"></span>
-                                                    </div>    
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <button id="large-map-object-button" style="display:none"></button>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <br><br>
+                                    
                                 </div>
                             </div>
                         </td>
@@ -125,9 +113,11 @@
                 <script src="/museum/scripts/utils/textItems.js"></script>
                 <script src="/museum/scripts/utils/renderLangHeader.js"></script>
                 <script src="/museum/scripts/utils/renderLangObjPage.js"></script>
-                <script src="/museum/scripts/utils/ol/ol.js"></script>
-                <script src="/museum/scripts/utils/map.js"></script>
                 <script src="/museum/scripts/utils/tools/DNAbarcodes/barcodesCommonFunctions.js"></script>
+                <script src="/museum/scripts/leaflet/leaflet.js"></script>
+                <script src="/museum/scripts/leaflet/markerCluster/leaflet.markercluster.js"></script>
+                <script src="/museum/scripts/leaflet/Control.FullScreen.js"></script>
+                <script src="/museum/scripts/utils/mapObject.js"></script>
                 <script src="/museum/scripts/utils/object.js"></script>
                 
                  

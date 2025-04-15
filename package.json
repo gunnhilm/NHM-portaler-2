@@ -16,7 +16,7 @@
     "cors": "^2.8.5",
     "credentials": "^3.0.2",
     "csv-parser": "^2.3.5",
-    "dompurify": "^2.5.5",
+    "dompurify": "^3.2.4",
     "easy-template-x": "^3.2.1",
     "express": "^4.19.2",
     "FileReader": "^0.10.2",

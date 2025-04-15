@@ -9,7 +9,7 @@ if (language === "Norwegian") {
 }
 // figures out which museum we are in
 // out: string, abbreviation for museum
-// is called by document.getElementById('large-map-object-button').onclick
+
 const getCurrentMuseum = () => {
     const pathArray = window.location.pathname.split('/')
     const museum = pathArray[2]
@@ -25,17 +25,12 @@ const getOrganismGroup = () => {
     return orgGroup
 }
 
-
-
 // reads last search-result from sessionStorage and puts it in an array
 //  
 // is called in this file (object.js)
 const loadStringObject = () => {
     let objectJSON = ''
     objectJSON = sessionStorage.getItem('string')
-    //} else if (sessionStorage.getItem('databaseSearch') === 'corema') {
-    //    objectJSON = sessionStorage.getItem('coremaString')
-    //}
     try {
         return objectJSON ? JSON.parse(objectJSON) : []
     } catch (e) {
@@ -144,126 +139,186 @@ async function whichFileAndDb (museum,collection) {
     })
 }
 
-const collectionName = (coll,source) => {
-    let colon
-    if (source == "head") {colon=""} else {colon=":"}
-    let term
-    if (coll == "sopp") {
-        term = textItems.fungiCollection[index]
-        let href
-        if (index == 0) {
-            href ="https://www.nhm.uio.no/samlinger/mykologi/sopp/index.html"
-        } else {
-            href = "https://www.nhm.uio.no/english/collections/mycological/fungi/index.html"
-        }
-        return `<a target="_blank" class="head-collection" href=${href} >${term}${colon}</a>`
-    } else if (coll == "lav") {
-        term = textItems.lichenCollection[index]
-        return `<a target="_blank" class="head-collection" href= "https://www.nhm.uio.no/samlinger/mykologi/lavherbariet/">${term}${colon}</a>`
-    } else if (coll == "alger") {
-        term = textItems.algaeCollection[index]
-        return `<a target="_blank" class="head-collection" href= "https://www.nhm.uio.no/samlinger/botanikk/alge/">${term}${colon}</a>`
-    } else if (coll == "vascular") {
-        term = textItems.vascularCollection[index]
-        return `<a target="_blank" class="head-collection" href= "https://www.nhm.uio.no/samlinger/botanikk/karplanteherbariet/">${term}${colon}</a>`
-    } else if (coll == "moser") {
-        term = textItems.mossCollection[index]
-        return `<a target="_blank" class="head-collection" href= "https://www.nhm.uio.no/samlinger/botanikk/mose/">${term}${colon}</a>`
-    } else if (coll == "entomology") {
-        term = textItems.insectCollection[index]
-        let href 
-        if (index == 0) {
-            href ="https://www.nhm.uio.no/samlinger/zoologi/insekt/"
-        } else {
-            href = "https://www.nhm.uio.no/english/collections/zoological/insect/index.html"
-        }
-        return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
-    } else if (coll == "fisk") {
-        term = textItems.fishCollection[index]
-        return `<a target="_blank" class="head-collection" href= "https://www.nhm.uio.no/samlinger/zoologi/fisk/">${term}${colon}</a>`
-    } else if (coll == "mammals") {
-        term = textItems.mammalCollection[index]
-        let href
-        if (index == 0) {
-            href ="https://www.nhm.uio.no/samlinger/zoologi/pattedyr/"
-        } else {
-            href = "https://www.nhm.uio.no/english/collections/zoological/mammal/index.html"
-        }
-        return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
-    } else if (coll == "birds") {
-        term = textItems.birdCollection[index]
-        let href
-        if (index == 0) {
-            href ="https://www.nhm.uio.no/samlinger/zoologi/fugl/"
-        } else {
-            href = "https://www.nhm.uio.no/english/collections/zoological/bird/index.html"
-        }
-        return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
-    } else if (coll == "crustacea") {
-        term = textItems.crustaceaCollection[index]
-        let href
-            href = "https://www.nhm.uio.no/samlinger/zoologi/krepsdyr/"
-        return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
-    } else if (coll == "entomology_types") {
-        term = textItems.insectTypes[index]
-        return `${term}`
-    } else if (coll == "DNA" || coll.includes("dna")) {
-        term = textItems.DNAcollection[index]
-        let href
-        if (index == 0) {
-            href ="https://www.nhm.uio.no/samlinger/dna-bank/index.html"
-        } else {
-            href = "https://www.nhm.uio.no/english/collections/dna-bank/index.html"
-        }
-        return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
-    } else if (coll === "sperm") {
-        term = textItems.spermCollection[index]
-        let href
-        if (index == 0) {
-            href ="https://www.nhm.uio.no/samlinger/zoologi/fugl/"
-        } else {
-            href = "https://www.nhm.uio.no/english/collections/zoological/bird/index.html"
-        }
-        return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
-    } else if (coll === "malmer") {
-        term = textItems.malmer[index]
-        let href
-        if (index == 0) { href = "https://www.nhm.uio.no/samlinger/geologi/index.html"}
-        else {href = "https://www-int.nhm.uio.no/english/collections/geological/index.html"}
-        return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
-    } else if (coll === "utenlandskeBergarter") {
-        term = textItems.utenlandskeBA[index]
-        let href
-        if (index == 0) { href = "https://www.nhm.uio.no/samlinger/geologi/index.html"}
-        else {href = "https://www-int.nhm.uio.no/english/collections/geological/index.html"}
-        return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
-    } else if (coll === "oslofeltet") {
-        term = textItems.oslofeltet[index]
-        let href
-        if (index == 0) { href = "https://www.nhm.uio.no/samlinger/geologi/index.html"}
-        else {href = "https://www-int.nhm.uio.no/english/collections/geological/index.html"}
-        return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
-    } else if (coll === "palTyper") {
-        term = textItems.palTyper[index]
-        let href
-        if (index == 0) { href = "https://www.nhm.uio.no/samlinger/paleontologi/index.html"}
-        else {href = "https://www-int.nhm.uio.no/english/collections/paleontological/"}
-        return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
-    } else if (coll === "fossiler") {
-        term = textItems.fossiler[index]
-        let href
-        if (index == 0) { href = "https://www.nhm.uio.no/samlinger/paleontologi/index.html"}
-        else {href = "https://www-int.nhm.uio.no/english/collections/paleontological/"}
-        return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
-    } else if (coll === "utad") {
-        term = textItems.utad[index]
-        return term
-    } else if (coll === "eco_bot") {
-        term = textItems.eco_bot[index]
-        return term
+const collectionUrls = {
+    sopp: ["https://www.nhm.uio.no/samlinger/mykologi/sopp/index.html", "https://www.nhm.uio.no/english/collections/mycological/fungi/index.html"],
+    lav: ["https://www.nhm.uio.no/samlinger/mykologi/lavherbariet/"],
+    alger: ["https://www.nhm.uio.no/samlinger/botanikk/alge/"],
+    vascular: ["https://www.nhm.uio.no/samlinger/botanikk/karplanteherbariet/"],
+    moser: ["https://www.nhm.uio.no/samlinger/botanikk/mose/"],
+    entomology: ["https://www.nhm.uio.no/samlinger/zoologi/insekt/", "https://www.nhm.uio.no/english/collections/zoological/insect/index.html"],
+    fisk: ["https://www.nhm.uio.no/samlinger/zoologi/fisk/"],
+    mammals: ["https://www.nhm.uio.no/samlinger/zoologi/pattedyr/", "https://www.nhm.uio.no/english/collections/zoological/mammal/index.html"],
+    birds: ["https://www.nhm.uio.no/samlinger/zoologi/fugl/", "https://www.nhm.uio.no/english/collections/zoological/bird/index.html"],
+    crustacea: ["https://www.nhm.uio.no/samlinger/zoologi/krepsdyr/"],
+    DNA: ["https://www.nhm.uio.no/samlinger/dna-bank/index.html", "https://www.nhm.uio.no/english/collections/dna-bank/index.html"],
+    sperm: ["https://www.nhm.uio.no/samlinger/zoologi/fugl/", "https://www.nhm.uio.no/english/collections/zoological/bird/index.html"],
+    malmer: ["https://www.nhm.uio.no/samlinger/geologi/index.html", "https://www-int.nhm.uio.no/english/collections/geological/index.html"],
+    utenlandskeBergarter: ["https://www.nhm.uio.no/samlinger/geologi/index.html", "https://www-int.nhm.uio.no/english/collections/geological/index.html"],
+    oslofeltet: ["https://www.nhm.uio.no/samlinger/geologi/index.html", "https://www-int.nhm.uio.no/english/collections/geological/index.html"],
+    palTyper: ["https://www.nhm.uio.no/samlinger/paleontologi/index.html", "https://www-int.nhm.uio.no/english/collections/paleontological/"],
+    fossiler: ["https://www.nhm.uio.no/samlinger/paleontologi/index.html", "https://www-int.nhm.uio.no/english/collections/paleontological/"],
+};
+
+const collectionTextReferences = {
+    sopp: textItems.fungiCollection,
+    lav: textItems.lichenCollection,
+    alger: textItems.algaeCollection,
+    vascular: textItems.vascularCollection,
+    moser: textItems.mossCollection,
+    entomology: textItems.insectCollection,
+    fisk: textItems.fishCollection,
+    mammals: textItems.mammalCollection,
+    birds: textItems.birdCollection,
+    crustacea: textItems.crustaceaCollection,
+    entomology_types: textItems.insectTypes,
+    DNA: textItems.DNAcollection,
+    sperm: textItems.spermCollection,
+    malmer: textItems.malmer,
+    utenlandskeBergarter: textItems.utenlandskeBA,
+    oslofeltet: textItems.oslofeltet,
+    palTyper: textItems.palTyper,
+    fossiler: textItems.fossiler,
+    utad: textItems.utad,
+    eco_bot: textItems.eco_bot,
+};
+
+//add urls to the collections on the object page
+const collectionName = (coll, source) => {
+    const colon = source === "head" ? "" : ":";
+    const term = collectionTextReferences[coll]?.[index];
+
+    if (!term) return '';
+
+    if (coll === "entomology_types" || coll === "utad" || coll === "eco_bot") {
+        return term;
     }
+
+    const href = (index === 0 && collectionUrls[coll].length > 1) ? collectionUrls[coll][0] : collectionUrls[coll][1] || collectionUrls[coll][0];
     
-}
+    return `<a target="_blank" class="head-collection" href="${href}">${term}${colon}</a>`;
+};
+
+
+// const collectionName = (coll,source) => {
+//     let colon
+//     if (source == "head") {colon=""} else {colon=":"}
+//     let term
+//     if (coll == "sopp") {
+//         term = textItems.fungiCollection[index]
+//         let href
+//         if (index == 0) {
+//             href ="https://www.nhm.uio.no/samlinger/mykologi/sopp/index.html"
+//         } else {
+//             href = "https://www.nhm.uio.no/english/collections/mycological/fungi/index.html"
+//         }
+//         return `<a target="_blank" class="head-collection" href=${href} >${term}${colon}</a>`
+//     } else if (coll == "lav") {
+//         term = textItems.lichenCollection[index]
+//         return `<a target="_blank" class="head-collection" href= "https://www.nhm.uio.no/samlinger/mykologi/lavherbariet/">${term}${colon}</a>`
+//     } else if (coll == "alger") {
+//         term = textItems.algaeCollection[index]
+//         return `<a target="_blank" class="head-collection" href= "https://www.nhm.uio.no/samlinger/botanikk/alge/">${term}${colon}</a>`
+//     } else if (coll == "vascular") {
+//         term = textItems.vascularCollection[index]
+//         return `<a target="_blank" class="head-collection" href= "https://www.nhm.uio.no/samlinger/botanikk/karplanteherbariet/">${term}${colon}</a>`
+//     } else if (coll == "moser") {
+//         term = textItems.mossCollection[index]
+//         return `<a target="_blank" class="head-collection" href= "https://www.nhm.uio.no/samlinger/botanikk/mose/">${term}${colon}</a>`
+//     } else if (coll == "entomology") {
+//         term = textItems.insectCollection[index]
+//         let href 
+//         if (index == 0) {
+//             href ="https://www.nhm.uio.no/samlinger/zoologi/insekt/"
+//         } else {
+//             href = "https://www.nhm.uio.no/english/collections/zoological/insect/index.html"
+//         }
+//         return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
+//     } else if (coll == "fisk") {
+//         term = textItems.fishCollection[index]
+//         return `<a target="_blank" class="head-collection" href= "https://www.nhm.uio.no/samlinger/zoologi/fisk/">${term}${colon}</a>`
+//     } else if (coll == "mammals") {
+//         term = textItems.mammalCollection[index]
+//         let href
+//         if (index == 0) {
+//             href ="https://www.nhm.uio.no/samlinger/zoologi/pattedyr/"
+//         } else {
+//             href = "https://www.nhm.uio.no/english/collections/zoological/mammal/index.html"
+//         }
+//         return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
+//     } else if (coll == "birds") {
+//         term = textItems.birdCollection[index]
+//         let href
+//         if (index == 0) {
+//             href ="https://www.nhm.uio.no/samlinger/zoologi/fugl/"
+//         } else {
+//             href = "https://www.nhm.uio.no/english/collections/zoological/bird/index.html"
+//         }
+//         return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
+//     } else if (coll == "crustacea") {
+//         term = textItems.crustaceaCollection[index]
+//         let href
+//             href = "https://www.nhm.uio.no/samlinger/zoologi/krepsdyr/"
+//         return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
+//     } else if (coll == "entomology_types") {
+//         term = textItems.insectTypes[index]
+//         return `${term}`
+//     } else if (coll == "DNA" || coll.includes("dna")) {
+//         term = textItems.DNAcollection[index]
+//         let href
+//         if (index == 0) {
+//             href ="https://www.nhm.uio.no/samlinger/dna-bank/index.html"
+//         } else {
+//             href = "https://www.nhm.uio.no/english/collections/dna-bank/index.html"
+//         }
+//         return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
+//     } else if (coll === "sperm") {
+//         term = textItems.spermCollection[index]
+//         let href
+//         if (index == 0) {
+//             href ="https://www.nhm.uio.no/samlinger/zoologi/fugl/"
+//         } else {
+//             href = "https://www.nhm.uio.no/english/collections/zoological/bird/index.html"
+//         }
+//         return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
+//     } else if (coll === "malmer") {
+//         term = textItems.malmer[index]
+//         let href
+//         if (index == 0) { href = "https://www.nhm.uio.no/samlinger/geologi/index.html"}
+//         else {href = "https://www-int.nhm.uio.no/english/collections/geological/index.html"}
+//         return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
+//     } else if (coll === "utenlandskeBergarter") {
+//         term = textItems.utenlandskeBA[index]
+//         let href
+//         if (index == 0) { href = "https://www.nhm.uio.no/samlinger/geologi/index.html"}
+//         else {href = "https://www-int.nhm.uio.no/english/collections/geological/index.html"}
+//         return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
+//     } else if (coll === "oslofeltet") {
+//         term = textItems.oslofeltet[index]
+//         let href
+//         if (index == 0) { href = "https://www.nhm.uio.no/samlinger/geologi/index.html"}
+//         else {href = "https://www-int.nhm.uio.no/english/collections/geological/index.html"}
+//         return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
+//     } else if (coll === "palTyper") {
+//         term = textItems.palTyper[index]
+//         let href
+//         if (index == 0) { href = "https://www.nhm.uio.no/samlinger/paleontologi/index.html"}
+//         else {href = "https://www-int.nhm.uio.no/english/collections/paleontological/"}
+//         return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
+//     } else if (coll === "fossiler") {
+//         term = textItems.fossiler[index]
+//         let href
+//         if (index == 0) { href = "https://www.nhm.uio.no/samlinger/paleontologi/index.html"}
+//         else {href = "https://www-int.nhm.uio.no/english/collections/paleontological/"}
+//         return `<a target="_blank" class="head-collection" href= ${href}>${term}${colon}</a>`
+//     } else if (coll === "utad") {
+//         term = textItems.utad[index]
+//         return term
+//     } else if (coll === "eco_bot") {
+//         term = textItems.eco_bot[index]
+//         return term
+//     }
+    
+// }
 
 
 // functionality to next-object-buttons
@@ -324,7 +379,6 @@ const makeNavButtons  = (allObject, specimenObject) => {
     }
 }
 
-
 const hideNavButtons = () => {
     document.getElementById("next-object").style.display = 'none'
     document.getElementById("previous-object").style.display = 'none'
@@ -375,7 +429,6 @@ const locality = (obj) => {
         return `${obj.locality}`
     }
 }
-
 
 
 // formats coordinates to nice readable format
@@ -545,7 +598,6 @@ const makeBioTable = () => {
 
 }
 
-
 // builds table for object-data for UTAD's collections
 // - inserts row for each property the object has, and that we decided to show
 // - add cells, with id, class and style
@@ -582,9 +634,6 @@ const makeEcoBotTable = (specimenObject) => {
 
 }
 
-
-
-
 // builds table for object-data for UTAD's collections
 // - inserts row for each property the object has, and that we decided to show
 // - add cells, with id, class and style
@@ -615,7 +664,6 @@ const makeUTADTable = (specimenObject) => {
             document.querySelector(`#${key}`).innerHTML = value
     }
 }
-
 
 // builds table for object-data for pal-collection
 // - inserts row for each property the object has, and that we decided to show
@@ -717,7 +765,6 @@ async function showObjectData (specimenObject,objectTable,order) {
         
     } else if (objectTable.rows.length < 3) { // no item added yet
         if (order === "second") {
-console.log("kommer vi hit?")
             if (specimenObject.musitCollectionCode === "F") {cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.objectHeaderColl[index]}${collectionName("sopp","table")}</span>`}
             else if (specimenObject.musitCollectionCode === "L") {cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.objectHeaderColl[index]}${collectionName("lav","table")}</span>`}
             else if (specimenObject.musitCollectionCode === "V") {cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.objectHeaderColl[index]}${collectionName("vascular","table")}</span>`}
@@ -725,7 +772,6 @@ console.log("kommer vi hit?")
             
         }
         else {
-console.log("hit?")
             cell1.innerHTML = `<span class = 'obj-header' style = 'font-weight: normal'>${textItems.objectHeaderColl[index]}${collectionName(coll,"table")}</span>`}
     }
     
@@ -1103,15 +1149,13 @@ async function showData (specimenObject, orgGroup, overviewObject) {
             let dataTableHeight = document.getElementById('left-table').getBoundingClientRect()
             let mapDivHeight = document.getElementById('map-style').getBoundingClientRect()
             
-            let divHeight
+            let divHeight = 0
             if (dataTableHeight.height > mapDivHeight.height) {divHeight = dataTableHeight.height} else {divHeight = mapDivHeight.height}
         }
     } catch (error) {
         document.getElementById('musit-regno').innerHTML = textItems.objError[index]
     }
 }
-
-
 
 // photo:
 // shows next image when nextImage-button is clicked, if there are more images for object
@@ -1148,6 +1192,10 @@ function changeImage(index, direction, smallImageList, imageList) {
 function reducePhoto(photo) {
     return photo.replace('jpeg', 'small')
 }
+
+
+
+
 
 // renders photo(s) and next- and previous-photo buttons
 // in: specimenObject (object)
@@ -1198,24 +1246,19 @@ const showMedia = (specimenObject) => {
     }
 }
 
-
 if (sessionStorage.getItem('chosenCollection') === 'utad') {
     const mapEl = document.getElementById('map-style'); 
     mapEl.style.display = "none";
 }
 
-
-
 // large map
 const id = urlParams.get('id')
-document.getElementById('large-map-object-button').onclick = () => {
-    window.open(href=`${urlPath}/${getCurrentMuseum()}/mapObject/?id=${id}`)
-}
+
 
 // put content in html-boxes
-async function renderItems () {
+async function renderItems (specimenObject) {
     try {
-        renderObjectText(language) // in renderLangObjPage.js
+        renderObjectText(language, specimenObject) // in renderLangObjPage.js
     } catch (error) {
         console.log(error);
     }
@@ -1245,11 +1288,13 @@ async function main () {
         if (!window.location.href.includes("isNew")) {
             location.replace(`${window.location.href}&isNew=yes`)
         }
-        
     }
     
-    // from file newObjectPage.js
-   await newObjectPageMain()
+   // from file newObjectPage.js
+   // it will always retrive from the server the object info, and if it is a new  page also set variables concerning, museum colletion, orggroup ect.
+   let specimenObject = await newObjectPageMain()
+   specimenObject = specimenObject[0] 
+   
    const urlParams = new URLSearchParams(window.location.search)
    await whichFileAndDb(urlParams.get("museum"),urlParams.get("samling")) 
    if (language === "Norwegian") {
@@ -1257,11 +1302,12 @@ async function main () {
     } else if (language === "English") {
         document.querySelector('#language').innerHTML = "Norwegian website"
     }
-      // from file renderLangObjPage.js
+    // from file renderLangObjPage.js
       
 
    // renderObjectText(language)
    const orgGroup = getOrganismGroup()
+
    //get the object from session storage
    const allObject = loadStringObject()
    // set OrgGruop
@@ -1269,7 +1315,8 @@ async function main () {
    
    
    // get the correct object
-    let specimenObject = await getspecimenData(allObject)
+    // let specimenObject = await getspecimenData(allObject)
+    
     if(Array.isArray(allObject) && (allObject.length > 2) && urlParams.get("isNew") != "yes") {
         makeNavButtons(allObject, specimenObject)
         makeBackButton()
@@ -1277,14 +1324,16 @@ async function main () {
        hideNavButtons()
        makeBackButton()
        if (urlParams.get("isNew") == "yes") { 
-        document.getElementById("back-to-result").style.display = 'none'
-        makeCloseButton()
-        document.getElementById("objClose").style.display = 'inline'
-    }
-       
+            document.getElementById("back-to-result").style.display = 'none'
+            makeCloseButton()
+            document.getElementById("objClose").style.display = 'inline'
+        }
    }
+
    let overviewObject = {}
-   if (specimenObject.collectionCode === "F") {
+console.log(specimenObject);
+
+   if (specimenObject.collectionCode === "F") {    
         fungiOverview = await getOverview() // Makes a request to server to get an array of all species in the fungal-barcoding-overview-file, and number of validated and failed sequences
 
         overviewObject = fungiOverview.find((el => {
@@ -1307,11 +1356,12 @@ async function main () {
         } 
         
     }
+    
     await showData(specimenObject, orgGroup, overviewObject)
     showMedia(specimenObject)
     drawMapObject(specimenObject)
-    renderItems()
-    // showCitation(specimenObject)
+    renderItems(specimenObject)
+
         // Show please wait
     document.getElementById("please-wait").style.display = "none"
 }

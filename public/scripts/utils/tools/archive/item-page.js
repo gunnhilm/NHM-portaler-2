@@ -3,10 +3,12 @@ function getURLParameters() {
     const pageID = urlParams.get('pageID');
     const documentType = urlParams.get('documentType');
     const force = urlParams.get('force') || false;
+    const lineNumber = urlParams.get('lineNumber');
     return {
       pageID,
       documentType,
-      force
+      force,
+      lineNumber
     };
 
   }
@@ -117,15 +119,13 @@ async function checkFiles(folderName, fileName, directImagePath) {
 // calls archiveResultTable(..)
 // is called in archiveSearchForm.eventlistener
 const doarchiveSearch = async (limit = 2000) => {
-    const { pageID, documentType, force } = getURLParameters();
-    const url = `${urlPath}/search/?search=${pageID}&museum=${getCurrentMuseum()}&samling=${documentType}&linjeNumber=0&limit=${limit}`;
-  
+    const { pageID, documentType, force, lineNumber } = getURLParameters();    
+    const url = `${urlPath}/getLineByNumber/?museum=${getCurrentMuseum()}&samling=${documentType}&linjeNumber=${lineNumber}`;
+    
     try {
       const response = await fetch(url);
       if (!response.ok) throw new Error(`Error: ${response.status}`);
-      
       const data = await response.json();
-      
 
       if (data.error) throw new Error(data.error);
   
@@ -161,17 +161,17 @@ async function checkForImage(directImagePath) {
     const downloadContainer = document.getElementById('item-download-link');
     mediaObject.matchingFiles.forEach(imageFile => {
         if(imageFile.includes('tif')) {
-        // make a txt link to download the file
-        const downloadLink = document.createElement('a');
-        downloadLink.href = urlPath + '/' + mediaObject.folderPath + imageFile;
-        
-        downloadLink.target = '_blank';
+          // make a txt link to download the file
+          const downloadLink = document.createElement('a');
+          downloadLink.href = urlPath + '/' + mediaObject.folderPath + imageFile;
+          
+          downloadLink.target = '_blank';
 
-        const text = document.createElement('span');
-        text.textContent = 'Download as TIF';
+          const text = document.createElement('span');
+          text.textContent = 'Download as TIF';
 
-        downloadLink.appendChild(text);
-        downloadContainer.appendChild(downloadLink);
+          downloadLink.appendChild(text);
+          downloadContainer.appendChild(downloadLink);
         } else {
           const imageLink = document.createElement('a');
           imageLink.href = urlPath + '/'  + mediaObject.folderPath + imageFile;
@@ -184,9 +184,6 @@ async function checkForImage(directImagePath) {
           imageContainer.appendChild(imageLink);
         }
       });
-     
-
-
     // Do something with the image elements
   } catch (error) {
     console.error(error);

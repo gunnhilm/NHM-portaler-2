@@ -9,7 +9,7 @@
 // out: two strings (in an array); name in one string and 
 // author in another
 // is called in showData()
-const italicSpeciesname = (string) => {
+const italicSpeciesname = (string) => {   
     string = string.trim()
     let author = ''
     let array = string.split(" ")

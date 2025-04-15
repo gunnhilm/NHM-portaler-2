@@ -15,7 +15,7 @@ function activateLoanButton () {
         for (const el of tempList) {
             if (el.name === collection && el.loan) {
                 console.log('her blir det lån');
-                return //true
+                return 
             }
         }
         tempList = ""
@@ -126,7 +126,29 @@ function compare(subMusitData) {
     download('compare.txt',compArray.toString())  
     
 }
+
+function determineMuseumAndURLPath(urlPath) {
+    let museumURLPath;
+    let museum = '';
     
+    if (window.location.href.includes('/um')) {
+        museumURLPath = urlPath + "/um";
+        museum = 'um';
+    } else if (window.location.href.includes('tmu')) {
+        museumURLPath = urlPath + "/tmu";
+        museum = 'tmu';
+    } else if (window.location.href.includes('nbh')) {
+        museumURLPath = urlPath + "/nbh";
+        museum = 'nbh';
+    } else {
+        museumURLPath = urlPath + "/nhm";
+        museum = 'nhm';
+    }
+
+    return { museumURLPath, museum };
+}
+
+
 // renders result table
 // input: subMusitData (JSON; part of search result that is rendered on page)
 // input: musitData (JSON; searchResult, all of it)
@@ -139,89 +161,101 @@ function compare(subMusitData) {
 //	is called by 
 //	drawList()
 //	addSortingText(…)
-const resultTable = (subMusitData, musitData) => {   
-    // compare(subMusitData)
+const resultTable = (subMusitData, musitData) => {  
     try {
+        let { museumURLPath, museum } = determineMuseumAndURLPath(urlPath);
+        const headers = musitData[0]
+        
+        const scientificNameIndex = headers.indexOf('scientificName')
+        const genusIndex = headers.indexOf('genus')
+        const specificEpithetIndex = headers.indexOf('specificEpithet')
+        const catalogNumberIndex = headers.indexOf('catalogNumber');
+        const institutionCodeIndex = headers.indexOf('institutionCode');
+        const collectionCodeIndex = headers.indexOf('collectionCode');
+        const recordedByIndex = headers.indexOf('recordedBy');
+        const lineNumberIndex = headers.indexOf('lineNumber');
+
+        
         table.innerHTML = ""
         const row = table.insertRow(-1)
         for (let i = -1; i < pageList.length; i++) { // vis en tabell med resultater som er like lang som det vi ba om pageList.length; 
             if (i === -1) {     // her kommer tittellinjen
-            const headerRow = row;
-            const headerCell = []
-            let org
-            if (sessionStorage.getItem('organismGroup').includes('geologi')) {
-                org = 'geologi'
-            } else { org = 'other'}
-            for (let j = 0; j < 13; j++) {
-                headerCell.push(headerRow.appendChild(document.createElement("th")))
-            }
-            headerCell[2].className += "uncertainty"
-            headerCell[3].className += "innsamler"
-            headerCell[4].className += "dato"
-            headerCell[5].className += "land"
-            headerCell[9].className += "sampleType"
-            fillResultHeaders(org,headerCell,musitData)
-                    
+                const headerRow = row;
+                const headerCell = []
+                let org = ''
+                if (sessionStorage.getItem('organismGroup').includes('geologi')) {
+                    org = 'geologi'
+                } else { org = 'other'}
 
+                for (let j = 0; j < 13; j++) {
+                    headerCell.push(headerRow.appendChild(document.createElement("th")))
+                }
+                headerCell[2].className += "uncertainty"
+                headerCell[3].className += "innsamler"
+                headerCell[4].className += "dato"
+                headerCell[5].className += "land"
+                headerCell[9].className += "sampleType"
+                
+                fillResultHeaders(org,headerCell,musitData)
 
             }  else { // Her kommer innmaten i tabellen, selve resultatene
-            const row = table.insertRow(-1)
-            const cell1 = row.insertCell(0) //cat no
-            const cell2 = row.insertCell(1) //Takson
-            const cell3 = row.insertCell(2) // uncertainty (før innsamler)
-            cell3.className += "cell3"
-            const cell4 = row.insertCell(3) //Innsamler (før dato)
-            cell4.className += "cell4"
-            const cell5 = row.insertCell(4) //Dato (før land)
-            cell5.className += "cell5";
-            const cell6 = row.insertCell(5) // Land (før kommune)
-            cell6.className += "cell6"
-            const cell7 = row.insertCell(6) // Kommune (før sted)
-            const cell8 = row.insertCell(7) // Sted (før foto)
-            const cell9 = row.insertCell(8) // Habitat (før koord)
-            const cell10 = row.insertCell(9) // Items (før hidden; items)
-            cell10.className += "cell10";
-            const cell11 = row.insertCell(10) // foto
-            const cell12 = row.insertCell(11) // koord
-            const cell13 = row.insertCell(12) // velg
-            
-                let museumURLPath
-                let museum = ''
-                if (window.location.href.includes('/um')) { 
-                    museumURLPath = urlPath + "/um"
-                    museum = 'um'
-                } else if (window.location.href.includes('tmu')) {
-                    museumURLPath = urlPath + "/tmu"
-                    museum = 'tmu'
-                } else if (window.location.href.includes('nbh')) {
-                    museumURLPath = urlPath + "/nbh"
-                    museum = 'nbh'
-                } else {
-                    museumURLPath = urlPath + "/nhm"
-                    museum = 'nhm'
-                }
+                if(i === 0) {continue} // this contains the headers
 
-                let prefix
+                const row = table.insertRow(-1);
+
+                const cells = Array.from({ length: 13 }, (_, index) => {
+                    const cell = row.insertCell(index);
+                    return cell;
+                });
+                
+                // Assign class names to specific cells
+                cells[2].className += "cell3";  // uncertainty (før innsamler)
+                cells[3].className += "cell4";  // Innsamler (før dato)
+                cells[4].className += "cell5";  // Dato (før land)
+                cells[5].className += "cell6";  // Land (før kommune)
+                cells[9].className += "cell10"; // Items (før hidden; items)
+                
+                // create named references
+                const [cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11, cell12, cell13] = cells;
+
+                //cell 1
+                let prefix = ''
+                const institutionCode = subMusitData[i][institutionCodeIndex]
+                const collectionCode = subMusitData[i][collectionCodeIndex]
+                const catalogNumber = subMusitData[i][catalogNumberIndex];
+                const lineNumber = subMusitData[i][lineNumberIndex];
+                
                 if (sessionStorage.getItem('organismGroup').includes('paleontologi')) {
                     prefix = 'PMO '
                 } else if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
                     prefix = 'NHMO-J-'
-                } else if (subMusitData[i].institutionCode && !(/[a-zA-Z]/).test(subMusitData[i].catalogNumber.charAt(0))) {
-                    prefix = subMusitData[i].institutionCode + '-' + subMusitData[i].collectionCode + '-'    
+                } else if (institutionCode && !(/[a-zA-Z]/).test(catalogNumber.charAt(0))) {
+                    prefix = institutionCode + '-' + collectionCode + '-'    
                 } else {
                     prefix = ''
                 }
-                if (subMusitData[i].catalogNumber) {
-                    if (subMusitData[i].catalogNumber.includes('J')) { subMusitData[i].catalogNumber = subMusitData[i].catalogNumber.substring(2)}
-                    if (subMusitData[i].catalogNumber.includes('/')) { // mose-data
-                        let strippedCatNo = subMusitData[i].catalogNumber.substring(0,subMusitData[i].catalogNumber.indexOf('/'))
-                        cell1.innerHTML =  `<a id="object-link-for-${strippedCatNo}" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${strippedCatNo} </a>`
-                    } else {
-                        let coll = collection.value
 
-                        cell1.innerHTML =  `<a id="object-link-for-${subMusitData[i].catalogNumber}" href="${museumURLPath}/object/?id=${subMusitData[i].catalogNumber}&samling=${coll}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${subMusitData[i].catalogNumber} </a>`
+                
+                if (catalogNumber) {               
+                    let strippedCatalogNumber = catalogNumber;
+                
+                    if (catalogNumber.includes('J')) {
+                        strippedCatalogNumber = catalogNumber.substring(2);
                     }
+                
+                    let link = '';
+                    const language = sessionStorage.getItem('language');
+                    const collection = sessionStorage.getItem('chosenCollection') || collection.value; // Use sessionStorage or default to collection.value
+                
+                    if (catalogNumber.includes('/')) { // Mose-data
+                        strippedCatalogNumber = catalogNumber.substring(0, catalogNumber.indexOf('/'));
+                    }
+                    
+                    link = `<a id="object-link-for-${strippedCatalogNumber}" href="${museumURLPath}/object/?id=${catalogNumber}&samling=${collection}&museum=${museum}&lang=${language}&linjeNummer=${lineNumber}">${prefix}${strippedCatalogNumber}</a>`;
+                    
+                    cell1.innerHTML = link;
                 }
+                
                 //cell 2
                 if (sessionStorage.getItem('organismGroup').includes('geologi')) {
                     if (sessionStorage.getItem('chosenCollection') === 'oslofeltet') {
@@ -231,88 +265,96 @@ const resultTable = (subMusitData, musitData) => {
                     }
                     
                 } else if (sessionStorage.getItem('organismGroup').includes('zoologi')) {
-                    if (subMusitData[i].specificEpithet && subMusitData[i].specificEpithet != "") {
-                        cell2.innerHTML = `<span style=font-style:italic>${subMusitData[i].genus} ${subMusitData[i].specificEpithet}</span>`
+                    if (subMusitData[i][specificEpithetIndex] && subMusitData[i][genusIndex] !== "") {
+                        cell2.innerHTML = `<span style=font-style:italic>${subMusitData[i][genusIndex]} ${subMusitData[i][specificEpithetIndex]}</span>`
                     } else {
-                        cell2.innerHTML = `<span style=font-style:italic>${subMusitData[i].scientificName}</span>`
+                        console.log('dit?');
+                        console.log(subMusitData[i][scientificNameIndex]);
+                        
+                        
+                        cell2.innerHTML = `<span style=font-style:italic>${subMusitData[i][scientificNameIndex]}</span>`
                     }
                     
                 } else {
-                    let nameArray = italicSpeciesname(subMusitData[i].scientificName)
+                    let nameArray = italicSpeciesname(subMusitData[i][scientificNameIndex])
                     cell2.innerHTML = `<span style=font-style:italic>${nameArray[0].replace(/\"/g,'')}</span>` + ' ' + `<span>${nameArray[1].replace(/\"/g,'')}</span>`
-                }    
+                }  
+
                 cell3.innerHTML = subMusitData[i].identificationQualifier
+
+                //cell4 recordedBy
+                const recordedBy = subMusitData[i][recordedByIndex];
                 // to avoid lots of text in collector-field: replace more than two names with et al. 
                 // when  collector is written "lastName, firstName", only first name is included, followed by et al. if more names
                 // let recByArray = subMusitData[i].recordedBy.split(' ')
-                if (subMusitData[i].recordedBy) {
-                    if ((subMusitData[i].recordedBy.match(/,/g) || []).length > 1) {
+                if (recordedBy) {
+                    if ((recordedBy.match(/,/g) || []).length > 1) {
                         if (!sessionStorage.getItem("organismGroup").includes('paleontologi')) {
-                            let x = subMusitData[i].recordedBy.indexOf(",")
-                            let y = subMusitData[i].recordedBy.substr(0,x)
+                            let x = recordedBy.indexOf(",")
+                            let y = recordedBy.substr(0,x)
                             cell4.innerHTML = y + " et al."    
                         }
                     } else {
-                        cell4.innerHTML = subMusitData[i].recordedBy
+                        cell4.innerHTML = recordedBy
                     }    
                 }
                 
-                cell5.innerHTML = subMusitData[i].eventDate
-                cell6.innerHTML = subMusitData[i].country
-                if (subMusitData[i].county) {cell7.innerHTML = subMusitData[i].county}
-                cell8.innerHTML = subMusitData[i].locality
-                cell9.innerHTML = subMusitData[i].habitat
+                cell5.innerHTML = subMusitData[i][headers.indexOf('eventDate')]
+                cell6.innerHTML = subMusitData[i][headers.indexOf('country')] 
+                if (subMusitData[i][headers.indexOf('county')]) {cell7.innerHTML = subMusitData[i][headers.indexOf('county')]}
+                cell8.innerHTML = subMusitData[i][headers.indexOf('locality')]
+                cell9.innerHTML = subMusitData[i][headers.indexOf('habitat')]
+
                 // cell 10 items
-                if (museumURLPath = urlPath + "/nhm") {
-                    // if we are in a corema-collection
-                    if (document.querySelector('#collection-select  option:checked').label.includes('DNA')) {
-                        // corema-collections that are both in corema and musit (entomology, fungi, vascular, lichen)
-                        if (sessionStorage.getItem('chosenCollection').includes('dna_')) {
-                            if (subMusitData[i].musitBasisOfRecord) {
-                                cell10.innerHTML = subMusitData[i].materialSampleType + ' | ' + subMusitData[i].musitBasisOfRecord
-                            } else {
-                                cell10.innerHTML = subMusitData[i].materialSampleType
-                            }
-                            
-                        // collections only in corema
-                    } else if (sessionStorage.getItem('chosenCollection') === 'mammals' || sessionStorage.getItem('chosenCollection') === 'birds' || sessionStorage.getItem('chosenCollection') === 'invertebrates') {
-                            if (subMusitData[i].preparationType) {cell10.innerHTML = subMusitData[i].preparationType}
-                        
+                const basisOfRecordIndex = headers.indexOf('basisOfRecord');
+                const basisOfRecord = subMusitData[i][basisOfRecordIndex];
+                const chosenCollection = sessionStorage.getItem('chosenCollection');
+                const preparationType = subMusitData[i][headers.indexOf('preparationType')] || '';               
+                const coremaBasisOfRecord = subMusitData[i][headers.indexOf('coremaBasisOfRecord')] || '';
+                const materialSampleType = subMusitData[i][headers.indexOf('materialSampleType')] || '';
+                let musitBasisOfRecord = basisOfRecord || '';
+                let cell10Content = '';
+
+                const isCoremaCollection = document.querySelector('#collection-select option:checked').label.includes('DNA');
+                const isCoremaInMusit = chosenCollection.includes('dna_');
+                const isSpecialCollection = ['mammals', 'birds', 'invertebrates'].includes(chosenCollection);
+
+                function formatPreparationType(prepType) {
+                    return prepType.replace(/\"/g, '');
+                }
+
+                if (museumURLPath === `${urlPath}/nhm`) {
+                    if (isCoremaCollection) {
+                        if (isCoremaInMusit) {
+                            cell10Content = materialSampleType + (basisOfRecord ? ` | ${basisOfRecord}` : '');
+                        } else if (isSpecialCollection) {
+                            cell10Content = preparationType || '';
                         } else {
-                            // if there is no data in preparationType (subtype of sample): use basisOfRecord or coremaBasisOfRecord
-                            if (!subMusitData[i].preparationType || subMusitData[i].preparationType === '' || !(/[a-zA-Z]/).test(subMusitData[i].preparationType)) {
-                                if (subMusitData[i].basisOfRecord) { cell10.innerHTML = subMusitData[i].basisOfRecord }
-                                else if (subMusitData[i].coremaBasisOfRecord) {cell10.innerHTML = subMusitData[i].coremaBasisOfRecord}
-                            } else { 
-                                // { cell10.innerHTML = subMusitData[i].preparationType.replace(/\"/g,'') }
-                                let musitBasisOfRecord
-                                if (subMusitData[i].musitBasisOfRecord) {musitBasisOfRecord = subMusitData[i].musitBasisOfRecord}
-                                else if (subMusitData[i].basisOfRecord) {musitBasisOfRecord = subMusitData[i].basisOfRecord}
-                                cell10.innerHTML = subMusitData[i].preparationType.replace(/\"/g,'')  + ' | ' + musitBasisOfRecord
+                            if (!preparationType || !/[a-zA-Z]/.test(preparationType)) {
+                                cell10Content = basisOfRecord || coremaBasisOfRecord;
+                            } else {
+                                cell10Content = formatPreparationType(preparationType) + (musitBasisOfRecord ? ` | ${musitBasisOfRecord}` : '');
                             }
                         }
-
-                        
-                    // if we are in a musit collection (or other)
-                    } else { 
-                        // if there is no data in preparationType (subtype of sample): use basisOfRecord or coremaBasisOfRecord (e.g. "MaterialSample")
-                        if (!subMusitData[i].preparationType || subMusitData[i].preparationType === '') {
-                            if (subMusitData[i].basisOfRecord) { cell10.innerHTML = subMusitData[i].basisOfRecord }
-                            else if (subMusitData[i].coremaBasisOfRecord) {cell10.innerHTML = subMusitData[i].coremaBasisOfRecord}
-                        // if there is data in preparationType: use that
-                        } else if (subMusitData[i].preparationType != '') {
-                            let musitBasisOfRecord
-                                if (subMusitData[i].musitBasisOfRecord) {musitBasisOfRecord = subMusitData[i].musitBasisOfRecord}
-                                else if (subMusitData[i].basisOfRecord) {musitBasisOfRecord = subMusitData[i].basisOfRecord}
-                                cell10.innerHTML = subMusitData[i].preparationType.replace(/\"/g,'') + ' | ' + musitBasisOfRecord
-                        } 
+                    } else {
+                        if (!preparationType) {
+                            cell10Content = basisOfRecord || coremaBasisOfRecord;
+                        } else {
+                            cell10Content = formatPreparationType(preparationType) + (musitBasisOfRecord ? ` | ${musitBasisOfRecord}` : '');
+                        }
                     }
-                    
-                } 
-                if( subMusitData[i].associatedMedia ) {   
+                }
+                // Clean up cell10Content to remove any leading/trailing pipes and replace double pipes
+                cell10Content = cell10Content.replace(/^\s*\|/, '').replace(/\|\s*$/, '').replace(/\|\s*\|/, '|');
+
+                cell10.innerHTML = cell10Content;
+
+
+
+                if( subMusitData[i][headers.indexOf('associatedMedia')]) {   
                     cell11.innerHTML = `<span class="fas fa-camera"></span>`
                 }
-                if( subMusitData[i].decimalLongitude) {
+                if( subMusitData[i][headers.indexOf('decimalLongitude')]) {
                     cell12.innerHTML = '<span class="fas fa-compass"></span>'
                 }
                 
@@ -360,18 +402,20 @@ const resultTable = (subMusitData, musitData) => {
         numberOfPages = getNumberOfPages(numberPerPage)
 
         // document.getElementById('musitIDButton').click()
- 
+
         if (!searchFailed) {
             try {
                 drawMap(musitData) 
             } catch (error) {
+                console.log('cant draw map because of search error:  ');
                 console.error(error)
-                reject(error);
             }
         } 
         
     }  
     catch(error) {
+        console.log('error in resultTable');
+        
         console.log(error);
         errorMessage.innerHTML = textItems.errorRenderResult[index]
         searchFailed = true // is checked when map is drawn 
@@ -383,15 +427,35 @@ const resultTable = (subMusitData, musitData) => {
             checkSeveralBoxes(subMusitData)
         }
     }
-
 }
 
+
+
 const UTADRestultTable = (subUTADData, UTADData) => {
+
     try {
+        const headers = UTADData[0]
+        const catalogNumberIndex = headers.indexOf('catalogNumber');
+        const institutionCodeIndex = headers.indexOf('institutionCode');
+        const collectionCodeIndex = headers.indexOf('collectionCode');
+        const lineNumberIndex = headers.indexOf('lineNumber');
+
+        const vernacularNameIndex = headers.indexOf('vernacularName');
+        const tilstandIndex = headers.indexOf('Tilstand');
+        const basisOfRecordIndex = headers.indexOf('basisOfRecord');
+        const kommentarIndex = headers.indexOf('Kommentar');
+        const breddeIndex = headers.indexOf('bredde');
+        const høydeIndex = headers.indexOf('høyde');
+        const lengdeIndex = headers.indexOf('lengde');
+        const associatedMediaIndex =  headers.indexOf('associatedMedia');
+        const photoIdentifiersIndex =  headers.indexOf('photoIdentifiers');
+
+
         table.innerHTML = ""
         const row = table.insertRow(-1);
-        for (let i = -1; i < pageList.length; i++) {
-            if (i === -1) {     // her kommer tittellinjen
+
+        for (let i = 0; i < pageList.length; i++) {
+            if (i === 0) {     // her kommer tittellinjen
                 const headerRow = row;
                 const headerCell = []
                 for (let j = 0; j < 10; j++) {
@@ -404,7 +468,8 @@ const UTADRestultTable = (subUTADData, UTADData) => {
                 headerCell[9].className += "cell10"
                 fillResultHeadersUTAD(headerCell,UTADData)
 
-            }  else {  //her kommer tabell innholdet
+            }  else {  //her kommer tabell innholdet               
+                
             const row = table.insertRow(-1)
             const cell1 = row.insertCell(0)
             const cell2 = row.insertCell(1)
@@ -429,23 +494,37 @@ const UTADRestultTable = (subUTADData, UTADData) => {
                 }
 
                 let prefix = ''
-                if (!(/[a-zA-Z]/).test(subUTADData[i].catalogNumber.charAt(0))) {  
-                    prefix = subUTADData[i].institutionCode + '-' + subUTADData[i].collectionCode + '-'
+                const institutionCode = subUTADData[i][institutionCodeIndex]
+                const collectionCode = subUTADData[i][collectionCodeIndex]
+                const catalogNumber = subUTADData[i][catalogNumberIndex];
+                const vernacularName = subUTADData[i][vernacularNameIndex];
+                const tilstand = subUTADData[i][tilstandIndex];
+                const basisOfRecord = subUTADData[i][basisOfRecordIndex];
+                const kommentar = subUTADData[i][kommentarIndex];
+                const bredde = subUTADData[i][breddeIndex];
+                const høyde = subUTADData[i][høydeIndex];
+                const lengde = subUTADData[i][lengdeIndex];
+                const associatedMedia = subUTADData[i][associatedMediaIndex]
+                const photoIdentifiers = subUTADData[i][photoIdentifiersIndex]
+                const lineNumber = subUTADData[i][lineNumberIndex];
+
+                if (!(/[a-zA-Z]/).test(catalogNumber.charAt(0))) {  
+                    prefix = institutionCode + '-' + collectionCode + '-'
                     
                 } else {
                     prefix = ''
                 }
-                cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subUTADData[i].catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${subUTADData[i].catalogNumber} </a>`
-                cell2.innerHTML = subUTADData[i].vernacularName
-                cell3.innerHTML = subUTADData[i].Tilstand
-                cell4.innerHTML = subUTADData[i].basisOfRecord
-                cell5.innerHTML = subUTADData[i].Kommentar
-                cell6.innerHTML = subUTADData[i].bredde
-                cell7.innerHTML = subUTADData[i].høyde
-                cell8.innerHTML = subUTADData[i].lengde
-                if( subUTADData[i].associatedMedia ) {   
+                cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}&linjeNummer=${lineNumber}"> ${prefix}${catalogNumber} </a>`
+                cell2.innerHTML = vernacularName
+                cell3.innerHTML = tilstand
+                cell4.innerHTML = basisOfRecord
+                cell5.innerHTML = kommentar
+                cell6.innerHTML = bredde
+                cell7.innerHTML = høyde
+                cell8.innerHTML = lengde
+                if( associatedMedia ) {   
                     cell9.innerHTML = `<span class="fas fa-camera"></span>`
-                } else if( subUTADData[i].photoIdentifiers ) {   
+                } else if( photoIdentifiers) {   
                     cell9.innerHTML = `<span class="fas fa-camera"></span>`
                 }
                 cell10.innerHTML = `<input type="checkbox" id=checkbox${i} onclick="registerChecked(${i})" ></input>`
@@ -470,9 +549,10 @@ const UTADRestultTable = (subUTADData, UTADData) => {
             numberOfPages = getNumberOfPages(numberPerPage)
         }
     } catch (error) {
+        console.log('UTADRestultTable error');
+        
         console.log(error);
         errorMessage.innerHTML = textItems.errorRenderResult[index]
-        searchFailed = true // is checked when map is drawn 
     }
     const select = document.getElementById('checkboxSelect')
     if(select) {
@@ -482,13 +562,31 @@ const UTADRestultTable = (subUTADData, UTADData) => {
     }
 }
 
-
-
-
 const eco_BotRestultTable = (subEco_BotData, eco_BotData) => {
     console.log('eco_BotRestultTable i paginateandRender');
+    console.log(subEco_BotData);
+    
     
     try {
+
+        const headers = eco_BotData[0]
+        const catalogNumberIndex = headers.indexOf('catalogNumber');
+        const institutionCodeIndex = headers.indexOf('institutionCode');
+        const collectionCodeIndex = headers.indexOf('collectionCode');
+        const lineNumberIndex = headers.indexOf('lineNumber');
+        const scientificNameIndex = headers.indexOf('scientificName')
+        const taxaIndex = headers.indexOf('higherClassification')
+        const localityIndex = headers.indexOf('locality')
+  
+        const tilstandIndex = headers.indexOf('Tilstand');
+        const basisOfRecordIndex = headers.indexOf('basisOfRecord');
+        const associatedMediaIndex =  headers.indexOf('associatedMedia');
+        const kommentarIndex = headers.indexOf('Kommentar');
+        const recordedByIndex =  headers.indexOf('recordedBy');
+        const eventDateIndex = headers.indexOf('eventDate');
+
+
+
         table.innerHTML = ""
         const row = table.insertRow(-1);
         for (let i = -1; i < pageList.length; i++) {
@@ -534,21 +632,46 @@ const eco_BotRestultTable = (subEco_BotData, eco_BotData) => {
                 }
 
                 let prefix = ''
-                if (!(/[a-zA-Z]/).test(subEco_BotData[i].catalogNumber.charAt(0))) {  
-                    prefix = subEco_BotData[i].institutionCode + '-' + subEco_BotData[i].collectionCode + '-'
+                const institutionCode = subEco_BotData[i][institutionCodeIndex]
+                const collectionCode = subEco_BotData[i][collectionCodeIndex]
+                const catalogNumber = subEco_BotData[i][catalogNumberIndex];
+                const lineNumber = subEco_BotData[i][lineNumberIndex];
+                const tilstand = subEco_BotData[i][tilstandIndex];
+                const basisOfRecord = subEco_BotData[i][basisOfRecordIndex];
+                const kommentar = subEco_BotData[i][kommentarIndex];
+                const associatedMedia = subEco_BotData[i][associatedMediaIndex]
+
+                const scientificName = subEco_BotData[i][scientificNameIndex];
+                const higherClassification = subEco_BotData[i][taxaIndex];
+                const locality = subEco_BotData[i][localityIndex];
+                const recordedBy = subEco_BotData[i][recordedByIndex];
+                const eventDate = subEco_BotData[i][eventDateIndex];
+
+        
+
+
+        
+                if (!(/[a-zA-Z]/).test(catalogNumber.charAt(0))) {  
+                    prefix = institutionCode + '-' + collectionCode + '-'
                     
                 } else {
                     prefix = ''
                 }
-                cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${subEco_BotData[i].catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}"> ${prefix}${subEco_BotData[i].catalogNumber} </a>`
-                cell2.innerHTML = subEco_BotData[i].scientificName
-                cell3.innerHTML = subEco_BotData[i].higherClassification
-                cell4.innerHTML = subEco_BotData[i].locality
-                cell5.innerHTML = subEco_BotData[i].basisOfRecord
-                cell6.innerHTML = subEco_BotData[i].recordedBy
-                cell7.innerHTML = subEco_BotData[i].eventDate
-                cell8.innerHTML = subEco_BotData[i].Tilstand
-                cell9.innerHTML = subEco_BotData[i].Kommentar
+                cell1.innerHTML =  `<a id="object-link" href="${museumURLPath}/object/?id=${catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}&linjeNummer=${lineNumber}"> ${prefix}${catalogNumber} </a>`
+                cell2.innerHTML = scientificName
+                cell3.innerHTML = higherClassification
+                cell4.innerHTML = locality
+                cell5.innerHTML = basisOfRecord
+                cell6.innerHTML = recordedBy
+                cell7.innerHTML = eventDate
+                cell8.innerHTML = tilstand
+                cell9.innerHTML = kommentar
+
+
+
+
+
+
                 if( subEco_BotData[i].associatedMedia ) {   
                     cell10.innerHTML = `<span class="fas fa-camera"></span>`
                 } else if( subEco_BotData[i].photoIdentifiers ) {   
@@ -576,6 +699,8 @@ const eco_BotRestultTable = (subEco_BotData, eco_BotData) => {
             numberOfPages = getNumberOfPages(numberPerPage)
         }
     } catch (error) {
+        console.log('eco_BotRestultTable error');
+        
         console.log(error);
         errorMessage.innerHTML = textItems.errorRenderResult[index]
         searchFailed = true // is checked when map is drawn 
@@ -591,10 +716,29 @@ const eco_BotRestultTable = (subEco_BotData, eco_BotData) => {
 
 const bulkResultTable = (subBulkData, bulkData) => {
     try {
+        const headers = bulkData[0]
+        
+        const scientificNameIndex = headers.indexOf('scientificName')
+        const catalogNumberIndex = headers.indexOf('catalogNumber');
+        const institutionCodeIndex = headers.indexOf('institutionCode');
+        const collectionCodeIndex = headers.indexOf('collectionCode');
+        const recordedByIndex = headers.indexOf('recordedBy');
+        const eventDateIndex = headers.indexOf('eventDate');
+        const PreparationsIndex = headers.indexOf('Preparations')
+        const stateProvinceIndex = headers.indexOf('stateProvince')
+        const localityIndex = headers.indexOf('locality');
+        const countryIndex = headers.indexOf('country');
+        const cupboardIndex = headers.indexOf('cupboard');
+        const roomIndex = headers.indexOf('room');
+        const buildingIndex = headers.indexOf('building');
+        const individualCountIndex = headers.indexOf('individualCount');
+        const noteIndex = headers.indexOf('Note');
+
+
         table.innerHTML = ""
         const row = table.insertRow(-1);
-        for (let i = -1; i < pageList.length; i++) { // vis en tabell med resultater som er like lang som det vi ba om pageList.length; 
-            if (i === -1) {     // her kommer tittellinjen
+        for (let i = 0; i < pageList.length; i++) { // vis en tabell med resultater som er like lang som det vi ba om pageList.length; 
+            if (i === 0) {     // her kommer tittellinjen
                 const headerRow = row;
                 const headerCell = []
                 for (let j = 0; j < 9; j++) {
@@ -607,57 +751,63 @@ const bulkResultTable = (subBulkData, bulkData) => {
                 fillResultHeadersBulk(headerCell,bulkData)
 
             }  else {  
-            const row = table.insertRow(-1)
-            const cell1 = row.insertCell(0)
-            const cell2 = row.insertCell(1)
-            const cell3 = row.insertCell(2)
-            const cell4 = row.insertCell(3)
-            const cell5 = row.insertCell(4)
-            const cell6 = row.insertCell(5)
-            const cell7 = row.insertCell(6)
-            const cell8 = row.insertCell(7)
-            // const cell9 = row.insertCell(8)
-            const cell11 = row.insertCell(8)
+                const row = table.insertRow(-1)
+                const cell1 = row.insertCell(0)
+                const cell2 = row.insertCell(1)
+                const cell3 = row.insertCell(2)
+                const cell4 = row.insertCell(3)
+                const cell5 = row.insertCell(4)
+                const cell6 = row.insertCell(5)
+                const cell7 = row.insertCell(6)
+                const cell8 = row.insertCell(7)
+                // const cell9 = row.insertCell(8)
+                const cell11 = row.insertCell(8)
       // Her kommer innmaten i tabellen, selve resultatene
-                let museumURLPath
-                if (window.location.href.includes('/um')) { 
-                    museumURLPath = urlPath + "/um"
-                } else if (window.location.href.includes('tmu')) {
-                    museumURLPath = urlPath + "/tmu"
-                } else if (window.location.href.includes('nbh')) {
-                    museumURLPath = urlPath + "/nbh"
-                } else {
-                    museumURLPath = urlPath + "/nhm"
-                }
+
                 
                 let prefix
-                if (!(/[a-zA-Z]/).test(subBulkData[i].catalogNumber.charAt(0))) {
+                const institutionCode = subBulkData[i][institutionCodeIndex]
+                const collectionCode = subBulkData[i][collectionCodeIndex]
+                const catalogNumber = subBulkData[i][catalogNumberIndex];
+                const scientificName = subBulkData[i][scientificNameIndex];
+                const recordedBy = subBulkData[i][recordedByIndex];
+                const eventDate = subBulkData[i][eventDateIndex];
+                const Preparations = subBulkData[i][PreparationsIndex];
+                const stateProvince = subBulkData[i][stateProvinceIndex];
+                const locality = subBulkData[i][localityIndex];
+                const country = subBulkData[i][countryIndex];
+                const cupboard = subBulkData[i][cupboardIndex];
+                const room = subBulkData[i][roomIndex];
+                const building = subBulkData[i][buildingIndex];
+                const individualCount = subBulkData[i][individualCountIndex];
+                const note = subBulkData[i][noteIndex];
+
+                if (!(/[a-zA-Z]/).test(catalogNumber.charAt(0))) {
                     
-                    prefix = subBulkData[i].institutionCode + '-' + subBulkData[i].collectionCode + '-'
+                    prefix = institutionCode + '-' + collectionCode + '-'
                 } else {
                     prefix = ''
                 }
-                cell1.innerHTML =  prefix + subBulkData[i].catalogNumber
-                cell2.innerHTML = subBulkData[i].scientificName
-                cell3.innerHTML = subBulkData[i].recordedBy
-                cell4.innerHTML = subBulkData[i].eventDate
-                cell5.innerHTML = subBulkData[i].Preparations
+
+                cell1.innerHTML =  prefix + catalogNumber
+                cell2.innerHTML = scientificName
+                cell3.innerHTML = recordedBy
+                cell4.innerHTML = eventDate
+                cell5.innerHTML = Preparations
                 
-                let comma1
-                let comma2
-                if (subBulkData[i].stateProvince) {comma1 = ', '} else { comma1 = ''}
-                if (subBulkData[i].locality) {comma2 = ', '} else { comma2 = ''}
-                let concatLocality = subBulkData[i].country + comma1 + subBulkData[i].stateProvince + comma2 + subBulkData[i].locality
-                cell6.innerHTML = concatLocality
-
-
-                let commaP1
-                let commaP2
-                if (subBulkData[i].room) {commaP1 = ', '} else {commaP1 = ''}
-                if (subBulkData[i].cupboard) {commaP2 = ', '} else {commaP2 = ''}
-                let placement = subBulkData[i].building + commaP1 + subBulkData[i].room + commaP2 + subBulkData[i].cupboard
-                cell7.innerHTML = subBulkData[i].individualCount
-                cell8.innerHTML = subBulkData[i].Note
+                function concatWithCommas(...args) {
+                    // Filter out undefined or empty values and join them with a comma
+                    return args.filter(Boolean).join(', ');
+                }
+                
+                // Concatenating location details
+                const concatLocality = concatWithCommas(country, stateProvince, locality);
+                cell6.innerHTML = concatLocality;
+                
+                // Concatenating placement details
+                const placement = concatWithCommas(building, room, cupboard);
+                cell7.innerHTML = individualCount;
+                cell8.innerHTML = note;
                 // cell9.style.display = 'none'
                 cell11.innerHTML = `<input type="checkbox" id=checkbox${i} onclick="registerChecked(${i})" ></input>`
                 if (investigateChecked(i)) {
@@ -683,8 +833,9 @@ const bulkResultTable = (subBulkData, bulkData) => {
         numberOfPages = getNumberOfPages(numberPerPage)
     }  
     catch(error) {
-        errorMessage.innerHTML = textItems.errorRenderResult[index]
-        searchFailed = true // is checked when map is drawn 
+        errorMessage.innerHTML = textItems.errorRenderResult[index] 
+        console.log(error);
+        
     }
 
     const select = document.getElementById('checkboxSelect')
@@ -796,7 +947,6 @@ function loadList() {
         resultTable(pageList, list)
     }
     check();
-    
 }
 
 // disables page-buttons if necesary

@@ -10,7 +10,6 @@ let archiveCollection = ''
 
 const hitsPerPage = document.querySelector('#number-per-page')
 
-
 // figures out which museum we are in
 // out: string, abbreviation for museum
 // is called by doSearch() and updateFooter()
@@ -58,11 +57,11 @@ function removeResults() {
     try {
         const Table = document.getElementById("archive-result-table");
         Table.innerHTML = "";
-        // const hits = document.getElementById("nb-hits");
-        // hits.innerHTML = "";
         nbHitsElement.innerHTML = "";
     } catch (error) {
-        // do nothing
+
+        console.log(error);
+        
     }
 
 }
@@ -180,14 +179,8 @@ async function makeButtons() {
             const subButtons =  type[keys[0]] // ['Dagny Tande Lid', 'Andre illustrasjoner'];
             makeSubButtons(keys[0], subButtons);
           } else {
-            // show searchfield
-            console.log('form display');
-            console.log(archiveSearchForm);
-            
-            
             archiveSearchForm.style.display = "block"
           }
-
           e.preventDefault();
         });
       });
@@ -247,11 +240,12 @@ function getPage(Regnr, archiveCollection) {
   // console.log(url);
 }
 
-
-
 // thumb nails
-async function showGallery(pageList, archiveCollection) {
-  try {
+async function showGallery(pageList, archiveCollection, header) {
+  try
+   {
+    
+    const regNrIndex = header.indexOf('Regnr');
     const galleryContainer = document.getElementById('thumb-gallery');
     const resultTable = document.getElementById('container');
     resultTable.style.display = 'none';
@@ -261,12 +255,11 @@ async function showGallery(pageList, archiveCollection) {
     let links = '';
     let trimmedUrl = window.location.origin + "/museum";
     for (let i = 0; i < pageList.length; i++) {
-      const element = pageList[i].Regnr;
+      const element = pageList[i][regNrIndex];
       const imageUrl = `${trimmedUrl}\\${thumbPath}\\${element}.jpg`;
 
       // Check if the image exists
       const response = await fetch(imageUrl, { method: 'HEAD' });
-      // console.log(response);
       if (response.ok) {
         links += `<img src="${imageUrl}" alt="Image ${i + 1}" class="gallery-img" data-regnr="${element}" data-archive="${archiveCollection}">`;
       } else {
@@ -288,7 +281,6 @@ async function showGallery(pageList, archiveCollection) {
   }
 }
 
-
 async function getSubFolderPath(documentType, subFolder) {
 
   const url_subFolder = `${urlPath}/nhm/archive?subFolder=${subFolder}&documentType=${documentType}`;
@@ -306,7 +298,6 @@ async function getSubFolderPath(documentType, subFolder) {
   }
 }
 
-
 // show a button that allows you to switch between thumbnail ang table view
 let showingThumbs = false
 
@@ -321,7 +312,6 @@ function showGalleryOrTable() {
   }
   loadList(showingThumbs)
 }
-
 
 async function showThumbnailButton (archiveCollection) {
   try {
@@ -344,13 +334,11 @@ async function showThumbnailButton (archiveCollection) {
   }
 }
 
-
 // creates table for the archives and fills it
 // in: children (array, containing content to table, i.e. data on archives) 
 // calls addHeaders(..)
 // is called in doarchiveSearch(..)
 const createArchiveTableAndFillIt = (data, archiveCollection, showAll) => {
-  // console.log(data);
   const galleryContainer = document.getElementById('thumb-gallery');
   const resultTable = document.getElementById('container');
   document.querySelector('#hits-row').style.display = 'inline'
@@ -389,52 +377,58 @@ const createArchiveTableAndFillIt = (data, archiveCollection, showAll) => {
   data.forEach((child, i) => {
     if (i === 0) {
       addHeaders(table, headerNamesToShow);
+    } else {
+
+      const museum = getCurrentMuseum();
+      const url = `${urlPath}/${museum}/archive?pageID=`;
+      const documentType = sessionStorage.getItem('buttonID');
+      const row = table.insertRow();
+      const headers = data[0]; // Get the headers from the first row
+
+      const lineNumberIndex = headers.indexOf('lineNumber');
+      const lineNumber = data[i][lineNumberIndex];
+
+      child = data[i]; // Assuming `i` is your current row index
+
+      headerNamesToShow.forEach((header) => {
+          const index = headers.indexOf(header); // Find the index of the current header
+
+          if (index !== -1) {
+              let value = child[index]; // Get the corresponding value from the row
+              const tableCell = row.insertCell();
+              if (header.includes('FlipBook')) {
+                  value = `<a href="https://samlingsportal.nhm.uio.no/archive/nhm/${value}">FlipBook</a>`;
+                  tableCell.innerHTML = value;
+              } else if (header.startsWith('PDF')) {
+                  value = `<a href="https://samlingsportal.nhm.uio.no/archive/nhm/${value}">PDF</a>`;
+                  tableCell.innerHTML = value;
+              } else if (header.includes('NHM ID')) {
+                  tableCell.textContent = value;
+                  tableCell.className = 'nowrap';
+              } else if (header.includes('Regnr')) {
+                  if (showAll) {
+                      value = `<a href="${url}${value}&documentType=${documentType}&force=true&lineNumber=${lineNumber}" target="_blank">${value}</a>`;
+                  } else {
+                      value = `<a href="${url}${value}&documentType=${documentType}&lineNumber=${lineNumber}" target="_blank">${value}</a>`;
+                  }
+                  tableCell.innerHTML = value;
+              } else if (header.toLowerCase().includes('filnavn')) {
+                  const fullPathName = filePath + value;
+                  value = `<a href="${fullPathName}">${value}</a>`;
+                  tableCell.innerHTML = value;
+              } else if (header.toLowerCase() === 'copyright' && value.toLowerCase().includes('bono')) {
+                  value = value + currentYear;
+                  tableCell.innerHTML = value;
+              } else {
+                  if (value.length > 500) {
+                      value = value.substring(0, 500) + '[...]';
+                  }
+                  tableCell.textContent = value;
+              }
+          }
+      });
     }
-
-    const museum = getCurrentMuseum();
-    const url = `${urlPath}/${museum}/archive?pageID=`;
-    const documentType = sessionStorage.getItem('buttonID');
-    const row = table.insertRow();
-
-    Object.entries(child).forEach(([key, value]) => {
-      if (headerNamesToShow.includes(key)) {
-        const tableCell = row.insertCell();
-
-        if (key.includes('FlipBook')) {
-          value = `<a href="https://samlingsportal.nhm.uio.no/archive/nhm/${value}">FlipBook</a>`;
-          tableCell.innerHTML = value;
-        } else if (key.startsWith('PDF')) {
-          value = `<a href="https://samlingsportal.nhm.uio.no/archive/nhm/${value}">PDF</a>`;
-          tableCell.innerHTML = value;
-        } else if (key.includes('NHM ID')) {
-          tableCell.textContent = value;
-          tableCell.className = 'nowrap';
-        } else if (key.includes('Regnr')) {
-          if(showAll){
-            value = `<a href="${url}${value}&documentType=${documentType}&force=true" target="_blank">${value}</a>`;
-          } else {
-            value = `<a href="${url}${value}&documentType=${documentType}" target="_blank">${value}</a>`;
-          }
-          
-          tableCell.innerHTML = value;
-        } else if (key.toLowerCase().includes('filnavn')) {
-          const fullPathName = filePath + value;
-          value = `<a href="${fullPathName}">${value}</a>`;
-          tableCell.innerHTML = value;
-        } else if (key.toLowerCase() === 'copyright' && value.toLowerCase().includes('bono')) {
-          value = value + currentYear
-          tableCell.innerHTML = value;
-        } 
-        
-        else {
-          if (value.length > 500) {
-            value = value.substring(0, 500) + '[...]';
-          }
-          tableCell.textContent = value;
-        }
-      }
-    });
-  });
+  }); 
 
   document.getElementById('container').appendChild(table);
   // renders paginate buttons
@@ -498,7 +492,8 @@ const doarchiveSearch = async (searchTerm, limit, museum, archiveCollection, lin
     limit = urlLimit || 2000;
   }
 
-  const url = `${urlPath}/search/?search=${searchTerm}&museum=${museum}&samling=${archiveCollection}&linjeNumber=${linjeNumber}&limit=${limit}`;
+  const url = `${urlPath}/search/?search=${searchTerm}&museum=${museum}&samling=${archiveCollection}&linjeNumber=${linjeNumber}&limit=${limit}`;  
+  
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -510,25 +505,15 @@ const doarchiveSearch = async (searchTerm, limit, museum, archiveCollection, lin
       throw new Error(data.error);
     }
     
-
-
-    const parsedResults = Papa.parse(data.unparsed.results, {
-      delimiter: "\t",
-      newline: "\n",
-      quoteChar: '',
-      header: true,
-    });
-
-    if (parsedResults.data.length > 0) {
+    if (data.results.length > 0) {
       // Save the response data to session storage    
-      sessionStorage.setItem('string', JSON.stringify(parsedResults.data));
+      sessionStorage.setItem('string', JSON.stringify(data.results));
       showExtraInfo(archiveCollection);
       showThumbnailButton(archiveCollection)
       load()
-      // createArchiveTableAndFillIt(parsedResults.data, archiveCollection, showAll);
 
       errorMessage.innerText = textItems.nbHitsText[index];
-      nbHitsElement.innerText = parsedResults.data.length;
+      nbHitsElement.innerText = data.results.length;
       sortTable();
     } else {
       console.log('no results');
@@ -548,7 +533,6 @@ const doarchiveSearch = async (searchTerm, limit, museum, archiveCollection, lin
     window.history.replaceState({}, '', `${window.location.pathname}?${newUrlParams}`);
 
   } catch (error) {
-
     
     console.error(error);
     errorMessage.innerText = textItems.serverError[index];
@@ -694,11 +678,12 @@ function loadList(showingThumbs = false) {
     const begin = ((currentPage - 1) * numberPerPage)
     const end = Number(begin) + Number(numberPerPage)
     pageList = list.slice(begin, end)
+    const header = list[0]    
     sessionStorage.setItem('pageList', JSON.stringify(pageList)) // pageList is the same as subMusitData other places; the part of the search result that is listed on the current page
     const archiveCollection = sessionStorage.getItem('buttonID')
     const showAll = ''
     if (showingThumbs) {
-      showGallery(pageList, archiveCollection)
+      showGallery(pageList, archiveCollection, header)
     } else {
       createArchiveTableAndFillIt(pageList, archiveCollection, showAll)
     }   

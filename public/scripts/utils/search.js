@@ -56,8 +56,8 @@ actionSelect.addEventListener('change', (e) => {
         })
         
         if (newArray.length === 0) {
-            zoomModal.style.display = "block";
-            zoomModalContent.innerHTML = textItems.mapCheckedMessage[index]
+            // zoomModal.style.display = "block";
+            // zoomModalContent.innerHTML = textItems.mapCheckedMessage[index]
         } else {
             if (newArray.some(el => el.associatedMedia)) {
                 newArray.forEach( el => {
@@ -86,7 +86,7 @@ actionSelect.addEventListener('change', (e) => {
     
 })
 
-// to decide wether map is to be drawn
+// to decide wether map is to be drawn, see paginateandRender.js
 let searchFailed = false
 
 
@@ -205,7 +205,7 @@ const emptySearch = (comesFrom) => {
     emptyTable()
     
     // remove old map if any and empty array
-    document.getElementById("map-search").innerHTML = "" 
+    // document.getElementById("map-search").innerHTML = "" 
     emptyResultElements()
 
     // set pagination variables to default / empty
@@ -267,7 +267,7 @@ function makeButtons() {
                 // hvis linja nedenfor er med forsvinner search-cell med søkefelt ved første visning av siden,
                 // uten at ny org-gruppe-knapp trykkes på
                 // document.getElementById('search-cell').style.display = 'none'
-                document.getElementById('map-search').style = "border:none; padding:0px"
+                document.getElementById('map-search').setAttribute("hidden", "hidden")
             }
             addCollectionsToSelect(el.id, orgGroups, fileList)
             e.preventDefault()
@@ -325,6 +325,7 @@ function addTextInCollSelect(a) {
 function addCollectionsToSelect(orgGroup, orgGroups, fileList) {
     sessionStorage.setItem('organismGroup', orgGroup)
     document.querySelector('#select-cell').style.display = 'block'
+
     let length = collection.options.length
     for (i = length-1; i >= 0; i--) {
       collection.options[i] = null
@@ -371,7 +372,6 @@ function addCollectionsToSelect(orgGroup, orgGroups, fileList) {
 }
 
 
-
 // download search-result to file
 // in: filename(string, name of outputfile)
 // in: text (string, the text that goes into the file, that is, the search result)
@@ -416,6 +416,25 @@ const downloadAndZip = async (urls, catalogNo) => {
    })
 }
 
+function resetSessionStorage(collection, search, limit, museum) {
+    // delete the previous search results
+    sessionStorage.removeItem('string')
+    sessionStorage.setItem('currentPage',1)
+    currentPage = 1
+    sessionStorage.removeItem('numberPerPage')
+    sessionStorage.removeItem('propsSorted')
+    if (!collection.value === "bulk") { document.getElementById("map-search").innerHTML = "" }
+    sessionStorage.removeItem('advSearchArray')
+    // reset searchFailed value
+    searchFailed = false
+
+    sessionStorage.setItem('searchTerm', search.value)
+    
+    sessionStorage.setItem('chosenCollection',collection.value)
+    searchLineNumber = limit
+    sessionStorage.setItem('limit', limit) 
+    sessionStorage.setItem('museum',museum)
+}
 
 // deletes previous search results, resets value that says if search failed, resets Boolean sorting-values for result, hides buttons, performs search
 // in: limit (number, line number of search result where search stops)
@@ -424,35 +443,21 @@ const downloadAndZip = async (urls, catalogNo) => {
 //      emptyResultElements() in resultElementOnOff.js
 // is called by searchForm.eventlistener
 const doSearch = (limit = 20) => {
-    // delete the previous search results
-    sessionStorage.removeItem('string')
-    sessionStorage.setItem('currentPage',1)
-    currentPage = 1
-    sessionStorage.removeItem('numberPerPage')
-    sessionStorage.removeItem('propsSorted')
-    const chosenCollection = collection.value
-    if (!chosenCollection === "bulk") { document.getElementById("map-search").innerHTML = "" }
-    sessionStorage.removeItem('advSearchArray')
-    // reset searchFailed value
-    searchFailed = false
-    resetSortedBoolean() // set all booleans in propsSorted-array in PaginateAndRender.js to false
-    const searchTerm = search.value
-    sessionStorage.setItem('searchTerm', searchTerm)
     
-    sessionStorage.setItem('chosenCollection',chosenCollection)
-    searchLineNumber = limit
-    sessionStorage.setItem('limit', limit)
-
-    let museum = getCurrentMuseum()   
-
-    sessionStorage.setItem('museum',museum)
-    emptyTable()
-
     // Show please wait
     document.getElementById("please-wait").style.display = "block"
+    let museum = getCurrentMuseum()   
+    
+    //clean up previous search
+    resetSessionStorage(collection, search, limit, museum)
+    resetSortedBoolean() // set all booleans in propsSorted-array in PaginateAndRender.js to false
+    emptyTable()
+
     // hide download button
     emptyResultElements()
 
+    const searchTerm = search.value
+    const chosenCollection = collection.value
     // mustChoose
     if (!chosenCollection) {
         errorMessage.innerHTML = textItems.mustChoose[index]
@@ -470,29 +475,21 @@ const doSearch = (limit = 20) => {
                             console.log(error);
                             return console.log(data.error)
                         } else {
-                            const JSONdata = JSON.parse(data)  
-                            
-                            sessionStorage.setItem('searchLineNumber', JSONdata.unparsed.count)
-                            //sessionStorage.setItem('searchTerm', searchTerm)
-                            const parsedResults = Papa.parse(JSONdata.unparsed.results, {
-                                delimiter: "\t",
-                                newline: "\n",
-                                quoteChar: '',
-                                header: true,
-                            }) 
+                            const parsedResults = JSON.parse(data)  
+   
                             //check if there are any hits from the search
-                            if ( parsedResults.data === undefined || parsedResults.data.length === 0 ) {
+                            if ( parsedResults.results === undefined || parsedResults.results.length === 0 ) {
                                 nbHitsElement.innerHTML = textItems.noHits[index]
                                 nbHitsElement.style.display = 'inline'
                             } else {
                                 try {
                                     // hvis vi får flere enn 2000 treff må vi si i fra om det
-                                    if(parsedResults.data.length > 999){
+                                    if(parsedResults.results.length > 3999){
                                         nbHitsElement.textContent = textItems.tooManyHits[index]
                                         nbHitsElement.style.color = 'red'
                                         nbHitsElement.style.display = 'inline'
                                     } else {
-                                        nbHitsElement.textContent = parsedResults.data.length
+                                        nbHitsElement.textContent = parsedResults.results.length
                                         nbHitsElement.style.color = 'black'
                                         nbHitsElement.style.display = 'inline'
                                     }
@@ -503,8 +500,10 @@ const doSearch = (limit = 20) => {
                                     if(chosenCollection === 'fossiler' || chosenCollection === 'palTyper') {
                                         let coordString = ''
                                         const regex = /,/i;
-                                        parsedResults.data.forEach(function(item, index) {
-
+                                        parsedResults.results.forEach(function(item, index) {
+                                            console.log('her kommer item');
+                                            console.log(item);
+                                            
                                             if(item.decimalLatitude){
                                                 coordString = item.decimalLatitude
                                                 if (coordString.includes(',')) {
@@ -531,14 +530,16 @@ const doSearch = (limit = 20) => {
                                             }
                                         })
                                     }
-                                    sessionStorage.setItem('string', JSON.stringify(parsedResults.data))      
+                                    sessionStorage.setItem('string', JSON.stringify(parsedResults.results))      
                                     
                                     load() 
                                     
                                     } catch (error) {
+                                        console.log('Do search funksjonen har feilet');
+                                        
                                         console.log(error);
                                         errorMessage.innerHTML = textItems.errorRenderResult[index]
-                                        searchFailed = true // is checked when map is drawn 
+                                        searchFailed = true // is checked when map is drawn, ie.e seach has failed and there are no results to draw on the map
                                     }        
                             }
                         }
@@ -561,21 +562,19 @@ const doSearch = (limit = 20) => {
 // when somebody clicks search-button
 searchForm.addEventListener('submit', (e) => {
     e.preventDefault()
-    doSearch(1000) // vi skal få tilbake maks 1000 linjer med svar
+    doSearch(4000) // vi skal få tilbake maks 4000 linjer med svar
 })  
 
 
 const collAddEventListener = () => {
     
     const searchCell = document.getElementById("search-cell");
-
     collection.addEventListener("change", (e) => {
         e.preventDefault();
         emptySearch("collection_listener");
-
+        document.getElementById('map-search').setAttribute("hidden", "hidden")
         const orgGroup = sessionStorage.getItem("organismGroup");
         const collectionValue = collection.value;
-
         searchCell.style.display = "table-cell";
         errorMessage.innerHTML = "";
         sessionStorage.setItem("chosenCollection", collectionValue);
@@ -585,12 +584,6 @@ const collAddEventListener = () => {
     });
   
 };
-
-
-
-
-
-// collAddEventListener(); 
 
 
 // when a collection is chosen a request is sent to the server about date of last change of the MUSIT-dump file
@@ -642,7 +635,6 @@ const updateFooter = async (collectionValue) => {
     })
 }
   
-
 
 const loopButtons = () => {
     orgGroups = sessionStorage.getItem('organismGroups').split(',')
@@ -727,43 +719,6 @@ emptySearchButton.addEventListener('click', (e) => {
     e.preventDefault()
     // erase the last search result
     emptySearch('button')
-})
-
-document.getElementById('large-map-button').onclick = () => {
-    window.open(href= urlPath + "/" + getCurrentMuseum() + "/map")
-}
-
-//Download map as png-file
-document.getElementById('export-png').addEventListener('click', function() {
-    map.once('postcompose', function(event) {
-      var canvas = event.context.canvas;
-      if (navigator.msSaveBlob) {
-        navigator.msSaveBlob(canvas.msToBlob(), 'map.png');
-      } else {
-        var link = document.getElementById('image-download');
-        link.href = canvas.toDataURL();
-        link.click();
-      }
-    });
-    map.renderSync();
-})
-
-// show selected records in map
-document.getElementById('checkedInMap').addEventListener('click', function() {
-    const searchResult = JSON.parse(sessionStorage.getItem('string'))
-    // loop through - put those which are checked in new array
-    const newArray = []
-    searchResult.forEach(el => {
-        if (el.checked) {newArray.push(el)}
-    })
-    if (newArray.length == 0) {
-        zoomModal.style.display = "block"
-        zoomModalContent.innerHTML = textItems.mapCheckedMessage[index]
-
-    } else {
-        drawMap(newArray)
-    }
-    
 })
 
 // checks or unchecks several check-boxes and updates searchresult in sessionStorage with this information

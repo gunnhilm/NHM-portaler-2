@@ -23,7 +23,7 @@ const validateInput = (formData) => {
       formData[key] = validation.escape(value).trim(value)
     }
   }
-  return true
+  return 
 } catch (error) {
   console.log('validateInput: ' + error);
   return false

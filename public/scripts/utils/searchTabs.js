@@ -20,18 +20,14 @@ function searchTab(evt, searchType ) {
   
     // Show the current tab, and add an "active" class to the button that opened the tab
     document.getElementById(searchType).style.display = "block";
-    console.log('her kommer target');
-    console.log(evt.currentTarget);
-    
+
     
     evt.currentTarget.className += " active";
       
   }
 
 // render search-fields in search-page; HTML elements
-const renderAdvSearchFields = (searchFields) => {
-    console.log('render advanced search fields');
-    
+const renderAdvSearchFields = (searchFields) => {   
     const advTable = document.getElementById("adv_table");
     const row = advTable.insertRow(-1);
     const cell1 = row.insertCell(0);

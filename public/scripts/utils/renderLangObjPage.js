@@ -17,7 +17,7 @@ function setIndex (lang) {
     return index
 }
 
-function renderObjectText(lang){
+function renderObjectText(lang, specimenObject){
     if (lang === "English") {
         index = 1
     } else {
@@ -38,14 +38,14 @@ function renderObjectText(lang){
     const objectHeaders = loadString('objectHeaders')
     // get the id from the url
     const id = urlParams.get('id')
-    let specimenObject
+    // let specimenObject
     
-    if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
-        specimenObject = allObject.find(x => x.catalogNumber.replace(/[A-Z]/,'').trim() === id)
-    } else {
-        specimenObject = allObject.find(x => x.catalogNumber === id)
+    // if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
+    //     specimenObject = allObject.find(x => x.catalogNumber.replace(/[A-Z]/,'').trim() === id)
+    // } else {
+    //     specimenObject = allObject.find(x => x.catalogNumber === id)
         
-    }
+    // }
 
     let museum = urlParams.get("museum")
     if (museum === "nhm") {
@@ -164,8 +164,7 @@ function renderObjectText(lang){
             }
         }
     }
-    document.getElementById('zoom-expl-popup').innerHTML = textItems.mapHelpContent[index]
-    document.getElementById('large-map-object-button').innerHTML = textItems.largeMapButton[index]
+
 }
 // When someone clicks on the language selection
 document.querySelector('#language').addEventListener('click', () => {
@@ -181,7 +180,7 @@ document.querySelector('#language').addEventListener('click', () => {
     renderObjectText(language) // endrer fra renderText
     sessionStorage.setItem('language', language)
    
-    if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('map') & !location.href.includes('journaler') & !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools') & !location.href.includes('checkCoord') & !location.href.includes('dataError')) {
+    if (!location.href.includes('showStat') & !location.href.includes('object') & !location.href.includes('about') & !location.href.includes('help') & !location.href.includes('corema') & !location.href.includes('journaler') & !location.href.includes('getDOI') & !location.href.includes('showStat') & !location.href.includes('tools') & !location.href.includes('checkCoord') & !location.href.includes('dataError')) {
         if (document.querySelector("#head-nb-hits").innerHTML) {
 
             if (language === "Norwegian") {

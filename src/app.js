@@ -121,31 +121,24 @@ app.get('/nbh', (req, res) => {
 }) 
 
 
-// Søk er treff i MUSIT-dump fila
-// input:
-//  req.query.samling = samling fra dropdown
-//  req.query.search = søke ordene
-//  req.query.linjeNumber = linja søk vi skal søke videre fra, er = 0 hvis det er et nytt søk
-//   req.query.limit = antallet søkeresultater som skal sendes tilbake
-//  (error, results) callback med resultatene fra søket
-
 app.get('/search', (req, res) => {
     if (!req.query.samling) {
-        throw new Error ('collection not chosen') 
+        res.status(400).send({ error: 'Collection not chosen' });
     } else {
         try {
-            fileRead.search(req.query.museum, req.query.samling, req.query.search, req.query.linjeNumber,req.query.limit , (error, results) => {
-                res.send({
-                    unparsed: results
-                })
-            })
-        }
-        catch(error) {
-            console.log('error in fileread.js ' + error)
-            throw new Error ('File not found ')
+            fileRead.search(req.query.museum, req.query.samling, req.query.search, req.query.linjeNumber, req.query.limit, (error, results) => {
+                if (error) {
+                    res.status(500).send({ error: 'Error in fileRead search: ' + error.message });
+                } else {
+                    res.send(results);  // Directly sending the results array
+                }
+            });
+        } catch (error) {
+            console.error('Unexpected error: ' + error);
+            res.status(500).send({ error: 'File not found' });
         }
     }
-})
+});
 
 
 app.get('/advSearch', (req, res) => {
@@ -186,6 +179,33 @@ app.get('/objListSearch', (req, res) => {
         }
     }
 })
+
+
+app.get('/getLineByNumber', (req, res, next) => {
+
+    if (!req.query.linjeNumber || !req.query.museum || !req.query.samling) {
+        return next(new Error('Missing required query parameters'));
+    }
+
+    try {
+        fileRead.getLineByNumber(req.query.museum, req.query.samling, req.query.linjeNumber, (error, results) => {
+            if (error) {
+                console.error('Error in fileRead.js:', error);
+                return next(new Error('File read error'));
+            }
+            
+            res.send({
+                unparsed: results
+            });
+        });
+    } catch (error) {
+        console.error('Unexpected error:', error);
+        return next(new Error('Unexpected server error'));
+    }
+});
+
+
+
 
 app.get('/getFileList', (req, res) => {
     if (!req.query.museum) {
@@ -559,7 +579,6 @@ app.get('*/getNorwegianName', (req, res) => {
     if (req.query.latinName){ 
         adbAPI2.getNorwegianName(req.query.latinName, (error, results) => {
             if(results){
-                console.log(results + ' linje 438 app.js')
                 res.send({
                     unparsed: results
                 }) 
@@ -733,7 +752,6 @@ app.get('/nhm/journaler', (req, res) => {
 
 // Arkivsiden
 app.get('*/archive', async (req, res) => {
-    console.log('archive without files');
     const { pageID, subFolder, documentType } = req.query;
     if (pageID) {
       res.render('item-page', { pageID });

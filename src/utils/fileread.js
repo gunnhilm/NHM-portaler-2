@@ -8,7 +8,6 @@ const fileListUm = require('./fileListUm')
 const fileListNbh = require('./fileListNbh')
 
 // logging av søkeord 
-// get the Console class
 const { Console, log } = require("console");
 
 // formate date
@@ -30,7 +29,7 @@ makeHeader()
 
 
 const getFileList = (museum) => {
-    let fileList
+    let fileList = ''
     if (museum == 'tmu') {
         fileList = fileListTmu
     } else if (museum == 'um') {
@@ -49,12 +48,6 @@ const fileListObject = (museum) => {
     return fileListObject
 }
 
-// to figure out wheter collection is in musit or corema
-// is called in...
-const getSource = (museum,samling) => {
-    return(getFileList(museum).find(el => el.name === samling).source)
-    
-}
 
 // orgGroup = botanikk, mykologi, zoologi osv
 const setOrgGroups = (museum) => {
@@ -80,7 +73,6 @@ const getOrgGroup = (museum, samling) => {
     return orgGroup
 }
 
-
 const setSubcollections = (museum, orgGroup) => {
     const fileList = getFileList(museum)
     let coll = []
@@ -98,9 +90,6 @@ const getAllcollections = (museum) => {
     fileList.forEach(el => {
             coll.push(el.name)
     })
-    // console.log(coll);
-    // const filtered = result.filter(Boolean)
-    // return filtered 
     // remove null items
     return coll.filter(Boolean)
 }
@@ -120,15 +109,12 @@ const setCollection = (museum, samling) => {
     }  else if (samling === 'Botaniske Illustrasjoner') {
         musitFile = './src/data/' + museum +'/archive/botaniskeIllustrasjoner.txt'  
     }  else if (samling === 'Dagny Tande Lid') {
-        musitFile = './src/data/' + museum +'/archive/DTLIllustrations.txt'  
+        musitFile = './src/data/' + museum +'/archive/DTLIllustrations.txt'         
     } else if (samling === 'fieldNotes') {
         musitFile = './src/data/' + museum +'/archive/fieldNotes.txt'  
     }  else if (samling === 'Rolf Y. Berg') {
         musitFile = './src/data/' + museum +'/archive/Dias_RYB.txt'  
-    } 
-
-    
-    else {
+    } else {
         fileList.forEach(element => {
             if (element.name === samling){
                 musitFile = pathToMuseum + element.name + element.occurrenceFileSuffix
@@ -152,81 +138,75 @@ const whichFileDb = (museum,collection) => {
 }
 
 
-// const search = (museum, samling, searchTerm, linjeNumber = 0, limit = 20, callback) => {
-//     // velg riktig MUSIT dump fil å lese
-//     const date = getDate()
-//     myLogger.log( museum + '\t' + samling + '\t' + searchTerm + '\t' + date + '\tsimple search');
-//    console.log(samling)
-//     musitFile = setCollection(museum,samling)
-//     if (fs.existsSync(musitFile)) {
-//         // cleaning the searchterm before making the search so that we get a more precise
-//         // remove whiteSpace
-//         searchTerm = searchTerm.trim()
-//         // Case insensitve search
-//         searchTerm = searchTerm.toLowerCase()
-//         terms = searchTerm.split(' ')
-//         let results = ''
-//         const readInterface = readline.createInterface({
-//             input: fs.createReadStream(musitFile),
-//             console: false
-//         })
+// to figure out wheter collection is in musit or corema
+const getSource = (museum,samling) => {
+    try {
+        const fileList = getFileList(museum)
+    
+        function findSource(item) {
+            if(item.name === samling || item.source === samling){
+                return item.source
+            }
+        }
+        const result = fileList.find(findSource);
+        return result.source
 
-//         let count = 0  // iterates over each line of the current file
-//         let resultCount = 0
-//         readInterface.on('line', function(line) {
-//             count++
-//             if (resultCount == limit) {
-//                 readInterface.close()
-//             } 
-//             if (count === 1) {
-//                 // header row 
-//                 results =  line
-//             } else {         //if (count > linjeNumber) {
-//                 if (terms.length === 1){
-//                     if (line.toLowerCase().indexOf(terms[0]) !== -1) {
-//                         // søk for en match i linja  (line.indexOf(searchTerm) !== -1)
-//                         results =  results +  '\n' + line
-//                         resultCount++
-//                     } 
-//                 }
-//                 // Loope igjennom alle søkeordene og sjekke om de fins i linja
-//                 else if (line.toLowerCase().indexOf(terms[0]) !== -1) {
-//                     // Hvis linja inneholder det først søkeordet, sjekk om det også inneholder de andre
-//                     for(let i = 1; i < terms.length; i++){
-//                         if(line.toLowerCase().indexOf(terms[i]) === -1){
-//                         // hvis vi ikke får treff så bryter vi loopen (-1 = fant ikke)
-//                             break;
-//                         }
-//                         // hvis alle runden med søk har gått bra så lagrer vi resultatet (må trekke fra 1 da arrayet er null basert)
-//                         if (i === (terms.length -1) ) {
-//                             results =  results +  '\n' + line
-//                             resultCount++
-//                         }
-//                     }
-//                 }
-//             }
-            
-//         }).on('close', function () {
-//             const resulstAndLine = {results, count }
-//             callback(undefined, resulstAndLine)
-//         })
-       
-//     } else {
-//         myLogger.error('File not found');
-//         throw new Error ('File not found ');
+    } catch (error) {
+        return 'NA' 
+    }
+}
+
+const trimResults = (resultString, museum, samling) => {
+    
+    const source = getSource(museum, samling)
+    const resultsArray = resultString.split('\n');
+    if (resultsArray.length === 0) return [];
+    const headers = resultsArray[0].split('\t');
+
+    if (!['access', 'excel', 'archive', 'journals', 'NA'].includes(source)) {
+        // This array defines what data will be returned
+        const elementsToKeep = [
+            'catalogNumber', 'scientificName', 'identificationQualifier', 'recordedBy',
+            'eventDate', 'country', 'county', 'locality', 'decimalLongitude',
+            'decimalLatitude', 'habitat', 'basisOfRecord', 'associatedMedia', 'institutionCode',
+            'collectionCode', 'coremaBasisOfRecord', 'materialSampleType', 'preparationType', 'scientificNameAuthorship', 'lineNumber'
+        ];
         
-//     }
-// }
+        // Map headers to their indices if they're in elementsToKeep
+        const indicesToKeep = headers
+            .map((header, index) => elementsToKeep.includes(header) ? index : -1)
+            .filter(index => index !== -1);
 
+        // Create a header string using elementsToKeep adapted to original headers
+        const filteredHeaders = indicesToKeep.map(index => headers[index]);
+
+        // Create the filtered results based on indicesToKeep
+        const filteredResults = resultsArray.slice(1).map(row => {
+            const splitRow = row.split('\t');
+            return indicesToKeep.map(index => splitRow[index]);
+        });
+
+        // Return an array starting with the headers
+        return [filteredHeaders, ...filteredResults];
+    } else {
+        //make resultsstring into an array
+        unfilteredResults = []
+        for (let i = 0; i < resultsArray.length; i++) {
+            const element = resultsArray[i].split('\t');
+            unfilteredResults.push(element)
+        }
+        return unfilteredResults
+    }
+}
 
 const search = (museum, samling, searchTerm, linjeNumber = 0, limit = 20, callback) => {
+    
     const date = getDate();
     myLogger.log(`${museum}\t${samling}\t${searchTerm}\t${date}\tsimple search`);
-    console.log(samling);
     limit = parseInt(limit); // make limit a number
 
-
     const musitFile = setCollection(museum, samling);
+ 
     if (!fs.existsSync(musitFile)) {
         myLogger.error('File not found');
         throw new Error('File not found');
@@ -246,6 +226,7 @@ const search = (museum, samling, searchTerm, linjeNumber = 0, limit = 20, callba
     });
 
     readInterface.on('line', function(line) {
+        
         count++;
         if (resultCount === limit) {
             readInterface.close();
@@ -253,24 +234,26 @@ const search = (museum, samling, searchTerm, linjeNumber = 0, limit = 20, callba
 
         if (count === 1) {
             //headerRow
-            results = line;
+            results = line + '\tlineNumber';
+            
         } else {
-            if (isSingleTerm && line.toLowerCase().includes(searchTerm)) {
-                results += `\n${line}`;
+            if (isSingleTerm && line.toLowerCase().includes(searchTerm)) {               
+                results += `\n${line}\t${count}`;
                 resultCount++;
             } else if (terms.every(term => line.toLowerCase().includes(term))) {
-                results += `\n${line}`;
+                results += `\n${line}\t${count}`;
                 resultCount++;
             }
         }
-    }).on('close', function() {
+    }).on('close', function() { 
+        console.log(museum + ' ' + samling);
+                      
+        results = trimResults(results, museum, samling)
         const resultsAndLine = {results, count};
+
         callback(undefined, resultsAndLine);
     });
 }
-
-
-
 
 // advanced search
 const advSearch = (museum, samling, searchSpecies, searchCollector, searchDate, searchCountry, searchCounty, searchMunicipality, searchLocality, searchCollNo, searchTaxType, linjeNumber = 0, limit = 20, hasPhoto, callback) => {
@@ -296,14 +279,7 @@ const advSearch = (museum, samling, searchSpecies, searchCollector, searchDate, 
         let resultCount = 0
         // array med overskrifter på de kolonnene vi skal søke i
         let headerTerms
-        // for advanced search in utad and bulk:
-        // if (samling === 'utad') {
-        //     headerTerms = ['vernacularName','scientificName','basisOfRecord']
-        // } else if (samling = 'bulk') {
-        //     headerTerms = ['scientificName','recordedBy','eventDate','country','stateProvince','county','locality','preparations']
-        // } else {
         headerTerms = ['scientificName','recordedBy','eventDate','country','stateProvince','county','locality','recordNumber','typeStatus','associatedMedia']
-        // }
         let headers = []
         readInterface.on('line', function(line) {
             count++
@@ -359,9 +335,6 @@ const advSearch = (museum, samling, searchSpecies, searchCollector, searchDate, 
         throw new Error ('File not found ')
     }
 }
-
-
-
 
 // object list search, seach for object number or several numbers, searchObjects = one or more object numbers without prefixes, comma or space separated
 const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 20, callback) => {
@@ -426,12 +399,8 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
                 let lineArray = line.split('\t')
                 let catNoInFile = lineArray[headers.indexOf('catalogNumber')].toLowerCase().trim()
                 let source = getSource(museum, samling)
-                
-                // console.log('linje ' + count)
-                // console.log(objectNumbers.length + ' lengde')
-                // for (let el of objectNumbers) {
+
                 for (let i=0;i<objectNumbers.length;i++) {
-                    // console.log(objectNumbers[i])
                     // for collections with suffixes in catNo ('.../1'). When complete suffix is entered in search term, all is good
                     // when complete suffix is entered, but musit-catalog-number has only "/", without number:
                     if (suffix && objectNumbers[i].includes('/') && catNoInFile.length == catNoInFile.indexOf('/')+1) {
@@ -476,85 +445,60 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
     }
 }
 
+// Show a object based on the linenumber in the musit file
+function getLineByNumber(museum, samling, lineNumber, callback) {
+    let results = '';
+    console.log(museum);
+    console.log(samling);
+    console.log(lineNumber);
+    
+    
+    
+    
+    lineNumber = Number(lineNumber);
+    if (isNaN(lineNumber) || lineNumber < 1) {
+        return callback(new Error('Invalid line number'));
+    }
 
-// const checkRegion = (museum, samling, searchTerm, linjeNumber = 0, limit = 20, callback) => {
-//     // velg riktig MUSIT dump fil å lese
-//       console.log('her kommer search museum: ' + museum);
-//     musitFile = setCollection(museum,samling)
-//     console.log(musitFile)
-//     if (fs.existsSync(musitFile)) {
-//         // cleaning the searchterm before making the search so that we get a more precise
-//         // remove whiteSpace
-//         searchTerm = searchTerm.trim()
-//         // Case insensitve search
-//         searchTerm = searchTerm.toLowerCase()
-//         console.log( 'Search Term: ' + searchTerm);
-        
-//         terms = searchTerm.split(' ')
-//         let results = 'readInterface = readline.createInterface({
-//             input: fs.createReadStream(musitFile),
-//             console: false
-//         })
+    const musitFile = setCollection(museum, samling); // Assuming this returns a valid file path
+    if (!musitFile) {
+        return callback(new Error('Invalid collection path'));
+    }
 
-//         let count = 0  // iterates over each line of the current file
-//         let resultCount = 0
-//         let masterCoordArray = []
-//         readInterface.on('line', function(line) {
-//             count++
-//             if (resultCount == limit) {
-//                 readInterface.close()
-//             } 
-//             if (count === 1) {
-//                 // header row 
-//                 results =  line
-                
-//             } else {         //if (count > linjeNumber) {
-//                 if (terms.length === 1){
-//                     if (line.toLowerCase().indexOf(terms[0]) !== -1) {
-//                         // søk for en match i linja  (line.indexOf(searchTerm) !== -1)
-//                         results =  results +  '\n' + line
-//                         resultCount++
-//                     } 
-//                     let array = line.split('\t')
-//                     let coordArray = []
-//                     coordArray.push(array[25])
-//                     coordArray.push(array[27])
-//                     coordArray.push(array[28])
-//                     //console.log(coordArray)
+    const fileStream = fs.createReadStream(musitFile);
 
-//                     const url = 'https://ws.geonorge.no/kommuneinfo/v1/punkt?ost=' + array[27] + '&nord=' + array[28] + '&koordsys=4258'
-//                     request({ url, json: true }, (error, {body}) => {
-                        
-//                         if (error) {
-//                             callback('Unable to connect to geonorge.', undefined)
-//                         } else if (body.error) {
-//                             callback('Unable to find location.', undefined)
-//                         } else {
-                            
-//                             //console.log(body)
-//                             coordArray.push(body.kommunenavn)
-//                             masterCoordArray.push(coordArray)
-//                             console.log(masterCoordArray[0])
-//                             //callback(undefined, masterCoordArray)
-//                         }
-//                     })
-                    
-//                 }
-                
-//             }
-            
-//         }).on('close', function () {
-            
-//             const resulstAndLine = {results, count }
-            
-//             callback(undefined, resulstAndLine)
-//         })
-       
-//     } else {
-//         throw new Error ('File not found ')
-//     }
-// }
+    const rl = readline.createInterface({
+        input: fileStream,
+        crlfDelay: Infinity,
+    });
 
+    let currentLine = 0;
+    let found = false;
+
+    rl.on('line', (line) => {
+        currentLine++;
+        if (currentLine === 1) {
+            results = line;
+        }
+        if (currentLine === lineNumber) {
+            found = true;
+            results += `\n${line}`;
+            const resultsAndLine = {results, currentLine }
+            rl.close(); // Stop reading further lines
+            callback(null, resultsAndLine); // Call the callback with the line
+        }
+    });
+
+    rl.on('close', () => {
+        if (!found) {
+            callback(new Error('Line number out of bounds'));
+        }
+    });
+
+    rl.on('error', (err) => {
+        callback(err);
+    });
+}
 
 const checkRegion = async (region, lat, long, callback) => {
     // const url = 'https://ws.geonorge.no/' + region + 'info/v1/punkt?ost=' + long + '&nord=' + lat + '&koordsys=4258'
@@ -573,8 +517,6 @@ const checkRegion = async (region, lat, long, callback) => {
         callback(error, undefined)
     }
 }
-
-
  
 module.exports = { 
     search,
@@ -587,7 +529,8 @@ module.exports = {
     setSubcollections,
     whichFileDb,
     checkRegion,
-    getAllcollections
+    getAllcollections,
+    getLineByNumber
     
  } 
 

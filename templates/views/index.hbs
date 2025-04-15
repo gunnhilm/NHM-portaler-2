@@ -9,7 +9,10 @@
         
         <link rel="stylesheet" href="/museum/styles/styles.css">
         <link id="museumStyle" rel="stylesheet" type="text/css" href= "">
-
+        <link rel="stylesheet" href="/museum/scripts/leaflet/leaflet.css">
+        <link rel="stylesheet" href="/museum/scripts/leaflet/markerCluster/MarkerCluster.css">
+        <link rel="stylesheet" href="/museum/scripts/leaflet/markerCluster/MarkerCluster.Default.css">
+        <link rel="stylesheet" href="/museum/scripts/leaflet/Control.FullScreen.css">
 
 
     </head>
@@ -141,43 +144,19 @@
                                     </tr>
                                 </table>
                             </div>
-                        {{!-- table cell with map --}}
-                            <div id="mapDiv" style="width:49%; min-width:254px;  float:left; margin-left:5px;  ">
-                                <br><br>
-                                <div id="map-search" class="map-search" style=""></div>
-                                <div id="popup" class="ol-popup">
-                                    <a href="#" id="popup-closer" class="ol-popup-closer" aria-label="popup-closer"></a>
-                                    <div id="popup-content"></div>
-                                </div>
-        
-                                <table align="right" style="">
-                                    <tr >
-                                        
-                                        <td >
-                                            <button id="zoom-button" style="display:none" title="Bruksanvisning kart">Zoom</button>
-                                            <div id="zoom-modal" class="modal">
-                                                <div class="modal-content">
-                                                    <span class="close">&times;</span>
-                                                    <span class="popuptext" id="zoom-expl-popup"></span>
-                                                </div>    
-                                            </div>
-                                        </td>
-                                        <td >
-                                            <button id="large-map-button" style="display:none" title="Vis stort kart">Større kart</button>
-                                            <br>
-                                        </td>
-                                        <td>
-                                            {{!-- downloadmap --}}
-                                            <button id="export-png" style="display:none" title="Last ned kart som bilde">Last ned kart</button>
-                                            <a id="image-download" download="map.png"></a>
-                                        </td>
-                                        <td>
-                                            <button id="checkedInMap" style = "display:none" title="Vis valgt poster i kart">Vis valgte poster i kart</button>
-                                        </td>
-                                    </tr>
-                                  
-                                </table>
-                            </div>
+                            {{!-- table cell with map --}}
+                            <table>
+                                <tr>
+                                    <td>
+                                        {{!-- <div id="mapDiv" style="width:49%; min-width:254px;  float:left; margin-left:5px;"> --}}
+                                        {{!-- <div id="mapDiv" style="width:49%; min-width:254px; margin-left:5px;"> --}}
+                                            <br><br>
+                                            <div id="map-search" hidden></div>
+                                        {{!-- </div> --}}
+                                    </td>
+                                </tr>
+                            </table>
+
                         </td>
                     </tr>
                 </table>
@@ -248,10 +227,11 @@
         <script src="/museum/scripts/utils/showCorrectMuseum.js"></script>
 
         <script src="/museum/scripts/utils/font/409783eafe.js"></script>
-        <script src="/museum/scripts/utils/papaparse/papaparse.min.js"></script>
-        <script src="/museum/scripts/utils/ol/ol.js"></script>
         <script src="/museum/scripts/utils/jszip/jszip.js"></script>
         <script src="/museum/scripts/utils/file-saver/FileSaver.min.js"></script>
+        <script src="/museum/scripts/leaflet/leaflet.js"></script>
+        <script src="/museum/scripts/leaflet/markerCluster/leaflet.markercluster.js"></script>
+        <script src="/museum/scripts/leaflet/Control.FullScreen.js"></script>
         <script src="/museum/scripts/utils/map.js"></script>
 
         <script src="/museum/scripts/utils/resultElementsOnOff.js"></script>   

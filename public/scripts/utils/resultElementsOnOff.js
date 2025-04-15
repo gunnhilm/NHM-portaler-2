@@ -139,10 +139,10 @@ emptyResultElements = () => {
     document.getElementById("action-select").style.display = "none"
     document.getElementById("head-nb-hits").innerHTML = ""
     document.getElementById("empty-search-button").style.display = "none"
-    document.getElementById("zoom-button").style.display = "none"
-    document.getElementById("large-map-button").style.display = "none"
-    document.getElementById("export-png").style.display = "none"
-    document.getElementById("checkedInMap").style.display = "none"
+    // document.getElementById("zoom-button").style.display = "none"
+    // document.getElementById("large-map-button").style.display = "none"
+    // document.getElementById("export-png").style.display = "none"
+    // document.getElementById("checkedInMap").style.display = "none"
     document.getElementById("first").style.display = "none"
     document.getElementById("previous").style.display = "none"
     document.getElementById("next").style.display = "none"
@@ -299,6 +299,7 @@ function getArrows(prop) {
 // calls getArrows(..) for table-header-buttons
 // addSortingText(..) for tabel-header-buttons
 fillResultHeaders = (org,headerArray,musitData) => {
+    try {
     
     headerArray[0].innerHTML = `<button id='musitIDButton' aria-label="sort by catalog Number" class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>` 
 
@@ -341,6 +342,10 @@ fillResultHeaders = (org,headerArray,musitData) => {
     }    
     addSortingText('photoButton', 'associatedMedia', musitData, 'resultTable')
     addSortingText('coordinateButton', 'decimalLongitude', musitData, 'resultTable')
+} catch (error) {
+ console.log(error);
+        
+}
 }
 
 // puts content in headerbuttons in bulk-result-table
@@ -409,7 +414,7 @@ fillResultHeadersUTAD = (headerArray, UTADData) => {
 // puts content in headerbuttons in eco_bot-result-table
 // calls getArrows(..) for table-header-buttons
 // addSortingText(..) for table-header-buttons
-    fillResultHeadersEco_bot = (headerArray, eco_botData) => {
+fillResultHeadersEco_bot = (headerArray, eco_botData) => {
         try {
             
 
@@ -447,4 +452,4 @@ fillResultHeadersUTAD = (headerArray, UTADData) => {
         console.log('feil i resultElementsOnOff');
         console.log(error);
     }
-    }
+}
