@@ -162,6 +162,7 @@ function determineMuseumAndURLPath(urlPath) {
 //	drawList()
 //	addSortingText(…)
 const resultTable = (subMusitData, musitData) => {  
+
     try {
         let { museumURLPath, museum } = determineMuseumAndURLPath(urlPath);
         const headers = musitData[0]
@@ -401,10 +402,8 @@ const resultTable = (subMusitData, musitData) => {
         document.getElementById("empty-search-button").style.display = "inline-block"
         numberOfPages = getNumberOfPages(numberPerPage)
 
-        // document.getElementById('musitIDButton').click()
-
         if (!searchFailed) {
-            try {
+            try {                
                 drawMap(musitData) 
             } catch (error) {
                 console.log('cant draw map because of search error:  ');

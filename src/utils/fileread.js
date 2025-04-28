@@ -245,12 +245,9 @@ const search = (museum, samling, searchTerm, linjeNumber = 0, limit = 20, callba
                 resultCount++;
             }
         }
-    }).on('close', function() { 
-        console.log(museum + ' ' + samling);
-                      
+    }).on('close', function() {                      
         results = trimResults(results, museum, samling)
         const resultsAndLine = {results, count};
-
         callback(undefined, resultsAndLine);
     });
 }
@@ -287,8 +284,10 @@ const advSearch = (museum, samling, searchSpecies, searchCollector, searchDate, 
                 readInterface.close()
             }
             if (count === 1) {
-                results = line
+                // results = line
                 headers = line.split('\t')
+                
+                 results = line + '\tlineNumber';
             } else {
                 let lineArray = line.split('\t')
                 if (lineArray[headers.indexOf(headerTerms[0])].toLowerCase().indexOf(termsArray[0]) !== -1) {
@@ -307,19 +306,25 @@ const advSearch = (museum, samling, searchSpecies, searchCollector, searchDate, 
                                     if (!lineArray[headers.indexOf(headerTerms[i])]) {
                                         break;
                                     } else {
-                                        results =  results +  '\n' + line
-                                        resultCount++  
+                                        // results =  results +  '\n' + line
+                                        // resultCount++  
+                                        results += `\n${line}\t${count}`;
+                                        resultCount++;
                                     }
                                 } else if (termsArray[i] === 'hasnotphoto') {
                                     if (lineArray[headers.indexOf(headerTerms[i])]) {
                                         break;
                                     } else {
-                                        results =  results +  '\n' + line
-                                        resultCount++  
+                                        // results =  results +  '\n' + line
+                                        // resultCount++  
+                                        results += `\n${line}\t${count}`;
+                                        resultCount++;
                                     }
                                 } else {
-                                    results =  results +  '\n' + line
-                                    resultCount++  
+                                    // results =  results +  '\n' + line
+                                    // resultCount++  
+                                    results += `\n${line}\t${count}`;
+                                    resultCount++;
                                 }
                             }
                         }
@@ -327,8 +332,11 @@ const advSearch = (museum, samling, searchSpecies, searchCollector, searchDate, 
                 }
             }
         }).on('close', function () {
-            const resulstAndLine = {results, count }
-            callback(undefined, resulstAndLine)
+            // const resulstAndLine = {results, count }
+            // callback(undefined, resulstAndLine)
+            results = trimResults(results, museum, samling)
+            const resultsAndLine = {results, count};
+            callback(undefined, resultsAndLine);
         })
        
     } else {
@@ -388,8 +396,8 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
                 readInterface.close()
             }
             if (count === 1) {
-                results = line
                 headers = line.split('\t')
+                results = line + '\tlineNumber';
             } else {
                 
                 
@@ -429,15 +437,20 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
                    
                     if ( catNoInFile === objectNumbers[i].trim()) {
                         // søk for en match i linja  (line.indexOf(searchTerm) !== -1)
-                        results =  results +  '\n' + line
-                        resultCount++
+                        // results =  results +  '\n' + line
+                        // resultCount++
+                        results += `\n${line}\t${count}`;
+                        resultCount++;
                     } 
                 }
             }
             
         }).on('close', function () {
-            const resultsAndLine = {results, count }
-            callback(undefined, resultsAndLine)
+            // const resultsAndLine = {results, count }
+            // callback(undefined, resultsAndLine)
+            results = trimResults(results, museum, samling)
+            const resultsAndLine = {results, count};
+            callback(undefined, resultsAndLine);
         })
        
     } else {

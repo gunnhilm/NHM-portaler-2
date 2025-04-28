@@ -105,16 +105,13 @@ document.querySelector('#irrPhotoLabel').innerHTML = textItems.irrPhoto[index]
 //      emptyResultElements() in resultElementOnOff.js
 // is called by searchForm.eventlistener
 const doAdvancedSearch = (limit = 20) => {
-    // delete the previous search results
-    sessionStorage.removeItem('string')
-    sessionStorage.removeItem('currentPage')
-    sessionStorage.removeItem('numberPerPage')
-    sessionStorage.removeItem('propsSorted')
-    document.getElementById("map-search").innerHTML = ""  
+    // // delete the previous search results
+    // sessionStorage.removeItem('string')
+    // sessionStorage.removeItem('currentPage')
+    // sessionStorage.removeItem('numberPerPage')
+    // sessionStorage.removeItem('propsSorted')
+    // document.getElementById("map-search").innerHTML = ""  
     // reset searchFailed value
-    searchFailed = false
-    resetSortedBoolean() // set all booleans in propsSorted-array in PaginateAndRender.js to false
-
     const searchSpecies = document.querySelector('#adv-species').value
     const searchCollector = document.querySelector('#adv-collector').value
     const searchDate = document.querySelector('#adv-date').value
@@ -133,14 +130,19 @@ const doAdvancedSearch = (limit = 20) => {
         hasPhoto = "irr"
     }
 
-    
+    searchFailed = false
+    let museum = getCurrentMuseum()   
+    resetSortedBoolean() // set all booleans in propsSorted-array in PaginateAndRender.js to false
+    //clean up previous search
+    resetSessionStorage(collection, search, limit, museum)
+    // hide download button
+    emptyResultElements()
+
     sessionStorage.setItem('advSearchArray', [searchSpecies,searchCollector,searchDate,searchCountry,searchMunicipality,searchLocality,searchCollNo,searchTaxType])
     const chosenCollection = collection.value
     sessionStorage.setItem('chosenCollection', chosenCollection)
     searchLineNumber = limit
     sessionStorage.setItem('limit', limit)
-
-    let museum = getCurrentMuseum()   
 
     sessionStorage.setItem('museum',museum)
     emptyTable()
@@ -172,28 +174,22 @@ const doAdvancedSearch = (limit = 20) => {
                         if(data.error) {
                             errorMessage.innerHTML = textItems.serverError[index]
                             return console.log(data.error)
-                        } else {
+                        } else {                            
                             const JSONdata = JSON.parse(data)  
-                            
+                            const parsedResults = JSONdata.unparsed.results
                             sessionStorage.setItem('searchLineNumber', JSONdata.unparsed.count)
-                            // sessionStorage.setItem('advSearchArray', [searchSpecies,searchCollector,searchDate,searchCountry,searchMunicipality,searchLocality,searchCollNo,searchTaxType])
-                            const parsedResults = Papa.parse(JSONdata.unparsed.results, {
-                                delimiter: "\t",
-                                newline: "\n",
-                                quoteChar: '',
-                                header: true,
-                            }) 
+
                             //check if there are any hits from the search
-                            if ( parsedResults.data === undefined || parsedResults.data.length === 0 ) {
+                            if ( parsedResults === undefined || parsedResults.length === 0 ) {
                                 nbHitsElement.innerHTML = textItems.noHits[index]
                             } else {
                                 try {
                                     // hvis vi får flere enn 2000 treff må vi si i fra om det
-                                    if(parsedResults.data.length > 999){
+                                    if(parsedResults.length > 3999){
                                         nbHitsElement.textContent = textItems.tooManyHits[index]
                                         nbHitsElement.style.color = 'red'
                                     } else {
-                                        nbHitsElement.textContent = parsedResults.data.length
+                                        nbHitsElement.textContent = parsedResults.length
                                         nbHitsElement.style.color = 'black'
                                     }
                                     nbHitsHeader.innerHTML = textItems.nbHitsText[index]
@@ -202,7 +198,7 @@ const doAdvancedSearch = (limit = 20) => {
                                     if(chosenCollection === 'fossiler' || chosenCollection === 'palTyper') {
                                         let coordString = ''
                                         const regex = /,/i;
-                                        parsedResults.data.forEach(function(item, index) {
+                                        parsedResults.forEach(function(item, index) {
 
                                             if(item.decimalLatitude){
                                                 coordString = item.decimalLatitude
@@ -229,13 +225,13 @@ const doAdvancedSearch = (limit = 20) => {
                                                 }
                                             }
                                         })
-                                    }
-
-                                    sessionStorage.setItem('string', JSON.stringify(parsedResults.data))      
-                                    
+                                    }                                    
+                                    sessionStorage.setItem('string', JSON.stringify(parsedResults))                                    
                                     load() 
                                     
                                 } catch (error) {
+                                    console.log(error);
+                                    
                                     errorMessage.innerHTML = textItems.errorRenderResult[index]
                                     searchFailed = true // is checked when map is drawn 
                                 }        
@@ -255,25 +251,30 @@ const doAdvancedSearch = (limit = 20) => {
             document.getElementById("please-wait").style.display = "none"
         })
     }
+
 }                  
 
 
 // when somebody clicks search-button
 advSearchForm.addEventListener('submit', (e) => {
     e.preventDefault()
-    doAdvancedSearch(1000) // vi skal få tilbake maks 1000 linjer med svar
+    doAdvancedSearch(4000) // vi skal få tilbake maks 1000 linjer med svar
 })  
 
 const doObjListSearch = (limit = 20) => {
     // delete the previous search results
-    sessionStorage.removeItem('string')
-    sessionStorage.removeItem('currentPage')
-    sessionStorage.removeItem('numberPerPage')
-    sessionStorage.removeItem('propsSorted')
-    document.getElementById("map-search").innerHTML = ""  
+    // sessionStorage.removeItem('string')
+    // sessionStorage.removeItem('currentPage')
+    // sessionStorage.removeItem('numberPerPage')
+    // sessionStorage.removeItem('propsSorted')
+    // document.getElementById("map-search").innerHTML = ""  
+    
     // reset searchFailed value
     searchFailed = false
+    let museum = getCurrentMuseum()   
     resetSortedBoolean() // set all booleans in propsSorted-array in PaginateAndRender.js to false
+    //clean up previous search
+    resetSessionStorage(collection, search, limit, museum)
 
     const searchObjects = document.querySelector('#obj-list-input').value
         
@@ -282,8 +283,7 @@ const doObjListSearch = (limit = 20) => {
     sessionStorage.setItem('chosenCollection', chosenCollection)
     searchLineNumber = limit
     sessionStorage.setItem('limit', limit)
-
-    let museum = getCurrentMuseum()   
+   
 
     sessionStorage.setItem('museum',museum)
     emptyTable()
@@ -304,6 +304,8 @@ const doObjListSearch = (limit = 20) => {
     else {
         const url = urlPath + '/objListSearch/?searchObjects=' + searchObjects + '&museum=' + museum + 
         '&samling=' + chosenCollection + '&linjeNumber=0' + '&limit=' + limit
+        console.log(url);
+        
         fetch(url).then((response) => {
             if (!response.ok) {
                 errorMessage.innerHTML = 'feil i url-lengde'
@@ -317,27 +319,25 @@ const doObjListSearch = (limit = 20) => {
                             errorMessage.innerHTML = textItems.serverError[index]
                             return console.log(data.error)
                         } else {
+
                             const JSONdata = JSON.parse(data)  
+                            console.log(JSONdata);
                             
+                            const parsedResults = JSONdata.unparsed.results
                             sessionStorage.setItem('searchLineNumber', JSONdata.unparsed.count)
-                            // sessionStorage.setItem('objList', searchObjects)
-                            const parsedResults = Papa.parse(JSONdata.unparsed.results, {
-                                delimiter: "\t",
-                                newline: "\n",
-                                quoteChar: '',
-                                header: true,
-                            }) 
+                            
+ 
                             //check if there are any hits from the search
-                            if ( parsedResults.data === undefined || parsedResults.data.length === 0 ) {
+                            if ( parsedResults === undefined || parsedResults.length === 0 ) {
                                 nbHitsElement.innerHTML = textItems.noHits[index]
                             } else {
                                 try {
                                     // hvis vi får flere enn 2000 treff må vi si i fra om det
-                                    if(parsedResults.data.length > 999){
+                                    if(parsedResults.length > 3999){
                                         nbHitsElement.textContent = textItems.tooManyHits[index]
                                         nbHitsElement.style.color = 'red'
                                     } else {
-                                        nbHitsElement.textContent = parsedResults.data.length
+                                        nbHitsElement.textContent = parsedResults.length
                                         nbHitsElement.style.color = 'black'
                                     }
                                     nbHitsHeader.innerHTML = textItems.nbHitsText[index]
@@ -346,7 +346,7 @@ const doObjListSearch = (limit = 20) => {
                                     if(chosenCollection === 'fossiler' || chosenCollection === 'palTyper') {
                                         let coordString = ''
                                         const regex = /,/i;
-                                        parsedResults.data.forEach(function(item, index) {
+                                        parsedResults.forEach(function(item, index) {
 
                                             if(item.decimalLatitude){
                                                 coordString = item.decimalLatitude
@@ -375,11 +375,13 @@ const doObjListSearch = (limit = 20) => {
                                         })
                                     }
 
-                                    sessionStorage.setItem('string', JSON.stringify(parsedResults.data))      
+                                    sessionStorage.setItem('string', JSON.stringify(parsedResults))      
                                     
                                     load() 
                                     
                                 } catch (error) {
+                                    console.log(error);
+                                    
                                     errorMessage.innerHTML = textItems.errorRenderResult[index]
                                     searchFailed = true // is checked when map is drawn 
                                 }        
@@ -407,7 +409,7 @@ const doObjListSearch = (limit = 20) => {
 // when somebody clicks search-button
 document.getElementById('obj-list-form').addEventListener('submit', (e) => {
     e.preventDefault()
-    doObjListSearch(1000) // vi skal få tilbake maks 1000 linjer med svar
+    doObjListSearch(4000) // vi skal få tilbake maks 1000 linjer med svar
 })  
 
 

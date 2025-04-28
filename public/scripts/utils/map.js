@@ -13,7 +13,6 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 const markers = L.markerClusterGroup();
 
 const drawMap = (parsedData) => {  
-
     if (markers) {
         markers.removeLayer(markers);
     }
