@@ -167,6 +167,7 @@ const resultTable = (subMusitData, musitData) => {
         let { museumURLPath, museum } = determineMuseumAndURLPath(urlPath);
         const headers = musitData[0]
         
+        const kindomIndex = headers.indexOf('kingdom')
         const scientificNameIndex = headers.indexOf('scientificName')
         const genusIndex = headers.indexOf('genus')
         const specificEpithetIndex = headers.indexOf('specificEpithet')
@@ -259,19 +260,17 @@ const resultTable = (subMusitData, musitData) => {
                 
                 //cell 2
                 if (sessionStorage.getItem('organismGroup').includes('geologi')) {
+                    
                     if (sessionStorage.getItem('chosenCollection') === 'oslofeltet') {
-                        cell2.innerHTML = `<span>${subMusitData[i].kingdom}</span>`    
+                        cell2.innerHTML = `<span>${subMusitData[i][kindomIndex]}</span>`                            
                     } else {
-                        cell2.innerHTML = `<span>${subMusitData[i].scientificName}</span>`
+                        cell2.innerHTML = `<span>${subMusitData[i][scientificNameIndex]}</span>`
                     }
                     
                 } else if (sessionStorage.getItem('organismGroup').includes('zoologi')) {
                     if (subMusitData[i][specificEpithetIndex] && subMusitData[i][genusIndex] !== "") {
                         cell2.innerHTML = `<span style=font-style:italic>${subMusitData[i][genusIndex]} ${subMusitData[i][specificEpithetIndex]}</span>`
-                    } else {
-                        console.log('dit?');
-                        console.log(subMusitData[i][scientificNameIndex]);
-                        
+                    } else {                       
                         
                         cell2.innerHTML = `<span style=font-style:italic>${subMusitData[i][scientificNameIndex]}</span>`
                     }
@@ -562,9 +561,6 @@ const UTADRestultTable = (subUTADData, UTADData) => {
 }
 
 const eco_BotRestultTable = (subEco_BotData, eco_BotData) => {
-    console.log('eco_BotRestultTable i paginateandRender');
-    console.log(subEco_BotData);
-    
     
     try {
 

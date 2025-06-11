@@ -304,7 +304,6 @@ const doObjListSearch = (limit = 20) => {
     else {
         const url = urlPath + '/objListSearch/?searchObjects=' + searchObjects + '&museum=' + museum + 
         '&samling=' + chosenCollection + '&linjeNumber=0' + '&limit=' + limit
-        console.log(url);
         
         fetch(url).then((response) => {
             if (!response.ok) {

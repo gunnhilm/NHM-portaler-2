@@ -458,7 +458,6 @@ const doSearch = (limit = 20) => {
 
     const searchTerm = search.value
     const chosenCollection = collection.value
-    // mustChoose
     if (!chosenCollection) {
         errorMessage.innerHTML = textItems.mustChoose[index]
         document.getElementById("please-wait").style.display = "none"
@@ -501,8 +500,6 @@ const doSearch = (limit = 20) => {
                                         let coordString = ''
                                         const regex = /,/i;
                                         parsedResults.results.forEach(function(item, index) {
-                                            console.log('her kommer item');
-                                            console.log(item);
                                             
                                             if(item.decimalLatitude){
                                                 coordString = item.decimalLatitude
@@ -725,7 +722,7 @@ emptySearchButton.addEventListener('click', (e) => {
 // in:data (JSON; part of search result that is rendered on page)
 // is called by dropdown-menu with checkbox-options in searchresult-table
 const checkSeveralBoxes = (subMusitData) => {
-    console.log('her da')
+
     const nbHitsOnPage = document.getElementById('number-per-page').value
     const select = document.getElementById('checkboxSelect')
     let max
@@ -773,7 +770,7 @@ if (JSON.parse(sessionStorage.getItem('pageList'))) {
 
 if(select) {
     select.onchange =() => {
-        console.log('her')
+
         checkSeveralBoxes(pageList)
     }
 }

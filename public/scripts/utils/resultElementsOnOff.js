@@ -186,99 +186,101 @@ showResultElements = (loan) => {
     
 }
 
-// aids in sorting search-result when header-button in tabel is clicked
-// in: prop (number; to find the correct property to sort on, from the propsSorted-array)
-// in: reverse (boolean, decides which way data are being sorted)
-// in: primer (function; e.g. parseInt that will turn a string into an integer)
-// out: sorting order of two elements (?)
-// is called by addSortingText(…)
-sort_by = (prop, reverse, primer) => {
-    const key = primer ?
-    function(x) {
-        return primer(x[prop])
-    } :
-    function(x) {
-        return x[prop]
-    }
-    reverse = !reverse ? 1: -1
-        
-    return function(a, b) {
-        return a = key(a), b = key(b), reverse * ((a > b) - (b > a))
-    }
-}
+
 
 // adds sorting-function to buttons that are table-headings in result-table; and contains the sorting-function; search-result is sorted and result re-rendered 
 // in: id (string; id of button)
-// in: prop (number; to find the correct property to sort on, from the propsSorted-array)
+// in: prop (string; to find the correct property to sort on, from the propsSorted-array)
 // in: musitData (JSON; searchResult, all of it)
-// calls sort_by(prop,reverse,primer)
 //  	resultTable(subMusitData, musitData)
 // is called by fillResultHeaders(…)
-function addSortingText(id, prop, musitData, fromFunction) { // her er musitData alle
+
+function addSortingText(id, prop, musitData, fromFunction) {
     try {
         document.getElementById(id).addEventListener("click", function() {
-            if (musitData[0].hasOwnProperty(prop)) {
-                // Show please wait
-                document.getElementById("please-wait").style.display = "block"
-                let reverse = false
-                if (propsSorted.find(x => x.id === prop).sortedOnce) { reverse = true }
-                if (id === 'musitIDButton' && sessionStorage.getItem("chosenCollection") != "fossiler" &&  !musitData[0].catalogNumber.includes('/')) { 
-                    musitData.sort(sort_by(prop,reverse, parseInt))
+            
+            if (musitData.length > 1) {
+              
+                document.getElementById("please-wait").style.display = "block";
+
+                const header = musitData[0];
+                const propIndex = header.indexOf(prop);
+
+                if (propIndex === -1) {
+                    console.error(`Property "${prop}" not found in headers.`);
+                    return;
+                }
+
+                let reverse = false;
+                const sortStatus = propsSorted.find(x => x.id === prop);
+                if (sortStatus && sortStatus.sortedOnce) { 
+                    reverse = true; 
+                }
+
+                // Sort the data starting from the second row
+                const sortedData = musitData.slice(1).sort((a, b) => {
+                    const valA = a[propIndex];
+                    const valB = b[propIndex];
                     
-                }  else if (id === 'breddeButton' || id === 'hoydeButton' || id === 'lengdeButton'  ) {
-                    musitData.sort(sort_by(prop,reverse))
-                } else {
-                    if (id === 'photoButton' | id === 'coordinateButton') {
-                        reverse = !reverse
-                        musitData.sort(sort_by(prop,reverse))
-                    } else if (sessionStorage.getItem("chosenCollection") == "entomology_types") {
-                        musitData.sort(sort_by(prop,reverse))
+
+                    // Use localeCompare for strings and ensure you handle undefined/null if present.
+                    if (typeof valA === 'string' && typeof valB === 'string') {
+                        return reverse ? valB.localeCompare(valA) : valA.localeCompare(valB);
                     } else {
-                        musitData.sort(sort_by(prop,reverse, (a) => a.toLowerCase()))
+                        const numA = parseFloat(valA) || 0; // coerce to number or fallback to 0
+                        const numB = parseFloat(valB) || 0;
+                        return reverse ? numB - numA : numA - numB;
                     }
-                    
-                    //musitData.sort(sort_by(prop,reverse))
-                } 
-                
-                if (propsSorted.find(x => x.id === prop).sortedOnce === propsSorted.find(x => x.id === prop).sortedTwice) {
-                    propsSorted.find(x => x.id === prop).sortedOnce = true
-                    propsSorted.find(x => x.id === prop).sortedTwice = false
+                });
+
+                musitData = [header].concat(sortedData); // Concatenate the sorted data with the header
+
+                // Update sorting state
+                if (sortStatus && sortStatus.sortedOnce === sortStatus.sortedTwice) {
+                    sortStatus.sortedOnce = true;
+                    sortStatus.sortedTwice = false;
                 } else {
-                    propsSorted.find(x => x.id === prop).sortedOnce = !propsSorted.find(x => x.id === prop).sortedOnce
-                    propsSorted.find(x => x.id === prop).sortedTwice = !propsSorted.find(x => x.id === prop).sortedTwice
+                    sortStatus.sortedOnce = !sortStatus.sortedOnce;
+                    sortStatus.sortedTwice = !sortStatus.sortedTwice;
                 }
-                
-                currentPage = 1
-                
-                for(i = 0; i < propsSorted.length; i++) {
-                    if(propsSorted[i].id === prop) { continue; }
-                    propsSorted[i].sortedOnce = false
-                    propsSorted[i].sortedTwice = false
+
+                currentPage = 1; // Reset the current page
+
+                // Reset other propsSorted states
+                for (let i = 0; i < propsSorted.length; i++) {
+                    if (propsSorted[i].id === prop) { continue; }
+                    propsSorted[i].sortedOnce = false;
+                    propsSorted[i].sortedTwice = false;
                 }
-                
-                subMusitData = musitData.slice(0,numberPerPage)
-                sessionStorage.setItem('pageList', JSON.stringify(subMusitData))
-                sessionStorage.setItem('string', JSON.stringify(musitData))
-                sessionStorage.setItem('propsSorted', JSON.stringify(propsSorted))
-                if(fromFunction === 'bulkResultTable') {
-                    bulkResultTable(subMusitData, musitData)
+
+                // Update sessionStorage
+                const subMusitData = musitData.slice(0, numberPerPage);
+                sessionStorage.setItem('pageList', JSON.stringify(subMusitData));
+                sessionStorage.setItem('string', JSON.stringify(musitData));
+                sessionStorage.setItem('propsSorted', JSON.stringify(propsSorted));
+
+                // Call the appropriate rendering function
+                if (fromFunction === 'bulkResultTable') {
+                    bulkResultTable(subMusitData, musitData);
                 } else if (fromFunction === 'UTADRestultTable') {
-                    UTADRestultTable(subMusitData, musitData) 
-                } else if (fromFunction === 'eco_BotRestultTable') {
-                    eco_BotRestultTable(subMusitData, musitData) 
-                } else /*if (fromFunction === 'resultTable')*/ {
-                   
-                    resultTable(subMusitData, musitData) 
+                    UTADRestultTable(subMusitData, musitData);
+                } else {
+                    resultTable(subMusitData, musitData);
                 }
-                
-                document.getElementById("please-wait").style.display = "none"
+
+                // Hide please wait message
+                document.getElementById("please-wait").style.display = "none";
+
             }
-        })
+        });
     } catch (error) {
         console.log('denne knappen feiler: ' + id);
-        console.log(error);    
+        console.log(error);
     }
 }
+
+
+
 
 // renders image of arrow-up or arrow-down in table –header when result-table is being sorted
 // in: prop (string; property of a record in the search result)
@@ -416,9 +418,6 @@ fillResultHeadersUTAD = (headerArray, UTADData) => {
 // addSortingText(..) for table-header-buttons
 fillResultHeadersEco_bot = (headerArray, eco_botData) => {
         try {
-            
-
-        console.log('vi kjører økonomisk samling linje 420');
         
         headerArray[0].innerHTML = `<button id='musitIDButton' aria-label="sort by catalog Number"  class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>`  
         headerArray[1].innerHTML = `<button id='scientificNameNameButton' aria-label="sort by scientific name" class='sort'>${textItems.scientificName[index].bold()} ${getArrows('scientificName')} </button>`

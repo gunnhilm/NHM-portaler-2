@@ -156,14 +156,14 @@ const getSource = (museum,samling) => {
     }
 }
 
-const trimResults = (resultString, museum, samling) => {
-    
+const trimResults = (resultString, museum, samling) => { 
     const source = getSource(museum, samling)
     const resultsArray = resultString.split('\n');
     if (resultsArray.length === 0) return [];
     const headers = resultsArray[0].split('\t');
 
     if (!['access', 'excel', 'archive', 'journals', 'NA'].includes(source)) {
+        console.log('her kommer malmer');        
         // This array defines what data will be returned
         const elementsToKeep = [
             'catalogNumber', 'scientificName', 'identificationQualifier', 'recordedBy',
@@ -190,11 +190,14 @@ const trimResults = (resultString, museum, samling) => {
         return [filteredHeaders, ...filteredResults];
     } else {
         //make resultsstring into an array
+        
+
         unfilteredResults = []
         for (let i = 0; i < resultsArray.length; i++) {
             const element = resultsArray[i].split('\t');
             unfilteredResults.push(element)
         }
+        
         return unfilteredResults
     }
 }
