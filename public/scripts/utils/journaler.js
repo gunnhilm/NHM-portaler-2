@@ -28,8 +28,9 @@ const getFileList = async () => {
             } else {
                 try {
                     response.text().then((data) => {
+                        
                         JSONdata = JSON.parse(data)
-                        console.log(JSONdata);
+                        
                         sessionStorage.setItem('fileList',data)
                         resolve(true)
                     })
@@ -43,10 +44,6 @@ const getFileList = async () => {
         
     })
 }
-
-
-
-
 
 
 
@@ -217,22 +214,18 @@ const doJournalSearch = (limit = 2000) => {
             } else {
                 try {
                     response.text().then((data) => {
+                        
+                        
                         if(data.error) {
                             errorMessage.innerText = textItems.serverError[index]
                             return console.log(data.error)
                         } else {
-                            const JSONdata = JSON.parse(data)    
-                            const parsedResults = Papa.parse(JSONdata.unparsed.results, {
-                                delimiter: "\t",
-                                newline: "\n",
-                                quoteChar: '',
-                                header: true,
-                            })  
-                            //load results
-                            if (parsedResults.data.length > 0){
-                                journalResultTable(parsedResults.data)
+                            const parsedResults = JSON.parse(data)  
+                            
+                            if (parsedResults.results.length > 0){
+                                journalResultTable(parsedResults.results)
                                 errorMessage.innerText = textItems.nbHitsText[index] 
-                                nbHitsElement.innerText = parsedResults.data.length
+                                nbHitsElement.innerText = parsedResults.results.length
                                 sortTable()
                             } else {
                                 console.log('no results');
@@ -281,7 +274,7 @@ function sortTable() {
 const updateFooter = (museum, journalCollection) => {
 
         const url = urlPath + '/footer-date/?&samling=' + journalCollection + '&museum=' + museum  
-        console.log(url);
+        
         fetch(url).then((response) => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
