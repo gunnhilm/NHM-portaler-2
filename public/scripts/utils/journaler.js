@@ -140,46 +140,143 @@ function addHeaders(table, keys) {
 // calls addHeaders(..)
 // is called in dojournalSearch(..)
 const journalResultTable = (children) => {
+    console.log(children);
+    
     const table = document.createElement('table');
-    table.setAttribute('id', 'journal-result-table')
-    table.setAttribute('class', 'result-table')
+    table.setAttribute('id', 'journal-result-table');
+    table.setAttribute('class', 'result-table');
 
+    const headers = children[0];
 
-    for( let i = 0; i < children.length; ++i ) {
-        let child = children[i];
-        if(i === 0 ) {
-            addHeaders(table, Object.keys(child));
+    // Create the header row
+    const headerRow = table.insertRow();
+    headers.forEach((header) => {
+        // Skip the "lineNumber" header
+        if (header !== 'lineNumber') {
+            const cell = headerRow.insertCell();
+            cell.innerText = header; // Assigning header text to each cell
+            cell.style.fontWeight = 'bold'; // Make the header text bold
         }
+    });
+
+    // Get indexes for different columns (only relevant ones kept)
+    const flipBookIndex = headers.indexOf('FlipBook');
+    const PDFIndex = headers.indexOf('PDF');
+    const nhmIDIndex = headers.indexOf('NHM ID');
+    const tittelIndex = headers.indexOf('Tittel');
+
+    // Iterate through the children to populate the table
+    for (let i = 1; i < children.length; ++i) { // Start from 1 to skip header
+        let child = children[i];
         const row = table.insertRow();
-        
-        Object.keys(child).forEach(function(k ,index) {
-            
-            if (index < columnsToShow) {
-                const cell = row.insertCell() 
-                if (k.startsWith('FlipBook')) {
-                    if (child[k]) {
-                        child[k] = '<a href ="https://samlingsportal.nhm.uio.no/journaler/nhm/' + child[k] + '">FlipBook</a>'
-                        cell.appendChild(document.createTextNode(''));
-                        cell.innerHTML = child[k] 
-                    }
-                } else if (k.startsWith('PDF')) {
-                    if (child[k]) {
-                        child[k] = '<a href ="https://samlingsportal.nhm.uio.no/journaler/nhm/' + child[k] + '"> PDF</a>'
-                        cell.appendChild(document.createTextNode(''));
-                        cell.innerHTML = child[k] 
-                    }
-                } else  if (k.includes('NHM ID')) {
-                    cell.appendChild(document.createTextNode(child[k]))
-                    cell.className = 'nowrap'
-                } else {
-                    cell.appendChild(document.createTextNode(child[k]));
-                }
+
+        // Iterate through each column in the child object
+        for (let k = 0; k < headers.length; ++k) {
+            // Skip the "lineNumber" column
+            if (headers[k] === 'lineNumber') {
+                continue; // Skip this iteration for lineNumber
             }
-        })
+
+            const cell = row.insertCell();
+
+            if (k === flipBookIndex) {
+                // Handle FlipBook link
+                if (child[k]) {
+                    cell.innerHTML = '<a href ="https://samlingsportal.nhm.uio.no/journaler/nhm/' + child[k] + '">FlipBook</a>';
+                }
+            } else if (k === PDFIndex) {
+                // Handle PDF link
+                if (child[k]) {
+                    cell.innerHTML = '<a href ="https://samlingsportal.nhm.uio.no/journaler/nhm/' + child[k] + '">PDF</a>';
+                }
+            } else if (k === nhmIDIndex) {
+                // Display NHM ID
+                cell.innerText = child[k];
+                cell.className = 'nowrap';
+            } else {
+                // For all other columns, just append the text
+                cell.innerText = child[k];
+            }
+        }
     }
-    // send tabellen til frontend
+
+    // Append the constructed table to the container in the DOM
     document.getElementById('container').appendChild(table);
-}
+};
+
+
+
+
+
+// const journalResultTable = (children) => {
+//     const table = document.createElement('table');
+//     table.setAttribute('id', 'journal-result-table')
+//     table.setAttribute('class', 'result-table')
+
+
+//         const headers = children[0]
+
+//         const flipBookIndex = headers.indexOf('FlipBook')
+//         const PDFIndex = headers.indexOf('PDF')
+//         const fileSizeIndex = headers.indexOf('Filstørrelse PDF (MB)')
+//         const nhmIDIndex = headers.indexOf('NHM ID')
+//         const tittelIndex = headers.indexOf('Tittel');
+//         const subjectIndex = headers.indexOf('Fagområde');
+//         const taxonGruppeIndex = headers.indexOf('Taxongruppe');
+//         const taxaIndex = headers.indexOf('Taxa');
+//         const lineNumberIndex = headers.indexOf('lineNumber');
+//         const samlingsprefikserIndex = headers.indexOf('Samlingsprefikser');
+//         const delsamlingIndex = headers.indexOf('Delsamling');
+//         const dokumentTypeIndex = headers.indexOf('Dokumenttype');
+//         const dateFromIndex = headers.indexOf('År/Dato fra');
+//         const dateToIndex = headers.indexOf('År til');
+//         const nummerSerieIndex = headers.indexOf('Nummerserie');
+//         const kommentarIndex = headers.indexOf('Kommentar');
+
+        
+
+//     for( let i = 0; i < children.length; ++i ) {
+//         let child = children[i];
+//         if(i === 0 ) {
+//             addHeaders(table, child);
+//             continue
+//         }
+//         const row = table.insertRow();
+                   
+//             if (i < columnsToShow) {
+//                 const cell = row.insertCell() 
+
+//                 // flipbook
+
+//                 cell.appendChild(document.createTextNode(''));
+//                 cell.innerHTML = '<a href ="https://samlingsportal.nhm.uio.no/journaler/nhm/' + child[flipBookIndex] + '">FlipBook</a>'
+
+// continue
+//                 if (i === flipBookIndex) {
+//                     console.log('flipbook');
+                    
+//                     if (child[k]) {
+//                         child[k] = '<a href ="https://samlingsportal.nhm.uio.no/journaler/nhm/' + child[k] + '">FlipBook</a>'
+//                         cell.appendChild(document.createTextNode(''));
+//                         cell.innerHTML = child[k] 
+//                     }
+//                 } else if (k.startsWith('PDF')) {
+//                     if (child[k]) {
+//                         child[k] = '<a href ="https://samlingsportal.nhm.uio.no/journaler/nhm/' + child[k] + '"> PDF</a>'
+//                         cell.appendChild(document.createTextNode(''));
+//                         cell.innerHTML = child[k] 
+//                     }
+//                 } else  if (k.includes('NHM ID')) {
+//                     cell.appendChild(document.createTextNode(child[k]))
+//                     cell.className = 'nowrap'
+//                 } else {
+//                     cell.appendChild(document.createTextNode(child[k]));
+//                 }
+//             }
+//     }
+//     // send tabellen til frontend
+//     document.getElementById('container').appendChild(table);
+// }
 
 
 const getJournalGroup = () => {
@@ -223,6 +320,7 @@ const doJournalSearch = (limit = 2000) => {
                             const parsedResults = JSON.parse(data)  
                             
                             if (parsedResults.results.length > 0){
+                                
                                 journalResultTable(parsedResults.results)
                                 errorMessage.innerText = textItems.nbHitsText[index] 
                                 nbHitsElement.innerText = parsedResults.results.length
