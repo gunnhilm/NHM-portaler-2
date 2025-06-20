@@ -302,7 +302,10 @@ function getArrows(prop) {
 // addSortingText(..) for tabel-header-buttons
 fillResultHeaders = (org,headerArray,musitData) => {
     try {
+    console.log(headerArray);
     
+
+
     headerArray[0].innerHTML = `<button id='musitIDButton' aria-label="sort by catalog Number" class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>` 
 
     headerArray[1].innerHTML = `<button id='scientificNameButton' aria-label="sort by scientific name" class='sort'>${textItems.headerTaxon[index].bold()} ${getArrows('scientificName')} </button>`
@@ -337,7 +340,8 @@ fillResultHeaders = (org,headerArray,musitData) => {
     addSortingText('municipalityButton', 'county', musitData, 'resultTable')
     addSortingText('localityButton', 'locality', musitData, 'resultTable')
     addSortingText('ecologyButton', 'habitat', musitData, 'resultTable')
-    if ( !('preparationType' in musitData[0])) {
+
+    if (!musitData[0].includes("preparationType")) {
         addSortingText('sampleTypeButton', 'basisOfRecord', musitData, 'resultTable')
     } else {
         addSortingText('sampleTypeButton', 'preparationType', musitData, 'resultTable')

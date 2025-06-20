@@ -116,32 +116,11 @@ function makeButtons() {
 
 // resultattabell
 
-// creates the headers in the table
-// in: table (html-table, to show on the page)
-// in: keys (array?, source of header titles)
-// is called in journalResultTable(..)
-function addHeaders(table, keys) {
-//   var row = table.insertRow();
-  const tr = document.createElement('tr'); // Header row
-//   for( let i = 0; i < keys.length; i++ ) {
-    for( let i = 0; i < columnsToShow; i++ ) {
-        const th = document.createElement('th'); //column
-        th.classList.add("order")
-        const text = document.createTextNode(keys[i]); //cell
-        th.appendChild(text);
-        tr.appendChild(th);
-        table.appendChild(tr);
-    }
-}
-
-
 // creates table for the journals and fills it
 // in: children (array, containing content to table, i.e. data on journals) 
-// calls addHeaders(..)
 // is called in dojournalSearch(..)
 const journalResultTable = (children) => {
-    console.log(children);
-    
+
     const table = document.createElement('table');
     table.setAttribute('id', 'journal-result-table');
     table.setAttribute('class', 'result-table');
@@ -204,79 +183,6 @@ const journalResultTable = (children) => {
     document.getElementById('container').appendChild(table);
 };
 
-
-
-
-
-// const journalResultTable = (children) => {
-//     const table = document.createElement('table');
-//     table.setAttribute('id', 'journal-result-table')
-//     table.setAttribute('class', 'result-table')
-
-
-//         const headers = children[0]
-
-//         const flipBookIndex = headers.indexOf('FlipBook')
-//         const PDFIndex = headers.indexOf('PDF')
-//         const fileSizeIndex = headers.indexOf('Filstørrelse PDF (MB)')
-//         const nhmIDIndex = headers.indexOf('NHM ID')
-//         const tittelIndex = headers.indexOf('Tittel');
-//         const subjectIndex = headers.indexOf('Fagområde');
-//         const taxonGruppeIndex = headers.indexOf('Taxongruppe');
-//         const taxaIndex = headers.indexOf('Taxa');
-//         const lineNumberIndex = headers.indexOf('lineNumber');
-//         const samlingsprefikserIndex = headers.indexOf('Samlingsprefikser');
-//         const delsamlingIndex = headers.indexOf('Delsamling');
-//         const dokumentTypeIndex = headers.indexOf('Dokumenttype');
-//         const dateFromIndex = headers.indexOf('År/Dato fra');
-//         const dateToIndex = headers.indexOf('År til');
-//         const nummerSerieIndex = headers.indexOf('Nummerserie');
-//         const kommentarIndex = headers.indexOf('Kommentar');
-
-        
-
-//     for( let i = 0; i < children.length; ++i ) {
-//         let child = children[i];
-//         if(i === 0 ) {
-//             addHeaders(table, child);
-//             continue
-//         }
-//         const row = table.insertRow();
-                   
-//             if (i < columnsToShow) {
-//                 const cell = row.insertCell() 
-
-//                 // flipbook
-
-//                 cell.appendChild(document.createTextNode(''));
-//                 cell.innerHTML = '<a href ="https://samlingsportal.nhm.uio.no/journaler/nhm/' + child[flipBookIndex] + '">FlipBook</a>'
-
-// continue
-//                 if (i === flipBookIndex) {
-//                     console.log('flipbook');
-                    
-//                     if (child[k]) {
-//                         child[k] = '<a href ="https://samlingsportal.nhm.uio.no/journaler/nhm/' + child[k] + '">FlipBook</a>'
-//                         cell.appendChild(document.createTextNode(''));
-//                         cell.innerHTML = child[k] 
-//                     }
-//                 } else if (k.startsWith('PDF')) {
-//                     if (child[k]) {
-//                         child[k] = '<a href ="https://samlingsportal.nhm.uio.no/journaler/nhm/' + child[k] + '"> PDF</a>'
-//                         cell.appendChild(document.createTextNode(''));
-//                         cell.innerHTML = child[k] 
-//                     }
-//                 } else  if (k.includes('NHM ID')) {
-//                     cell.appendChild(document.createTextNode(child[k]))
-//                     cell.className = 'nowrap'
-//                 } else {
-//                     cell.appendChild(document.createTextNode(child[k]));
-//                 }
-//             }
-//     }
-//     // send tabellen til frontend
-//     document.getElementById('container').appendChild(table);
-// }
 
 
 const getJournalGroup = () => {
