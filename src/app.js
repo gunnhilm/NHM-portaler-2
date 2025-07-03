@@ -765,7 +765,7 @@ app.get('*/archive', async (req, res) => {
 
 
 
-// item-page
+// item-page, find mediafiles
 app.post('*/item-page/check-files', async (req, res) => {
     try {
       const { folderName, fileName, directImagePath } = req.body;
@@ -773,14 +773,14 @@ app.post('*/item-page/check-files', async (req, res) => {
       res.status(200).json({
         filePath: result.mediaObject.filePath,
         matchingFiles: result.mediaObject.matchingFiles, 
-        folderPath: result.mediaObject.folderPath 
+        folderPath: result.mediaObject.folderPath, 
+        matchingScans: result.mediaObject.matchingScans
       });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal Server Error' });
     }
   });
-
 
 
 

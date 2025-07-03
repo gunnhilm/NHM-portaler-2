@@ -717,7 +717,17 @@ table.item-page {
   #item-image {
     padding: 10px; /* Add padding to the item image */
   }
-  
+
+    #item-download-link {
+        text-align: left; /* Align content to left */
+        margin: 0; /* Reset any margins if needed */
+        padding: 0; /* Reset any padding if needed */
+    }
+
+    #item-download-link div {
+        margin-bottom: 10px; /* Optional: adds space between links */
+    }
+
   #results-table {
     width: 100%;
     border-collapse: collapse;

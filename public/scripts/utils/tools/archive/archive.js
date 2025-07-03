@@ -237,7 +237,7 @@ function getPage(Regnr, archiveCollection) {
   const pageLink = 'http://localhost/museum/nhm/archive?documentType=Dagny%20Tande%20Lid&pageID=';
   const url = pageLink + Regnr;
   window.open(url, '_blank'); // Open the URL in a new tab
-  // console.log(url);
+
 }
 
 // thumb nails
@@ -318,7 +318,7 @@ async function showThumbnailButton (archiveCollection) {
     
     const subFolderName = 'thumb';
     const thumbPath = await getSubFolderPath(archiveCollection, subFolderName)
-    // console.log('thumbPath: ' + thumbPath);
+
     const thumbButton = document.getElementById("view-type-button");
     if(thumbPath) {
       thumbButton.style.display = "block";
@@ -674,7 +674,6 @@ function lastPage() {
 //  hitsPerPage eventlistener
 //  load()
 function loadList(showingThumbs = false) {
-  // console.log('loadList: ' + showingThumbs);
     const begin = ((currentPage - 1) * numberPerPage)
     const end = Number(begin) + Number(numberPerPage)
     pageList = list.slice(begin, end)

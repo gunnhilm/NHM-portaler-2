@@ -77,8 +77,6 @@ const displayResultsAsTable = results => {
   resultsContainer.appendChild(table);
   return show;
 };
-
-
   
 async function checkFiles(folderName, fileName, directImagePath) {
 
@@ -101,11 +99,12 @@ async function checkFiles(folderName, fileName, directImagePath) {
             return {
               filePath: json.filePath,
               matchingFiles: json.matchingFiles,
-              folderPath: json.folderPath
+              folderPath: json.folderPath,
+              matchingScans: json.matchingScans
             };
         } else {
           console.log(`Response from server was not ok: ${response.status} ${response.statusText}`); 
-        throw new Error(`Failed to fetch files: ${response.status} ${response.statusText}`);
+          throw new Error(`Failed to fetch files: ${response.status} ${response.statusText}`);
         }
     } catch (error) {
         console.error(error);
@@ -126,9 +125,7 @@ const doarchiveSearch = async (limit = 2000) => {
       const response = await fetch(url);
       if (!response.ok) throw new Error(`Error: ${response.status}`);
       const data = await response.json();
-
       if (data.error) throw new Error(data.error);
-  
       const results = Papa.parse(data.unparsed.results, { delimiter: "\t", newline: "\n", quoteChar: "", header: true }).data;
       const result = results.find(result => result.Regnr === pageID);
       let fotoID = Object.keys(result).find(k => k.toLowerCase().includes('mediafile'));
@@ -142,11 +139,11 @@ const doarchiveSearch = async (limit = 2000) => {
         if(fotoID) {
           return fotoID
         } else if (show.toLowerCase() === 'no') {
-          console.log('returnerer false fordi show er no');
+          // 'returnerer false fordi show er no'
           return false 
         } else {
-            return true
-          }  
+          return true
+        }  
       }
     } catch (error) {
       console.error(error);
@@ -157,6 +154,8 @@ const doarchiveSearch = async (limit = 2000) => {
 async function checkForImage(directImagePath) {
   try {
     const mediaObject = await checkFiles(params.documentType, params.pageID, directImagePath );
+    console.log(mediaObject);
+    
     const imageContainer = document.getElementById('item-image');
     const downloadContainer = document.getElementById('item-download-link');
     mediaObject.matchingFiles.forEach(imageFile => {
@@ -184,17 +183,40 @@ async function checkForImage(directImagePath) {
           imageContainer.appendChild(imageLink);
         }
       });
-    // Do something with the image elements
+      // Add pdf links
+
+      if (mediaObject.matchingScans.files) {
+        mediaObject.matchingScans.files.forEach(scanFile => {
+            const downloadLink = document.createElement('a');
+            downloadLink.href = urlPath + '/' + mediaObject.matchingScans.scanFolderPath + '/' + scanFile;
+            downloadLink.target = '_blank';
+    
+            const text = document.createElement('span');
+            text.textContent = scanFile;
+    
+            downloadLink.appendChild(text);
+            
+            // Create a new div for each link to ensure they are on separate lines
+            const linkContainer = document.createElement('div');
+            linkContainer.appendChild(downloadLink);
+            
+            // Append the linkContainer to the main downloadContainer
+            downloadContainer.appendChild(linkContainer);
+        });
+    }
+    
+
   } catch (error) {
     console.error(error);
   }
 }
-  
+
 
 async function  main () {
   const showImage =  await doarchiveSearch()
-  if(showImage){
+  if(showImage){   
     checkForImage(showImage);
+    // checkForScans()
   }
 }
 
