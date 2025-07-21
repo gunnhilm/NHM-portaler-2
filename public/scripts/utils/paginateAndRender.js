@@ -428,7 +428,6 @@ const resultTable = (subMusitData, musitData) => {
 }
 
 
-
 const UTADRestultTable = (subUTADData, UTADData) => {
 
     try {
@@ -602,6 +601,12 @@ const eco_BotRestultTable = (subEco_BotData, eco_BotData) => {
                 fillResultHeadersEco_bot(headerCell,eco_BotData)
 
             }  else {  //her kommer tabell innholdet
+                // skip the first row that contains the header items
+                if(i === 0){
+                    continue
+                }
+
+                
             const row = table.insertRow(-1)
             const cell1 = row.insertCell(0)
             const cell2 = row.insertCell(1)
@@ -635,15 +640,11 @@ const eco_BotRestultTable = (subEco_BotData, eco_BotData) => {
                 const basisOfRecord = subEco_BotData[i][basisOfRecordIndex];
                 const kommentar = subEco_BotData[i][kommentarIndex];
                 const associatedMedia = subEco_BotData[i][associatedMediaIndex]
-
                 const scientificName = subEco_BotData[i][scientificNameIndex];
                 const higherClassification = subEco_BotData[i][taxaIndex];
                 const locality = subEco_BotData[i][localityIndex];
                 const recordedBy = subEco_BotData[i][recordedByIndex];
                 const eventDate = subEco_BotData[i][eventDateIndex];
-
-        
-
 
         
                 if (!(/[a-zA-Z]/).test(catalogNumber.charAt(0))) {  
@@ -663,15 +664,9 @@ const eco_BotRestultTable = (subEco_BotData, eco_BotData) => {
                 cell9.innerHTML = kommentar
 
 
-
-
-
-
-                if( subEco_BotData[i].associatedMedia ) {   
+                if( associatedMedia ) {  
                     cell10.innerHTML = `<span class="fas fa-camera"></span>`
-                } else if( subEco_BotData[i].photoIdentifiers ) {   
-                    cell10.innerHTML = `<span class="fas fa-camera"></span>`
-                }
+                } 
                 cell11.innerHTML = `<input type="checkbox" id=checkbox${i} onclick="registerChecked(${i})" ></input>`
                 if (investigateChecked(i)) {
                     document.getElementById(`checkbox${i}`).checked = true
