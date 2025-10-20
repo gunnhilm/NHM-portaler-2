@@ -11,22 +11,31 @@ let table = document.getElementById("barcode-table")
 let bcColl = urlParamsTop.get("coll")
 let adbFile
 let redlistFile = `${adbFilePath}rodliste-2021.txt`
+let lastUpdated
 if (bcColl === "sopp") {
     document.getElementById("getBarcodeHeader").innerHTML = textItems.bcHeaderFungi[1] 
-    adbFile = `${adbFilePath}ArtsnavnebaseCSV_fungi_tab.txt`
+    // adbFile = `${adbFilePath}ArtsnavnebaseCSV_fungi_tab.txt`
+    lastUpdated = "14.10.25"
+    adbFile = `${adbFilePath}Fungi_tab.txt`
 } else if (bcColl === "mammals") {
     document.getElementById("getBarcodeHeader").innerHTML = textItems.bcHeaderMammals[1]
-    adbFile = `${adbFilePath}ArtsnavnebaseCSV_mammals.txt`
+    // adbFile = `${adbFilePath}ArtsnavnebaseCSV_mammals.txt`
+    lastUpdated = "14.10.25"
+    adbFile = `${adbFilePath}Mammalia.txt`
 } else if (bcColl === "Lep") {
     document.getElementById("getBarcodeHeader").innerHTML = textItems.bcHeaderLep[1]
-    adbFile = `${adbFilePath}ArtsnavnebaseCSV_lepidoptera.txt`
+    // adbFile = `${adbFilePath}ArtsnavnebaseCSV_lepidoptera.txt`
+    lastUpdated = "14.10.25"
+    adbFile = `${adbFilePath}Lepidoptera.txt`
 } else if (bcColl === "herptiles") {
     document.getElementById("getBarcodeHeader").innerHTML = textItems.bcHeaderHerptiles[1]
-    adbFile = `${adbFilePath}ArtsnavnebaseCSV_herptiles.txt`
+    // adbFile = `${adbFilePath}ArtsnavnebaseCSV_herptiles.txt`
+    lastUpdated = "14.10.25"
+    adbFile = `${adbFilePath}Herptiles.txt`
 }
 
 
-document.getElementById("getBarcodeText").innerHTML = "Last updated 4.9.23 <br><br><br> Click on species name to see which specimens are barcoded, and which county (fylke) they are from."
+document.getElementById("getBarcodeText").innerHTML = `Last updated ${lastUpdated} <br><br><br> Click on species name to see which specimens are barcoded, and which county (fylke) they are from.`
 listExplDiv = document.createElement('div')
 
 document.querySelector('#search-bc-text').placeholder = 'Search for latin name' //textItems.placeholder[index]
@@ -73,7 +82,7 @@ async function getNamelist (nameFile) {
             })
         })
         
-    })
+    }) 
 }
 
 // fetches list of latin names and redliststatus of all Norwegian species of the relevant organismgroup, from backend

@@ -190,29 +190,31 @@ const getNamelist = async (nameFile, callback) => {
                 // if (count === 1) {console.log(line)}
                 
                 count++
+                // i don't think we use headers[] for anything
                 let headers = []
                 if (count === 1) { // head line
-                    headers = line.split(';')
-                    
-                } else {
+                    if (nameFile.includes('tab')) {headers = line.split('\t')} else {headers = line.split(';')}
+                } 
+                else {
                     let variables
                     if (nameFile.includes('tab')) { variables = line.split('\t')} else {variables = line.split(';')}
-                    // dette er hardkodet, finn heller variablene etter header-navn
+                    // dette er hardkodet, finn heller variablene etter header-navn - men jeg får ikke tak i headers-arrayen inne i denne if-en...
                     // check if the line represents a species (i.e. has value in field 23, which is "Art" (epithet))
                     // and not a subspecies (field 24)
                     // and if the species exists in Norway (field 41; "FinnesINorge")
                     // and the name is not a synonym (field 31)
-                    if (variables[22] && !variables[23] && !variables[24] && !variables[25] && variables[40].includes('Ja') && variables[30].includes('Gyldig')) {
+                    // if (variables[22] && !variables[23] && !variables[24] && !variables[25] && variables[40].includes('Ja') && variables[30].includes('Gyldig')) {
+                    if (variables[35] && !variables[36] && !variables[37] && !variables[38] && variables[52] && variables[52].toUpperCase().includes('TRUE') && variables[45] && variables[45].includes('Accepted')) {
                         let latinName
                         if (variables[0].startsWith("\"")) {
-                            latinName = JSON.parse(variables[19]) + " " + JSON.parse(variables[22])
+                            latinName = JSON.parse(variables[32]) + " " + JSON.parse(variables[35])
                         } else {
-                            latinName = variables[19] + " " + variables[22]
+                            latinName = variables[32] + " " + variables[35]
                         }
                         let nameObject = {
                             "latinName" : latinName,
-                            "norwegianName" : variables[41],
-                            "phylum" : variables[3]
+                            "norwegianName" : variables[0],
+                            "phylum" : variables[19]
                         }
                         nameListObjects.push(nameObject)    
                     }
