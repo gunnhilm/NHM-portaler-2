@@ -163,7 +163,6 @@ const trimResults = (resultString, museum, samling) => {
     const headers = resultsArray[0].split('\t');
 
     if (!['access', 'excel', 'archive', 'journals', 'NA'].includes(source)) {
-        console.log('her kommer malmer');        
         // This array defines what data will be returned
         const elementsToKeep = [
             'catalogNumber', 'scientificName', 'identificationQualifier', 'recordedBy',
@@ -403,7 +402,6 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
                 results = line + '\tlineNumber';
             } else {
                 
-                
                 if (objectNumbers.length === 0) {
                     readInterface.close()
                 }
@@ -449,10 +447,10 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
             }
             
         }).on('close', function () {
-            // const resultsAndLine = {results, count }
-            // callback(undefined, resultsAndLine)
-            results = trimResults(results, museum, samling)
+            // hvis linjen nedenfor er med fungerer ikke ny objektside for corema-post fra musit-post.
+            // results = trimResults(results, museum, samling)
             const resultsAndLine = {results, count};
+            console.log(resultsAndLine)
             callback(undefined, resultsAndLine);
         })
        
@@ -500,6 +498,7 @@ function getLineByNumber(museum, samling, lineNumber, callback) {
             found = true;
             results += `\n${line}`;
             const resultsAndLine = {results, currentLine }
+            console.log(resultsAndLine)
             rl.close(); // Stop reading further lines
             callback(null, resultsAndLine); // Call the callback with the line
         }

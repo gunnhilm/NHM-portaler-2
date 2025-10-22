@@ -1292,7 +1292,9 @@ async function main () {
     
    // from file newObjectPage.js
    // it will always retrive from the server the object info, and if it is a new  page also set variables concerning, museum colletion, orggroup ect.
+   console.log("kommer vi hit")
    let specimenObject = await newObjectPageMain()
+  
    specimenObject = specimenObject[0] 
    
    const urlParams = new URLSearchParams(window.location.search)

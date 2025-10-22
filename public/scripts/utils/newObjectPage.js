@@ -39,19 +39,23 @@ async  function setSpecimenData () {
             let urlParams = new URLSearchParams(document.location.search); 
             sessionStorage.setItem('chosenCollection', urlParams.get("samling"))
             const url = '/museum' + '/objListSearch/?' + 'searchObjects=' + urlParams.get("id") +'&museum=' + urlParams.get("museum") + '&samling=' + urlParams.get("samling") + '&linjeNumber=0&limit=1000'
+            console.log(url)
             fetch(url).then((response) => {
                 if (!response.ok) {
                     
                     throw 'noe går galt med søk, respons ikke ok'  
                 } else {
                     try {
+                        // console.log(response)
 
                         response.text().then((data) => {
                             if(data.error) {
                                 errorMessage.innerHTML = textItems.serverError[index]
                                 return console.log(data.error)
                             } else {
-                                const JSONdata = JSON.parse(data)    
+                                const JSONdata = JSON.parse(data)  
+                                // console.log(data)  
+                                // console.log(JSONdata.unparsed.results)  
                                 const parsedResults = Papa.parse(JSONdata.unparsed.results, {
                                     delimiter: "\t",
                                     newline: "\n",
@@ -83,18 +87,21 @@ async  function setSpecimenDataFromLineNumber () {
             let urlParams = new URLSearchParams(document.location.search); 
             sessionStorage.setItem('chosenCollection', urlParams.get("samling"))
             const url = '/museum' + '/getLineByNumber/?' +'&museum=' + urlParams.get("museum") + '&samling=' + urlParams.get("samling") + '&linjeNumber=' +  urlParams.get("linjeNummer")
+            console.log(url)
             fetch(url).then((response) => {
                 if (!response.ok) {
                     
                     throw 'noe går galt med søk, respons ikke ok'  
                 } else {
                     try {
+                        // console.log(response)
                         response.text().then((data) => {
                             if(data.error) {
                                 errorMessage.innerHTML = textItems.serverError[index]
                                 return console.log(data.error)
                             } else {
-                                const JSONdata = JSON.parse(data)   
+                                const JSONdata = JSON.parse(data) 
+                                // console.log(data)   
                                 const parsedResults = Papa.parse(JSONdata.unparsed.results, {
                                     delimiter: "\t",
                                     newline: "\n",
@@ -207,6 +214,7 @@ const getFileListObjPage = async () => {
 async function newObjectPageMain() {
     let objectData = ''
     if (testIfNewPage(urlParams.get("isNew"))) {
+        console.log("isnew")
         await getFileListObjPage()
         await setItems()
         await setOrgGroup()
@@ -218,6 +226,7 @@ async function newObjectPageMain() {
         }
         await whichFileAndDb_two(urlParams.get("museum"),urlParams.get("samling"))
     } else if(testIfLineNumber(urlParams.get("linjeNummer"))) {
+        console.log("linje")
         objectData = await setSpecimenDataFromLineNumber()
     }
     return objectData
