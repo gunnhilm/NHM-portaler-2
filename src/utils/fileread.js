@@ -448,8 +448,9 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
             
         }).on('close', function () {
             // hvis linjen nedenfor er med fungerer ikke ny objektside for corema-post fra musit-post.
-            // results = trimResults(results, museum, samling)
-            const resultsAndLine = {results, count};
+            let trimmedResults
+            trimmedResults = trimResults(results, museum, samling)
+            const resultsAndLine = {results, trimmedResults, count};
             console.log(resultsAndLine)
             callback(undefined, resultsAndLine);
         })

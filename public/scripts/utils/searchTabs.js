@@ -176,6 +176,7 @@ const doAdvancedSearch = (limit = 20) => {
                             return console.log(data.error)
                         } else {                            
                             const JSONdata = JSON.parse(data)  
+                            console.log(JSONdata)
                             const parsedResults = JSONdata.unparsed.results
                             sessionStorage.setItem('searchLineNumber', JSONdata.unparsed.count)
 
@@ -318,11 +319,11 @@ const doObjListSearch = (limit = 20) => {
                             errorMessage.innerHTML = textItems.serverError[index]
                             return console.log(data.error)
                         } else {
-
+                            // console.log(data)
                             const JSONdata = JSON.parse(data)  
                             console.log(JSONdata);
                             
-                            const parsedResults = JSONdata.unparsed.results
+                            const parsedResults = JSONdata.unparsed.trimmedResults
                             sessionStorage.setItem('searchLineNumber', JSONdata.unparsed.count)
                             
  

@@ -1,6 +1,6 @@
 // search.js: performs searches and add functionality to buttons and selects etc.
 
-// urlPath er definert i textItems.js
+// urlPath is defined in  textItems.js
 // on page initially
 const collection = document.querySelector('#collection-select') 
 const searchForm = document.querySelector('form') 
@@ -194,7 +194,7 @@ const emptySearch = (comesFrom) => {
     }
     
     if (sessionStorage.getItem('organismGroup')) {
-        // gå gjennom alle knappene og aktiver den relevante
+        // go through all buttons and activate the relevant one
         buttonArray.forEach(el => {
             if (sessionStorage.getItem('organismGroup') == el.id) {
                 el.className = "blue-button"  
@@ -483,7 +483,7 @@ const doSearch = (limit = 20) => {
                                 nbHitsElement.style.display = 'inline'
                             } else {
                                 try {
-                                    // hvis vi får flere enn 2000 treff må vi si i fra om det
+                                    // if there are more than 4000 hits, say so
                                     if(parsedResults.results.length > 3999){
                                         nbHitsElement.textContent = textItems.tooManyHits[index]
                                         nbHitsElement.style.color = 'red'
@@ -537,7 +537,7 @@ const doSearch = (limit = 20) => {
                                         
                                         console.log(error);
                                         errorMessage.innerHTML = textItems.errorRenderResult[index]
-                                        searchFailed = true // is checked when map is drawn, ie.e seach has failed and there are no results to draw on the map
+                                        searchFailed = true // is checked when map is drawn, ie.e search has failed and there are no results to draw on the map
                                     }        
                             }
                         }
@@ -557,10 +557,10 @@ const doSearch = (limit = 20) => {
     }
 }                  
 
-// when somebody clicks search-button
+// when search-button is clicked
 searchForm.addEventListener('submit', (e) => {
     e.preventDefault()
-    doSearch(4000) // vi skal få tilbake maks 4000 linjer med svar
+    doSearch(4000) // we want maximum 4000 lines of result
 })  
 
 
@@ -679,7 +679,7 @@ const oldSearch = () => {
     document.querySelector('#select-cell').style.display = 'block'
     
     if (sessionStorage.getItem('chosenCollection')) {
-        if (sessionStorage.getItem('string')) { //hvis det er søkeresultater i sesion storage, så skal disse vises
+        if (sessionStorage.getItem('string')) { //if there is search-result in sesion storage, show these
             // render correct language
             
             if (!sessionStorage.getItem('language')) {

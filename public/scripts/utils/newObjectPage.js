@@ -54,8 +54,8 @@ async  function setSpecimenData () {
                                 return console.log(data.error)
                             } else {
                                 const JSONdata = JSON.parse(data)  
-                                // console.log(data)  
-                                // console.log(JSONdata.unparsed.results)  
+                                console.log(data)  
+                                console.log(JSONdata.unparsed.results)  
                                 const parsedResults = Papa.parse(JSONdata.unparsed.results, {
                                     delimiter: "\t",
                                     newline: "\n",
@@ -63,6 +63,7 @@ async  function setSpecimenData () {
                                     header: true,
                                 }) 
                                 specimenObject = parsedResults.data
+                                console.log(specimenObject)
                                 sessionStorage.setItem('objectString', JSON.stringify(specimenObject))
                                 resolve(specimenObject)
                             }
