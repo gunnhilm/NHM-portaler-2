@@ -478,7 +478,7 @@ const doSearch = (limit = 20) => {
                             const parsedResults = JSON.parse(data)  
    
                             //check if there are any hits from the search
-                            if ( parsedResults.results === undefined || parsedResults.results.length === 0 ) {
+                            if ( parsedResults.results === undefined || parsedResults.results.length === 0 || parsedResults.results.length === 1) {
                                 nbHitsElement.innerHTML = textItems.noHits[index]
                                 nbHitsElement.style.display = 'inline'
                             } else {
@@ -489,7 +489,7 @@ const doSearch = (limit = 20) => {
                                         nbHitsElement.style.color = 'red'
                                         nbHitsElement.style.display = 'inline'
                                     } else {
-                                        nbHitsElement.textContent = parsedResults.results.length
+                                        nbHitsElement.textContent = parsedResults.results.length-1
                                         nbHitsElement.style.color = 'black'
                                         nbHitsElement.style.display = 'inline'
                                     }

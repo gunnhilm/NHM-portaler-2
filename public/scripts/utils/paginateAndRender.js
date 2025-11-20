@@ -14,7 +14,7 @@ function activateLoanButton () {
         let tempList = JSON.parse(sessionStorage.getItem('fileList'))
         for (const el of tempList) {
             if (el.name === collection && el.loan) {
-                console.log('her blir det lån');
+                // console.log('her blir det lån');
                 return 
             }
         }
@@ -164,6 +164,7 @@ function determineMuseumAndURLPath(urlPath) {
 const resultTable = (subMusitData, musitData) => {  
 
     try {
+        
         let { museumURLPath, museum } = determineMuseumAndURLPath(urlPath);
         const headers = musitData[0]
         
@@ -180,6 +181,7 @@ const resultTable = (subMusitData, musitData) => {
         
         table.innerHTML = ""
         const row = table.insertRow(-1)
+        
         for (let i = -1; i < pageList.length; i++) { // vis en tabell med resultater som er like lang som det vi ba om pageList.length; 
             if (i === -1) {     // her kommer tittellinjen
                 const headerRow = row;
@@ -202,14 +204,13 @@ const resultTable = (subMusitData, musitData) => {
 
             }  else { // Her kommer innmaten i tabellen, selve resultatene
                 if(i === 0) {continue} // this contains the headers
-
+                
                 const row = table.insertRow(-1);
-
+                
                 const cells = Array.from({ length: 13 }, (_, index) => {
                     const cell = row.insertCell(index);
                     return cell;
                 });
-                
                 // Assign class names to specific cells
                 cells[2].className += "cell3";  // uncertainty (før innsamler)
                 cells[3].className += "cell4";  // Innsamler (før dato)

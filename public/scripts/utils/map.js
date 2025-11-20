@@ -50,11 +50,13 @@ const drawMap = (parsedData) => {
             }
         });
         
-        if(markersArray){ 
+        if(markersArray.length != 0){ 
+        
             const mapSearchElement = document.getElementById('map-search');
             mapSearchElement.removeAttribute("hidden");
             mapSearchElement.style.height = '400px';
             mapSearchElement.style.width = '500px';
+        
             map.invalidateSize();
             map.addLayer(markers);
             map.fitBounds(markersArray, {padding: [30,30]})

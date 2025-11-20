@@ -1,5 +1,5 @@
 //loans button 
-console.log('vi er her på lån');
+// console.log('vi er her på lån');
 function addLoansToDropDown() {
     // Check if an option with the same id already exists
     if (!document.getElementById("loan-records")) {
@@ -76,7 +76,7 @@ function mainLoan() {
     try {
         // Get the current collection from session storage
         const currentCollection = sessionStorage.getItem("chosenCollection");
-        console.log(currentCollection);
+        // console.log(currentCollection);
         
         // Get the file list from session storage
         const fileList = sessionStorage.getItem("fileList");
@@ -89,7 +89,7 @@ function mainLoan() {
             // Add the "loan-records" option to the dropdown if it does not already exist
             addLoansToDropDown();
         } else {
-            console.log("Loan is not enabled");
+            // console.log("Loan is not enabled");
             removeLoansFromDropDown()
         }
         

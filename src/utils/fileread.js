@@ -451,7 +451,6 @@ const objListSearch = (museum, samling, searchObjects, linjeNumber = 0, limit = 
             let trimmedResults
             trimmedResults = trimResults(results, museum, samling)
             const resultsAndLine = {results, trimmedResults, count};
-            console.log(resultsAndLine)
             callback(undefined, resultsAndLine);
         })
        
