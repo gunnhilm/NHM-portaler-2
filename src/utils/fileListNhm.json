@@ -113,6 +113,28 @@
     "gbifCitation":"Johannessen L E, Johnsen A (2024). NHMO DNA Bank Vascular plants collection. Version 1.166. University of Oslo. Occurrence dataset https://doi.org/10.15468/nzszik accessed via GBIF.org on 2024-02-21."
 },
 {
+    "source": "corema",
+    "orgGroup": "zoologi",
+    "name": "invertebrates",
+    "loan": false,
+    "zipFileName": "occurrence",
+    "mediaFile": "_multimedia",
+    "occurrenceFileSuffix":"_stitched.txt",
+    "ulr": "https://ipt.gbif.no/archive.do?r=nhmo-hm",
+    "akronym": "NHMO-IN",
+    "gbifCitation": "Struck T, Rønning A, Johannessen L E (2023). NHMO Helminth collection. Version 1.1. University of Oslo. Occurrence dataset. https://corema.ipt.gbif.no/resource?r=nhmo-helminth&v=1.1"
+},
+{
+    "source": "access",
+    "orgGroup": "zoologi",
+    "name": "crustacea",
+    "zipFileName": "occurrence",
+    "mediaFile": "",
+    "occurrenceFileSuffix": "_occurrence.txt", 
+    "url": "https://ipt.gbif.no/archive.do?r=crustacea_nhm",
+    "gbifCitation": "Wilhelmsen Å I, Bachmann L, Rindal E (2023). Crustacea collection (Cru) at UiO NHM, Oslo. Version 1.6. University of Oslo. Occurrence dataset https://doi.org/10.15468/efw98v accessed via GBIF.org on 2023-12-20"
+},
+{
     "source": "musit",
     "orgGroup": "zoologi",
     "name": "entomology",
@@ -123,52 +145,6 @@
     "url": "http://www.unimus.no/nedlasting/datasett/naturhistorie/entomology_nhmo.zip",
     "urn": "NHMO:ENT",
     "gbifCitation": "University of Oslo (2023). Entomology, Oslo (O) UiO. Version 1.2193. Occurrence dataset https://doi.org/10.15468/c3oka6 accessed via GBIF.org on 2023-12-20"
-},
-{
-    "source": "access",
-    "orgGroup": "zoologi",
-    "name": "fisk",
-    "zipFileName": "occurrence",
-    "mediaFile": "",
-    "occurrenceFileSuffix": "_occurrence.txt",
-    "url": "https://ipt.gbif.no/archive.do?r=o_fish",
-    "akronym": "NHMO-J"
-},
-{
-    "source": "corema",
-    "orgGroup": "zoologi",
-    "name": "mammals",
-    "zipFileName": "occurrence",
-    "mediaFile": "_multimedia",
-    "occurrenceFileSuffix": "_stitched.txt",
-    "url": "https://ipt.gbif.no/archive.do?r=o_mammals",
-    "akronym": "NHMO-DMA",
-    "gbifCitation":"Johannessen L E, Voje K L (2024). NHMO Mammal collection. Version 31.370. University of Oslo. Occurrence dataset https://doi.org/10.15468/knvqao accessed via GBIF.org on 2024-02-21."
-},
-{
-    "source": "corema",
-    "orgGroup": "zoologi",
-    "name": "birds",
-    "loan": true,
-    "zipFileName": "occurrence",
-    "mediaFile": "_multimedia",
-    "occurrenceFileSuffix": "_stitched.txt",
-    "url": "https://ipt.gbif.no/archive.do?r=birds",
-    "akronym": "NHMO-BI",
-    "gbifCitation" : "Lifjeld J T, Johnsen A, Johannessen L E, Bjerke B A (2024). NHMO Bird collection. Version 1.209. University of Oslo. Occurrence dataset https://doi.org/10.15468/skcono accessed via GBIF.org on 2024-02-21."
-},
-
-{
-    "source": "corema",
-    "orgGroup": "zoologi",
-    "name": "invertebrates",
-    "loan": false,
-    "zipFileName": "occurrence",
-    "mediaFile": "_multimedia",
-    "occurrenceFileSuffix":"_stitched.txt",
-    "ulr": "",
-    "akronym": "NHMO-IN"
-    
 },
 {
     "source": "corema",
@@ -183,15 +159,70 @@
     "gbifCitation" : "Johannessen L E, Johnsen A (2024). NHMO DNA Bank Arthropod collection. Version 1.169. University of Oslo. Occurrence dataset https://doi.org/10.15468/vxhrbz accessed via GBIF.org on 2024-02-21."
 },
 {
+    "source": "access",
+    "orgGroup": "zoologi",
+    "name": "entomology_types",
+    "zipFileName": "occurrence",
+    "mediaFile": "",
+    "occurrenceFileSuffix": "_occurrence.txt", 
+    "url": ""
+},
+{
     "source": "corema",
     "orgGroup": "zoologi",
-    "name": "dna_fish_herptiles",
+    "name": "fish",
     "zipFileName": "occurrence",
     "mediaFile": "_multimedia",
     "occurrenceFileSuffix": "_stitched.txt",
-    "url": "https://ipt.gbif.no/archive.do?r=o_dna_fish_herptiles",
-    "akronym": "NHMO-DFH",
-    "gbifCitation":"Johannessen L E, Johnsen A (2024). NHMO DNA Bank Fish and Herptile collection. Version 1.174. University of Oslo. Occurrence dataset https://doi.org/10.15468/9c7q9i accessed via GBIF.org on 2024-02-21."
+    "url": "https://ipt.gbif.no/archive.do?r=o_fish",
+    "akronym": "NHMO-FI",
+    "gbifCitation": "Matschiner M, Westwig E, Johannessen L E (2025). NHMO Fish collection. Version 1.0. University of Oslo. Occurrence dataset. https://corema.ipt.gbif.no/resource?r=o_fish&amp;v=1.0"
+},
+
+{
+    "source": "corema",
+    "orgGroup": "zoologi",
+    "name": "herptiles",
+    "zipFileName": "occurrence",
+    "mediaFile": "_multimedia",
+    "occurrenceFileSuffix": "_stitched.txt",
+    "url": "https://ipt.gbif.no/archive.do?r=o_dna_other",
+    "akronym": "NHMO-AR",
+    "gbifCitation":"Matschiner M, Westwig E, Johannessen L E (2025). NHMO Amphibian and Reptile collection. Version 1.0. University of Oslo. Occurrence dataset. https://corema.ipt.gbif.no/resource?r=o_herptile&amp;v=1.0"
+},
+{
+    "source": "corema",
+    "orgGroup": "zoologi",
+    "name": "birds",
+    "loan": true,
+    "zipFileName": "occurrence",
+    "mediaFile": "_multimedia",
+    "occurrenceFileSuffix": "_stitched.txt",
+    "url": "https://ipt.gbif.no/archive.do?r=birds",
+    "akronym": "NHMO-BI",
+    "gbifCitation" : "Lifjeld J T, Johnsen A, Johannessen L E, Bjerke B A (2024). NHMO Bird collection. Version 1.209. University of Oslo. Occurrence dataset https://doi.org/10.15468/skcono accessed via GBIF.org on 2024-02-21."
+},
+{
+    "source": "corema",
+    "orgGroup": "zoologi",
+    "name": "mammals",
+    "zipFileName": "occurrence",
+    "mediaFile": "_multimedia",
+    "occurrenceFileSuffix": "_stitched.txt",
+    "url": "https://ipt.gbif.no/archive.do?r=o_mammals",
+    "akronym": "NHMO-DMA",
+    "gbifCitation":"Johannessen L E, Voje K L (2024). NHMO Mammal collection. Version 31.370. University of Oslo. Occurrence dataset https://doi.org/10.15468/knvqao accessed via GBIF.org on 2024-02-21."
+},
+
+{
+    "source": "corema",
+    "orgGroup": "zoologi",
+    "name": "fishscales",
+    "zipFileName": "occurrence",
+    "mediaFile": "_multimedia",
+    "occurrenceFileSuffix": "_stitched.txt",
+    "url": "https://ipt.gbif.no/archive.do?r=o_fish",
+    "akronym": "NHMO-DFH"
 },
 {
     "source": "corema",
@@ -286,26 +317,8 @@
     "url": "",
     "akronym": "NHMO-BULK",
     "gbifCitation": "Marthinsen G (2023). Collection for bulk- and project material at the Natural History Museum in Oslo, Norway. Version 1.3. University of Oslo. Occurrence dataset https://doi.org/10.15468/q4y7ye accessed via GBIF.org on 2023-12-20"
-},
-{
-    "source": "access",
-    "orgGroup": "zoologi",
-    "name": "crustacea",
-    "zipFileName": "occurrence",
-    "mediaFile": "",
-    "occurrenceFileSuffix": "_occurrence.txt", 
-    "url": "https://ipt.gbif.no/archive.do?r=crustacea_nhm",
-    "gbifCitation": "Wilhelmsen Å I, Bachmann L, Rindal E (2023). Crustacea collection (Cru) at UiO NHM, Oslo. Version 1.6. University of Oslo. Occurrence dataset https://doi.org/10.15468/efw98v accessed via GBIF.org on 2023-12-20"
-},
-{
-    "source": "access",
-    "orgGroup": "zoologi",
-    "name": "entomology_types",
-    "zipFileName": "occurrence",
-    "mediaFile": "",
-    "occurrenceFileSuffix": "_occurrence.txt", 
-    "url": ""
 }
+
 ]
 
    
