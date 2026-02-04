@@ -96,6 +96,7 @@ function renderText (lang) {
             { selector: '#mammals', key: 'pattedyr' },
             { selector: '#dna_vascular', key: 'dna_vascular' },
             { selector: '#dna_entomology', key: 'dna_insekter' },
+            { selector: '#lophophorates', key: 'lophophorates' },
             // { selector: '#dna_fish_herptiles', key: 'fishHerpDNA' },
             // { selector: '#fish_herptiles', key: 'fishHerp' },
             { selector: '#dna_fungi_lichens', key: 'fungiLichens' },

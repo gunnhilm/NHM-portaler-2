@@ -302,7 +302,8 @@ function addTextInCollSelect(a) {
       mammals_no_dna: textItems.bcPattedyr,
       dna_vascular: textItems.dna_vascular,
       dna_fungi_lichens: textItems.fungiLichens,
-         dna_fish_herptiles: textItems.fishHerpDNA,
+      dna_fish_herptiles: textItems.fishHerpDNA,
+      lophophorates: textItems.lophophorater,
     //   fish_herptiles: textItems.fishHerp,
       sopp: textItems.sopp,
       dna_other: textItems.other,
@@ -322,7 +323,7 @@ function addTextInCollSelect(a) {
       fishscales: textItems.fishscales
       
     }
-    console.log(collections[a])
+    
   
     return collections[a][index];
 }
@@ -360,6 +361,7 @@ function addCollectionsToSelect(orgGroup, orgGroups, fileList) {
         })
         sessionStorage.setItem('options', JSON.stringify(coll))
         coll.forEach(el => {
+            
             elOption = document.createElement("option")
             elOption.text = addTextInCollSelect(el)
             elOption.value = el

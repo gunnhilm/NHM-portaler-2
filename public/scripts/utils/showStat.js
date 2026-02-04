@@ -84,6 +84,7 @@ function addTextInCollSelect(a) {
     dna_entomology: textItems.dna_insekter,
     dna_fish_herptiles: textItems.fishHerpDNA,
     fish_herptiles: textItems.fishHerp,
+    lophophorates: textItems.lophophorater,
     sopp: textItems.sopp,
     dna_other: textItems.other,
     malmer: textItems.malmer,

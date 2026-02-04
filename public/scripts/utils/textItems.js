@@ -61,6 +61,7 @@ const textItems = {
     bcFugler: ["Fugler", "Birds"],
     dna_vascular: ["Karplanter (DNA-bank)", "Vascular plants (DNA-bank)"],
     dna_insekter: ["Insekter (DNA-bank)", "Insects (DNA-bank)"],
+    lophophorater: ["Lophophorater", "Lophophorates"],
     // fishHerpDNA: ["Fisk og herptiler - DNA", "Fish and herptiles - DNA"],
     // fishHerp: ["Fisk og herptiler", "Fish and herptiles"],
     fungiLichens: ["Sopp og lav (DNA-bank)", "Fungi and lichens (DNA-bank)"],

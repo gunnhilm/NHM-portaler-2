@@ -227,6 +227,16 @@
 {
     "source": "corema",
     "orgGroup": "zoologi",
+    "name": "lophophorates",
+    "zipFileName": "occurrence",
+    "mediaFile": "_multimedia",
+    "occurrenceFileSuffix": "_stitched.txt",
+    "url": "",
+    "akronym": "NHMO-LO"
+},
+{
+    "source": "corema",
+    "orgGroup": "zoologi",
     "name": "dna_other",
     "zipFileName": "occurrence",
     "mediaFile": "_multimedia",
