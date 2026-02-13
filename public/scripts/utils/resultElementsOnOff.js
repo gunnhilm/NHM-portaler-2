@@ -280,8 +280,6 @@ function addSortingText(id, prop, musitData, fromFunction) {
 }
 
 
-
-
 // renders image of arrow-up or arrow-down in table –header when result-table is being sorted
 // in: prop (string; property of a record in the search result)
 // out: image(s)
@@ -296,62 +294,216 @@ function getArrows(prop) {
     }
 }
 
+// get the headers with norwegian and english names from textItems.js
+function extractHeaderItems(obj) {
+    const headerItems = {};
+
+    // Loop through each key in the object
+    for (const [key, value] of Object.entries(obj)) {
+        // Check if the key starts with "header"
+        if (key.startsWith('header')) {
+            // Add the key and the value to the new object
+            headerItems[key] = value;
+        }
+    }
+
+    return headerItems;
+}
+
+
+// Get the current header items from the result table, also the hidden ones
+function getTableHeaders(tableId) {
+    console.log('get current headers');
+
+    const table = document.getElementById(tableId);
+    if (!table) {
+        console.error('Table with the given ID does not exist.');
+        console.log(table);
+        return [];
+    }
+
+    // Get all header cells (th) within the table
+    const headers = table.getElementsByTagName('th');
+    const headerInfo = [];
+
+    // Loop through the header cells and get the inner text along with the column number
+    for (let i = 0; i < headers.length; i++) {
+        // Extract the text content, trimming any extra spaces
+        const text = headers[i].innerText.trim();
+        
+        // Create an object with the column number as the key and the header text as the value
+        const headerObject = {};
+        headerObject[i + 1] = text; // Use (i + 1) for a 1-based index
+        headerInfo.push(headerObject);
+    }
+
+    return headerInfo;
+}
+
+
+
+
+//make a modal window that lets yo select whioch columns to see in the result table
+function makeModalColumnselect(headerArray, buttonID) {
+    
+    const tableHeaders = getTableHeaders('myTable');
+    console.log(tableHeaders);
+
+    const headerTranselations = extractHeaderItems(textItems);
+    console.log(headerTranselations);
+
+
+    try {
+        console.log(headerArray);
+        // filter out items that I dont want to show in the modal dialog
+        function filterArray(inputArray, filterOutArray) {
+            return inputArray.filter(item => !filterOutArray.includes(item));
+        }
+        const filterOutArray = [
+            "catalogNumber",
+            "institutionCode",
+            "institutionCode",
+            "collectionCode",
+            "lineNumber"
+        ];
+        
+        // Call the function to filter the input array
+        const filteredHeaderArray = filterArray(headerArray, filterOutArray);
+        const columnSelectDialog = document.getElementById('columnSelectdialog');
+        const checkboxContainer = document.getElementById('checkboxContainer');
+        const dialogText = document.getElementById('dialogText');
+        const closeDialogBtn = document.getElementById('closeDialogBtn');
+        const cancelBtn = document.getElementById('cancelDialogBtn');
+        const dialogForm = document.getElementById('columnSelectdialog');
+
+        document.getElementById('dialogForm');
+
+        document.getElementById(buttonID).addEventListener("click", function() {
+            // Dynamically add text to the dialog
+            const dynamicText = "Select the options:";
+            dialogText.textContent = dynamicText;
+
+            // Clear previous checkboxes in case the dialog is opened multiple times
+            checkboxContainer.innerHTML = '';
+
+            // Dynamically add checkboxes based on filteredHeaderArray
+            filteredHeaderArray.forEach((item, index) => {
+                const label = document.createElement('label');
+                const checkboxId = `checkbox${index + 1}`; // Create a unique ID for each checkbox
+                label.htmlFor = checkboxId;
+    
+                const input = document.createElement('input');
+                input.type = 'checkbox';
+                input.id = checkboxId;
+
+                // Add a class to the checkbox
+                input.classList.add('column-select-checkbox');
+                label.classList.add('column-select-label');
+                // Append the checkbox input first for the correct order
+                label.appendChild(input);
+                label.appendChild(document.createTextNode(item)); // Append text after the checkbox
+    
+                checkboxContainer.appendChild(label);
+                checkboxContainer.appendChild(document.createElement('br')); // Add line break for better layout
+            });
+
+            
+            columnSelectDialog.showModal()
+
+        })
+
+        
+        dialogForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission to handle it via JavaScript
+            const selectedOptions = [];
+
+            // Loop through checkboxes to find the checked ones
+            headerArray.forEach((item, index) => {
+                const checkbox = document.getElementById(`checkbox${index + 1}`);
+                if (checkbox.checked) {
+                    selectedOptions.push(item); // Add the corresponding item from headerArray
+                }
+            });
+
+            // Print the selected options to the console or handle them as needed
+            console.log("Selected options:", selectedOptions);
+
+            // Optionally close the dialog after submission
+            columnSelectDialog.close();
+        });
+    
+          
+
+        // Close dialog functionality
+        closeDialogBtn.addEventListener('click', function() {
+            columnSelectDialog.close();
+        });
+
+        // Cancel button functionality to close the dialog
+        cancelBtn.addEventListener('click', function() {
+            columnSelectDialog.close();
+        });
+        
+    } catch (error) {
+        console.log('error in making modal colunmSelect window: ');
+        console.log(error);
+    }
+}
 
 // puts content in headerbuttons in result-table
 // calls getArrows(..) for table-header-buttons
 // addSortingText(..) for tabel-header-buttons
 fillResultHeaders = (org,headerArray,musitData) => {
     try {
-    console.log(headerArray);
-    
-
-
-    headerArray[0].innerHTML = `<button id='musitIDButton' aria-label="sort by catalog Number" class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>` 
-
-    headerArray[1].innerHTML = `<button id='scientificNameButton' aria-label="sort by scientific name" class='sort'>${textItems.headerTaxon[index].bold()} ${getArrows('scientificName')} </button>`
-    headerArray[2].innerHTML = `<button id='uncertaintyButton' caria-label="sort by taxon uncertainty"lass='sort '>${textItems.headerUncertainty[index].bold()} ${getArrows('identificationQualifier')} </button>` 
-    if (org === 'geologi') {
-        headerArray[3].innerHTML = `<button id='collectorButton' aria-label="sort by collector name" class='sort'>${textItems.headerCollectorGeo[index].bold()} ${getArrows('recordedBy')}</button>`    
-    } else {
-        headerArray[3].innerHTML = `<button id='collectorButton' aria-label="sort by collector name" class='sort'>${textItems.headerCollector[index].bold()} ${getArrows('recordedBy')}</button>`
-    }
-    headerArray[4].innerHTML = `<button id='dateButton' aria-label="sort by date" class='sort'>${textItems.headerDate[index].bold()} ${getArrows('eventDate')}</button>`
-    headerArray[5].innerHTML = `<button id='countryButton' aria-label="sort by country" class='sort'>${textItems.headerCountry[index].bold()} ${getArrows('country')}</button>`
-    headerArray[6].innerHTML = `<button id='municipalityButton' aria-label="sort by municipality" class='sort'>${textItems.headerMunicipality[index].bold()} ${getArrows('county')}</button>`
-    headerArray[7].innerHTML = `<button id='localityButton' aria-label="sort by locality" class='sort'>${textItems.headerLocality[index].bold()} ${getArrows('locality')}</button>`
-    headerArray[8].innerHTML = `<button id='ecologyButton' aria-label="sort by ecology" class='sort'>${textItems.headerEcology[index].bold()} ${getArrows('habitat')}</button>`
-    headerArray[9].innerHTML = `<button id='sampleTypeButton' aria-label="sort by sample type" class='sort'>${textItems.headerSampleTypes[index].bold()} ${getArrows('preparationType')} </button>` 
-    headerArray[10].innerHTML = `<button id='photoButton' aria-label="sort by photo present or absent" class='sort'><span class="fas fa-camera"></span>${getArrows('associatedMedia')}</button>`
-    headerArray[11].innerHTML = `<button id='coordinateButton' aria-label="sort by coordinates present or absent" class='sort'><span class="fas fa-compass"></span>${getArrows('decimalLongitude')}</button>`
-    headerArray[12].innerHTML = `<select id='checkboxSelect' aria-label="select item" class='sort'>
-        <option value="select" id="select">${textItems.select[index].bold()}</option>
-        <option value="all" id="selectAll">${textItems.selectAll[index]}</option>
-        <option value="all_on_page" id="selectAllOnPage">${ textItems.selectAllOnPage[index]}</option>
-        <option value="none" id="selectNone">${ textItems.selectNone[index]}</option>
-    </select>`
-    //investigateChecked()
-    // lag overskriftene klikk og sorterbare
-    addSortingText('musitIDButton', 'catalogNumber', musitData, 'resultTable')  // Tabellen blir sortert på nummer
-    addSortingText('scientificNameButton', 'scientificName', musitData, 'resultTable')
-    addSortingText('uncertaintyButton', 'identificationQualifier', musitData, 'resultTable')
-    addSortingText('collectorButton', 'recordedBy', musitData, 'resultTable')
-    addSortingText('dateButton', 'eventDate', musitData, 'resultTable')
-    addSortingText('countryButton', 'country', musitData, 'resultTable')
-    addSortingText('municipalityButton', 'county', musitData, 'resultTable')
-    addSortingText('localityButton', 'locality', musitData, 'resultTable')
-    addSortingText('ecologyButton', 'habitat', musitData, 'resultTable')
-
-    if (!musitData[0].includes("preparationType")) {
-        addSortingText('sampleTypeButton', 'basisOfRecord', musitData, 'resultTable')
-    } else {
-        addSortingText('sampleTypeButton', 'preparationType', musitData, 'resultTable')
-    }    
-    addSortingText('photoButton', 'associatedMedia', musitData, 'resultTable')
-    addSortingText('coordinateButton', 'decimalLongitude', musitData, 'resultTable')
-} catch (error) {
- console.log(error);
+        headerArray[0].innerHTML = `<button id='columnSelectButton' aria-label="Selcet which columns to show in the result table" class=''><div class=row-3-dots></div></button>` 
         
-}
+        headerArray[1].innerHTML = `<button id='musitIDButton' aria-label="sort by catalog Number" class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>` 
+        headerArray[2].innerHTML = `<button id='scientificNameButton' aria-label="sort by scientific name" class='sort'>${textItems.headerTaxon[index].bold()} ${getArrows('scientificName')} </button>`
+        headerArray[3].innerHTML = `<button id='uncertaintyButton' caria-label="sort by taxon uncertainty"lass='sort '>${textItems.headerUncertainty[index].bold()} ${getArrows('identificationQualifier')} </button>` 
+        if (org === 'geologi') {
+            headerArray[4].innerHTML = `<button id='collectorButton' aria-label="sort by collector name" class='sort'>${textItems.headerCollectorGeo[index].bold()} ${getArrows('recordedBy')}</button>`    
+        } else {
+            headerArray[4].innerHTML = `<button id='collectorButton' aria-label="sort by collector name" class='sort'>${textItems.headerCollector[index].bold()} ${getArrows('recordedBy')}</button>`
+        }
+        headerArray[5].innerHTML = `<button id='dateButton' aria-label="sort by date" class='sort'>${textItems.headerDate[index].bold()} ${getArrows('eventDate')}</button>`
+        headerArray[6].innerHTML = `<button id='countryButton' aria-label="sort by country" class='sort'>${textItems.headerCountry[index].bold()} ${getArrows('country')}</button>`
+        headerArray[7].innerHTML = `<button id='municipalityButton' aria-label="sort by municipality" class='sort'>${textItems.headerMunicipality[index].bold()} ${getArrows('county')}</button>`
+        headerArray[8].innerHTML = `<button id='localityButton' aria-label="sort by locality" class='sort'>${textItems.headerLocality[index].bold()} ${getArrows('locality')}</button>`
+        headerArray[9].innerHTML = `<button id='ecologyButton' aria-label="sort by ecology" class='sort'>${textItems.headerEcology[index].bold()} ${getArrows('habitat')}</button>`
+        headerArray[10].innerHTML = `<button id='sampleTypeButton' aria-label="sort by sample type" class='sort'>${textItems.headerSampleTypes[index].bold()} ${getArrows('preparationType')} </button>` 
+        headerArray[11].innerHTML = `<button id='photoButton' aria-label="sort by photo present or absent" class='sort'><span class="fas fa-camera"></span>${getArrows('associatedMedia')}</button>`
+        headerArray[12].innerHTML = `<button id='coordinateButton' aria-label="sort by coordinates present or absent" class='sort'><span class="fas fa-compass"></span>${getArrows('decimalLongitude')}</button>`
+        headerArray[13].innerHTML = `<select id='checkboxSelect' aria-label="select item" class='sort'>
+            <option value="select" id="select">${textItems.select[index].bold()}</option>
+            <option value="all" id="selectAll">${textItems.selectAll[index]}</option>
+            <option value="all_on_page" id="selectAllOnPage">${ textItems.selectAllOnPage[index]}</option>
+            <option value="none" id="selectNone">${ textItems.selectNone[index]}</option>
+        </select>`
+
+        //investigateChecked()
+        // lag overskriftene klikk og sorterbare
+        makeModalColumnselect(musitData[0], 'columnSelectButton')
+        addSortingText('musitIDButton', 'catalogNumber', musitData, 'resultTable')  // Tabellen blir sortert på nummer
+        addSortingText('scientificNameButton', 'scientificName', musitData, 'resultTable')
+        addSortingText('uncertaintyButton', 'identificationQualifier', musitData, 'resultTable')
+        addSortingText('collectorButton', 'recordedBy', musitData, 'resultTable')
+        addSortingText('dateButton', 'eventDate', musitData, 'resultTable')
+        addSortingText('countryButton', 'country', musitData, 'resultTable')
+        addSortingText('municipalityButton', 'county', musitData, 'resultTable')
+        addSortingText('localityButton', 'locality', musitData, 'resultTable')
+        addSortingText('ecologyButton', 'habitat', musitData, 'resultTable')
+
+        if (!musitData[0].includes("preparationType")) {
+            addSortingText('sampleTypeButton', 'basisOfRecord', musitData, 'resultTable')
+        } else {
+            addSortingText('sampleTypeButton', 'preparationType', musitData, 'resultTable')
+        }    
+        addSortingText('photoButton', 'associatedMedia', musitData, 'resultTable')
+        addSortingText('coordinateButton', 'decimalLongitude', musitData, 'resultTable')
+    } catch (error) {
+        console.log(error);
+            
+    }
 }
 
 // puts content in headerbuttons in bulk-result-table

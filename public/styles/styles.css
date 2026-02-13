@@ -381,6 +381,14 @@ td {
         .result-table tr:nth-child(even) 	{ background-color:#eee; }
 
     /* result-table, in paginateAndRender.js */
+
+    .row-3-dots:after {
+        content: '\2807';
+        font-size: larger;
+        width: 1%;
+        white-space: nowrap;
+    }
+    
     .row-ID {
         width: 7%;
         text-align: right;
@@ -548,6 +556,49 @@ td {
     color: rgb(56, 55, 55);
     vertical-align: middle;
 }
+
+
+/* modal dialog for selecting columns at the result table*/
+/* .columnSelectdialog {
+
+    text-align: justify;
+    padding: 20px;
+} */
+
+
+.column-select-label {
+    display: block;
+    padding-left: 35px;
+   
+    /* position: relative;
+     padding: 1.6rem;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none; */
+}
+
+/* .column-select-checkbox {
+    
+    padding: 20px;
+} */
+
+/* .columnSelectdialog {
+    border: none !important;
+    border-radius: calc(5px * var(--ratio));
+    box-shadow: 0 0 #0000, 0 0 #0000, 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    padding: 1.6rem;
+    max-width: 400px;
+  } */
+
+  .columnSelectdialog::backdrop {
+    background: rgba(255, 0, 0, 0.25);
+  }
+
+
 
 /* object-page */
 .obj-header {

@@ -214,7 +214,20 @@
                     </div>
                     <br>
                 </div>
-            
+                 {{!-- modal window th select coulmns --}}
+                    <dialog id="columnSelectdialog" class="columnSelectdialog">
+                        <button class="white-button" id="closeDialogBtn">&times;</button>
+                        <form method="dialog">
+                            <div>
+                                <p id="dialogText">This is a dialog with checkboxes.</p>
+                                <div id="checkboxContainer"></div>
+                            </div>
+                            <br>
+                            <button type="button" id="cancelDialogBtn" class="white-button">Cancel</button>
+                            <button type="submit" class="blue-button">Submit</button>
+                        </form>
+                    </dialog>
+
             </main>
             </div>
 
@@ -241,6 +254,7 @@
         <script src="/museum/scripts/utils/search.js"></script>   {{! main-functin is called}}
 
         <script src="/museum/scripts/utils/tools/loans/loans.js"></script>   
+
         
     </body>
 </html>

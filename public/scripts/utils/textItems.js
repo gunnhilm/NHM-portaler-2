@@ -81,6 +81,7 @@ const textItems = {
     createLoan: ["Søk om lån", "Apply for loan"],
     
     nbHitsText: ["Antall treff: ", "Number of hits: "],
+    headerSelectTableColumns: ['Velg tabell kolonner', 'Select table Columns'],
     headerCatNb: ["Katalognr.", "Catalog nb."],
     headerTaxon: ["Takson", "Taxon"],
     headerUncertainty: ["Usikker id", "Uncertain id"],

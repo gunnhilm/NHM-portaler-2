@@ -25,8 +25,6 @@ function activateLoanButton () {
 }
 
 
-
-
 // change: take from fileList
 async function whichFileAndDb_main (museum,collection) {
     //return new Promise(function(resolve, reject) {
@@ -149,6 +147,7 @@ function determineMuseumAndURLPath(urlPath) {
 }
 
 
+
 // renders result table
 // input: subMusitData (JSON; part of search result that is rendered on page)
 // input: musitData (JSON; searchResult, all of it)
@@ -167,16 +166,16 @@ const resultTable = (subMusitData, musitData) => {
         
         let { museumURLPath, museum } = determineMuseumAndURLPath(urlPath);
         const headers = musitData[0]
-        
-        const kindomIndex = headers.indexOf('kingdom')
-        const scientificNameIndex = headers.indexOf('scientificName')
-        const genusIndex = headers.indexOf('genus')
-        const specificEpithetIndex = headers.indexOf('specificEpithet')
-        const catalogNumberIndex = headers.indexOf('catalogNumber');
-        const institutionCodeIndex = headers.indexOf('institutionCode');
-        const collectionCodeIndex = headers.indexOf('collectionCode');
-        const recordedByIndex = headers.indexOf('recordedBy');
-        const lineNumberIndex = headers.indexOf('lineNumber');
+
+            const kindomIndex = headers.indexOf('kingdom')
+            const scientificNameIndex = headers.indexOf('scientificName')
+            const genusIndex = headers.indexOf('genus')
+            const specificEpithetIndex = headers.indexOf('specificEpithet')
+            const catalogNumberIndex = headers.indexOf('catalogNumber');
+            const institutionCodeIndex = headers.indexOf('institutionCode');
+            const collectionCodeIndex = headers.indexOf('collectionCode');
+            const recordedByIndex = headers.indexOf('recordedBy');
+            const lineNumberIndex = headers.indexOf('lineNumber');
 
         
         table.innerHTML = ""
@@ -191,37 +190,41 @@ const resultTable = (subMusitData, musitData) => {
                     org = 'geologi'
                 } else { org = 'other'}
 
-                for (let j = 0; j < 13; j++) {
+                for (let j = 0; j < 14; j++) {
                     headerCell.push(headerRow.appendChild(document.createElement("th")))
                 }
-                headerCell[2].className += "uncertainty"
-                headerCell[3].className += "innsamler"
-                headerCell[4].className += "dato"
-                headerCell[5].className += "land"
-                headerCell[9].className += "sampleType"
+                headerCell[1].className += "headerSelect"
+                headerCell[3].className += "uncertainty"
+                headerCell[4].className += "innsamler"
+                headerCell[5].className += "dato"
+                headerCell[6].className += "land"
+                headerCell[10].className += "sampleType"
                 
                 fillResultHeaders(org,headerCell,musitData)
 
-            }  else { // Her kommer innmaten i tabellen, selve resultatene
+            } else { // Her kommer innmaten i tabellen, selve resultatene
                 if(i === 0) {continue} // this contains the headers
                 
                 const row = table.insertRow(-1);
-                
+
                 const cells = Array.from({ length: 13 }, (_, index) => {
                     const cell = row.insertCell(index);
                     return cell;
                 });
                 // Assign class names to specific cells
-                cells[2].className += "cell3";  // uncertainty (før innsamler)
-                cells[3].className += "cell4";  // Innsamler (før dato)
-                cells[4].className += "cell5";  // Dato (før land)
-                cells[5].className += "cell6";  // Land (før kommune)
-                cells[9].className += "cell10"; // Items (før hidden; items)
+                cells[3].className += "cell3";  // uncertainty (før innsamler)
+                cells[4].className += "cell4";  // Innsamler (før dato)
+                cells[5].className += "cell5";  // Dato (før land)
+                cells[6].className += "cell6";  // Land (før kommune)
+                cells[10].className += "cell10"; // Items (før hidden; items)
                 
                 // create named references
-                const [cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11, cell12, cell13] = cells;
+                const [cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11, cell12, cell13, cell14] = cells;
 
-                //cell 1
+                // cell 1 is empthy
+                cell1.textContent = ""
+
+                //cell 2
                 let prefix = ''
                 const institutionCode = subMusitData[i][institutionCodeIndex]
                 const collectionCode = subMusitData[i][collectionCodeIndex]
@@ -256,34 +259,40 @@ const resultTable = (subMusitData, musitData) => {
                     
                     link = `<a id="object-link-for-${strippedCatalogNumber}" href="${museumURLPath}/object/?id=${catalogNumber}&samling=${collection}&museum=${museum}&lang=${language}&linjeNummer=${lineNumber}">${prefix}${strippedCatalogNumber}</a>`;
                     
-                    cell1.innerHTML = link;
+                    cell2.innerHTML = link;
                 }
                 
-                //cell 2
+                //cell 3 Scientific name
                 if (sessionStorage.getItem('organismGroup').includes('geologi')) {
                     
                     if (sessionStorage.getItem('chosenCollection') === 'oslofeltet') {
-                        cell2.innerHTML = `<span>${subMusitData[i][kindomIndex]}</span>`                            
+                        cell3.innerHTML = `<span>${subMusitData[i][kindomIndex]}</span>`                            
                     } else {
-                        cell2.innerHTML = `<span>${subMusitData[i][scientificNameIndex]}</span>`
+                        cell3.innerHTML = `<span>${subMusitData[i][scientificNameIndex]}</span>`
                     }
                     
                 } else if (sessionStorage.getItem('organismGroup').includes('zoologi')) {
                     if (subMusitData[i][specificEpithetIndex] && subMusitData[i][genusIndex] !== "") {
-                        cell2.innerHTML = `<span style=font-style:italic>${subMusitData[i][genusIndex]} ${subMusitData[i][specificEpithetIndex]}</span>`
+                        cell3.innerHTML = `<span style=font-style:italic>${subMusitData[i][genusIndex]} ${subMusitData[i][specificEpithetIndex]}</span>`
                     } else {                       
                         
-                        cell2.innerHTML = `<span style=font-style:italic>${subMusitData[i][scientificNameIndex]}</span>`
+                        cell3.innerHTML = `<span style=font-style:italic>${subMusitData[i][scientificNameIndex]}</span>`
                     }
                     
                 } else {
                     let nameArray = italicSpeciesname(subMusitData[i][scientificNameIndex])
-                    cell2.innerHTML = `<span style=font-style:italic>${nameArray[0].replace(/\"/g,'')}</span>` + ' ' + `<span>${nameArray[1].replace(/\"/g,'')}</span>`
+                    cell3.innerHTML = `<span style=font-style:italic>${nameArray[0].replace(/\"/g,'')}</span>` + ' ' + `<span>${nameArray[1].replace(/\"/g,'')}</span>`
                 }  
 
-                cell3.innerHTML = subMusitData[i].identificationQualifier
+                //usikkerhet i bestmmelse
+                if(subMusitData[i].identificationQualifier){
+                    cell4.innerHTML = subMusitData[i].identificationQualifier
+                } else {
+                    cell4.textContent = ""
+                }
+                
 
-                //cell4 recordedBy
+                //cell5 recordedBy
                 const recordedBy = subMusitData[i][recordedByIndex];
                 // to avoid lots of text in collector-field: replace more than two names with et al. 
                 // when  collector is written "lastName, firstName", only first name is included, followed by et al. if more names
@@ -293,20 +302,20 @@ const resultTable = (subMusitData, musitData) => {
                         if (!sessionStorage.getItem("organismGroup").includes('paleontologi')) {
                             let x = recordedBy.indexOf(",")
                             let y = recordedBy.substr(0,x)
-                            cell4.innerHTML = y + " et al."    
+                            cell5.innerHTML = y + " et al."    
                         }
                     } else {
-                        cell4.innerHTML = recordedBy
+                        cell5.innerHTML = recordedBy
                     }    
                 }
                 
-                cell5.innerHTML = subMusitData[i][headers.indexOf('eventDate')]
-                cell6.innerHTML = subMusitData[i][headers.indexOf('country')] 
-                if (subMusitData[i][headers.indexOf('county')]) {cell7.innerHTML = subMusitData[i][headers.indexOf('county')]}
+                cell6.innerHTML = subMusitData[i][headers.indexOf('eventDate')]
+                cell7.innerHTML = subMusitData[i][headers.indexOf('country')] 
+                if (subMusitData[i][headers.indexOf('county')]) {cell8.innerHTML = subMusitData[i][headers.indexOf('county')]}
                 cell8.innerHTML = subMusitData[i][headers.indexOf('locality')]
-                cell9.innerHTML = subMusitData[i][headers.indexOf('habitat')]
+                cell10.innerHTML = subMusitData[i][headers.indexOf('habitat')]
 
-                // cell 10 items
+                // cell 11 items
                 const basisOfRecordIndex = headers.indexOf('basisOfRecord');
                 const basisOfRecord = subMusitData[i][basisOfRecordIndex];
                 const chosenCollection = sessionStorage.getItem('chosenCollection');
@@ -314,7 +323,7 @@ const resultTable = (subMusitData, musitData) => {
                 const coremaBasisOfRecord = subMusitData[i][headers.indexOf('coremaBasisOfRecord')] || '';
                 const materialSampleType = subMusitData[i][headers.indexOf('materialSampleType')] || '';
                 let musitBasisOfRecord = basisOfRecord || '';
-                let cell10Content = '';
+                let cell11Content = '';
 
                 const isCoremaCollection = document.querySelector('#collection-select option:checked').label.includes('DNA');
                 const isCoremaInMusit = chosenCollection.includes('dna_');
@@ -327,72 +336,73 @@ const resultTable = (subMusitData, musitData) => {
                 if (museumURLPath === `${urlPath}/nhm`) {
                     if (isCoremaCollection) {
                         if (isCoremaInMusit) {
-                            cell10Content = materialSampleType + (basisOfRecord ? ` | ${basisOfRecord}` : '');
+                            cell11Content = materialSampleType + (basisOfRecord ? ` | ${basisOfRecord}` : '');
                         } else if (isSpecialCollection) {
-                            cell10Content = preparationType || '';
+                            cell11Content = preparationType || '';
                         } else {
                             if (!preparationType || !/[a-zA-Z]/.test(preparationType)) {
-                                cell10Content = basisOfRecord || coremaBasisOfRecord;
+                                cell11Content = basisOfRecord || coremaBasisOfRecord;
                             } else {
-                                cell10Content = formatPreparationType(preparationType) + (musitBasisOfRecord ? ` | ${musitBasisOfRecord}` : '');
+                                cell11Content = formatPreparationType(preparationType) + (musitBasisOfRecord ? ` | ${musitBasisOfRecord}` : '');
                             }
                         }
                     } else {
                         if (!preparationType) {
-                            cell10Content = basisOfRecord || coremaBasisOfRecord;
+                            cell11Content = basisOfRecord || coremaBasisOfRecord;
                         } else {
-                            cell10Content = formatPreparationType(preparationType) + (musitBasisOfRecord ? ` | ${musitBasisOfRecord}` : '');
+                            cell11Content = formatPreparationType(preparationType) + (musitBasisOfRecord ? ` | ${musitBasisOfRecord}` : '');
                         }
                     }
                 }
                 // Clean up cell10Content to remove any leading/trailing pipes and replace double pipes
-                cell10Content = cell10Content.replace(/^\s*\|/, '').replace(/\|\s*$/, '').replace(/\|\s*\|/, '|');
+                cell11Content = cell11Content.replace(/^\s*\|/, '').replace(/\|\s*$/, '').replace(/\|\s*\|/, '|');
 
-                cell10.innerHTML = cell10Content;
+                cell11.innerHTML = cell11Content;
 
 
 
                 if( subMusitData[i][headers.indexOf('associatedMedia')]) {   
-                    cell11.innerHTML = `<span class="fas fa-camera"></span>`
+                    cell12.innerHTML = `<span class="fas fa-camera"></span>`
                 }
                 if( subMusitData[i][headers.indexOf('decimalLongitude')]) {
-                    cell12.innerHTML = '<span class="fas fa-compass"></span>'
+                    cell13.innerHTML = '<span class="fas fa-compass"></span>'
                 }
                 
-                cell13.innerHTML = `<input type="checkbox" id=checkbox${i} aria-label="velg denne posten" onclick="registerChecked(${i})" ></input>`
+                cell14.innerHTML = `<input type="checkbox" id=checkbox${i} aria-label="velg denne posten" onclick="registerChecked(${i})" ></input>`
                 if (investigateChecked(i)) {
                     document.getElementById(`checkbox${i}`).checked = true
                 } else {
                     document.getElementById(`checkbox${i}`).checked = false
                 }
                 
-                cell1.className = 'row-1 row-ID'
-                cell2.className = 'row-2 row-name'
-                cell3.className = 'uncertainty'
-                cell4.className = 'innsamler'
-                cell5.className = 'dato'
-                cell6.className = 'land'
-                cell7.className = 'row-7 row-kommune'
-                cell8.className = 'row-8 row-sted'
-                cell9.className = 'row-9 row-habitat'
-                cell10.className = 'sampleType'
-                cell11.className = 'row-11 row-photo'
-                cell12.className = 'row-12 row-coordinates'
-                cell13.className = 'row-13 row-checkbox'
+                cell1.className = 'placeholer-column-select'
+                cell2.className = 'row-1 row-ID'
+                cell3.className = 'row-2 row-name'
+                cell4.className = 'uncertainty'
+                cell5.className = 'innsamler'
+                cell6.className = 'dato'
+                cell7.className = 'land'
+                cell8.className = 'row-7 row-kommune'
+                cell9.className = 'row-8 row-sted'
+                cell10.className = 'row-9 row-habitat'
+                cell11.className = 'sampleType'
+                cell12.className = 'row-11 row-photo'
+                cell13.className = 'row-12 row-coordinates'
+                cell14.className = 'row-13 row-checkbox'
             }
           
         }
         if (!subMusitData[0].hasOwnProperty('identificationQualifier')) {
-            hide_column(2)
+            hide_column(3)
         }
 
         // hide habitat for collections that do not have it
         if (!subMusitData[0].hasOwnProperty('habitat')) {
-            hide_column(8)
+            hide_column(9)
         }
                 // hide corema-link-column for UM and TMU
         if (window.location.href.includes('tmu') || window.location.href.includes('/um') || window.location.href.includes('/nbh')) {
-            hide_column(9)
+            hide_column(10)
         }
         
 
