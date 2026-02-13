@@ -69,10 +69,13 @@ downloadBCButton.onclick = function() {
 async function getNamelist (nameFile) {
     return new Promise (resolve => {
         const url = urlPath + `/getNamelist/?nameFile=${nameFile}`
+        console.log(url)
         fetch(url)
             .then((response) => {
+                console.log(response)
                 response.text()
             .then((data) => {
+                console.log(data)
                 if(data.error) {
                     return console.log(data.error)
                 } else {
@@ -193,6 +196,7 @@ function addRow(table) {
 
 // fill main rows in table. for basidiomycetes...
 function fillAllNames (nameList, data, candidates, sumSpecimens, fungiOverview) {
+    console.log(nameList)
     barcodedSpecies = []
     missingBarcodes = []
     for (i=0;i<nameList.length;i++) {
@@ -376,6 +380,7 @@ function fillOnlyBarcoded(data, candidates, sumSpecimens, fungiOverview) {
 // in: nameList (array of objects, on for each norwegian species, from adb), data (array of objects, one object for each species, from bold)
 // is called in main() and bcSearch()
 function fillTable (nameList, data, candidates, group, blank,fungiOverview) {
+    console.log(group)
     // header row:
     addRow(table)
     cell1.innerHTML = 'Species'
@@ -415,6 +420,7 @@ function fillTable (nameList, data, candidates, group, blank,fungiOverview) {
         sumSpecimensAndSpecies = fillOnlyBarcoded(data, candidates, sumSpecimens,fungiOverview)
     } else if (group != "asco" && group != "all" ) { // basidio
         sumSpecimensAndSpecies = fillAllNames(nameList, data, candidates, sumSpecimens,fungiOverview)
+        console.log('tre')
     } 
     // else if (group === "asco") { 
     //     sumSpecimensAndSpecies = fillAllNames(nameList, data, candidates, sumSpecimens)

@@ -96,7 +96,7 @@ function renderText (lang) {
             { selector: '#mammals', key: 'pattedyr' },
             { selector: '#dna_vascular', key: 'dna_vascular' },
             { selector: '#dna_entomology', key: 'dna_insekter' },
-            { selector: '#lophophorates', key: 'lophophorates' },
+            { selector: '#lophophorater', key: 'lophophorates' },
             // { selector: '#dna_fish_herptiles', key: 'fishHerpDNA' },
             // { selector: '#fish_herptiles', key: 'fishHerp' },
             { selector: '#dna_fungi_lichens', key: 'fungiLichens' },
@@ -114,9 +114,12 @@ function renderText (lang) {
         ];
 
         indexElementsToUpdate.forEach(element => {
+            console.log(element)
             const { selector, key } = element;
             const elementToUpdate = document.querySelector(selector);
             if (elementToUpdate) {
+                // console.log(key)
+                // console.log(index)
                 elementToUpdate.innerHTML = textItems[key][index];
             }
         });
@@ -420,6 +423,7 @@ document.querySelector('#language').addEventListener('click', (e) => {
 
             // tror det blir feil her, når tabellen er smalere, og celler skal hoppes over
             const headerRow = document.querySelector("#myTable").rows[0]
+            console.log(headerRow)
             const headerCell = Array.from(headerRow.cells);
  
             stringData = sessionStorage.getItem('string')

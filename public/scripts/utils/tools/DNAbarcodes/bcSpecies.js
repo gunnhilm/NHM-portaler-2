@@ -132,7 +132,8 @@ const fillTableSpecies = (data, validationObject, language) => {
         
 
         let processID = data.processIDs[i].substr(1)
-        const url = `http://www.boldsystems.org/index.php/Public_RecordView?processid=${processID}`
+        // const url = `http://www.boldsystems.org/index.php/Public_RecordView?processid=${processID}`
+        const url = `https://portal.boldsystems.org/record/${processID}`
         cell3.innerHTML = `<a href="${url}" target="_blank">${processID}</a>`
         cell3.style = "padding-right:20px"
 
