@@ -292,17 +292,18 @@ function addTextInCollSelect(a) {
       vascular: textItems.vascular,
       lav: textItems.lav,
       alger: textItems.alger,
-      entomology: textItems.insekter,
-      evertebrater: textItems.invertebrates,
+      
+    //evertebrater: textItems.invertebrates,
       invertebrates: textItems.invertebrates_with_dna,
-      fisk: textItems.fisk,
+      fish: textItems.fish,
+      herptiles: textItems.herptiles,
       birds: textItems.fugler,
       mammals: textItems.pattedyr,
       mammals_no_dna: textItems.bcPattedyr,
       dna_vascular: textItems.dna_vascular,
       dna_fungi_lichens: textItems.fungiLichens,
-      dna_entomology: textItems.dna_insekter,
       dna_fish_herptiles: textItems.fishHerpDNA,
+      lophophorates: textItems.lophophorater,
     //   fish_herptiles: textItems.fishHerp,
       sopp: textItems.sopp,
       dna_other: textItems.other,
@@ -316,8 +317,13 @@ function addTextInCollSelect(a) {
       eco_bot: textItems.eco_bot,
       bulk: textItems.bulk,
       crustacea: textItems.crustacea,
-      entomology_types: textItems.insectTypes
-    };
+      entomology: textItems.insekter,
+      dna_entomology: textItems.dna_insekter,
+      entomology_types: textItems.insectTypes,
+      fishscales: textItems.fishscales
+      
+    }
+    
   
     return collections[a][index];
 }
@@ -355,6 +361,7 @@ function addCollectionsToSelect(orgGroup, orgGroups, fileList) {
         })
         sessionStorage.setItem('options', JSON.stringify(coll))
         coll.forEach(el => {
+            
             elOption = document.createElement("option")
             elOption.text = addTextInCollSelect(el)
             elOption.value = el

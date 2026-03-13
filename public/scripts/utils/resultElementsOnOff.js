@@ -4,105 +4,163 @@
 // array with booleans that keeps track of sorting for page rendering
 let propsSorted = []
 if (!sessionStorage.getItem('propsSorted')) {
- 
-        propsSorted = [
-            {id: 'catalogNumber',
+
+    propsSorted = [
+        {
+            id: 'catalogNumber',
             sortedOnce: false,
-            sortedTwice: false},
-            {id: 'scientificName',
+            sortedTwice: false
+        },
+        {
+            id: 'scientificName',
             sortedOnce: false,
-            sortedTwice: false},
-            {id: 'identificationQualifier',
+            sortedTwice: false
+        },
+        {
+            id: 'identificationQualifier',
             sortedONce: false,
-            sortedTwice: false},
-            {id: 'recordedBy',
+            sortedTwice: false
+        },
+        {
+            id: 'recordedBy',
             sortedOnce: false,
-            sortedTwice: false},
-            {id: 'eventDate',
+            sortedTwice: false
+        },
+        {
+            id: 'eventDate',
             sortedOnce: false,
-            sortedTwice: false},
-            {id: 'country',
+            sortedTwice: false
+        },
+        {
+            id: 'country',
             sortedOnce: false,
-            sortedTwice: false},
-            {id: 'county',
+            sortedTwice: false
+        },
+        {
+            id: 'county',
             sortedOnce: false,
-            sortedTwice: false},
-            {id: 'locality',
+            sortedTwice: false
+        },
+        {
+            id: 'locality',
             sortedOnce: false,
-            sortedTwice: false},
-            {id: 'habitat',
+            sortedTwice: false
+        },
+        {
+            id: 'habitat',
             sortedOnce: false,
-            sortedTwice: false},
-            {id: 'associatedMedia',
+            sortedTwice: false
+        },
+        {
+            id: 'associatedMedia',
             sortedOnce: false,
-            sortedTwice: false},
-            {id: 'identifier',
+            sortedTwice: false
+        },
+        {
+            id: 'identifier',
             sortedOnce: false,
-            sortedTwice: false},
-            {id: 'decimalLongitude',
+            sortedTwice: false
+        },
+        {
+            id: 'decimalLongitude',
             sortedOnce: false,
-            sortedTwice: false},
-            {id: 'coremaNo',
+            sortedTwice: false
+        },
+        {
+            id: 'coremaNo',
             sortedOnce: false,
-            sortedTwice: false},
-            {id: 'sampleType',
+            sortedTwice: false
+        },
+        {
+            id: 'sampleType',
             sortedOnce: false,
-            sortedTwice: false},
-            {id: 'processID',
+            sortedTwice: false
+        },
+        {
+            id: 'processID',
             sortedOnce: false,
-            sortedTwice: false},
-            {id: 'Preparations',
+            sortedTwice: false
+        },
+        {
+            id: 'Preparations',
             sortedOnce: false,
-            sortedTwice: false},
-            {id: 'placement',
+            sortedTwice: false
+        },
+        {
+            id: 'placement',
             sortedOnce: false,
-            sortedTwice: false},
-            // {id: 'unitType',
-            // sortedOnce: false,
-            // sortedTwice: false},
-            // {id: 'amount',
-            // sortedOnce: false,
-            // sortedTwice: false},
-            {id: 'individualCount',
+            sortedTwice: false
+        },
+        // {id: 'unitType',
+        // sortedOnce: false,
+        // sortedTwice: false},
+        // {id: 'amount',
+        // sortedOnce: false,
+        // sortedTwice: false},
+        {
+            id: 'individualCount',
             sortedOnce: false,
-            sortedTwice: false},
-            {id: 'stateProvince',
+            sortedTwice: false
+        },
+        {
+            id: 'stateProvince',
             sortedOnce: false,
-            sortedTwice: false},
-            {id: 'Note',
+            sortedTwice: false
+        },
+        {
+            id: 'Note',
             sortedOnce: false,
-            sortedTwice: false},
-            {id: 'locality_concatenated',
+            sortedTwice: false
+        },
+        {
+            id: 'locality_concatenated',
             sortedOnce: false,
-            sortedTwice: false},
-            // UTAD tabell
-            {id: 'vernacularName',
+            sortedTwice: false
+        },
+        // UTAD tabell
+        {
+            id: 'vernacularName',
             sortedOnce: false,
-            sortedTwice: false},
-            {id: 'Tilstand',
+            sortedTwice: false
+        },
+        {
+            id: 'Tilstand',
             sortedOnce: false,
-            sortedTwice: false},
-            {id: 'preparationType',
+            sortedTwice: false
+        },
+        {
+            id: 'preparationType',
             sortedOnce: false,
-            sortedTwice: false},
-            {id: 'basisOfRecord',
+            sortedTwice: false
+        },
+        {
+            id: 'basisOfRecord',
             sortedOnce: false,
-            sortedTwice: false},
-            {id: 'Kommentar',
+            sortedTwice: false
+        },
+        {
+            id: 'Kommentar',
             sortedOnce: false,
-            sortedTwice: false},
-            {id: 'bredde',
+            sortedTwice: false
+        },
+        {
+            id: 'bredde',
             sortedOnce: false,
-            sortedTwice: false},
-            {id: 'høyde',
+            sortedTwice: false
+        },
+        {
+            id: 'høyde',
             sortedOnce: false,
-            sortedTwice: false},
-            {id: 'lengde',
+            sortedTwice: false
+        },
+        {
+            id: 'lengde',
             sortedOnce: false,
-            sortedTwice: false}
-        ]
+            sortedTwice: false
+        }
+    ]
     sessionStorage.setItem('propsSorted', JSON.stringify(propsSorted))
-} else { 
+} else {
     propsSorted = JSON.parse(sessionStorage.getItem('propsSorted'))
 }
 
@@ -110,8 +168,8 @@ const table = document.getElementById("myTable")
 
 // resets the Boolean sorting values for the resultTable
 // is called by doSearch(limit) in search.js
-function resetSortedBoolean () {
-    for(i = 0; i < propsSorted.length; i++) {
+function resetSortedBoolean() {
+    for (i = 0; i < propsSorted.length; i++) {
         propsSorted[i].sortedOnce = false
         propsSorted[i].sortedTwice = false
     }
@@ -183,7 +241,7 @@ showResultElements = (loan) => {
     document.getElementById("resultPageText1").innerHTML = textItems.page[index]
     document.getElementById("resultPageNb1").style.display = "inline-block"
     document.getElementById("resultPageNb1").innerHTML = " " + currentPage + '/' + numberOfPages
-    
+
 }
 
 
@@ -197,10 +255,10 @@ showResultElements = (loan) => {
 
 function addSortingText(id, prop, musitData, fromFunction) {
     try {
-        document.getElementById(id).addEventListener("click", function() {
-            
+        document.getElementById(id).addEventListener("click", function () {
+
             if (musitData.length > 1) {
-              
+
                 document.getElementById("please-wait").style.display = "block";
 
                 const header = musitData[0];
@@ -213,15 +271,15 @@ function addSortingText(id, prop, musitData, fromFunction) {
 
                 let reverse = false;
                 const sortStatus = propsSorted.find(x => x.id === prop);
-                if (sortStatus && sortStatus.sortedOnce) { 
-                    reverse = true; 
+                if (sortStatus && sortStatus.sortedOnce) {
+                    reverse = true;
                 }
 
                 // Sort the data starting from the second row
                 const sortedData = musitData.slice(1).sort((a, b) => {
                     const valA = a[propIndex];
                     const valB = b[propIndex];
-                    
+
 
                     // Use localeCompare for strings and ensure you handle undefined/null if present.
                     if (typeof valA === 'string' && typeof valB === 'string') {
@@ -285,8 +343,8 @@ function addSortingText(id, prop, musitData, fromFunction) {
 // out: image(s)
 // is called by fillResultHeaders(…)
 function getArrows(prop) {
-    if (!propsSorted.find(x => x.id === prop).sortedOnce  & !propsSorted.find(x => x.id === prop).sortedTwice) {
-        return arrows 
+    if (!propsSorted.find(x => x.id === prop).sortedOnce & !propsSorted.find(x => x.id === prop).sortedTwice) {
+        return arrows
     } else if (propsSorted.find(x => x.id === prop).sortedOnce) {
         return arrowDown
     } else if (propsSorted.find(x => x.id === prop).sortedTwice) {
@@ -330,7 +388,7 @@ function getTableHeaders(tableId) {
     for (let i = 0; i < headers.length; i++) {
         // Extract the text content, trimming any extra spaces
         const text = headers[i].innerText.trim();
-        
+
         // Create an object with the column number as the key and the header text as the value
         const headerObject = {};
         headerObject[i + 1] = text; // Use (i + 1) for a 1-based index
@@ -345,7 +403,7 @@ function getTableHeaders(tableId) {
 
 //make a modal window that lets yo select whioch columns to see in the result table
 function makeModalColumnselect(headerArray, buttonID) {
-    
+
     const tableHeaders = getTableHeaders('myTable');
     console.log(tableHeaders);
 
@@ -366,7 +424,7 @@ function makeModalColumnselect(headerArray, buttonID) {
             "collectionCode",
             "lineNumber"
         ];
-        
+
         // Call the function to filter the input array
         const filteredHeaderArray = filterArray(headerArray, filterOutArray);
         const columnSelectDialog = document.getElementById('columnSelectdialog');
@@ -378,7 +436,7 @@ function makeModalColumnselect(headerArray, buttonID) {
 
         document.getElementById('dialogForm');
 
-        document.getElementById(buttonID).addEventListener("click", function() {
+        document.getElementById(buttonID).addEventListener("click", function () {
             // Dynamically add text to the dialog
             const dynamicText = "Select the options:";
             dialogText.textContent = dynamicText;
@@ -391,7 +449,7 @@ function makeModalColumnselect(headerArray, buttonID) {
                 const label = document.createElement('label');
                 const checkboxId = `checkbox${index + 1}`; // Create a unique ID for each checkbox
                 label.htmlFor = checkboxId;
-    
+
                 const input = document.createElement('input');
                 input.type = 'checkbox';
                 input.id = checkboxId;
@@ -402,18 +460,18 @@ function makeModalColumnselect(headerArray, buttonID) {
                 // Append the checkbox input first for the correct order
                 label.appendChild(input);
                 label.appendChild(document.createTextNode(item)); // Append text after the checkbox
-    
+
                 checkboxContainer.appendChild(label);
                 checkboxContainer.appendChild(document.createElement('br')); // Add line break for better layout
             });
 
-            
+
             columnSelectDialog.showModal()
 
         })
 
-        
-        dialogForm.addEventListener('submit', function(event) {
+
+        dialogForm.addEventListener('submit', function (event) {
             event.preventDefault(); // Prevent form submission to handle it via JavaScript
             const selectedOptions = [];
 
@@ -431,19 +489,19 @@ function makeModalColumnselect(headerArray, buttonID) {
             // Optionally close the dialog after submission
             columnSelectDialog.close();
         });
-    
-          
+
+
 
         // Close dialog functionality
-        closeDialogBtn.addEventListener('click', function() {
+        closeDialogBtn.addEventListener('click', function () {
             columnSelectDialog.close();
         });
 
         // Cancel button functionality to close the dialog
-        cancelBtn.addEventListener('click', function() {
+        cancelBtn.addEventListener('click', function () {
             columnSelectDialog.close();
         });
-        
+
     } catch (error) {
         console.log('error in making modal colunmSelect window: ');
         console.log(error);
@@ -453,36 +511,32 @@ function makeModalColumnselect(headerArray, buttonID) {
 // puts content in headerbuttons in result-table
 // calls getArrows(..) for table-header-buttons
 // addSortingText(..) for tabel-header-buttons
-fillResultHeaders = (org,headerArray,musitData) => {
+fillResultHeaders = (org, headerArray, musitData) => {
     try {
-        headerArray[0].innerHTML = `<button id='columnSelectButton' aria-label="Selcet which columns to show in the result table" class=''><div class=row-3-dots></div></button>` 
-        
-        headerArray[1].innerHTML = `<button id='musitIDButton' aria-label="sort by catalog Number" class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>` 
-        headerArray[2].innerHTML = `<button id='scientificNameButton' aria-label="sort by scientific name" class='sort'>${textItems.headerTaxon[index].bold()} ${getArrows('scientificName')} </button>`
-        headerArray[3].innerHTML = `<button id='uncertaintyButton' caria-label="sort by taxon uncertainty"lass='sort '>${textItems.headerUncertainty[index].bold()} ${getArrows('identificationQualifier')} </button>` 
+        headerArray[0].innerHTML = `<button id='musitIDButton' aria-label="sort by catalog Number" class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>`
+        headerArray[1].innerHTML = `<button id='scientificNameButton' aria-label="sort by scientific name" class='sort'>${textItems.headerTaxon[index].bold()} ${getArrows('scientificName')} </button>`
+        headerArray[2].innerHTML = `<button id='uncertaintyButton' caria-label="sort by taxon uncertainty"lass='sort '>${textItems.headerUncertainty[index].bold()} ${getArrows('identificationQualifier')} </button>`
         if (org === 'geologi') {
-            headerArray[4].innerHTML = `<button id='collectorButton' aria-label="sort by collector name" class='sort'>${textItems.headerCollectorGeo[index].bold()} ${getArrows('recordedBy')}</button>`    
+            headerArray[3].innerHTML = `<button id='collectorButton' aria-label="sort by collector name" class='sort'>${textItems.headerCollectorGeo[index].bold()} ${getArrows('recordedBy')}</button>`
         } else {
-            headerArray[4].innerHTML = `<button id='collectorButton' aria-label="sort by collector name" class='sort'>${textItems.headerCollector[index].bold()} ${getArrows('recordedBy')}</button>`
+            headerArray[3].innerHTML = `<button id='collectorButton' aria-label="sort by collector name" class='sort'>${textItems.headerCollector[index].bold()} ${getArrows('recordedBy')}</button>`
         }
-        headerArray[5].innerHTML = `<button id='dateButton' aria-label="sort by date" class='sort'>${textItems.headerDate[index].bold()} ${getArrows('eventDate')}</button>`
-        headerArray[6].innerHTML = `<button id='countryButton' aria-label="sort by country" class='sort'>${textItems.headerCountry[index].bold()} ${getArrows('country')}</button>`
-        headerArray[7].innerHTML = `<button id='municipalityButton' aria-label="sort by municipality" class='sort'>${textItems.headerMunicipality[index].bold()} ${getArrows('county')}</button>`
-        headerArray[8].innerHTML = `<button id='localityButton' aria-label="sort by locality" class='sort'>${textItems.headerLocality[index].bold()} ${getArrows('locality')}</button>`
-        headerArray[9].innerHTML = `<button id='ecologyButton' aria-label="sort by ecology" class='sort'>${textItems.headerEcology[index].bold()} ${getArrows('habitat')}</button>`
-        headerArray[10].innerHTML = `<button id='sampleTypeButton' aria-label="sort by sample type" class='sort'>${textItems.headerSampleTypes[index].bold()} ${getArrows('preparationType')} </button>` 
-        headerArray[11].innerHTML = `<button id='photoButton' aria-label="sort by photo present or absent" class='sort'><span class="fas fa-camera"></span>${getArrows('associatedMedia')}</button>`
-        headerArray[12].innerHTML = `<button id='coordinateButton' aria-label="sort by coordinates present or absent" class='sort'><span class="fas fa-compass"></span>${getArrows('decimalLongitude')}</button>`
-        headerArray[13].innerHTML = `<select id='checkboxSelect' aria-label="select item" class='sort'>
-            <option value="select" id="select">${textItems.select[index].bold()}</option>
-            <option value="all" id="selectAll">${textItems.selectAll[index]}</option>
-            <option value="all_on_page" id="selectAllOnPage">${ textItems.selectAllOnPage[index]}</option>
-            <option value="none" id="selectNone">${ textItems.selectNone[index]}</option>
-        </select>`
-
+        headerArray[4].innerHTML = `<button id='dateButton' aria-label="sort by date" class='sort'>${textItems.headerDate[index].bold()} ${getArrows('eventDate')}</button>`
+        headerArray[5].innerHTML = `<button id='countryButton' aria-label="sort by country" class='sort'>${textItems.headerCountry[index].bold()} ${getArrows('country')}</button>`
+        headerArray[6].innerHTML = `<button id='municipalityButton' aria-label="sort by municipality" class='sort'>${textItems.headerMunicipality[index].bold()} ${getArrows('county')}</button>`
+        headerArray[7].innerHTML = `<button id='localityButton' aria-label="sort by locality" class='sort'>${textItems.headerLocality[index].bold()} ${getArrows('locality')}</button>`
+        headerArray[8].innerHTML = `<button id='ecologyButton' aria-label="sort by ecology" class='sort'>${textItems.headerEcology[index].bold()} ${getArrows('habitat')}</button>`
+        headerArray[9].innerHTML = `<button id='sampleTypeButton' aria-label="sort by sample type" class='sort'>${textItems.headerSampleTypes[index].bold()} ${getArrows('preparationType')} </button>`
+        headerArray[10].innerHTML = `<button id='photoButton' aria-label="sort by photo present or absent" class='sort'><span class="fas fa-camera"></span>${getArrows('associatedMedia')}</button>`
+        headerArray[11].innerHTML = `<button id='coordinateButton' aria-label="sort by coordinates present or absent" class='sort'><span class="fas fa-compass"></span>${getArrows('decimalLongitude')}</button>`
+        headerArray[12].innerHTML = `<select id='checkboxSelect' aria-label="select item" class='sort'>
+        <option value="select" id="select">${textItems.select[index].bold()}</option>
+        <option value="all" id="selectAll">${textItems.selectAll[index]}</option>
+        <option value="all_on_page" id="selectAllOnPage">${textItems.selectAllOnPage[index]}</option>
+        <option value="none" id="selectNone">${textItems.selectNone[index]}</option>
+    </select>`
         //investigateChecked()
         // lag overskriftene klikk og sorterbare
-        makeModalColumnselect(musitData[0], 'columnSelectButton')
         addSortingText('musitIDButton', 'catalogNumber', musitData, 'resultTable')  // Tabellen blir sortert på nummer
         addSortingText('scientificNameButton', 'scientificName', musitData, 'resultTable')
         addSortingText('uncertaintyButton', 'identificationQualifier', musitData, 'resultTable')
@@ -497,20 +551,20 @@ fillResultHeaders = (org,headerArray,musitData) => {
             addSortingText('sampleTypeButton', 'basisOfRecord', musitData, 'resultTable')
         } else {
             addSortingText('sampleTypeButton', 'preparationType', musitData, 'resultTable')
-        }    
+        }
         addSortingText('photoButton', 'associatedMedia', musitData, 'resultTable')
         addSortingText('coordinateButton', 'decimalLongitude', musitData, 'resultTable')
     } catch (error) {
         console.log(error);
-            
+
     }
 }
 
 // puts content in headerbuttons in bulk-result-table
 // calls getArrows(..) for table-header-buttons headerArray[]
 // addSortingText(..) for tabel-header-buttons
-fillResultHeadersBulk = (headerArray,musitData) => {
-    headerArray[0].innerHTML = `<button id='musitIDButton' aria-label="sort by catalog Number" class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>`  
+fillResultHeadersBulk = (headerArray, musitData) => {
+    headerArray[0].innerHTML = `<button id='musitIDButton' aria-label="sort by catalog Number" class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>`
     headerArray[1].innerHTML = `<button id='scientificNameButton' aria-label="sort by scientific name" class='sort'>${textItems.headerTaxon[index].bold()} ${getArrows('scientificName')} </button>`
     headerArray[2].innerHTML = `<button id='collectorButton' aria-label="sort by collector name" class='sort'>${textItems.headerCollector[index].bold()} ${getArrows('recordedBy')}</button>`
     headerArray[3].innerHTML = `<button id='dateButton' aria-label="sort by date" class='sort'>${textItems.headerDate[index].bold()} ${getArrows('eventDate')}</button>`
@@ -521,10 +575,10 @@ fillResultHeadersBulk = (headerArray,musitData) => {
     headerArray[8].innerHTML = `<select id='checkboxSelect' aria-label="select item" class='sort'>
     <option value="select" id="select">${textItems.select[index].bold()}</option>
     <option value="all" id="selectAll">${textItems.selectAll[index]}</option>
-    <option value="all_on_page" id="selectAllOnPage">${ textItems.selectAllOnPage[index]}</option>
-    <option value="none" id="selectNone">${ textItems.selectNone[index]}</option>
+    <option value="all_on_page" id="selectAllOnPage">${textItems.selectAllOnPage[index]}</option>
+    <option value="none" id="selectNone">${textItems.selectNone[index]}</option>
     </select>`
-    
+
 
     addSortingText('musitIDButton', 'catalogNumber', musitData, 'bulkResultTable')  // Tabellen blir sortert på nummer
     addSortingText('scientificNameButton', 'scientificName', musitData, 'bulkResultTable')
@@ -541,7 +595,7 @@ fillResultHeadersBulk = (headerArray,musitData) => {
 // addSortingText(..) for table-header-buttons
 // fillResultHeadersUTAD = (cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9,cell11,UTADData) => {
 fillResultHeadersUTAD = (headerArray, UTADData) => {
-    headerArray[0].innerHTML = `<button id='musitIDButton' aria-label="sort by catalog Number"  class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>`  
+    headerArray[0].innerHTML = `<button id='musitIDButton' aria-label="sort by catalog Number"  class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>`
     headerArray[1].innerHTML = `<button id='vernacularNameButton' aria-label="sort by venacular name" class='sort'>${textItems.vernacularName[index].bold()} ${getArrows('vernacularName')} </button>`
     headerArray[2].innerHTML = `<button id='tilstandButton' aria-label="sort by condition"class='sort'>${textItems.Tilstand[index].bold()} ${getArrows('Tilstand')} </button>`
     headerArray[3].innerHTML = `<button id='objektTypeButton' aria-label="sort by object type"class='sort'>${textItems.basisOfRecord[index].bold()} ${getArrows('basisOfRecord')} </button>`
@@ -553,8 +607,8 @@ fillResultHeadersUTAD = (headerArray, UTADData) => {
     headerArray[9].innerHTML = `<select id='checkboxSelect' aria-label="select item" class='sort'>
     <option value="select" id="select">${textItems.select[index].bold()}</option>
     <option value="all" id="selectAll">${textItems.selectAll[index]}</option>
-    <option value="all_on_page" id="selectAllOnPage">${ textItems.selectAllOnPage[index]}</option>
-    <option value="none" id="selectNone">${ textItems.selectNone[index]}</option>
+    <option value="all_on_page" id="selectAllOnPage">${textItems.selectAllOnPage[index]}</option>
+    <option value="none" id="selectNone">${textItems.selectNone[index]}</option>
     </select>`
 
     addSortingText('musitIDButton', 'catalogNumber', UTADData, 'UTADRestultTable')  // Tabellen blir sortert på nummer
@@ -573,9 +627,9 @@ fillResultHeadersUTAD = (headerArray, UTADData) => {
 // calls getArrows(..) for table-header-buttons
 // addSortingText(..) for table-header-buttons
 fillResultHeadersEco_bot = (headerArray, eco_botData) => {
-        try {
-        
-        headerArray[0].innerHTML = `<button id='musitIDButton' aria-label="sort by catalog Number"  class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>`  
+    try {
+
+        headerArray[0].innerHTML = `<button id='musitIDButton' aria-label="sort by catalog Number"  class='sort'>${textItems.headerCatNb[index].bold()} ${getArrows('catalogNumber')} </button>`
         headerArray[1].innerHTML = `<button id='scientificNameNameButton' aria-label="sort by scientific name" class='sort'>${textItems.scientificName[index].bold()} ${getArrows('scientificName')} </button>`
         headerArray[2].innerHTML = `<button id='higherClassificationButton'  aria-label="sort by kingdom" class='sort'>${textItems.higherClassification[index].bold()} </button>`
         headerArray[3].innerHTML = `<button id='localityButton'  aria-label="sort by locality" class='sort'>${textItems.headerLocality[index].bold()} ${getArrows('locality')}</button>`
@@ -584,15 +638,15 @@ fillResultHeadersEco_bot = (headerArray, eco_botData) => {
         headerArray[6].innerHTML = `<button id='eventDateButton' aria-label="sort by object type"class='sort'>${textItems.eventDate[index].bold()} ${getArrows('eventDate')} </button>`
         headerArray[7].innerHTML = `<button id='tilstandButton' aria-label="sort by condition"class='sort'>${textItems.Tilstand[index].bold()} ${getArrows('Tilstand')} </button>`
         headerArray[8].innerHTML = `<button id='noteButton'  aria-label="sort by contens of notes" class='sort'>${textItems.Kommentar[index].bold()} ${getArrows('Kommentar')}</button>`
-         
+
         headerArray[9].innerHTML = `<button id='photoButton'  aria-label="sort by photo present or absent" class='sort'><span class="fas fa-camera"></span>${getArrows('associatedMedia')}</button>`
         headerArray[10].innerHTML = `<select id='checkboxSelect' aria-label="select item" class='sort'>
         <option value="select" id="select">${textItems.select[index].bold()}</option>
         <option value="all" id="selectAll">${textItems.selectAll[index]}</option>
-        <option value="all_on_page" id="selectAllOnPage">${ textItems.selectAllOnPage[index]}</option>
-        <option value="none" id="selectNone">${ textItems.selectNone[index]}</option>
+        <option value="all_on_page" id="selectAllOnPage">${textItems.selectAllOnPage[index]}</option>
+        <option value="none" id="selectNone">${textItems.selectNone[index]}</option>
         </select>`
-    
+
         addSortingText('musitIDButton', 'catalogNumber', eco_botData, 'eco_BotRestultTable')  // Tabellen blir sortert på nummer
         addSortingText('scientificNameNameButton', 'scientificName', eco_botData, 'eco_BotRestultTable')
         // addSortingText('higherClassificationButton', 'higherClassification', eco_botData, 'eco_BotRestultTable')

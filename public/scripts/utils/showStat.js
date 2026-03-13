@@ -74,7 +74,8 @@ function addTextInCollSelect(a) {
     entomology: textItems.insekter,
     evertebrater: textItems.invertebrates,
     invertebrates_with_dna: textItems.invertebrates_with_dna,
-    fisk: textItems.fisk,
+    fish: textItems.fish,
+    herptiles: textItems.herptiles,
     birds: textItems.fugler,
     mammals: textItems.pattedyr,
     mammals_no_dna: textItems.bcPattedyr,
@@ -83,8 +84,9 @@ function addTextInCollSelect(a) {
     dna_entomology: textItems.dna_insekter,
     dna_fish_herptiles: textItems.fishHerpDNA,
     fish_herptiles: textItems.fishHerp,
+    lophophorates: textItems.lophophorater,
     sopp: textItems.sopp,
-    dna_other: textItems.other,
+    // dna_other: textItems.other,
     malmer: textItems.malmer,
     oslofeltet: textItems.oslofeltet,
     utenlandskeBergarter: textItems.utenlandskeBA,
@@ -106,7 +108,7 @@ try {
     const table = document.querySelector('#statTable');
     const dnaArray = collections.filter(item => item.includes("dna"));
     const botanyArray = collections.filter(item =>  ["vascular", "alger", "moser", "alge",  "lav", "sopp"].includes(item));
-    const zoologyArray = collections.filter(item => ["entomology", "mammals", "Fisk", "birds", "crustacea", "invertebrater", "evertebrater"].includes(item));
+    const zoologyArray = collections.filter(item => ["entomology", "insektTypes", "fish", "herptiles", "mammals", "Fisk", "birds", "crustacea", "invertebrater", "evertebrater", "lophophorates"].includes(item));
     const earthSciencesArray = collections.filter(item => ["mineraler", "malmer", "utenlandskeBergarter", "oslofeltet", "palTyper", "fossiler", "utad", "bulk"].includes(item));
     // getLanguage()
     const addRows = (array, color) => {
@@ -141,6 +143,7 @@ try {
     
     addRows(botanyArray, "#D8F5CB");
     addRows(zoologyArray, "#CBDBF5");
+    console.log(dnaArray)
     addRows(dnaArray, "#F3F5CB");
     addRows(earthSciencesArray, "#F8CAA3");
 

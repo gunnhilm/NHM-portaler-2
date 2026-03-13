@@ -86,16 +86,18 @@ function renderText (lang) {
             { selector: '#lav', key: 'lav' },
             { selector: '#alger', key: 'alger' },
             { selector: '#entomology', key: 'insekter' },
-            { selector: '#entomology_types', key: 'entomology_types' },
+            { selector: '#entomology_types', key: 'insectTypes' },
             { selector: '#invertebrates', key: 'invertebrates' },
             { selector: '#crustacea', key: 'crustacea' },
-            { selector: '#fisk', key: 'fisk' },
+            { selector: '#fish', key: 'fish' },
+            { selector: '#herptiles', key: 'herptiles'},
             { selector: '#coremaopt', key: 'coremaopt' },
             { selector: '#birds', key: 'fugler' },
             { selector: '#mammals', key: 'pattedyr' },
             { selector: '#dna_vascular', key: 'dna_vascular' },
             { selector: '#dna_entomology', key: 'dna_insekter' },
-            { selector: '#dna_fish_herptiles', key: 'fishHerpDNA' },
+            { selector: '#lophophorater', key: 'lophophorates' },
+            // { selector: '#dna_fish_herptiles', key: 'fishHerpDNA' },
             // { selector: '#fish_herptiles', key: 'fishHerp' },
             { selector: '#dna_fungi_lichens', key: 'fungiLichens' },
             { selector: '#dna_other', key: 'other' },
@@ -112,9 +114,12 @@ function renderText (lang) {
         ];
 
         indexElementsToUpdate.forEach(element => {
+            console.log(element)
             const { selector, key } = element;
             const elementToUpdate = document.querySelector(selector);
             if (elementToUpdate) {
+                // console.log(key)
+                // console.log(index)
                 elementToUpdate.innerHTML = textItems[key][index];
             }
         });
@@ -418,6 +423,7 @@ document.querySelector('#language').addEventListener('click', (e) => {
 
             // tror det blir feil her, når tabellen er smalere, og celler skal hoppes over
             const headerRow = document.querySelector("#myTable").rows[0]
+            console.log(headerRow)
             const headerCell = Array.from(headerRow.cells);
  
             stringData = sessionStorage.getItem('string')
