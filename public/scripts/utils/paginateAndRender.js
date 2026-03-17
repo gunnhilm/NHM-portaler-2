@@ -219,12 +219,12 @@ const resultTable = (subMusitData, musitData) => {
                 cells[10].className += "cell10"; // Items (før hidden; items)
                 
                 // create named references
-                const [cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11, cell12, cell13, cell14] = cells;
+                const [cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11, cell12, cell13] = cells;
 
                 // cell 1 is empthy
-                cell1.textContent = ""
+                // cell1.textContent = "test"
 
-                //cell 2
+                //cell 1
                 let prefix = ''
                 const institutionCode = subMusitData[i][institutionCodeIndex]
                 const collectionCode = subMusitData[i][collectionCodeIndex]
@@ -259,40 +259,41 @@ const resultTable = (subMusitData, musitData) => {
                     
                     link = `<a id="object-link-for-${strippedCatalogNumber}" href="${museumURLPath}/object/?id=${catalogNumber}&samling=${collection}&museum=${museum}&lang=${language}&linjeNummer=${lineNumber}">${prefix}${strippedCatalogNumber}</a>`;
                     
-                    cell2.innerHTML = link;
+                    // cell2.innerHTML = link;
+                    cell1.innerHTML = link;
                 }
                 
-                //cell 3 Scientific name
+                //cell 2 Scientific name
                 if (sessionStorage.getItem('organismGroup').includes('geologi')) {
                     
                     if (sessionStorage.getItem('chosenCollection') === 'oslofeltet') {
-                        cell3.innerHTML = `<span>${subMusitData[i][kindomIndex]}</span>`                            
+                        cell2.innerHTML = `<span>${subMusitData[i][kindomIndex]}</span>`                            
                     } else {
-                        cell3.innerHTML = `<span>${subMusitData[i][scientificNameIndex]}</span>`
+                        cell2.innerHTML = `<span>${subMusitData[i][scientificNameIndex]}</span>`
                     }
                     
                 } else if (sessionStorage.getItem('organismGroup').includes('zoologi')) {
                     if (subMusitData[i][specificEpithetIndex] && subMusitData[i][genusIndex] !== "") {
-                        cell3.innerHTML = `<span style=font-style:italic>${subMusitData[i][genusIndex]} ${subMusitData[i][specificEpithetIndex]}</span>`
+                        cell2.innerHTML = `<span style=font-style:italic>${subMusitData[i][genusIndex]} ${subMusitData[i][specificEpithetIndex]}</span>`
                     } else {                       
                         
-                        cell3.innerHTML = `<span style=font-style:italic>${subMusitData[i][scientificNameIndex]}</span>`
+                        cell2.innerHTML = `<span style=font-style:italic>${subMusitData[i][scientificNameIndex]}</span>`
                     }
                     
                 } else {
                     let nameArray = italicSpeciesname(subMusitData[i][scientificNameIndex])
-                    cell3.innerHTML = `<span style=font-style:italic>${nameArray[0].replace(/\"/g,'')}</span>` + ' ' + `<span>${nameArray[1].replace(/\"/g,'')}</span>`
+                    cell2.innerHTML = `<span style=font-style:italic>${nameArray[0].replace(/\"/g,'')}</span>` + ' ' + `<span>${nameArray[1].replace(/\"/g,'')}</span>`
                 }  
 
                 //usikkerhet i bestmmelse
                 if(subMusitData[i].identificationQualifier){
-                    cell4.innerHTML = subMusitData[i].identificationQualifier
+                    cell3.innerHTML = subMusitData[i].identificationQualifier
                 } else {
-                    cell4.textContent = ""
+                    cell3.textContent = ""
                 }
                 
 
-                //cell5 recordedBy
+                //cell4 recordedBy
                 const recordedBy = subMusitData[i][recordedByIndex];
                 // to avoid lots of text in collector-field: replace more than two names with et al. 
                 // when  collector is written "lastName, firstName", only first name is included, followed by et al. if more names
@@ -305,17 +306,17 @@ const resultTable = (subMusitData, musitData) => {
                             cell5.innerHTML = y + " et al."    
                         }
                     } else {
-                        cell5.innerHTML = recordedBy
+                        cell4.innerHTML = recordedBy
                     }    
                 }
                 
-                cell6.innerHTML = subMusitData[i][headers.indexOf('eventDate')]
-                cell7.innerHTML = subMusitData[i][headers.indexOf('country')] 
+                cell5.innerHTML = subMusitData[i][headers.indexOf('eventDate')]
+                cell6.innerHTML = subMusitData[i][headers.indexOf('country')] 
                 if (subMusitData[i][headers.indexOf('county')]) {cell8.innerHTML = subMusitData[i][headers.indexOf('county')]}
-                cell8.innerHTML = subMusitData[i][headers.indexOf('locality')]
-                cell10.innerHTML = subMusitData[i][headers.indexOf('habitat')]
+                cell7.innerHTML = subMusitData[i][headers.indexOf('locality')]
+                cell9.innerHTML = subMusitData[i][headers.indexOf('habitat')]
 
-                // cell 11 items
+                // cell 10 items
                 const basisOfRecordIndex = headers.indexOf('basisOfRecord');
                 const basisOfRecord = subMusitData[i][basisOfRecordIndex];
                 const chosenCollection = sessionStorage.getItem('chosenCollection');
@@ -323,7 +324,7 @@ const resultTable = (subMusitData, musitData) => {
                 const coremaBasisOfRecord = subMusitData[i][headers.indexOf('coremaBasisOfRecord')] || '';
                 const materialSampleType = subMusitData[i][headers.indexOf('materialSampleType')] || '';
                 let musitBasisOfRecord = basisOfRecord || '';
-                let cell11Content = '';
+                let cell10Content = '';
 
                 const isCoremaCollection = document.querySelector('#collection-select option:checked').label.includes('DNA');
                 const isCoremaInMusit = chosenCollection.includes('dna_');
@@ -338,57 +339,72 @@ const resultTable = (subMusitData, musitData) => {
                         if (isCoremaInMusit) {
                             cell11Content = materialSampleType + (basisOfRecord ? ` | ${basisOfRecord}` : '');
                         } else if (isSpecialCollection) {
-                            cell11Content = preparationType || '';
+                            cell10Content = preparationType || '';
                         } else {
                             if (!preparationType || !/[a-zA-Z]/.test(preparationType)) {
-                                cell11Content = basisOfRecord || coremaBasisOfRecord;
+                                cell10Content = basisOfRecord || coremaBasisOfRecord;
                             } else {
-                                cell11Content = formatPreparationType(preparationType) + (musitBasisOfRecord ? ` | ${musitBasisOfRecord}` : '');
+                                cell10Content = formatPreparationType(preparationType) + (musitBasisOfRecord ? ` | ${musitBasisOfRecord}` : '');
                             }
                         }
                     } else {
                         if (!preparationType) {
-                            cell11Content = basisOfRecord || coremaBasisOfRecord;
+                            cell10Content = basisOfRecord || coremaBasisOfRecord;
                         } else {
-                            cell11Content = formatPreparationType(preparationType) + (musitBasisOfRecord ? ` | ${musitBasisOfRecord}` : '');
+                            cell10Content = formatPreparationType(preparationType) + (musitBasisOfRecord ? ` | ${musitBasisOfRecord}` : '');
                         }
                     }
                 }
                 // Clean up cell10Content to remove any leading/trailing pipes and replace double pipes
-                cell11Content = cell11Content.replace(/^\s*\|/, '').replace(/\|\s*$/, '').replace(/\|\s*\|/, '|');
+                cell10Content = cell10Content.replace(/^\s*\|/, '').replace(/\|\s*$/, '').replace(/\|\s*\|/, '|');
 
-                cell11.innerHTML = cell11Content;
+                cell10.innerHTML = cell10Content;
 
 
 
                 if( subMusitData[i][headers.indexOf('associatedMedia')]) {   
-                    cell12.innerHTML = `<span class="fas fa-camera"></span>`
+                    cell11.innerHTML = `<span class="fas fa-camera"></span>`
                 }
                 if( subMusitData[i][headers.indexOf('decimalLongitude')]) {
-                    cell13.innerHTML = '<span class="fas fa-compass"></span>'
+                    cell12.innerHTML = '<span class="fas fa-compass"></span>'
                 }
-                
-                cell14.innerHTML = `<input type="checkbox" id=checkbox${i} aria-label="velg denne posten" onclick="registerChecked(${i})" ></input>`
+                // console.log(cell13)
+                cell13.innerHTML = `<input type="checkbox" id=checkbox${i} aria-label="velg denne posten" onclick="registerChecked(${i})" ></input>`
                 if (investigateChecked(i)) {
                     document.getElementById(`checkbox${i}`).checked = true
                 } else {
                     document.getElementById(`checkbox${i}`).checked = false
                 }
                 
-                cell1.className = 'placeholer-column-select'
-                cell2.className = 'row-1 row-ID'
-                cell3.className = 'row-2 row-name'
-                cell4.className = 'uncertainty'
-                cell5.className = 'innsamler'
-                cell6.className = 'dato'
-                cell7.className = 'land'
-                cell8.className = 'row-7 row-kommune'
-                cell9.className = 'row-8 row-sted'
-                cell10.className = 'row-9 row-habitat'
-                cell11.className = 'sampleType'
-                cell12.className = 'row-11 row-photo'
-                cell13.className = 'row-12 row-coordinates'
-                cell14.className = 'row-13 row-checkbox'
+                // cell1.className = 'placeholer-column-select'
+                cell1.className = 'row-1 row-ID'
+                cell2.className = 'row-2 row-name'
+                cell3.className = 'uncertainty'
+                cell4.className = 'innsamler'
+                cell5.className = 'dato'
+                cell6.className = 'land'
+                cell7.className = 'row-7 row-kommune'
+                cell8.className = 'row-8 row-sted'
+                cell9.className = 'row-9 row-habitat'
+                cell10.className = 'sampleType'
+                cell11.className = 'row-11 row-photo'
+                cell12.className = 'row-12 row-coordinates'
+                cell13.className = 'row-13 row-checkbox'
+
+                // cell1.className = 'placeholer-column-select'
+                // cell2.className = 'row-1 row-ID'
+                // cell3.className = 'row-2 row-name'
+                // cell4.className = 'uncertainty'
+                // cell5.className = 'innsamler'
+                // cell6.className = 'dato'
+                // cell7.className = 'land'
+                // cell8.className = 'row-7 row-kommune'
+                // cell9.className = 'row-8 row-sted'
+                // cell10.className = 'row-9 row-habitat'
+                // cell11.className = 'sampleType'
+                // cell12.className = 'row-11 row-photo'
+                // cell13.className = 'row-12 row-coordinates'
+                // cell14.className = 'row-13 row-checkbox'
             }
           
         }

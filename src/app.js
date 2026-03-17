@@ -336,9 +336,11 @@ app.get('*/tools', (req, res) => {
 
 app.get('*/showStat', (req, res) => {
     if (!req.query.getStat) {
+        console.log('enen')
             return res.render('showStat', {
         })
     } else {
+        console.log('toto')
         getStatFile.getStatData('dummy', req.query.museum, (error, results) => {
             if (results){
                 res.send({

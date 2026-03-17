@@ -114,7 +114,7 @@ function renderText (lang) {
         ];
 
         indexElementsToUpdate.forEach(element => {
-            console.log(element)
+            // console.log(element)
             const { selector, key } = element;
             const elementToUpdate = document.querySelector(selector);
             if (elementToUpdate) {

@@ -292,8 +292,9 @@ function addTextInCollSelect(a) {
       vascular: textItems.vascular,
       lav: textItems.lav,
       alger: textItems.alger,
+      alge: textItems.alger,
       
-    //evertebrater: textItems.invertebrates,
+      evertebrater: textItems.invertebrates, //Bergen
       invertebrates: textItems.invertebrates_with_dna,
       fish: textItems.fish,
       herptiles: textItems.herptiles,
