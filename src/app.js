@@ -31,6 +31,7 @@ app.use(
     helmet({
         contentSecurityPolicy: false,
         xPermittedCrossDomainPolicies: false,
+        referrerPolicy: { policy: 'strict-origin-when-cross-origin' }
   })
 )
 const port = process.env.PORT || 3000
