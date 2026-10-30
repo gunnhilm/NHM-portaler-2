@@ -176,6 +176,7 @@ const resultTable = (subMusitData, musitData) => {
             const collectionCodeIndex = headers.indexOf('collectionCode');
             const recordedByIndex = headers.indexOf('recordedBy');
             const lineNumberIndex = headers.indexOf('lineNumber');
+            const identificationQualifierIndex = headers.indexOf('identificationQualifier')
 
         
         table.innerHTML = ""
@@ -190,15 +191,15 @@ const resultTable = (subMusitData, musitData) => {
                     org = 'geologi'
                 } else { org = 'other'}
 
-                for (let j = 0; j < 14; j++) {
+                for (let j = 0; j < 13; j++) {
                     headerCell.push(headerRow.appendChild(document.createElement("th")))
                 }
-                headerCell[1].className += "headerSelect"
-                headerCell[3].className += "uncertainty"
-                headerCell[4].className += "innsamler"
-                headerCell[5].className += "dato"
-                headerCell[6].className += "land"
-                headerCell[10].className += "sampleType"
+                // headerCell[1].className += "headerSelect"
+                headerCell[2].className += "uncertainty"
+                headerCell[3].className += "innsamler"
+                headerCell[4].className += "dato"
+                headerCell[5].className += "land"
+                headerCell[9].className += "sampleType"
                 
                 fillResultHeaders(org,headerCell,musitData)
 
@@ -212,18 +213,16 @@ const resultTable = (subMusitData, musitData) => {
                     return cell;
                 });
                 // Assign class names to specific cells
-                cells[3].className += "cell3";  // uncertainty (før innsamler)
-                cells[4].className += "cell4";  // Innsamler (før dato)
-                cells[5].className += "cell5";  // Dato (før land)
-                cells[6].className += "cell6";  // Land (før kommune)
-                cells[10].className += "cell10"; // Items (før hidden; items)
+                cells[2].className += "cell3";  // uncertainty (før innsamler)
+                cells[3].className += "cell4";  // Innsamler (før dato)
+                cells[4].className += "cell5";  // Dato (før land)
+                cells[5].className += "cell6";  // Land (før kommune)
+                cells[9].className += "cell10"; // Items (før hidden; items)
                 
                 // create named references
                 const [cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11, cell12, cell13] = cells;
 
-                // cell 1 is empthy
-                // cell1.textContent = "test"
-
+               
                 //cell 1
                 let prefix = ''
                 const institutionCode = subMusitData[i][institutionCodeIndex]
@@ -259,7 +258,6 @@ const resultTable = (subMusitData, musitData) => {
                     
                     link = `<a id="object-link-for-${strippedCatalogNumber}" href="${museumURLPath}/object/?id=${catalogNumber}&samling=${collection}&museum=${museum}&lang=${language}&linjeNummer=${lineNumber}">${prefix}${strippedCatalogNumber}</a>`;
                     
-                    // cell2.innerHTML = link;
                     cell1.innerHTML = link;
                 }
                 
@@ -285,9 +283,9 @@ const resultTable = (subMusitData, musitData) => {
                     cell2.innerHTML = `<span style=font-style:italic>${nameArray[0].replace(/\"/g,'')}</span>` + ' ' + `<span>${nameArray[1].replace(/\"/g,'')}</span>`
                 }  
 
-                //usikkerhet i bestmmelse
-                if(subMusitData[i].identificationQualifier){
-                    cell3.innerHTML = subMusitData[i].identificationQualifier
+                //cell3: uncertainty in identification
+                if(subMusitData[i][identificationQualifierIndex]){
+                    cell3.innerHTML = subMusitData[i][identificationQualifierIndex]
                 } else {
                     cell3.textContent = ""
                 }
@@ -312,8 +310,8 @@ const resultTable = (subMusitData, musitData) => {
                 
                 cell5.innerHTML = subMusitData[i][headers.indexOf('eventDate')]
                 cell6.innerHTML = subMusitData[i][headers.indexOf('country')] 
-                if (subMusitData[i][headers.indexOf('county')]) {cell8.innerHTML = subMusitData[i][headers.indexOf('county')]}
-                cell7.innerHTML = subMusitData[i][headers.indexOf('locality')]
+                if (subMusitData[i][headers.indexOf('county')]) {cell7.innerHTML = subMusitData[i][headers.indexOf('county')]}
+                cell8.innerHTML = subMusitData[i][headers.indexOf('locality')]
                 cell9.innerHTML = subMusitData[i][headers.indexOf('habitat')]
 
                 // cell 10 items
@@ -391,36 +389,28 @@ const resultTable = (subMusitData, musitData) => {
                 cell12.className = 'row-12 row-coordinates'
                 cell13.className = 'row-13 row-checkbox'
 
-                // cell1.className = 'placeholer-column-select'
-                // cell2.className = 'row-1 row-ID'
-                // cell3.className = 'row-2 row-name'
-                // cell4.className = 'uncertainty'
-                // cell5.className = 'innsamler'
-                // cell6.className = 'dato'
-                // cell7.className = 'land'
-                // cell8.className = 'row-7 row-kommune'
-                // cell9.className = 'row-8 row-sted'
-                // cell10.className = 'row-9 row-habitat'
-                // cell11.className = 'sampleType'
-                // cell12.className = 'row-11 row-photo'
-                // cell13.className = 'row-12 row-coordinates'
-                // cell14.className = 'row-13 row-checkbox'
+                
             }
           
         }
-        if (!subMusitData[0].hasOwnProperty('identificationQualifier')) {
-            hide_column(3)
+        // hide uncertain identity for collections that do not have it (e.g. malmer; geology)
+        if (!subMusitData[0].includes('identificationQualifier')) {
+            hide_column(2)
         }
 
+        
         // hide habitat for collections that do not have it
-        if (!subMusitData[0].hasOwnProperty('habitat')) {
+        if (!subMusitData[0].includes('habitat')) {
+            hide_column(8)
+        }
+        // hide corema-link-column (Objecttype) for UM and TMU
+        if (window.location.href.includes('tmu') || window.location.href.includes('/um') || window.location.href.includes('/nbh')) {
             hide_column(9)
         }
-                // hide corema-link-column for UM and TMU
-        if (window.location.href.includes('tmu') || window.location.href.includes('/um') || window.location.href.includes('/nbh')) {
-            hide_column(10)
+        // hide Objecttype-column for collections that do not have it (e.g. geology)
+        if (!subMusitData[0].includes('basisOfRecord')) {
+            hide_column(9)
         }
-        
 
         
         // let isLoan = activateLoanButton()

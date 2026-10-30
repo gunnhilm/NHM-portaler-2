@@ -351,29 +351,34 @@ const makeCloseButton = () => {
 // in: specimenObject: present object
 // is called in main()
 const makeNavButtons  = (allObject, specimenObject) => {
-    
+   
     let museum = urlParams.get("museum")
 
-    const nextObject = allObject[allObject.indexOf(specimenObject)+1]
-    const previousObject = allObject[allObject.indexOf(specimenObject)-1]
+    const specimenIndex = allObject.indexOf(allObject.find((el) => el.includes(specimenObject.catalogNumber)))
 
+    const nextObject = {}
+    allObject[0].forEach((key, i) => nextObject[key] = allObject[specimenIndex + 1][i])
+    const previousObject = {}
+    allObject[0].forEach((key, i) => previousObject[key] = allObject[specimenIndex - 1][i])
+    
     document.getElementById("next-object").disabled = allObject.indexOf(specimenObject) == allObject.length-1 ? true : false;
     document.getElementById("previous-object").disabled = allObject.indexOf(specimenObject) == 0 ? true : false;
     document.getElementById("next-object").onclick = () => {
-        if (allObject.indexOf(specimenObject) !== allObject.length-1) {
+        if (specimenIndex !== allObject.length-1) {
             if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
                 window.location.href=`${museumURLPath}/object/?id=${nextObject.catalogNumber.replace(/[A-Z]/,'').trim()}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}`
             } else {
-                window.location.href=`${museumURLPath}/object/?id=${nextObject.catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}`
+              
+                window.location.href=`${museumURLPath}/object/?id=${nextObject.catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}&linjeNummer=${nextObject.lineNumber}`
             }
         }
     }
     document.getElementById("previous-object").onclick = () => {
-        if (allObject.indexOf(specimenObject) !== 0) {
+        if (specimenIndex !== 0) {
             if (sessionStorage.getItem('chosenCollection').includes('fisk')) {
                 window.location.href=`${museumURLPath}/object/?id=${previousObject.catalogNumber.replace(/[A-Z]/,'').trim()}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}`
             } else {
-                window.location.href=`${museumURLPath}/object/?id=${previousObject.catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}`
+                window.location.href=`${museumURLPath}/object/?id=${previousObject.catalogNumber}&samling=${sessionStorage.getItem('chosenCollection')}&museum=${museum}&lang=${sessionStorage.getItem('language')}&linjeNummer=${previousObject.lineNumber}`
             }
         }
     }
@@ -961,9 +966,12 @@ async function showItemData (specimenObject,objectTable,order,overviewObject) {
                 // seq length
                 addRow(objectTable)
                 cell1.innerHTML = textItems.seqLength[index]
-                if (Object.keys(overviewObject).length != 0) {
-                    cell2.innerHTML = overviewObject.seqLength
+                if (overviewObject) {
+                    if (Object.keys(overviewObject).length != 0) {
+                        cell2.innerHTML = overviewObject.seqLength
+                    }
                 }
+                
                 // Validated
                 if (specimenObject.musitCollectionCode === "F") {
                     addRow(objectTable)
@@ -1039,7 +1047,6 @@ async function showData (specimenObject, orgGroup, overviewObject) {
         if( specimenObject.recordNumber ) {
             collNo = `<span>${specimenObject.recordNumber}</span>`
         } 
-
         let headArtsobs = ''
         let artsobsID = ''
         if( specimenObject.ArtObsID ) {
@@ -1078,6 +1085,7 @@ async function showData (specimenObject, orgGroup, overviewObject) {
         else {
             document.querySelector("#musit-regno").innerHTML = regnoEl
         }
+
         const concatLocality = country(specimenObject) + stateProvince(specimenObject) + county(specimenObject) + locality(specimenObject)
         let taxonomy = ''
         if (specimenObject.kingdom || specimenObject.class || specimenObject.order || specimenObject.family) {
@@ -1153,7 +1161,8 @@ async function showData (specimenObject, orgGroup, overviewObject) {
             if (dataTableHeight.height > mapDivHeight.height) {divHeight = dataTableHeight.height} else {divHeight = mapDivHeight.height}
         }
     } catch (error) {
-        document.getElementById('musit-regno').innerHTML = textItems.objError[index]
+        console.log(error)
+       document.getElementById('musit-regno').innerHTML = textItems.objError[index]
     }
 }
 
@@ -1292,11 +1301,9 @@ async function main () {
     
    // from file newObjectPage.js
    // it will always retrive from the server the object info, and if it is a new  page also set variables concerning, museum colletion, orggroup ect.
-   console.log("kommer vi hit")
    let specimenObject = await newObjectPageMain()
-  
-   specimenObject = specimenObject[0] 
-   
+   specimenObject = specimenObject[0]
+      
    const urlParams = new URLSearchParams(window.location.search)
    await whichFileAndDb(urlParams.get("museum"),urlParams.get("samling")) 
    if (language === "Norwegian") {
@@ -1312,6 +1319,7 @@ async function main () {
 
    //get the object from session storage
    const allObject = loadStringObject()
+   
    // set OrgGruop
    await setOrgGroup()
    
@@ -1321,9 +1329,11 @@ async function main () {
     
     if(Array.isArray(allObject) && (allObject.length > 2) && urlParams.get("isNew") != "yes") {
         makeNavButtons(allObject, specimenObject)
+        console.log("make buttons")
         makeBackButton()
     } else {
-       hideNavButtons()
+        console.log("her buttons")
+        hideNavButtons()
        makeBackButton()
        if (urlParams.get("isNew") == "yes") { 
             document.getElementById("back-to-result").style.display = 'none'
@@ -1333,7 +1343,6 @@ async function main () {
    }
 
    let overviewObject = {}
-console.log(specimenObject);
 
    if (specimenObject.collectionCode === "F") {    
         fungiOverview = await getOverview() // Makes a request to server to get an array of all species in the fungal-barcoding-overview-file, and number of validated and failed sequences

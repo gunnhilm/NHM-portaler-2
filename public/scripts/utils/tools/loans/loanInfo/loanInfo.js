@@ -127,6 +127,7 @@ const doLoanInfoSearch = () => {
             } else {
                 try {
                     response.text().then((data) => {
+                        console.log(data)
                         if(data.error) {
                             errorMessage.innerHTML = textItems.serverError[index]
                             console.log(error);
