@@ -1,5 +1,30 @@
 const searchForm = document.querySelector('form') 
 
+// Waits ms milliseconds
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+// Fetch with automatic retry on 429 Too Many Requests
+async function fetchWithRetry(url, maxRetries = 5, baseDelay = 1000) {
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+        const response = await fetch(url);
+
+        if (response.ok) {
+            return response;
+        }
+
+        if (response.status === 429) {
+            const retryAfter = response.headers.get('Retry-After');
+            const waitMs = retryAfter ? parseInt(retryAfter) * 1000 : baseDelay * Math.pow(2, attempt);
+            console.warn(`429 Too Many Requests. Waiting ${waitMs}ms before retry ${attempt + 1}/${maxRetries}...`);
+            await sleep(waitMs);
+            continue;
+        }
+
+        throw new Error(`HTTP error ${response.status} for ${url}`);
+    }
+    throw new Error(`Max retries exceeded for ${url}`);
+}
+
 collectionObject = {
     nhm: {
         entomologi: 'NHMO-ENT',
@@ -239,7 +264,7 @@ const getArtsObsData = async (artsObsNumber, MUSITNo) => {
     let resultString = '';
   
     try {
-        const response = await fetch(url);
+        const response = await fetchWithRetry(url);
         const obj = await response.json();
       
         if (!obj.results || obj.results.length === 0) {
@@ -380,7 +405,9 @@ async function getImageUrls(keyObj) {
       for (const [key, value] of Object.entries(keyObj)) {
         // 'https://api.gbif.org/v1/occurrence/search?dataset_Key=b124e1e0-4755-430f-9eab-894f25a9b59c&catalogNumber=27783344'
         const url = `https://api.gbif.org/v1/occurrence/search?dataset_Key=b124e1e0-4755-430f-9eab-894f25a9b59c&catalogNumber=${key}`;
-        const obj = await (await fetch(url)).json();
+        const response = await fetchWithRetry(url);
+        const obj = await response.json();
+        await sleep(600); // pause between GBIF requests to avoid rate limiting
   
         if (obj.results[0]) {
           const tempObj = obj.results[0].extensions["http://rs.gbif.org/terms/1.0/Multimedia"];
@@ -447,6 +474,8 @@ async function main() {
             } else {
                 allResults += '\n' + 'Fant ikke: ' + element;
             }
+
+            await sleep(600); // pause between GBIF requests to avoid rate limiting
         }
 
         if (document.querySelector('#images-check').checked) {
