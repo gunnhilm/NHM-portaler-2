@@ -1,4 +1,4 @@
-const searchForm = document.querySelector('form') 
+const searchForm = document.querySelector('form')
 
 // Waits ms milliseconds
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -25,6 +25,43 @@ async function fetchWithRetry(url, maxRetries = 5, baseDelay = 1000) {
     throw new Error(`Max retries exceeded for ${url}`);
 }
 
+const GBIF_API = 'https://api.gbif.org/v1';
+const ARTSOBS_DATASET_KEY = 'b124e1e0-4755-430f-9eab-894f25a9b59c';
+
+// Checks that the dataset exists in GBIF. Throws if it doesn't.
+// The result is cached, so GBIF is only asked once per page load.
+let datasetCheck = null;
+function assertDatasetExists(datasetKey = ARTSOBS_DATASET_KEY) {
+    if (!datasetCheck) {
+        datasetCheck = (async () => {
+            const response = await fetch(`${GBIF_API}/dataset/${datasetKey}`);
+            if (response.status === 404 || response.status === 400) {
+                throw new Error(`Datasettet ${datasetKey} finnes ikke hos GBIF`);
+            }
+            if (!response.ok) {
+                throw new Error(`Kunne ikke sjekke datasettet ${datasetKey} (HTTP ${response.status})`);
+            }
+            const dataset = await response.json();
+            if (dataset.deleted) {
+                throw new Error(`Datasettet ${datasetKey} er slettet hos GBIF`);
+            }
+            return dataset;
+        })();
+        datasetCheck.catch(() => { datasetCheck = null; }); // allow a new check next time
+    }
+    return datasetCheck;
+}
+
+// Searches the ArtsObs dataset for one catalog number.
+// Returns the record, or null if it isn't found in that dataset.
+async function searchArtsObs(catalogNumber) {
+    const params = new URLSearchParams({ datasetKey: ARTSOBS_DATASET_KEY, catalogNumber });
+    const response = await fetchWithRetry(`${GBIF_API}/occurrence/search?${params}`);
+    const obj = await response.json();
+    // Safety net: only accept records that really come from the expected dataset
+    return (obj.results || []).find(r => r.datasetKey === ARTSOBS_DATASET_KEY) || null;
+}
+
 collectionObject = {
     nhm: {
         entomologi: 'NHMO-ENT',
@@ -40,7 +77,7 @@ collectionObject = {
         karplanter: 'TROM-V',
         lav: 'TROM-L',
         moser: 'TROM-B',
-        sopp: 'TROM-F' 
+        sopp: 'TROM-F'
     },
     um: {
         entomologi: 'X',
@@ -48,13 +85,13 @@ collectionObject = {
         karplanter: 'BG-S',
         lav: 'BG-L',
         moser: 'BG-B',
-        sopp: 'BG-F' 
+        sopp: 'BG-F'
     },
     nbh: {
         alger: 'KMN-A',
         karplanter: 'KMN-V',
         moser: 'KMN-B'
-    }, 
+    },
     vm: {
         entomologi: 'X',
         marine: 'X',
@@ -67,23 +104,25 @@ collectionObject = {
 }
 
 const papaParseConfig = {
-	delimiter: "",	// auto-detect
-	newline: "",	// auto-detect
-	quoteChar: '"',
-	escapeChar: '"',
-	header: false,
-	transformHeader: undefined,
-	dynamicTyping: false,
-	skipEmptyLines: 'greedy',
-	delimitersToGuess: [ ' ',',', '\t', '|', ';']
+    delimiter: "",	// auto-detect
+    newline: "",	// auto-detect
+    quoteChar: '"',
+    escapeChar: '"',
+    header: false,
+    transformHeader: undefined,
+    dynamicTyping: false,
+    skipEmptyLines: 'greedy',
+    delimitersToGuess: [' ', ',', '\t', '|', ';']
 }
 
 function headerMap() {
-     const transelateKeyMap = new Map();
+    const transelateKeyMap = new Map();
     transelateKeyMap.set('Museum', 'museumCollection');
     transelateKeyMap.set('Løpenummer', 'dbNumbers');
     transelateKeyMap.set('Artsobservasjon nr.', 'catalogNumber');
     transelateKeyMap.set('Vitenskapelig navn', 'scientificName');
+    transelateKeyMap.set('Autor', 'scientificNameAuthorship');
+    transelateKeyMap.set('scientificNameAuthorship', 'scientificNameAuthorship');
     transelateKeyMap.set('Administrativt sted/kommune', 'municipality');
     transelateKeyMap.set('Lokalitet', 'locality');
     transelateKeyMap.set('Datum', 'geodeticDatum');
@@ -99,13 +138,13 @@ function headerMap() {
 
     const valgtSamling = document.getElementById('collection-select').value
 
-    const soppHeaders = ['Museum','Løpenummer','UUID','Artsobservasjon nr.','Navn_Usikkerhet','Vitenskapelig navn','Vert','Kommentar (bestemmelse)','Administrativt sted/kommune','Lokalitet','Datum','Koordinater','Koordinat - usikker','Koordinater bestemt i ettertid','Koordinat-presisjon (m)','Økologi','Kartblad','Høyde over havet (m)','Høyde - usikker','Innsamlere','Innsamlingsdato','Innsamlingsnummer','Bestemmere','Bestemmelsesdato','Kommentar fra innsamler','Dubletter','Prosjektnavn','Litteratur (objekt)','Datasett','Litteratur (bestemmelse)','Kommentar (adm)','Voucher']
-    const karplanteHeaders = ['Museum','Løpenummer','UUID','Artsobservasjon nr.','Navn_Usikkerhet','Vitenskapelig navn','Vert','Kommentar (bestemmelse)','Administrativt sted/kommune','Lokalitet','Datum','Koordinater','Koordinat - usikker','Koordinater bestemt i ettertid','Koordinat-presisjon (m)','Økologi','Kartblad','Høyde over havet (m)','Høyde - usikker','Innsamlere','Innsamlingsdato','Innsamlingsnummer','Bestemmere','Bestemmelsesdato','Kommentar fra innsamler','Dubletter','Prosjektnavn','Litteratur (objekt)','Datasett','Litteratur (bestemmelse)','Kommentar (adm)','Voucher']
-    const moseHeaders = ['Museum','Løpenummer','UUID','Artsobservasjon nr.','Navn_Usikkerhet','Vitenskapelig navn','Vert','Kommentar (bestemmelse)','Administrativt sted/kommune','Lokalitet','Datum','Koordinater','Koordinat - usikker','Koordinater bestemt i ettertid','Koordinat-presisjon (m)','Økologi','Kartblad','Høyde over havet (m)','Høyde - usikker','Innsamlere','Innsamlingsdato','Innsamlingsnummer','Bestemmere','Bestemmelsesdato','Kommentar fra innsamler','Dubletter','Prosjektnavn','Litteratur (objekt)','Datasett','Litteratur (bestemmelse)','Kommentar (adm)','Voucher']
-    const lavHeaders = ['Museum','Løpenummer','UUID','Artsobservasjon nr.','Navn_Usikkerhet','Vitenskapelig navn','Vert','Kommentar (bestemmelse)','Administrativt sted/kommune','Lokalitet','Datum','Koordinater','Koordinat - usikker','Koordinater bestemt i ettertid','Koordinat-presisjon (m)','Økologi','Kartblad','Høyde over havet (m)','Høyde - usikker','Innsamlere','Innsamlingsdato','Innsamlingsnummer','Bestemmere','Bestemmelsesdato','Kommentar fra innsamler','Dubletter','Prosjektnavn','Litteratur (objekt)','Datasett','Litteratur (bestemmelse)','Kommentar (adm)','Voucher']
-    const insektHeaders = ['Museum','Løpenummer','UUID','SubCollection','Barcode','Navn_Usikkerhet','Vitenskapelig navn','Bestemmere','Bestemmelsesdato','Kjønn','Antall','Estimert','Livsstadium','Kommentar (bestemmelse)','Administrativt sted/kommune','Lokalitet','Datum','Koordinater ','Koordinat - usikker','Koordinater bestemt i ettertid','Koordinat-presisjon (m)','Koordinatkilde','Høyde over havet (m)','Innsamlingsdato 1','Innsamlingsdato 2','Innsamlere','Innsamlings-metode','Kommentar fra innsamler','Habitat','Prosjektnavn','Tilhørende preparat','Original etikettekst','Kasse','Godkjent','Voucher','Datasett','Prepareringsmetode','EIS','RegionKode','Kommentar (adm)','Owner','Registrert av','Undernummer']
-    const marineInvertebraterHeaders = ['Museum','Løpenummer','UUID','SubCollection','Navn_Usikkerhet','Barcode','Vitenskapelig navn','Kasse','Kjønn','Livsstadium','Antall','Estimert','Vert','Aksesjonsnummer vert','Preparattype','Administrativt sted/kommune','Lokalitet','Økologi','Prøvenummer','Datum','Koordinater','Koordinatkilde','Høyde over havet (m)','Dyp','Habitat','Prosjektnavn','Stasjon','Fartøy','Innsamlingsdato 1','Innsamlingsdato 2','Innsamlere','Innsamlings-metode','Kommentar fra innsamler','Bestemmelsesdato','Bestemmere','Kommentar (bestemmelse)','Typestatus','Datasett','Litteratur (objekt)','Godkjent','Registrert av','Registreringsdato','Kommentar (adm)','Voucher','Original etikettekst','Prepareringsmetode','infraspecificEpithet','scientificNameAuthorship','SedimenthDepth','Koordinat-presisjon (m)','Water temperature','Salinity','pH','Kingdom','Phylum','Class','Order','Family','Genus','specificEpithet','Undernummer']
-    const algerHeaders =['Museum','Løpenummer','UUID','Aksesjonsnummer','Navn_Usikkerhet','Barcode','Vitenskapelig navn','Kasse','Kjønn','Livsstadium','Antall','Vert','Aksesjonsnummer vert','Preparattype','Administrativt sted/kommune','Lokalitet','Datum','Koordinater','Koordinat - usikker','Koordinater bestemt i ettertid','Høyde over havet (m)','Dyp','Habitat','Prosjektnavn','Innsamlingsdato','Innsamlere','Innsamlings-metode','Kommentar fra innsamler','Bestemmelsesdato','Bestemmere','Kommentar (bestemmelse)','Typestatus','Litteratur (objekt)','Registrert av','Registreringsdato','Kommentar (adm)','Original etikettekst','Prepareringsmetode','Datasett']
+    const soppHeaders = ['Museum', 'Løpenummer', 'UUID', 'Artsobservasjon nr.', 'Navn_Usikkerhet', 'Vitenskapelig navn', 'Autor', 'Vert', 'Kommentar (bestemmelse)', 'Administrativt sted/kommune', 'Lokalitet', 'Datum', 'Koordinater', 'Koordinat - usikker', 'Koordinater bestemt i ettertid', 'Koordinat-presisjon (m)', 'Økologi', 'Kartblad', 'Høyde over havet (m)', 'Høyde - usikker', 'Innsamlere', 'Innsamlingsdato', 'Innsamlingsnummer', 'Bestemmere', 'Bestemmelsesdato', 'Kommentar fra innsamler', 'Dubletter', 'Prosjektnavn', 'Litteratur (objekt)', 'Datasett', 'Litteratur (bestemmelse)', 'Kommentar (adm)', 'Voucher']
+    const karplanteHeaders = ['Museum', 'Løpenummer', 'UUID', 'Artsobservasjon nr.', 'Navn_Usikkerhet', 'Vitenskapelig navn', 'Autor', 'Vert', 'Kommentar (bestemmelse)', 'Administrativt sted/kommune', 'Lokalitet', 'Datum', 'Koordinater', 'Koordinat - usikker', 'Koordinater bestemt i ettertid', 'Koordinat-presisjon (m)', 'Økologi', 'Kartblad', 'Høyde over havet (m)', 'Høyde - usikker', 'Innsamlere', 'Innsamlingsdato', 'Innsamlingsnummer', 'Bestemmere', 'Bestemmelsesdato', 'Kommentar fra innsamler', 'Dubletter', 'Prosjektnavn', 'Litteratur (objekt)', 'Datasett', 'Litteratur (bestemmelse)', 'Kommentar (adm)', 'Voucher']
+    const moseHeaders = ['Museum', 'Løpenummer', 'UUID', 'Artsobservasjon nr.', 'Navn_Usikkerhet', 'Vitenskapelig navn', 'Autor', 'Vert', 'Kommentar (bestemmelse)', 'Administrativt sted/kommune', 'Lokalitet', 'Datum', 'Koordinater', 'Koordinat - usikker', 'Koordinater bestemt i ettertid', 'Koordinat-presisjon (m)', 'Økologi', 'Kartblad', 'Høyde over havet (m)', 'Høyde - usikker', 'Innsamlere', 'Innsamlingsdato', 'Innsamlingsnummer', 'Bestemmere', 'Bestemmelsesdato', 'Kommentar fra innsamler', 'Dubletter', 'Prosjektnavn', 'Litteratur (objekt)', 'Datasett', 'Litteratur (bestemmelse)', 'Kommentar (adm)', 'Voucher']
+    const lavHeaders = ['Museum', 'Løpenummer', 'UUID', 'Artsobservasjon nr.', 'Navn_Usikkerhet', 'Vitenskapelig navn', 'Autor', 'Vert', 'Kommentar (bestemmelse)', 'Administrativt sted/kommune', 'Lokalitet', 'Datum', 'Koordinater', 'Koordinat - usikker', 'Koordinater bestemt i ettertid', 'Koordinat-presisjon (m)', 'Økologi', 'Kartblad', 'Høyde over havet (m)', 'Høyde - usikker', 'Innsamlere', 'Innsamlingsdato', 'Innsamlingsnummer', 'Bestemmere', 'Bestemmelsesdato', 'Kommentar fra innsamler', 'Dubletter', 'Prosjektnavn', 'Litteratur (objekt)', 'Datasett', 'Litteratur (bestemmelse)', 'Kommentar (adm)', 'Voucher']
+    const insektHeaders = ['Museum', 'Løpenummer', 'UUID', 'SubCollection', 'Barcode', 'Navn_Usikkerhet', 'Vitenskapelig navn', 'Autor', 'Bestemmere', 'Bestemmelsesdato', 'Kjønn', 'Antall', 'Estimert', 'Livsstadium', 'Kommentar (bestemmelse)', 'Administrativt sted/kommune', 'Lokalitet', 'Datum', 'Koordinater ', 'Koordinat - usikker', 'Koordinater bestemt i ettertid', 'Koordinat-presisjon (m)', 'Koordinatkilde', 'Høyde over havet (m)', 'Innsamlingsdato 1', 'Innsamlingsdato 2', 'Innsamlere', 'Innsamlings-metode', 'Kommentar fra innsamler', 'Habitat', 'Prosjektnavn', 'Tilhørende preparat', 'Original etikettekst', 'Kasse', 'Godkjent', 'Voucher', 'Datasett', 'Prepareringsmetode', 'EIS', 'RegionKode', 'Kommentar (adm)', 'Owner', 'Registrert av', 'Undernummer']
+    const marineInvertebraterHeaders = ['Museum', 'Løpenummer', 'UUID', 'SubCollection', 'Navn_Usikkerhet', 'Barcode', 'Vitenskapelig navn', 'Kasse', 'Kjønn', 'Livsstadium', 'Antall', 'Estimert', 'Vert', 'Aksesjonsnummer vert', 'Preparattype', 'Administrativt sted/kommune', 'Lokalitet', 'Økologi', 'Prøvenummer', 'Datum', 'Koordinater', 'Koordinatkilde', 'Høyde over havet (m)', 'Dyp', 'Habitat', 'Prosjektnavn', 'Stasjon', 'Fartøy', 'Innsamlingsdato 1', 'Innsamlingsdato 2', 'Innsamlere', 'Innsamlings-metode', 'Kommentar fra innsamler', 'Bestemmelsesdato', 'Bestemmere', 'Kommentar (bestemmelse)', 'Typestatus', 'Datasett', 'Litteratur (objekt)', 'Godkjent', 'Registrert av', 'Registreringsdato', 'Kommentar (adm)', 'Voucher', 'Original etikettekst', 'Prepareringsmetode', 'infraspecificEpithet', 'scientificNameAuthorship', 'SedimenthDepth', 'Koordinat-presisjon (m)', 'Water temperature', 'Salinity', 'pH', 'Kingdom', 'Phylum', 'Class', 'Order', 'Family', 'Genus', 'specificEpithet', 'Undernummer']
+    const algerHeaders = ['Museum', 'Løpenummer', 'UUID', 'Aksesjonsnummer', 'Navn_Usikkerhet', 'Barcode', 'Vitenskapelig navn', 'Autor', 'Kasse', 'Kjønn', 'Livsstadium', 'Antall', 'Vert', 'Aksesjonsnummer vert', 'Preparattype', 'Administrativt sted/kommune', 'Lokalitet', 'Datum', 'Koordinater', 'Koordinat - usikker', 'Koordinater bestemt i ettertid', 'Høyde over havet (m)', 'Dyp', 'Habitat', 'Prosjektnavn', 'Innsamlingsdato', 'Innsamlere', 'Innsamlings-metode', 'Kommentar fra innsamler', 'Bestemmelsesdato', 'Bestemmere', 'Kommentar (bestemmelse)', 'Typestatus', 'Litteratur (objekt)', 'Registrert av', 'Registreringsdato', 'Kommentar (adm)', 'Original etikettekst', 'Prepareringsmetode', 'Datasett']
 
     if (valgtSamling === 'karplanter') {
         headerArray = karplanteHeaders
@@ -117,26 +156,26 @@ function headerMap() {
         headerArray = moseHeaders
     } else if (valgtSamling === 'entomologi') {
         headerArray = insektHeaders
-    }  else if (valgtSamling === 'marine invertebrater') {
+    } else if (valgtSamling === 'marine invertebrater') {
         headerArray = marineInvertebraterHeaders
     } else {
         headerArray = soppHeaders
-    } 
-    
+    }
+
     const headerMap = new Map();
     try {
         // headerArray = insektHeaders
         for (let i = 0; i < headerArray.length; i++) {
-            if(transelateKeyMap.get(headerArray[i])){
+            if (transelateKeyMap.get(headerArray[i])) {
                 headerMap.set(transelateKeyMap.get(headerArray[i]), headerArray[i]);
             } else {
-                headerMap.set(`Dummy${i}` , headerArray[i]);
+                headerMap.set(`Dummy${i}`, headerArray[i]);
             }
         }
         return headerMap
     } catch (error) {
         console.log(error);
-        return  maketranselateKeyMap
+        return maketranselateKeyMap
     }
 }
 
@@ -145,27 +184,27 @@ const addMuseum = () => {
     const valgtSamling = document.getElementById('collection-select').value
     let museumstring = ''
     //set museum
-    if (valgtMuseum === 'nhm'){
-        if(valgtSamling === 'entomologi'){
-            museumstring= 'NHMO'
+    if (valgtMuseum === 'nhm') {
+        if (valgtSamling === 'entomologi') {
+            museumstring = 'NHMO'
         } else {
             museumstring = 'O'
         }
     } else if (valgtMuseum === 'tmu') {
-        if(valgtSamling === 'entomologi' || valgtSamling === 'marine invertebrater'){
+        if (valgtSamling === 'entomologi' || valgtSamling === 'marine invertebrater') {
             museumstring = ''
         } else {
             museumstring = 'TROM'
         }
 
-    }  else if (valgtMuseum === 'um') {
-        if(valgtSamling === 'entomologi' || valgtSamling === 'marine invertebrater'){
+    } else if (valgtMuseum === 'um') {
+        if (valgtSamling === 'entomologi' || valgtSamling === 'marine invertebrater') {
             museumstring = ''
         } else {
             museumstring = 'BG'
         }
-    }  else if (valgtMuseum === 'vm') {
-        if(valgtSamling === 'entomologi' || valgtSamling === 'marine invertebrater'){
+    } else if (valgtMuseum === 'vm') {
+        if (valgtSamling === 'entomologi' || valgtSamling === 'marine invertebrater') {
             museumstring = ''
         } else {
             museumstring = 'TRH'
@@ -182,7 +221,7 @@ const addMuseum = () => {
 function togglePleaseWait(showImage) {
     const pleaseWaitImage = document.getElementById("please-wait");
     pleaseWaitImage.style.display = showImage ? "inline" : "none";
-  }
+}
 
 
 const getMUSITNumber = () => {
@@ -198,26 +237,29 @@ const getMUSITNumber = () => {
 
 // sends request to backend to fetch data
 // is called by getArtsObsData()
-async function getKommuneData  () {
+async function getKommuneData() {
     try {
-        const url =  urlPath + '/tools/artsObs/?kommune=true'
+        const url = urlPath + '/tools/artsObs/?kommune=true'
         data = await (await fetch(url)).json();
         data = JSON.parse(data.unparsed)
         return data
     } catch (error) {
         console.log(error);
     }
-}    
+}
 
-function fixAdmPlace (kommuneObj, municipality, county) {
+function fixAdmPlace(kommuneObj, municipality, county) {
+    if (typeof municipality !== 'string' || !municipality) {
+        return ''
+    }
     let input = municipality
     let admPlace = ''
-    if (municipality.indexOf(' ')){
-        municipality = municipality.slice(0,municipality.indexOf(' '))
+    if (municipality.indexOf(' ') !== -1) {
+        municipality = municipality.slice(0, municipality.indexOf(' '))
     }
     try {
         // Ål (kommune i Viken) [4506] 
-        admPlace = municipality + ' (kommune i ' + county +') [' + kommuneObj[county][municipality].HierarchPlaceId + ']'
+        admPlace = municipality + ' (kommune i ' + county + ') [' + kommuneObj[county][municipality].HierarchPlaceId + ']'
         return admPlace
     } catch (error) {
         return input
@@ -236,61 +278,74 @@ const fixUserInput = (artsObsNumbers) => {
 }
 
 function reverseCollectors(fullname) {
-    var names = fullname.split(' ');
+    let output = '';
+    const names = fullname.split(/\s+/);
     if (names.length > 2) {
         output = names[names.length - 1] + ', ' + names[0] + ' ' + names.slice(1, -1).join(' ')
-      }
-      else if (names.length < 2) {
-        output = names[0]
-      }
-      else {
-        output = names[names.length - 1] + ', ' + names[0]
-      }
-return output
-}
-
-function fixScientificName(scientificName) {
-    if (scientificName.includes(',')) {
-        return scientificName.substring(0, scientificName.lastIndexOf(','))
-    } else {
-        return scientificName
     }
+    else if (names.length < 2) {
+        output = names[0]
+    }
+    else {
+        output = names[names.length - 1] + ', ' + names[0]
+    }
+    return output
 }
 
 const getArtsObsData = async (artsObsNumber, MUSITNo) => {
     const valgtSamling = document.getElementById('collection-select').value;
     // 'https://api.gbif.org/v1/occurrence/search?dataset_Key=b124e1e0-4755-430f-9eab-894f25a9b59c&catalogNumber=21957795'
-    const url = `https://api.gbif.org/v1/occurrence/search?dataset_Key=b124e1e0-4755-430f-9eab-894f25a9b59c&catalogNumber=${artsObsNumber}`;
     let resultString = '';
-  
+
     try {
-        const response = await fetchWithRetry(url);
-        const obj = await response.json();
-      
-        if (!obj.results || obj.results.length === 0) {
+        const resultObj = await searchArtsObs(artsObsNumber);
+
+        if (!resultObj) {
             throw new Error(`Fant ikke følgende nummer hos artsdatabanken: ${artsObsNumber}`);
         }
-      
-        const resultObj = obj.results[0];
-      
-        // Fix ArtsObs entries
-        resultObj.latLongCoords = `${resultObj.decimalLatitude}N ${resultObj.decimalLongitude}E`;
-        if (resultObj.eventDate.includes('T')) { resultObj.eventDate = resultObj.eventDate.substring(0, resultObj.eventDate.indexOf('T')); }
-        resultObj.dateIdentified = resultObj.dateIdentified || resultObj.eventDate;
-      
-        // Fix collector
-        const collArray = resultObj.recordedBy.split('|').map(element => reverseCollectors(element.trim()));
-        resultObj.recordedBy = collArray.join('; ');
-        resultObj.identifiedBy = resultObj.identifiedBy || resultObj.recordedBy;
-      
-        // Fix scientificName for 'sopp' collection
-        if (valgtSamling === 'sopp') {
-            resultObj.scientificName = fixScientificName(resultObj.scientificName);
+
+        // Fields can be missing in GBIF, so check before using them
+        const missing = ['eventDate', 'recordedBy', 'decimalLatitude', 'decimalLongitude']
+            .filter(field => resultObj[field] == null || resultObj[field] === '');
+        if (missing.length) {
+            console.warn(`${artsObsNumber}: mangler felt fra GBIF: ${missing.join(', ')}`);
         }
-      
+
+        // Fix ArtsObs entries
+        if (resultObj.decimalLatitude != null && resultObj.decimalLongitude != null) {
+            resultObj.latLongCoords = `${resultObj.decimalLatitude}N ${resultObj.decimalLongitude}E`;
+        }
+        if (typeof resultObj.eventDate === 'string' && resultObj.eventDate.includes('T')) {
+            resultObj.eventDate = resultObj.eventDate.substring(0, resultObj.eventDate.indexOf('T'));
+        }
+        resultObj.dateIdentified = resultObj.dateIdentified || resultObj.eventDate || '';
+
+        // Fix collector
+        if (typeof resultObj.recordedBy === 'string' && resultObj.recordedBy.trim()) {
+            const collArray = resultObj.recordedBy.split('|')
+                .map(element => element.trim())
+                .filter(Boolean)
+                .map(reverseCollectors);
+            resultObj.recordedBy = collArray.join('; ');
+        } else {
+            resultObj.recordedBy = '';
+        }
+        resultObj.identifiedBy = resultObj.identifiedBy || resultObj.recordedBy;
+
+        // Latin name and author in separate columns, straight from GBIF's own fields
+        // Falls back to the full scientificName if GBIF has no name parts (e.g. higher taxa)
+        const rankMarker = { SUBSPECIES: 'subsp.', VARIETY: 'var.', FORM: 'f.' }[resultObj.taxonRank];
+        resultObj.scientificName = [
+            resultObj.genericName,
+            resultObj.specificEpithet,
+            resultObj.infraspecificEpithet && rankMarker,
+            resultObj.infraspecificEpithet
+        ].filter(Boolean).join(' ') || resultObj.scientificName || '';
+        resultObj.scientificNameAuthorship = resultObj.scientificNameAuthorship || '';
+
         const kommuneObj = await getKommuneData();
         const transelateKeyMap = headerMap();
-      
+
         for (const [key] of transelateKeyMap) {
             if (key === 'museumCollection') {
                 resultString += addMuseum() + '\t';
@@ -303,13 +358,13 @@ const getArtsObsData = async (artsObsNumber, MUSITNo) => {
                     const admPlace = fixAdmPlace(kommuneObj, resultObj[key], resultObj['county']);
                     resultString += admPlace + '\t';
                 } else {
-                    resultString += resultObj[key] + '\t';
+                    resultString += (resultObj[key] ?? '') + '\t';
                 }
             } else {
                 resultString += '\t';
             }
         }
-      
+
         return resultString;
     } catch (error) {
         console.log('Feil med dataene fra GBif:');
@@ -342,7 +397,7 @@ const downloadImage = async (url) => {
     togglePleaseWait(false)
     return blob
 };
-  
+
 const downloadMany = urls => {
     return Promise.all(urls.filter(Boolean).map(url => downloadImage(url)));
 }
@@ -399,36 +454,34 @@ const downloadAndZip = async (mediaObj, allResults) => {
 
 async function getImageUrls(keyObj) {
     try {
-      const mediaObj = {};
-      const onlyCCBY = !document.querySelector('#lisens').checked;
-  
-      for (const [key, value] of Object.entries(keyObj)) {
-        // 'https://api.gbif.org/v1/occurrence/search?dataset_Key=b124e1e0-4755-430f-9eab-894f25a9b59c&catalogNumber=27783344'
-        const url = `https://api.gbif.org/v1/occurrence/search?dataset_Key=b124e1e0-4755-430f-9eab-894f25a9b59c&catalogNumber=${key}`;
-        const response = await fetchWithRetry(url);
-        const obj = await response.json();
-        await sleep(600); // pause between GBIF requests to avoid rate limiting
-  
-        if (obj.results[0]) {
-          const tempObj = obj.results[0].extensions["http://rs.gbif.org/terms/1.0/Multimedia"];
-  
-          try {
-            if ((onlyCCBY && tempObj[0]?.["http://purl.org/dc/terms/license"] === 'CC BY 4.0') || !onlyCCBY) {
-              const imageUrls = tempObj.map(element => element["http://purl.org/dc/terms/identifier"]);
-              mediaObj[value] = [...imageUrls];
+        const mediaObj = {};
+        const onlyCCBY = !document.querySelector('#lisens').checked;
+
+        for (const [key, value] of Object.entries(keyObj)) {
+            // 'https://api.gbif.org/v1/occurrence/search?dataset_Key=b124e1e0-4755-430f-9eab-894f25a9b59c&catalogNumber=27783344'
+            const record = await searchArtsObs(key);
+            await sleep(600); // pause between GBIF requests to avoid rate limiting
+
+            if (record) {
+                const tempObj = record.extensions["http://rs.gbif.org/terms/1.0/Multimedia"];
+
+                try {
+                    if ((onlyCCBY && tempObj[0]?.["http://purl.org/dc/terms/license"] === 'CC BY 4.0') || !onlyCCBY) {
+                        const imageUrls = tempObj.map(element => element["http://purl.org/dc/terms/identifier"]);
+                        mediaObj[value] = [...imageUrls];
+                    }
+                } catch (error) {
+                    continue;
+                }
             }
-          } catch (error) {
-            continue;
-          }
         }
-      }
-      return mediaObj;
+        return mediaObj;
     } catch (error) {
-      console.error('feil i getImageUrls:', error);
-      return false;
+        console.error('feil i getImageUrls:', error);
+        return false;
     }
-  }
-  
+}
+
 
 async function main() {
     try {
@@ -446,6 +499,8 @@ async function main() {
         if (!Numbers) {
             throw new Error('Du må skrive inn artsobsnumre'); // Throw an error if Numbers is empty
         }
+
+        await assertDatasetExists(); // stops everything if the dataset doesn't exist
 
         const artsObsNumbers = fixUserInput(Numbers);
 
@@ -496,23 +551,23 @@ async function main() {
 
 // when somebody clicks submit-button
 searchForm.addEventListener('submit', (e) => {
-    e.preventDefault()  
+    e.preventDefault()
     main()
 });
 
 
 // when somebody clicks Vis-kolonne-button
 document.getElementById("Vis-kolonne").addEventListener('click', (e) => {
-    e.preventDefault()  
-    try { 
+    e.preventDefault()
+    try {
         const transelateKeyMap = headerMap()
         let totValue = ''
         for (const [key, value] of transelateKeyMap) {
-            totValue = totValue + value + '\t' 
+            totValue = totValue + value + '\t'
         }
         download("Headers.txt", totValue)
     } catch (error) {
-          console.log(error);  
+        console.log(error);
     }
 });
 
