@@ -10,3 +10,4 @@ credentials.js
 src/utils/loans/fileUploads/
 public/archive
 src/utils/labels/templates
+templates/unimus-natur.hbs

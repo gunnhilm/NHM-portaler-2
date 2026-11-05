@@ -198,6 +198,7 @@ const loanResultTable = (children) => {
 }
 
 const showTable = () => {
+    console.log('her')
     var tbl = document.getElementById('loans-item-table');
     if( tbl) {
         tbl.parentNode.removeChild(tbl)
@@ -205,10 +206,11 @@ const showTable = () => {
 
     let items = getLoanItems("loanItems")
     if (items) {
+        console.log('items', items)
     loanResultTable(items)
     } else  {
         alert(' there has been some error, please return to the searchpage and try again')
     }
 }
-
+console.log('her')
 showTable()

@@ -11,9 +11,11 @@ const setLoanfile = (museum = 'nhm', samling) => {
 
 const LoanInfoSearch2 = (museum,searchTerm) => {
     // get loan-dump
+    // loanInfoJSON = require(`./../../../data/${museum}/musit-loans_ny.json`)
     loanInfoJSON = require(`./../../../data/${museum}/musit-loans.json`)
     // turn into string
     loanString = JSON.stringify(loanInfoJSON)
+    console.log(loanString.slice(0,100))
     // put each loan as separate entities into an array:
     loanStringArray = loanString.split("loanId") // "loanID" disappears from strings
     // remove exessive brackets from last object
@@ -68,6 +70,7 @@ const LoanInfoSearch2 = (museum,searchTerm) => {
     searchTerm = searchTerm.trim()
     terms = searchTerm.split(' ')
     let result = loanObjArray.filter((el) => el.toLowerCase().includes(terms[0].toLowerCase()))
+    console.log(result)
     if (terms.length > 1){
         for(let i = 1; i < terms.length; i++) {
             result = result.filter((el) => el.toLowerCase().includes(terms[i].toLowerCase()))

@@ -85,7 +85,6 @@ async  function setSpecimenDataFromLineNumber () {
             let urlParams = new URLSearchParams(document.location.search); 
             sessionStorage.setItem('chosenCollection', urlParams.get("samling"))
             const url = '/museum' + '/getLineByNumber/?' +'&museum=' + urlParams.get("museum") + '&samling=' + urlParams.get("samling") + '&linjeNumber=' +  urlParams.get("linjeNummer")
-            console.log(url)
             fetch(url).then((response) => {
                 if (!response.ok) {
                     
@@ -222,6 +221,7 @@ async function newObjectPageMain() {
         else {
             objectData = await setSpecimenData()
         }
+        
         await whichFileAndDb_two(urlParams.get("museum"),urlParams.get("samling"))
     } else if(testIfLineNumber(urlParams.get("linjeNummer"))) {
         console.log("linje")

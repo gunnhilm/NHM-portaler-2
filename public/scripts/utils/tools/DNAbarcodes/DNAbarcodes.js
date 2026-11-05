@@ -15,7 +15,7 @@ let lastUpdated
 if (bcColl === "sopp") {
     document.getElementById("getBarcodeHeader").innerHTML = textItems.bcHeaderFungi[1] 
     // adbFile = `${adbFilePath}ArtsnavnebaseCSV_fungi_tab.txt`
-    lastUpdated = "16.1.26"
+    lastUpdated = "11.5.26"
     adbFile = `${adbFilePath}Fungi_tab.txt`
 } else if (bcColl === "mammals") {
     document.getElementById("getBarcodeHeader").innerHTML = textItems.bcHeaderMammals[1]
