@@ -333,15 +333,25 @@ const getArtsObsData = async (artsObsNumber, MUSITNo) => {
         resultObj.identifiedBy = resultObj.identifiedBy || resultObj.recordedBy;
 
         // Latin name and author in separate columns, straight from GBIF's own fields
-        // Falls back to the full scientificName if GBIF has no name parts (e.g. higher taxa)
+        const author = resultObj.scientificNameAuthorship || '';
         const rankMarker = { SUBSPECIES: 'subsp.', VARIETY: 'var.', FORM: 'f.' }[resultObj.taxonRank];
-        resultObj.scientificName = [
+        let latinName = [
             resultObj.genericName,
             resultObj.specificEpithet,
             resultObj.infraspecificEpithet && rankMarker,
             resultObj.infraspecificEpithet
-        ].filter(Boolean).join(' ') || resultObj.scientificName || '';
-        resultObj.scientificNameAuthorship = resultObj.scientificNameAuthorship || '';
+        ].filter(Boolean).join(' ');
+        if (!latinName) {
+            // Genus or higher: GBIF has no name parts, so remove the author from the end of the full name
+            const fullName = resultObj.scientificName || '';
+            latinName = author && fullName.endsWith(author) ? fullName.slice(0, -author.length).trim() : fullName;
+        }
+        resultObj.scientificName = latinName;
+
+        // Fungi: remove the year after the last comma, e.g. '(Pers.) Gray, 1821' -> '(Pers.) Gray'
+        resultObj.scientificNameAuthorship = (valgtSamling === 'sopp' && author.includes(','))
+            ? author.substring(0, author.lastIndexOf(',')).trim()
+            : author;
 
         const kommuneObj = await getKommuneData();
         const transelateKeyMap = headerMap();
